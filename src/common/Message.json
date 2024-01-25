@@ -1,0 +1,162 @@
+{
+  "en-US": {
+    "success_messages": {
+      "succes_message_theme": "Theme success message en-US"
+    },
+    "error_messages": {
+      "error_message_theme": "Theme error message en-US",
+      "email_invalid": "Please enter a valid email",
+      "password_invalid": "Please enter a valid Password",
+      "enter_valid_otp": "Please enter a valid OTP",
+      "email_required": "Email is Required",
+      "pass_length": "Minimum length of password is 8",
+      "pass_required": "Password is Required",
+      "otp_required": "OTP is Required",
+      "enter_valid_email": "Please enter a valid email",
+      "pass_match_fail": "Password does not Match!",
+      "pass_validation": "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character",
+      "first_name_req": "First name is Required",
+      "first_name_valid": "Enter a valid first name",
+      "last_name_req": "Last name is Required",
+      "last_name_valid": "Enter a valid last name",
+      "phone_req": "Phone Number is Required",
+      "phone_valid": "Enter a valid Phone Number",
+      "phone_len": "Phone Number minimum length should be 7",
+      "address_req": "Address is Required",
+      "address_valid": "Enter a valid Address",
+      "address_len": "Must be at least 8 characters",
+      "required": "This field is required"
+    },
+    "toast": {
+      "otp": "OTP sent Successfull!",
+      "otp_incorrect": "OTP is incorrect",
+      "resend_otp": "OTP Re-Sent Successfull!",
+      "otp_verifyed": "OTP Verifyed!",
+      "login_succes": "Re-Directing to Home Page",
+      "pass_updated": "Password Updated Successfull!",
+      "verification_err": "Error at verifying User",
+      "error": "Error",
+      "success": "Success",
+      "password_updated": "Password Updated Successfull!",
+      "re_login": "Please login to Verify",
+      "new_pass": "Create New Password"
+    },
+    "screen_messages": {
+      "screen_message_theme": "Theme screen message en-US",
+      "merchant_name": "APP",
+      "welcome": "Welcome To Druce",
+      "msg": "Log in or sign up to get the most out of your Druce experience.",
+      "signup_msg": "Hello! Register to get started",
+      "button": {
+        "login": "Login",
+        "logout": "Logout",
+        "signup": "Sign Up",
+        "Create_Account": "Create Account",
+        "save": "Save",
+        "upload": "Upload",
+        "next": "Next",
+        "Forgot_Password": "Forgot Password?",
+        "term": "Terms of Service",
+        "privacy": "Privacy Policy",
+        "Resend_Code": "Resend Code",
+        "Verify_Account": "Verify Account"
+      },
+      "common": {
+        "rupee": "₹",
+        "doller": "$",
+        "sorry": "Sorry !",
+        "thank_you": "Thank You !",
+        "Congratulations": "Congratulations !",
+        "successfull": "Success Full !",
+        "opps": "Opps !"
+      },
+      "good_morning": "Good Morning!",
+      "header": {
+        "Profile": "Profile",
+        "point_status": {
+          "zero": "Pickup point",
+          "one": "Drop point",
+          "other": "Hold point"
+        }
+      },
+      "tab": {
+        "home": "Home",
+        "let": "Letting",
+        "sell": "Selling",
+        "rent": "Rent"
+      },
+      "days": {
+        "zero": "",
+        "one": "%{count} Day",
+        "other": "%{count} Days"
+      },
+      "hours": {
+        "zero": "",
+        "one": "%{count} Hour",
+        "other": "%{count} Hours"
+      },
+      "mins": {
+        "zero": "",
+        "one": "%{count} Min",
+        "other": "%{count} Mins"
+      },
+      "input_lable": {
+        "email": "Email",
+        "password": "Password",
+        "First_Name": "First Name",
+        "Last_Name": "Last Name",
+        "Date_of_Birth": "Date of Birth",
+        "Gender": "Gender",
+        "Email": "Email",
+        "Mobile": "Mobile",
+        "Re_enter_Password": "Re-enter Password",
+        "Enter_Code": "Enter Code",
+        "Country_of_residence": "Country of Residence",
+        "address": "Address"
+      },
+      "input_placeholder": {
+        "email": "Enter your email",
+        "password": "Enter your password",
+        "pass_len": "Must contain a minimum of 8 characters",
+        "First_Name": "Enter First Name",
+        "Last_Name": "Enter Last Name",
+        "Date_of_Birth": "Select Date of Birth",
+        "Gender": "Select Gender",
+        "Email": "Enter Email",
+        "Mobile": "Enter Mobile",
+        "Re_enter_Password": "Re-enter Password",
+        "address": "Enter Address"
+      },
+      "Forgot_Password": "Forgot Password?",
+      "have_account": "Don’t have an account ?",
+      "register": {
+        "as": "Register As",
+        "Customer": "Customer",
+        "Developer": "Developer"
+      },
+      "term_service": "By continuing, you agree to our",
+      "and": "and",
+      "Verify_Account": "Verify Account",
+      "code_sent_to": "Code has been send to",
+      "enter_to_verify": "Enter the code to verify your account.",
+      "Didnt_Receive_Code": "Didn’t Receive Code?",
+      "resend_in": "Resend code in",
+      "Forgot_password": "Forgot Password",
+      "enter_mail_for_otp": "Enter your email address below and we will send a code to reset your password",
+      "enter_otp": "Enter the 6-digit code",
+      "Create_New_Password": "Create New Password",
+      "confirm_pass_msg": "Please enter and confirm your new password. You will need to login after you reset."
+    }
+  },
+  "en-UK": {
+    "success_messages": {
+      "succes_message_theme": "Theme success message en-UK"
+    },
+    "error_messages": {
+      "error_message_theme": "Theme error message en-UK"
+    },
+    "screen_messages": {
+      "screen_message_theme": "Theme screen message en-UK"
+    }
+  }
+}

@@ -1,3 +1,44 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json"
+  "noImplicitAny": false,
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "moduleResolution": "node",
+  "compilerOptions": {
+    "module": "esnext",
+    "jsx": "react",
+    "strict": true,
+    "baseUrl": ".",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "paths": {
+      "@src/*": ["./src/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@appConfig": ["./app.json"],
+      "@config": ["./Config.json"],
+      "@cards/*": ["./src/cards/*"],
+      "@common/*": ["./src/common/*"],
+      "@components/*": ["./src/components/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@contexts/*": ["./src/contexts/*"],
+      "@helpers/*": ["./src/helpers/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@navigation/*": ["./src/navigation/*"],
+      "@screens_components/*": ["./src/screens_components/*"],
+      "@screens/*": ["./src/screens/*"],
+      "@skeltons/*": ["./src/skeltons/*"],
+      "@services/*": ["./src/services/*"],
+      "@features/*": ["./src/services/features/*"],
+      "@global/*": ["./src/services/global/*"],
+      "@reducers/*": ["./src/redux/reducers/*"],
+      "@redux/*": ["./src/redux/*"]
+    },
+    "typeRoots": [
+      "node_modules/@types",
+      "src/types",
+      "src",
+      "declaration.d.ts",
+      "src/*.ts",
+      "src/*.tsx"
+    ]
+  },
+  "include": ["src", ".", "declaration.d.ts", "src/*.ts", "src/*.tsx"]
 }
