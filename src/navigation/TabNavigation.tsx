@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, Platform } from "react-native";
 import React, { lazy } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import I18n from "i18n-js";
@@ -12,16 +12,21 @@ import {
 } from "@navigation/Navigation";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { moderateScale } from "react-native-size-matters";
+import { useAppSelector } from "@src/redux/store";
+
+const isIOS = Platform.OS == "ios";
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigation() {
+  const { theme } = useAppSelector(state => state.theme);
   return (
     <Tab.Navigator
       initialRouteName="HomeTab"
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: "#1A295B",
+        tabBarActiveTintColor: theme.primary,
+        tabBarStyle: { height: isIOS ? 75 : 65, paddingBottom: isIOS ? 0 : 10 },
         // tabBarStyle: (route => {
         //   const routeName = getFocusedRouteNameFromRoute(route) ?? "";
         //   if (
@@ -49,7 +54,7 @@ export default function TabNavigation() {
             </AppText>
           ),
           tabBarIcon: ({ focused, color, size }) => (
-            <svgs.HomeV2
+            <svgs.Home
               color1={color}
               height={30}
               width={30}
@@ -67,11 +72,11 @@ export default function TabNavigation() {
               fontStyle={focused ? "600.bold" : "400.normal"}
               color={color}
               size={focused ? 14 : 12}>
-              {I18n.t("screen_messages.tab.let")}
+              {I18n.t("screen_messages.tab.court")}
             </AppText>
           ),
           tabBarIcon: ({ focused, color, size }) => (
-            <svgs.Let
+            <svgs.Court
               color1={color}
               height={35}
               width={35}
@@ -89,11 +94,11 @@ export default function TabNavigation() {
               fontStyle={focused ? "600.bold" : "400.normal"}
               color={color}
               size={focused ? 14 : 12}>
-              {I18n.t("screen_messages.tab.sell")}
+              {I18n.t("screen_messages.tab.coach")}
             </AppText>
           ),
           tabBarIcon: ({ focused, color, size }) => (
-            <svgs.Sell
+            <svgs.Coach
               color1={color}
               height={30}
               width={30}
@@ -111,11 +116,33 @@ export default function TabNavigation() {
               fontStyle={focused ? "600.bold" : "400.normal"}
               color={color}
               size={focused ? 14 : 12}>
-              {I18n.t("screen_messages.tab.rent")}
+              {I18n.t("screen_messages.tab.group")}
             </AppText>
           ),
           tabBarIcon: ({ focused, color, size }) => (
-            <svgs.Rent
+            <svgs.Group
+              color1={color}
+              height={30}
+              width={30}
+              strokeWidth={focused ? 2 : 1.5}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="CalenderTab"
+        component={RentStake}
+        options={{
+          tabBarLabel: ({ color, focused }) => (
+            <AppText
+              fontStyle={focused ? "600.bold" : "400.normal"}
+              color={color}
+              size={focused ? 14 : 12}>
+              {I18n.t("screen_messages.tab.calender")}
+            </AppText>
+          ),
+          tabBarIcon: ({ focused, color, size }) => (
+            <svgs.CalenderV2
               color1={color}
               height={30}
               width={30}

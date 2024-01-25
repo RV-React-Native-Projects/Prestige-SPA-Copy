@@ -2,8 +2,12 @@ import Bath from "@assets/svgs/Bath";
 import Beds from "@assets/svgs/Beds";
 import Bus from "@assets/svgs/Bus";
 import Calender from "@assets/svgs/Calender";
+import CalenderV2 from "@assets/svgs/CalenderV2";
+import Coach from "@assets/svgs/Coach";
+import Court from "@assets/svgs/Court";
 import Down from "@assets/svgs/Down";
 import EyeClose from "@assets/svgs/EyeClose";
+import Group from "@assets/svgs/Group";
 import Help from "@assets/svgs/Help";
 import Home from "@assets/svgs/Home";
 import HomeV2 from "@assets/svgs/HomeV2";
@@ -26,8 +30,12 @@ const svgs: any = {
   Beds,
   Bus,
   Calender,
+  CalenderV2,
+  Coach,
+  Court,
   Down,
   EyeClose,
+  Group,
   Help,
   Home,
   HomeV2,

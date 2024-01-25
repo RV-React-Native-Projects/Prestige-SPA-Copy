@@ -29,7 +29,7 @@ const ToastAlert: React.FC<
   variant = "solid",
   title,
   description,
-  isClosable = true,
+  isClosable = false,
   ...rest
 }) => {
   const toast = useToast();

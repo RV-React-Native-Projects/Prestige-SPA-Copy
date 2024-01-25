@@ -81,9 +81,10 @@
       },
       "tab": {
         "home": "Home",
-        "let": "Letting",
-        "sell": "Selling",
-        "rent": "Rent"
+        "court": "Court",
+        "coach": "Coach",
+        "group": "Group",
+        "calender": "Calender"
       },
       "days": {
         "zero": "",

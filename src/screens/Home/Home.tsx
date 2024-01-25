@@ -11,7 +11,9 @@ import useAppToast from "@components/Alert/AppToast";
 import { VerticalSpacing } from "@src/components/Spacing/Spacing";
 
 function Home() {
-  const { authHeader, authToken } = useAppSelector(state => state.user);
+  const { authHeader, authToken, userToken } = useAppSelector(
+    state => state.user,
+  );
   const { theme } = useAppSelector(state => state.theme);
   const storeDispatch = useAppDispatch();
   const navigation = useAppNavigation();
@@ -32,10 +34,10 @@ function Home() {
   };
 
   useEffect(() => {
-    if (!authToken) {
+    if (!userToken) {
       navigation.reset({ index: 0, routes: [{ name: "Landing" }] });
     }
-  }, [authToken]);
+  }, [userToken]);
 
   return (
     <AppContainer
@@ -53,7 +55,7 @@ function Home() {
         <AppButton
           width={"80%"}
           Title="Show Toast"
-          onPress={() => appToast.showNormalToast({title: "Show Toast"} )}
+          onPress={() => appToast.showNormalToast({ title: "Show Toast" })}
         />
       </View>
     </AppContainer>

@@ -1,14 +1,14 @@
-import { SVGProps } from "@src/common/CommonTypes";
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
+import { SVGProps } from "@common/CommonTypes";
 
 function SvgComponent(props: SVGProps) {
   const {
     width = 30,
     height = 30,
-    color1 = "#6D6D6D",
-    color2 = "#4C9A2A",
     fill = "none",
+    color1 = "#6D6D6D",
+    color2 = "#FFFFFF",
     strokeWidth = 1.5,
   } = props;
 
@@ -21,20 +21,19 @@ function SvgComponent(props: SVGProps) {
       fill={fill}
       {...props}>
       <Path
-        d="M8.625 25V13l-2.5 2 10-8 10 8-2.5-2v12h-15z"
+        d="M16.5 26c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10z"
+        stroke={color1}
+        strokeWidth={strokeWidth}
+      />
+      <Path
+        d="M16.5 6c-.05 3.334-.87 5.835-2.456 7.502-1.587 1.668-4.101 2.502-7.544 2.502"
         stroke={color1}
         strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
-        d="M13.625 18.5V25h5v-6.5h-5z"
-        stroke={color1}
-        strokeWidth={strokeWidth}
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M8.625 25h15"
+        d="M26.484 16.503c-3.256-.224-5.744.472-7.464 2.088C17.3 20.206 16.46 22.676 16.5 26"
         stroke={color1}
         strokeWidth={strokeWidth}
         strokeLinecap="round"

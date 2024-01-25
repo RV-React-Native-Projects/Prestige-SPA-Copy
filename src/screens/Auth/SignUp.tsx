@@ -28,6 +28,8 @@ import { useEncryptedStorage } from "@hooks/useEncryptedStorage";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import useAppToast from "@components/Alert/AppToast";
+import GenderDropDown from "@src/components/dropdown/GenderDropDown";
+import DatePickerInput from "@src/components/DateTimePicker/DatePickerInput";
 
 const isIOS = Platform.OS === "ios";
 
@@ -45,11 +47,11 @@ const signUpSchema = Yup.object().shape({
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       I18n.t("error_messages.email_invalid"),
     ),
-  countryName: Yup.string().required(I18n.t("error_messages.required")),
+  // countryName: Yup.string().required(I18n.t("error_messages.required")),
   callCode: Yup.string().required(I18n.t("error_messages.required")),
-  address: Yup.string()
-    .min(8, I18n.t("error_messages.address_len"))
-    .required(I18n.t("error_messages.address_req")),
+  // address: Yup.string()
+  //   .min(8, I18n.t("error_messages.address_len"))
+  //   .required(I18n.t("error_messages.address_req")),
   password: Yup.string()
     .min(8, I18n.t("error_messages.pass_length"))
     .required(I18n.t("error_messages.password_invalid"))
@@ -70,22 +72,24 @@ const SignUp = () => {
   const appToast = useAppToast();
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [gender, setGender] = useState("");
+  const [DOB, setDOB] = useState<Date>();
 
   const formInitialvalue = {
     userType: "Customer",
     firstName: "",
     lastName: "",
-    countryName: "",
+    // countryName: "",
     callCode: "",
     email: "",
     mobile: "",
-    address: "",
+    // address: "",
     password: "",
     confirmPassword: "",
   };
 
   const onPressCreateAccount = (values: typeof formInitialvalue) => {
-    setLoading(true);
+    // setLoading(true);
     const params = {
       data: {
         userType: values?.userType,
@@ -94,37 +98,37 @@ const SignUp = () => {
         email: values?.email,
         phone: `+${values?.callCode}${values?.mobile}`,
         password: values?.password,
-        country: values?.countryName,
-        address: values?.address,
+        // country: values?.countryName,
+        // address: values?.address,
         leadType: "Letting",
       },
     };
     console.log(JSON.stringify(params, null, 2));
-    AuthManager.signUpUser(
-      params,
-      res => {
-        console.log("signUp Res===>", res);
-        // setStorage("SPA_user_Token", res.data.response);
-        // storeDispatch(setUserToken(res.data.response));
-        appToast.showNormalToast({ title: I18n.t("toast.otp") });
-        navigation.navigate("VerifyAccount", {
-          email: values?.email,
-          isRegister: true,
-        });
-        setLoading(false);
-      },
-      err => {
-        console.log("Error ", err);
-        appToast.showToast({
-          title: I18n.t("toast.verification_err"),
-          description: err.message?.message ?? err?.message,
-          status: "error",
-          duration: 10000,
-          placement: "top",
-        });
-        setLoading(false);
-      },
-    );
+    // AuthManager.signUpUser(
+    //   params,
+    //   res => {
+    //     console.log("signUp Res===>", res);
+    //     // setStorage("SPA_user_Token", res.data.response);
+    //     // storeDispatch(setUserToken(res.data.response));
+    //     appToast.showNormalToast({ title: I18n.t("toast.otp") });
+    //     navigation.navigate("VerifyAccount", {
+    //       email: values?.email,
+    //       isRegister: true,
+    //     });
+    //     setLoading(false);
+    //   },
+    //   err => {
+    //     console.log("Error ", err);
+    //     appToast.showToast({
+    //       title: I18n.t("toast.verification_err"),
+    //       description: err.message?.message ?? err?.message,
+    //       status: "error",
+    //       duration: 10000,
+    //       placement: "top",
+    //     });
+    //     setLoading(false);
+    //   },
+    // );
   };
 
   const onPressTermOfService = () => {
@@ -235,6 +239,22 @@ const SignUp = () => {
                   autoComplete="name-family"
                 />
                 <VerticalSpacing />
+                <GenderDropDown
+                  label="Gender"
+                  placeholder="Select a Gender"
+                  value={gender}
+                  required
+                  getValue={e => setGender(e)}
+                />
+                <VerticalSpacing />
+                <DatePickerInput
+                  label="DOB"
+                  placeholder="Select DOB"
+                  value={DOB || new Date()}
+                  required
+                  getDate={e => setDOB(e)}
+                />
+                <VerticalSpacing />
                 <View>
                   <AppText
                     fontStyle="600.semibold"
@@ -278,14 +298,14 @@ const SignUp = () => {
                   autoComplete="email"
                 />
                 <VerticalSpacing />
-                <CountryNamePicker
+                {/* <CountryNamePicker
                   label={I18n.t(
                     "screen_messages.input_lable.Country_of_residence",
                   )}
                   getCountryName={handleChange("countryName")}
                   required
-                />
-                <VerticalSpacing />
+                /> */}
+                {/* <VerticalSpacing />
                 <AppTextInput
                   label={I18n.t("screen_messages.input_lable.address")}
                   placeholder={I18n.t(
@@ -298,7 +318,7 @@ const SignUp = () => {
                   keyboardType="visible-password"
                   autoComplete="address-line1"
                   required
-                />
+                /> */}
                 <VerticalSpacing />
                 <AppTextInput
                   label={I18n.t("screen_messages.input_lable.password")}

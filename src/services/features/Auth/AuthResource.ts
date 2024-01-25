@@ -2,7 +2,7 @@ import $http from "@global/http";
 import Config from "react-native-config";
 
 // const host = Config?.HOST_URL;
-const host = "https://druce-uat-api-server.speridianlabs.com";
+const host = "https://nodejsclusters-160185-0.cloudclusters.net";
 
 interface RequestOptions {
   headers?: Record<string, string>;
@@ -11,7 +11,7 @@ interface RequestOptions {
 
 const usersResource = ($http: any) => {
   const userLogin = (params: RequestOptions) => {
-    const url = `${host}/api/v1/auth/v2/signin`;
+    const url = `${host}/api/Stakeholder/login`;
 
     console.log("URL==>", url);
     console.log("params==>", params);

@@ -1,5 +1,5 @@
 import React, { memo, useReducer } from "react";
-import { Keyboard, StyleSheet, View } from "react-native";
+import { Image, Keyboard, StyleSheet, View } from "react-native";
 import I18n from "i18n-js";
 import AppContainer from "@components/Container/AppContainer";
 import svgs from "@common/AllSvgs";
@@ -14,11 +14,12 @@ import { moderateScale } from "react-native-size-matters";
 import * as Animatable from "react-native-animatable";
 import AuthManager from "@services/features/Auth/AuthManager";
 import { useEncryptedStorage } from "@hooks/useEncryptedStorage";
-import { setUserToken } from "@reducers/UserSlice";
+import { setUser, setUserToken } from "@reducers/UserSlice";
 import Utils from "@common/Utils";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import useAppToast from "@components/Alert/AppToast";
+import images from "@common/AllImages";
 
 function reducer(state: any, { payload, type }: any) {
   switch (type) {
@@ -37,9 +38,7 @@ const loginSchema = Yup.object().shape({
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       I18n.t("error_messages.email_invalid"),
     ),
-  password: Yup.string()
-    .min(8, I18n.t("error_messages.pass_length"))
-    .required(I18n.t("error_messages.password_invalid")),
+  password: Yup.string().required(I18n.t("error_messages.password_invalid")),
 });
 
 const Login = () => {
@@ -50,8 +49,8 @@ const Login = () => {
   const { setStorage } = useEncryptedStorage();
 
   const formInitialvalue = {
-    email: "ranvijay11@gmail.com",
-    password: "Rv@123456",
+    email: "mohsinali694@gmail.com",
+    password: "12345",
   };
 
   const [state, dispatch] = useReducer(reducer, {
@@ -80,15 +79,13 @@ const Login = () => {
     AuthManager.userLogin(
       params,
       res => {
-        console.log("Login Res===>", res);
+        console.log("Login Res===>", JSON.stringify(res.data.data, null, 2));
         setLoading(false);
-        setStorage("SPA_User_Token", res.data.response);
-        storeDispatch(setUserToken(res.data.response));
-        appToast.showNormalToast({ title: I18n.t("toast.otp") });
-        navigation.navigate("VerifyAccount", {
-          email: values?.email,
-          isLogin: true,
-        });
+        setStorage("SPA_User_Token", res.data.data.token);
+        storeDispatch(setUserToken(res.data.data.token));
+        storeDispatch(setUser(res.data.data.stakeHolders));
+        appToast.showNormalToast({ title: I18n.t("toast.login_succes") });
+        navigation.reset({ index: 0, routes: [{ name: "Tab" }] });
       },
       err => {
         console.log("Error ", err);
@@ -129,7 +126,10 @@ const Login = () => {
             paddingTop: moderateScale(100, 0.3),
             paddingBottom: moderateScale(50, 0.3),
           }}>
-          <svgs.LogoWithTitle />
+          <Image
+            source={images.Logo}
+            style={{ height: 100, objectFit: "cover" }}
+          />
         </Animatable.View>
         <Formik
           validationSchema={loginSchema}
@@ -184,7 +184,7 @@ const Login = () => {
                   padding: moderateScale(15, 0.3),
                   paddingTop: moderateScale(20, 0.3),
                 }}>
-                <AppButton
+                {/* <AppButton
                   LinkButton
                   Title={I18n.t("screen_messages.button.Forgot_Password")}
                   color={theme.info}
@@ -192,7 +192,7 @@ const Login = () => {
                   fontSize={16}
                   style={{ alignSelf: "flex-end" }}
                   onPress={() => onPressForgotPassword(values.email)}
-                />
+                /> */}
                 <VerticalSpacing size={30} />
                 <Animatable.View animation="fadeInUp" duration={1000}>
                   <AppButton
