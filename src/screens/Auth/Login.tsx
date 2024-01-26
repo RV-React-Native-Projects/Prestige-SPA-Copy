@@ -82,6 +82,7 @@ const Login = () => {
         console.log("Login Res===>", JSON.stringify(res.data.data, null, 2));
         setLoading(false);
         setStorage("SPA_User_Token", res.data.data.token);
+        setStorage("SPA_User", res.data.data.stakeHolders);
         storeDispatch(setUserToken(res.data.data.token));
         storeDispatch(setUser(res.data.data.stakeHolders));
         appToast.showNormalToast({ title: I18n.t("toast.login_succes") });
@@ -184,6 +185,7 @@ const Login = () => {
                   padding: moderateScale(15, 0.3),
                   paddingTop: moderateScale(20, 0.3),
                 }}>
+                {/*  ********  No Flow for Forget-Password ******** */}
                 {/* <AppButton
                   LinkButton
                   Title={I18n.t("screen_messages.button.Forgot_Password")}

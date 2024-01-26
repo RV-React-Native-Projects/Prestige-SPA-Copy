@@ -16,7 +16,7 @@ import { LettingData } from "@constants/LettingData";
 import PropertyCard from "@cards/Property/PropertyCard";
 import { useAppNavigation } from "@navigation/Navigation";
 
-function LentScreen() {
+function GroupScreen() {
   const { theme } = useAppSelector(state => state.theme);
   const [searchQuery, setSearchQuery] = useState("");
   const navigation = useAppNavigation();
@@ -31,41 +31,11 @@ function LentScreen() {
       hideStatusbar={false}
       scrollable={false}
       backgroundColor={theme.appBackgroundColor}>
-      <FlatList
-        contentContainerStyle={{
-          paddingHorizontal: moderateScale(10, 0.3),
-          paddingBottom: moderateScale(100, 0.3),
-        }}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <>
-            <VerticalSpacing />
-            <Searchbar
-              placeholder="Search"
-              onChangeText={setSearchQuery}
-              value={searchQuery}
-              style={{
-                backgroundColor: theme.modalBackgroundColor,
-                borderRadius: moderateScale(10, 0.3),
-              }}
-            />
-            <VerticalSpacing size={15} />
-          </>
-        }
-        data={LettingData.properties}
-        renderItem={({ item, index }) => (
-          <PropertyCard
-            key={index}
-            item={item}
-            onPressCard={() => onPressCard(item)}
-          />
-        )}
-        keyExtractor={(item, index) => index.toString()}
-      />
+      <View></View>
     </AppContainer>
   );
 }
 
-export default LentScreen;
+export default GroupScreen;
 
 const styles = StyleSheet.create({});

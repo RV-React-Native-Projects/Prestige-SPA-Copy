@@ -177,7 +177,7 @@ const Colors = {
   // Main Colors
   primary: "#4C9A2A",
   primaryLight: "#88C5FE",
-  secondary: "#CC9C4A",
+  secondary: "#266EFF",
   secondaryLight: "#CEFFCD",
   tertiary: "#00AF62",
   tertiaryDark: "#AB7B00",

@@ -76,6 +76,7 @@ function AppContainer(props: AppContainerTypes) {
       )}
       {scrollable ? (
         <ScrollView
+          keyboardShouldPersistTaps="never"
           style={{ flex: 1, minHeight: windowHeight, ...style }}
           contentContainerStyle={{ paddingBottom: 150, ...ContainerStyle }}>
           {hideStatusbar ? (

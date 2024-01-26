@@ -1,9 +1,11 @@
 import Bath from "@assets/svgs/Bath";
 import Beds from "@assets/svgs/Beds";
+import Bell from "@assets/svgs/Bell";
 import Bus from "@assets/svgs/Bus";
 import Calender from "@assets/svgs/Calender";
 import CalenderV2 from "@assets/svgs/CalenderV2";
 import Coach from "@assets/svgs/Coach";
+import CoachV2 from "@assets/svgs/CoachV2";
 import Court from "@assets/svgs/Court";
 import Down from "@assets/svgs/Down";
 import EyeClose from "@assets/svgs/EyeClose";
@@ -24,14 +26,17 @@ import Search from "@assets/svgs/Search";
 import Sell from "@assets/svgs/Sell";
 import Share from "@assets/svgs/Share";
 import Size from "@assets/svgs/Size";
+import Wishlist from "@assets/svgs/Wishlist";
 
 const svgs: any = {
   Bath,
   Beds,
+  Bell,
   Bus,
   Calender,
   CalenderV2,
   Coach,
+  CoachV2,
   Court,
   Down,
   EyeClose,
@@ -52,6 +57,7 @@ const svgs: any = {
   Sell,
   Share,
   Size,
+  Wishlist,
 };
 
 export default svgs;

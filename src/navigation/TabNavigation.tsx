@@ -1,14 +1,15 @@
-import { View, Text, Platform } from "react-native";
-import React, { lazy } from "react";
+import { Platform } from "react-native";
+import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import I18n from "i18n-js";
 import AppText from "@src/components/Text/AppText";
 import svgs from "@common/AllSvgs";
 import {
   HomeStake,
-  LentStake,
-  RentStake,
-  SellStake,
+  CourtStake,
+  CoachStake,
+  GroupStake,
+  CalenderStake,
 } from "@navigation/Navigation";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { moderateScale } from "react-native-size-matters";
@@ -26,7 +27,10 @@ export default function TabNavigation() {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarActiveTintColor: theme.primary,
-        tabBarStyle: { height: isIOS ? 75 : 65, paddingBottom: isIOS ? 0 : 10 },
+        tabBarStyle: !isIOS && {
+          height: 65,
+          paddingBottom: 10,
+        },
         // tabBarStyle: (route => {
         //   const routeName = getFocusedRouteNameFromRoute(route) ?? "";
         //   if (
@@ -64,8 +68,8 @@ export default function TabNavigation() {
         }}
       />
       <Tab.Screen
-        name="LentTab"
-        component={LentStake}
+        name="CourtTab"
+        component={CourtStake}
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText
@@ -86,8 +90,8 @@ export default function TabNavigation() {
         }}
       />
       <Tab.Screen
-        name="SellTab"
-        component={SellStake}
+        name="CoachTab"
+        component={CoachStake}
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText
@@ -108,8 +112,8 @@ export default function TabNavigation() {
         }}
       />
       <Tab.Screen
-        name="RentTab"
-        component={RentStake}
+        name="GroupTab"
+        component={GroupStake}
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText
@@ -131,7 +135,7 @@ export default function TabNavigation() {
       />
       <Tab.Screen
         name="CalenderTab"
-        component={RentStake}
+        component={CalenderStake}
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText

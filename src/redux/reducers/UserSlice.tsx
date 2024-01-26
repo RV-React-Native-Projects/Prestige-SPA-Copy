@@ -7,7 +7,8 @@ export const loadUserData = createAsyncThunk("user/loaduser", async () => {
   var userToken = (await getStorage("SPA_User_Token")) ?? null;
   var authToken = (await getStorage("SPA_Auth_Token")) ?? null;
   var refreshToken = (await getStorage("SPA_Refresh_Token")) ?? null;
-  return { userToken, authToken, refreshToken };
+  var user = (await getStorage("SPA_User")) ?? null;
+  return { userToken, authToken, refreshToken, user };
 });
 
 export const removeUserData = createAsyncThunk(
@@ -97,6 +98,7 @@ const userSlice = createSlice({
         state.userToken = !!action?.payload?.userToken
           ? action?.payload?.userToken
           : null;
+        state.user = !!action?.payload?.user ? action?.payload?.user : null;
         state.authToken = !!action.payload.authToken
           ? action.payload.authToken
           : null;
