@@ -9,7 +9,8 @@ import {
 
 const isIOS = Platform.OS === "ios";
 
-import TabNavigation from "./TabNavigation";
+import TabNavigation from "@navigation/TabNavigation";
+
 // Auth page
 import LandingPage from "@screens/Landing/Landing";
 import { Platform } from "react-native";
