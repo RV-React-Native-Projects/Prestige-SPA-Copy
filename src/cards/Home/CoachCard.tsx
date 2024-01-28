@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { useAppSelector } from "@src/redux/store";
 import { Card } from "react-native-paper";
@@ -6,9 +6,16 @@ import { moderateScale } from "react-native-size-matters";
 import { VerticalSpacing } from "@src/components/Spacing/Spacing";
 import AppText from "@src/components/Text/AppText";
 import svgs from "@common/AllSvgs";
+import FastImage from "react-native-fast-image";
+import images from "@src/common/AllImages";
 
-export default function CoachCard(props: any) {
-  const { data } = props;
+interface CoachCardProps {
+  data: any;
+  onPressCard?: () => void;
+}
+
+export default function CoachCard(props: CoachCardProps) {
+  const { data, onPressCard } = props;
   const { theme } = useAppSelector(state => state.theme);
   return (
     <Card
@@ -17,18 +24,17 @@ export default function CoachCard(props: any) {
         width: 180,
         marginRight: 15,
         borderRadius: 10,
+        position: "relative",
       }}>
-      <View>
-        <Image
+      <TouchableOpacity activeOpacity={0.8} onPress={onPressCard}>
+        <FastImage
+          style={{ height: 150, width: "auto", borderRadius: 200 }}
           source={{
             uri: data?.stakeholder?.picturePathS3,
+            priority: FastImage.priority.high,
           }}
-          style={{
-            height: 150,
-            width: "auto",
-            objectFit: "cover",
-            borderRadius: 200,
-          }}
+          resizeMode={FastImage.resizeMode.cover}
+          defaultSource={images.user}
         />
         <VerticalSpacing />
         <View
@@ -70,7 +76,7 @@ export default function CoachCard(props: any) {
             Experienc of 4 Years
           </AppText>
         </View>
-      </View>
+      </TouchableOpacity>
     </Card>
   );
 }

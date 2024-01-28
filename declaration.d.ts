@@ -1,3 +1,6 @@
+import React from "react";
+import { ViewStyle } from "react-native";
+
 declare module "*.png";
 declare module "*.svg";
 declare module "*.jpeg";

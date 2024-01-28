@@ -146,7 +146,7 @@ export default function PropertyCard(props: PropertyCardPorps) {
               alignItems: "center",
               maxWidth: "95%",
             }}>
-            <svgs.Location height={20} />
+            <svgs.LocationV2 height={20} />
             <AppText fontStyle="400.normal" numberOfLines={2}>
               {item?.address?.line1} {item?.address?.line2}{" "}
               {item?.address?.line3} {item?.address?.line4}{" "}

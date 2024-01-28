@@ -17,10 +17,13 @@ import Hospital from "@assets/svgs/Hospital";
 import Left from "@assets/svgs/Left";
 import Let from "@assets/svgs/Let";
 import Location from "@assets/svgs/Location";
+import LocationV2 from "@assets/svgs/LocationV2";
 import LogoWithTitle from "@assets/svgs/LogoWithTitle";
 import MainLogo from "@assets/svgs/MainLogo";
+import MapCustomIcon from "@assets/svgs/MapCustomIcon";
 import Rent from "@assets/svgs/Rent";
 import Restaurants from "@assets/svgs/Restaurants";
+import Right from "@assets/svgs/Right";
 import School from "@assets/svgs/School";
 import Search from "@assets/svgs/Search";
 import Sell from "@assets/svgs/Sell";
@@ -48,10 +51,13 @@ const svgs: any = {
   Left,
   Let,
   Location,
+  LocationV2,
   LogoWithTitle,
   MainLogo,
+  MapCustomIcon,
   Rent,
   Restaurants,
+  Right,
   School,
   Search,
   Sell,

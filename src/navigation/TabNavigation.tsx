@@ -1,16 +1,9 @@
 import { Platform } from "react-native";
-import React from "react";
+import React, { lazy } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import I18n from "i18n-js";
 import AppText from "@src/components/Text/AppText";
 import svgs from "@common/AllSvgs";
-import {
-  HomeStake,
-  CourtStake,
-  CoachStake,
-  GroupStake,
-  CalenderStake,
-} from "@navigation/Navigation";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { moderateScale } from "react-native-size-matters";
 import { useAppSelector } from "@src/redux/store";
@@ -19,35 +12,47 @@ const isIOS = Platform.OS == "ios";
 
 const Tab = createBottomTabNavigator();
 
+const Home = lazy(() => import("@screens/Home/Home"));
+const Court = lazy(() => import("@screens/Court/Court"));
+const Coach = lazy(() => import("@screens/Coach/Coach"));
+const Group = lazy(() => import("@screens/Group/Group"));
+const Calender = lazy(() => import("@screens/Calender/Calender"));
+
 export default function TabNavigation() {
   const { theme } = useAppSelector(state => state.theme);
+
   return (
     <Tab.Navigator
       initialRouteName="HomeTab"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarActiveTintColor: theme.primary,
-        tabBarStyle: !isIOS && {
-          height: 65,
-          paddingBottom: 10,
-        },
-        // tabBarStyle: (route => {
-        //   const routeName = getFocusedRouteNameFromRoute(route) ?? "";
-        //   if (
-        //     routeName === "Home_Page" ||
-        //     routeName === "Attendance_Page" ||
-        //     routeName === "" ||
-        //     routeName === undefined
-        //   ) {
-        //     return { height: moderateScale(75, 0.3) };
-        //   }
-        //   return { display: "none" };
-        // })(route),
+        tabBarStyle: (route => {
+          const routeName = getFocusedRouteNameFromRoute(route) ?? "";
+          if (
+            routeName === "HomeTab" ||
+            routeName === "CourtTab" ||
+            routeName === "CoachTab" ||
+            routeName === "GroupTab" ||
+            routeName === "CalenderTab" ||
+            routeName === "" ||
+            routeName === undefined
+          ) {
+            return {
+              display: "flex",
+              height: !isIOS ? moderateScale(60, 0.3) : moderateScale(75, 0.3),
+              paddingBottom: !isIOS
+                ? moderateScale(10, 0.3)
+                : moderateScale(0, 0.3),
+            };
+          }
+          return { display: "none" };
+        })(route),
         tabBarHideOnKeyboard: true,
       })}>
       <Tab.Screen
         name="HomeTab"
-        component={HomeStake}
+        component={Home}
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText
@@ -69,7 +74,7 @@ export default function TabNavigation() {
       />
       <Tab.Screen
         name="CourtTab"
-        component={CourtStake}
+        component={Court}
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText
@@ -91,7 +96,7 @@ export default function TabNavigation() {
       />
       <Tab.Screen
         name="CoachTab"
-        component={CoachStake}
+        component={Coach}
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText
@@ -113,7 +118,7 @@ export default function TabNavigation() {
       />
       <Tab.Screen
         name="GroupTab"
-        component={GroupStake}
+        component={Group}
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText
@@ -135,7 +140,7 @@ export default function TabNavigation() {
       />
       <Tab.Screen
         name="CalenderTab"
-        component={CalenderStake}
+        component={Calender}
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText

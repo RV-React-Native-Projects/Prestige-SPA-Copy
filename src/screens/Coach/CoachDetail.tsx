@@ -15,6 +15,7 @@ import { moderateScale } from "react-native-size-matters";
 import { LettingData } from "@constants/LettingData";
 import PropertyCard from "@cards/Property/PropertyCard";
 import { useAppNavigation } from "@navigation/Navigation";
+import BackButton from "@components/Header/BackButton";
 
 function CoachDetail() {
   const { theme } = useAppSelector(state => state.theme);
@@ -31,6 +32,7 @@ function CoachDetail() {
       hideStatusbar={false}
       scrollable={false}
       backgroundColor={theme.appBackgroundColor}>
+      <BackButton />
       <View></View>
     </AppContainer>
   );

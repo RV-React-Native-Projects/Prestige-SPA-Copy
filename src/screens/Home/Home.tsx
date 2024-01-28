@@ -9,7 +9,7 @@ import { appLogout, removeUserData } from "@reducers/UserSlice";
 import AppContainer from "@components/Container/AppContainer";
 import useAppToast from "@components/Alert/AppToast";
 import { VerticalSpacing } from "@src/components/Spacing/Spacing";
-import { Card, Searchbar } from "react-native-paper";
+import { Searchbar } from "react-native-paper";
 import { moderateScale } from "react-native-size-matters";
 import svgs from "@common/AllSvgs";
 import HomeHeader from "@src/screen-components/Home/HomeHeader";
@@ -70,6 +70,14 @@ function Home() {
 
   const onPressSeeAllLocation = () => {};
   const onPressSeeAllCoaches = () => {};
+
+  const onPressCourtCard = (data: any) => {
+    navigation.navigate("CourtDetail", { data });
+  };
+
+  const onPressCouchCard = (data: any) => {
+    navigation.navigate("CoachDetail", { data });
+  };
 
   return (
     <AppContainer
@@ -152,7 +160,11 @@ function Home() {
               horizontal
               data={courts}
               renderItem={({ item, index }) => (
-                <CourtCard key={index} data={item} />
+                <CourtCard
+                  key={index}
+                  data={item}
+                  onPressCard={() => onPressCourtCard(item)}
+                />
               )}
             />
           </View>
@@ -172,7 +184,11 @@ function Home() {
               horizontal
               data={coachs}
               renderItem={({ item, index }) => (
-                <CoachCard key={index} data={item} />
+                <CoachCard
+                  key={index}
+                  data={item}
+                  onPressCard={() => onPressCouchCard(item)}
+                />
               )}
             />
           </View>

@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { useAppSelector } from "@src/redux/store";
 import { Card } from "react-native-paper";
@@ -6,9 +6,16 @@ import { moderateScale } from "react-native-size-matters";
 import { VerticalSpacing } from "@src/components/Spacing/Spacing";
 import AppText from "@src/components/Text/AppText";
 import svgs from "@common/AllSvgs";
+import FastImage from "react-native-fast-image";
+import images from "@src/common/AllImages";
 
-const CourtCard = (props: any) => {
-  const { data } = props;
+interface CourtCardProps {
+  data: any;
+  onPressCard?: () => void;
+}
+
+const CourtCard = (props: CourtCardProps) => {
+  const { data, onPressCard } = props;
   const { theme } = useAppSelector(state => state.theme);
   return (
     <Card
@@ -17,18 +24,17 @@ const CourtCard = (props: any) => {
         width: 180,
         marginRight: 15,
         borderRadius: 10,
+        position: "relative",
       }}>
-      <View>
-        <Image
+      <TouchableOpacity activeOpacity={0.8} onPress={onPressCard}>
+        <FastImage
+          style={{ height: 150, width: "auto", borderRadius: 5 }}
           source={{
             uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data.courts[0]?.imagePath}`,
+            priority: FastImage.priority.high,
           }}
-          style={{
-            height: 150,
-            width: "auto",
-            objectFit: "cover",
-            borderRadius: 5,
-          }}
+          resizeMode={FastImage.resizeMode.cover}
+          defaultSource={images.Placeholder}
         />
         <VerticalSpacing />
         <AppText
@@ -43,7 +49,7 @@ const CourtCard = (props: any) => {
             flexDirection: "row",
             height: 20,
           }}>
-          <svgs.Location color1={theme.secondary} height={20} />
+          <svgs.LocationV2 color1={theme.secondary} height={20} />
           <AppText
             style={{ height: 50 }}
             fontStyle="600.bold"
@@ -66,7 +72,7 @@ const CourtCard = (props: any) => {
           color={theme.primary}>
           AED {data?.minRate} - AED {data?.maxRate}
         </AppText>
-      </View>
+      </TouchableOpacity>
     </Card>
   );
 };

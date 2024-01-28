@@ -976,6 +976,8 @@ PODS:
     - React
   - react-native-maps (1.10.0):
     - React-Core
+  - react-native-month-year-picker (1.9.0):
+    - React
   - react-native-netinfo (11.2.1):
     - React-Core
   - react-native-pager-view (6.2.3):
@@ -1269,6 +1271,7 @@ DEPENDENCIES:
   - react-native-encrypted-storage (from `../node_modules/react-native-encrypted-storage`)
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - react-native-month-year-picker (from `../node_modules/react-native-month-year-picker`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -1406,6 +1409,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-geolocation-service"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-month-year-picker:
+    :path: "../node_modules/react-native-month-year-picker"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-pager-view:
@@ -1543,6 +1548,7 @@ SPEC CHECKSUMS:
   react-native-encrypted-storage: db300a3f2f0aba1e818417c1c0a6be549038deb7
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
   react-native-maps: b4c3b092b1c71240d8d4792bae3738828942f14a
+  react-native-month-year-picker: 948797e981ca502427024a34b17f545eb321bbff
   react-native-netinfo: 8a7fd3f7130ef4ad2fb4276d5c9f8d3f28d2df3d
   react-native-pager-view: d81ab2060b9caf57ca8c3a0d57467ff407cdb825
   react-native-safe-area-context: 0ee144a6170530ccc37a0fd9388e28d06f516a89

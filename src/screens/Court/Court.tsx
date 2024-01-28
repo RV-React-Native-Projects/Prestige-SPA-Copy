@@ -15,6 +15,7 @@ import { moderateScale } from "react-native-size-matters";
 import { LettingData } from "@constants/LettingData";
 import PropertyCard from "@cards/Property/PropertyCard";
 import { useAppNavigation } from "@navigation/Navigation";
+import AppText from "@src/components/Text/AppText";
 
 function CourtScreen() {
   const { theme } = useAppSelector(state => state.theme);
@@ -31,7 +32,9 @@ function CourtScreen() {
       hideStatusbar={false}
       scrollable={false}
       backgroundColor={theme.appBackgroundColor}>
-      <View></View>
+      <View>
+        <AppText>Court Screen</AppText>
+      </View>
     </AppContainer>
   );
 }

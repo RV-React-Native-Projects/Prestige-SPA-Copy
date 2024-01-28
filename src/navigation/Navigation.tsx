@@ -25,6 +25,7 @@ const SignUp = lazy(() => import("@screens/Auth/SignUp"));
 const Home = lazy(() => import("@screens/Home/Home"));
 const Court = lazy(() => import("@screens/Court/Court"));
 const CourtDetail = lazy(() => import("@screens/Court/CourtDetail"));
+const ChooseSlot = lazy(() => import("@screens/Court/ChooseSlot"));
 const Coach = lazy(() => import("@screens/Coach/Coach"));
 const CoachDetail = lazy(() => import("@screens/Coach/CoachDetail"));
 const Group = lazy(() => import("@screens/Group/Group"));
@@ -36,57 +37,57 @@ export const useAppNavigation: () => NavigationProp<ParamListBase> =
 
 const Stack = isIOS ? createStackNavigator() : createNativeStackNavigator();
 
-export function HomeStake() {
-  return (
-    <Stack.Navigator
-      initialRouteName="Home"
-      screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={Home} />
-    </Stack.Navigator>
-  );
-}
+// export function HomeStake() {
+//   return (
+//     <Stack.Navigator
+//       initialRouteName="Home"
+//       screenOptions={{ headerShown: false }}>
+//       <Stack.Screen name="Home" component={Home} />
+//     </Stack.Navigator>
+//   );
+// }
 
-export function CourtStake() {
-  return (
-    <Stack.Navigator
-      initialRouteName="Court"
-      screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Court" component={Court} />
-      <Stack.Screen name="CourtDetail" component={CourtDetail} />
-    </Stack.Navigator>
-  );
-}
+// export function CourtStake() {
+//   return (
+//     <Stack.Navigator
+//       initialRouteName="Court"
+//       screenOptions={{ headerShown: false, presentation: "modal" }}>
+//       <Stack.Screen name="Court" component={Court} />
+//       <Stack.Screen name="CourtDetail" component={CourtDetail} />
+//     </Stack.Navigator>
+//   );
+// }
 
-export function CoachStake() {
-  return (
-    <Stack.Navigator
-      initialRouteName="Coach"
-      screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Coach" component={Coach} />
-      <Stack.Screen name="CoachDetail" component={CoachDetail} />
-    </Stack.Navigator>
-  );
-}
+// export function CoachStake() {
+//   return (
+//     <Stack.Navigator
+//       initialRouteName="Coach"
+//       screenOptions={{ headerShown: false, presentation: "modal" }}>
+//       <Stack.Screen name="Coach" component={Coach} />
+//       <Stack.Screen name="CoachDetail" component={CoachDetail} />
+//     </Stack.Navigator>
+//   );
+// }
 
-export function GroupStake() {
-  return (
-    <Stack.Navigator
-      initialRouteName="Group"
-      screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Group" component={Group} />
-    </Stack.Navigator>
-  );
-}
+// export function GroupStake() {
+//   return (
+//     <Stack.Navigator
+//       initialRouteName="Group"
+//       screenOptions={{ headerShown: false }}>
+//       <Stack.Screen name="Group" component={Group} />
+//     </Stack.Navigator>
+//   );
+// }
 
-export function CalenderStake() {
-  return (
-    <Stack.Navigator
-      initialRouteName="Calender"
-      screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Calender" component={Calender} />
-    </Stack.Navigator>
-  );
-}
+// export function CalenderStake() {
+//   return (
+//     <Stack.Navigator
+//       initialRouteName="Calender"
+//       screenOptions={{ headerShown: false }}>
+//       <Stack.Screen name="Calender" component={Calender} />
+//     </Stack.Navigator>
+//   );
+// }
 
 function MyStack() {
   return (
@@ -101,6 +102,18 @@ function MyStack() {
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="CreateNewPassword" component={CreateNewPassword} /> */}
       <Stack.Screen name="Tab" component={TabNavigation} />
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Court" component={Court} />
+      <Stack.Screen
+        // options={{ presentation: "modal" }}
+        name="CourtDetail"
+        component={CourtDetail}
+      />
+      <Stack.Screen name="ChooseSlot" component={ChooseSlot} />
+      <Stack.Screen name="Coach" component={Coach} />
+      <Stack.Screen name="CoachDetail" component={CoachDetail} />
+      <Stack.Screen name="Group" component={Group} />
+      <Stack.Screen name="Calender" component={Calender} />
     </Stack.Navigator>
   );
 }

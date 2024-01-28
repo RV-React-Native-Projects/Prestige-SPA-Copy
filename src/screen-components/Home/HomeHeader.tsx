@@ -25,7 +25,7 @@ export default function HomeHeader() {
             flexDirection: "row",
             alignItems: "center",
           }}>
-          <svgs.Location color1={theme.secondary} height={20} />
+          <svgs.LocationV2 color1={theme.secondary} height={20} />
           <AppText fontStyle="600.bold" size={14} style={{ marginRight: 10 }}>
             Home
           </AppText>
