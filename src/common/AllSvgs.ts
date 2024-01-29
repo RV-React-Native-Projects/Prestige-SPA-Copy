@@ -13,6 +13,7 @@ import Group from "@assets/svgs/Group";
 import Help from "@assets/svgs/Help";
 import Home from "@assets/svgs/Home";
 import HomeV2 from "@assets/svgs/HomeV2";
+import Horizontal_Line from "@assets/svgs/Horizontal_Line";
 import Hospital from "@assets/svgs/Hospital";
 import Left from "@assets/svgs/Left";
 import Let from "@assets/svgs/Let";
@@ -29,6 +30,8 @@ import Search from "@assets/svgs/Search";
 import Sell from "@assets/svgs/Sell";
 import Share from "@assets/svgs/Share";
 import Size from "@assets/svgs/Size";
+import Success from "@assets/svgs/Success";
+import Vertical_Line from "@assets/svgs/Vertical_Line";
 import Wishlist from "@assets/svgs/Wishlist";
 
 const svgs: any = {
@@ -47,6 +50,7 @@ const svgs: any = {
   Help,
   Home,
   HomeV2,
+  Horizontal_Line,
   Hospital,
   Left,
   Let,
@@ -63,6 +67,8 @@ const svgs: any = {
   Sell,
   Share,
   Size,
+  Success,
+  Vertical_Line,
   Wishlist,
 };
 

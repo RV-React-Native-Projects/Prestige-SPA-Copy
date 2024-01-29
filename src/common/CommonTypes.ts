@@ -10,4 +10,5 @@ export interface SVGProps extends SvgProps {
   color1?: string;
   color2?: string;
   strokeWidth: number;
+  style: any;
 }

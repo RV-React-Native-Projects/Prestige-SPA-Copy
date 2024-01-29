@@ -5,12 +5,22 @@ import CourtResource from "./CourtResource";
 interface CourtManager {
   getAllCourts: (
     params: any,
-    successCallback: (userResponse: any) => void,
+    successCallback: (res: any) => void,
     errorCallback: (error: any) => void,
   ) => void;
-  getAllCoach: (
+  getSlots: (
     params: any,
-    successCallback: (userResponse: any) => void,
+    successCallback: (res: any) => void,
+    errorCallback: (error: any) => void,
+  ) => void;
+  generateBookingSlots: (
+    params: any,
+    successCallback: (res: any) => void,
+    errorCallback: (error: any) => void,
+  ) => void;
+  createOneBooking: (
+    params: any,
+    successCallback: (res: any) => void,
     errorCallback: (error: any) => void,
   ) => void;
 }
@@ -20,15 +30,14 @@ const CourtManager = (
   Utils: any,
   ErrorConstant: any,
 ): CourtManager => {
-  // Login User
   const getAllCourts = (
     params: any,
-    successCallback: (userResponse: any) => void,
+    successCallback: (res: any) => void,
     errorCallback: (error: any) => void,
   ) => {
     CourtResource.getAllCourts(params).then(
-      (userResponse: any) => {
-        successCallback(userResponse);
+      (res: any) => {
+        successCallback(res);
       },
       (error: any) => {
         error = Utils.updateErrorObject(error);
@@ -37,14 +46,46 @@ const CourtManager = (
     );
   };
 
-  const getAllCoach = (
+  const getSlots = (
     params: any,
-    successCallback: (userResponse: any) => void,
+    successCallback: (res: any) => void,
     errorCallback: (error: any) => void,
   ) => {
-    CourtResource.getAllCoach(params).then(
-      (userResponse: any) => {
-        successCallback(userResponse);
+    CourtResource.getSlots(params).then(
+      (res: any) => {
+        successCallback(res);
+      },
+      (error: any) => {
+        error = Utils.updateErrorObject(error);
+        errorCallback(error);
+      },
+    );
+  };
+
+  const generateBookingSlots = (
+    params: any,
+    successCallback: (res: any) => void,
+    errorCallback: (error: any) => void,
+  ) => {
+    CourtResource.generateBookingSlots(params).then(
+      (res: any) => {
+        successCallback(res);
+      },
+      (error: any) => {
+        error = Utils.updateErrorObject(error);
+        errorCallback(error);
+      },
+    );
+  };
+
+  const createOneBooking = (
+    params: any,
+    successCallback: (res: any) => void,
+    errorCallback: (error: any) => void,
+  ) => {
+    CourtResource.createOneBooking(params).then(
+      (res: any) => {
+        successCallback(res);
       },
       (error: any) => {
         error = Utils.updateErrorObject(error);
@@ -55,7 +96,9 @@ const CourtManager = (
 
   return {
     getAllCourts,
-    getAllCoach,
+    getSlots,
+    generateBookingSlots,
+    createOneBooking,
   };
 };
 

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { useEncryptedStorage } from "@hooks/useEncryptedStorage";
+import { UserProps } from "@src/Types/UserTypes";
 
 export const loadUserData = createAsyncThunk("user/loaduser", async () => {
   const { getStorage } = useEncryptedStorage();
@@ -24,7 +25,7 @@ export const removeUserData = createAsyncThunk(
 
 interface userSliceProperties {
   loadingUser?: boolean;
-  user?: Record<string, string> | null;
+  user?: UserProps | null;
   authHeader?: Record<string, string> | null;
   isUserLoggedIn?: boolean;
   userEmail?: string | null;

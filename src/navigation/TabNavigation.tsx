@@ -43,7 +43,7 @@ export default function TabNavigation() {
               height: !isIOS ? moderateScale(60, 0.3) : moderateScale(75, 0.3),
               paddingBottom: !isIOS
                 ? moderateScale(10, 0.3)
-                : moderateScale(0, 0.3),
+                : moderateScale(20, 0.3),
             };
           }
           return { display: "none" };
@@ -65,8 +65,8 @@ export default function TabNavigation() {
           tabBarIcon: ({ focused, color, size }) => (
             <svgs.Home
               color1={color}
-              height={30}
-              width={30}
+              height={35}
+              width={35}
               strokeWidth={focused ? 2 : 1.5}
             />
           ),
@@ -109,8 +109,8 @@ export default function TabNavigation() {
           tabBarIcon: ({ focused, color, size }) => (
             <svgs.Coach
               color1={color}
-              height={30}
-              width={30}
+              height={40}
+              width={40}
               strokeWidth={focused ? 2 : 1.5}
             />
           ),
@@ -131,8 +131,8 @@ export default function TabNavigation() {
           tabBarIcon: ({ focused, color, size }) => (
             <svgs.Group
               color1={color}
-              height={30}
-              width={30}
+              height={35}
+              width={35}
               strokeWidth={focused ? 2 : 1.5}
             />
           ),
@@ -153,8 +153,8 @@ export default function TabNavigation() {
           tabBarIcon: ({ focused, color, size }) => (
             <svgs.CalenderV2
               color1={color}
-              height={30}
-              width={30}
+              height={35}
+              width={35}
               strokeWidth={focused ? 2 : 1.5}
             />
           ),

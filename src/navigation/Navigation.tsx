@@ -26,8 +26,13 @@ const Home = lazy(() => import("@screens/Home/Home"));
 const Court = lazy(() => import("@screens/Court/Court"));
 const CourtDetail = lazy(() => import("@screens/Court/CourtDetail"));
 const ChooseSlot = lazy(() => import("@screens/Court/ChooseSlot"));
+const CourtBooking = lazy(() => import("@screens/Booking/CourtBooking"));
+const CourtBookingComplete = lazy(
+  () => import("@screens/BookingComplete/CourtBookingComplete"),
+);
 const Coach = lazy(() => import("@screens/Coach/Coach"));
 const CoachDetail = lazy(() => import("@screens/Coach/CoachDetail"));
+const CoachBooking = lazy(() => import("@screens/Booking/CoachBooking"));
 const Group = lazy(() => import("@screens/Group/Group"));
 const Calender = lazy(() => import("@screens/Calender/Calender"));
 const Details = lazy(() => import("@screens/Details/Details"));
@@ -110,8 +115,15 @@ function MyStack() {
         component={CourtDetail}
       />
       <Stack.Screen name="ChooseSlot" component={ChooseSlot} />
+      <Stack.Screen name="CourtBooking" component={CourtBooking} />
+      <Stack.Screen
+        name="CourtBookingComplete"
+        component={CourtBookingComplete}
+        options={{ gestureEnabled: false }}
+      />
       <Stack.Screen name="Coach" component={Coach} />
       <Stack.Screen name="CoachDetail" component={CoachDetail} />
+      <Stack.Screen name="CoachBooking" component={CoachBooking} />
       <Stack.Screen name="Group" component={Group} />
       <Stack.Screen name="Calender" component={Calender} />
     </Stack.Navigator>

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Dimensions,
   FlatList,
   Image,
   Platform,
   ScrollView,
+  StyleProp,
   StyleSheet,
   Text,
   View,
@@ -27,7 +28,7 @@ import AppText from "@src/components/Text/AppText";
 import AppButton from "@src/components/Button/AppButton";
 import * as Animatable from "react-native-animatable";
 import I18n from "i18n-js";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 
 const isIOS = Platform.OS === "ios";
 
@@ -36,8 +37,7 @@ function CourtDetail(props: any) {
   const { theme } = useAppSelector(state => state.theme);
   const [searchQuery, setSearchQuery] = useState("");
   const navigation = useAppNavigation();
-
-  // console.log("data==>", data);
+  const _map = useRef(null);
 
   const onPressNext = (data: any) => {
     navigation.navigate("ChooseSlot", { data: data });
@@ -55,7 +55,7 @@ function CourtDetail(props: any) {
           flex: 1,
           minHeight: isIOS ? "100%" : "auto",
         }}
-        contentContainerStyle={{ paddingBottom: 200 }}>
+        contentContainerStyle={{ paddingBottom: 100 }}>
         <View style={{ height: 300 }}>
           <Swiper
             style={styles.wrapper}
@@ -118,7 +118,7 @@ function CourtDetail(props: any) {
         </View>
         <VerticalSpacing size={20} />
         <View style={{ paddingHorizontal: moderateScale(15, 0.3) }}>
-          <AppText fontStyle="700.bold" size={18}>
+          <AppText fontStyle="700.bold" size={20}>
             {data?.locationName}
           </AppText>
           <VerticalSpacing />
@@ -133,8 +133,15 @@ function CourtDetail(props: any) {
                 height: moderateScale(20, 0.3),
                 marginLeft: moderateScale(-8, 0.3),
               }}>
-              <svgs.LocationV2 color1={theme.secondary} height={20} />
-              <AppText numberOfLines={2} color={theme.gray}>
+              <svgs.LocationV2
+                color1={theme.secondary}
+                height={20}
+                width={30}
+              />
+              <AppText
+                numberOfLines={2}
+                color={theme.gray}
+                fontStyle="500.semibold">
                 5.4 KM
               </AppText>
             </View>
@@ -146,21 +153,40 @@ function CourtDetail(props: any) {
                 maxWidth: "90%",
               }}
               numberOfLines={2}
+              fontStyle="500.semibold"
               color={theme.gray}>
               {data?.locationAddress}
             </AppText>
           </View>
-          <View>
-            <AppText>Diraction</AppText>
-            {/* <MapView
-              initialRegion={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
-            /> */}
+          <AppText fontStyle="600.semibold" size={16}>
+            Diraction
+          </AppText>
+          <VerticalSpacing size={15} />
+          <View style={{ height: 300 }}>
+            <MapView
+              ref={_map}
+              mapType="standard"
+              style={[styles.map, { height: 300, borderRadius: 10 }]}
+              scrollEnabled={false}
+              zoomEnabled={false}
+              minZoomLevel={15}
+              region={{
+                latitude: data?.lat,
+                longitude: data?.long,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.04,
+              }}>
+              <Marker
+                draggable={false}
+                coordinate={{
+                  latitude: data?.lat,
+                  longitude: data?.long,
+                }}>
+                <svgs.MapCustomIcon width={60} height={60} />
+              </Marker>
+            </MapView>
           </View>
+          <VerticalSpacing size={15} />
         </View>
       </ScrollView>
       <Animatable.View
@@ -228,5 +254,8 @@ const styles = StyleSheet.create({
   image: {
     width: "auto",
     flex: 1,
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
 });

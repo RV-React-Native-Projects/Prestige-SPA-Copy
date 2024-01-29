@@ -15,22 +15,38 @@ const courtResource = ($http: any) => {
 
     console.log("URL==>", url);
     console.log("params==>", params);
-    console.log("userLogin headers==>", params?.headers);
     return $http.get(url, params?.data, params?.headers);
   };
 
-  const getAllCoach = (params: RequestOptions) => {
-    const url = `${host}/api/Stakeholder/findAllCoaches`;
+  const getSlots = (params: RequestOptions) => {
+    const url = `${host}/api/Slot/findAll`;
 
     console.log("URL==>", url);
     console.log("params==>", params);
-    console.log("userLogin headers==>", params?.headers);
     return $http.get(url, params?.data, params?.headers);
+  };
+
+  const generateBookingSlots = (params: RequestOptions) => {
+    const url = `${host}/api/CourtBooking/generateBookingSlots`;
+
+    console.log("URL==>", url);
+    console.log("params==>", params);
+    return $http.post(url, params?.data, params?.headers);
+  };
+
+  const createOneBooking = (params: RequestOptions) => {
+    const url = `${host}/api/CourtBooking/createOne`;
+
+    console.log("URL==>", url);
+    console.log("params==>", params);
+    return $http.post(url, params?.data, params?.headers);
   };
 
   return {
     getAllCourts,
-    getAllCoach,
+    getSlots,
+    generateBookingSlots,
+    createOneBooking
   };
 };
 

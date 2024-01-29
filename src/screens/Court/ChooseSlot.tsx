@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AppContainer from "@components/Container/AppContainer";
 import { useAppSelector } from "@redux/store";
 import { moderateScale } from "react-native-size-matters";
@@ -23,24 +23,48 @@ import FastImage from "react-native-fast-image";
 import images from "@common/AllImages";
 import svgs from "@common/AllSvgs";
 import SlotCalender from "@src/screen-components/Court/SlotCalender";
-import _ from "lodash";
+import _, { toNumber, toString } from "lodash";
 import RBSheet from "react-native-raw-bottom-sheet";
+import { useAppNavigation } from "@src/navigation/Navigation";
+import CourtManager from "@src/services/features/Court/CourtManager";
+import moment from "moment";
 
 const isIOS = Platform.OS === "ios";
 
-const DurationData = [{ time: 45 }, { time: 60 }, { time: 90 }];
-const SlotData = [
-  { time: "06:00" },
-  { time: "07:00" },
-  { time: "08:00" },
-  { time: "09:00" },
-];
-const courtData = [
-  { name: "Court A", price: 500, available: true },
-  { name: "Court B", price: 300, available: true },
-  { name: "Court C", price: 100, available: false },
-  { name: "Court D", price: 800, available: true },
-];
+interface SlotInteface {
+  slotID: number;
+  slotMinutes: number;
+}
+
+interface Court {
+  courtID: number;
+  createdAt: string;
+  updatedAt: string;
+  courtName: string;
+  locationID: number;
+  sportsID: number;
+  courtDescription: string;
+  area: number;
+  imagePath: string;
+  "creditTypes.creditTypeID": number;
+  "creditTypes.createdAt": string;
+  "creditTypes.updatedAt": string;
+  "creditTypes.bookingType": string;
+  "creditTypes.slotID": number;
+  "creditTypes.coachCategoryID": number | null;
+  "creditTypes.coachSessionTypeID": number | null;
+  "creditTypes.locationID": number;
+  "creditTypes.courtID": number;
+  "creditTypes.rate": number;
+  "creditTypes.multiSessionRate": number;
+}
+
+interface TimeSlot {
+  startTime: string;
+  endTime: string;
+  isAvailable: boolean;
+  availableCourts: Court[];
+}
 
 const DurationCard = (props: any) => {
   const { item, onPress, value } = props;
@@ -49,9 +73,9 @@ const DurationCard = (props: any) => {
     <TouchableOpacity
       activeOpacity={0.8}
       style={{
-        width: 65,
+        minWidth: 65,
         backgroundColor:
-          value === item?.time ? theme.primary : theme.modalBackgroundColor,
+          value === item?.slotID ? theme.primary : theme.modalBackgroundColor,
         borderRadius: 10,
         ...theme.light_shadow,
         marginBottom: 10,
@@ -65,12 +89,14 @@ const DurationCard = (props: any) => {
           padding: 10,
         }}>
         <AppText
-          color={value === item?.time ? theme.white : theme.textColor}
+          color={value === item?.slotID ? theme.white : theme.textColor}
           size={24}
           fontStyle="600.semibold">
-          {item.time}
+          {item.slotMinutes}
         </AppText>
-        <AppText color={value === item?.time ? theme.white : theme.textColor}>
+        <AppText
+          fontStyle="400.bold"
+          color={value === item?.slotID ? theme.white : theme.textColor}>
           Mins
         </AppText>
       </View>
@@ -81,29 +107,40 @@ const DurationCard = (props: any) => {
 const SlotCard = (props: any) => {
   const { item, onPress, value } = props;
   const { theme } = useAppSelector(state => state.theme);
+
   return (
     <TouchableOpacity
       activeOpacity={0.8}
       style={{
         backgroundColor:
-          value === item?.time ? theme.primary : theme.modalBackgroundColor,
+          value === item?.startTime
+            ? theme.primary
+            : theme.modalBackgroundColor,
         borderRadius: 10,
         marginBottom: 10,
         ...theme.light_shadow,
       }}
-      onPress={onPress}>
+      onPress={onPress}
+      disabled={!item?.isAvailable}>
       <View
         style={{
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: 10,
+          padding: 15,
         }}>
         <AppText
-          color={value === item?.time ? theme.white : theme.textColor}
-          fontStyle="600.semibold"
+          color={
+            !item?.isAvailable
+              ? theme.gray
+              : value === item?.startTime
+                ? theme.white
+                : theme.textColor
+          }
+          fontStyle="500.medium"
           size={16}>
-          {item.time}
+          {item.startTime}
+          {/* {item.startTime} - {item.endTime} */}
         </AppText>
       </View>
     </TouchableOpacity>
@@ -112,14 +149,66 @@ const SlotCard = (props: any) => {
 
 export default function ChooseSlot(props: any) {
   const { theme, isDarkMode } = useAppSelector(state => state.theme);
+  const { user } = useAppSelector(state => state.user);
   const { data } = props.route.params;
   const [pickedDate, setPickedDate] = useState<Date | null>(null);
-  const [pickedDuration, setPickedDuration] = useState<number | null>(null);
-  const [pickedSlot, setPickedSlot] = useState<number | string | null>(null);
-  const [pickedCourt, setPickedCourt] = React.useState<string>("");
-  const [isVisible, setIsVisible] = useState(false);
+  const [slotId, setSlotId] = useState<number | null>(null);
+  const [startTime, setStartTime] = useState<string | null>(null);
+  const [endTime, setEndTime] = useState<string | null>(null);
+  const [selectedCourt, setSelectedCourt] = useState<Court | null>(null);
+  const [availableCourts, setAvailableCourts] = useState<Court[] | null>(null);
+  const [courtId, setCourtId] = React.useState<string>("");
+  //  ===== API Responses Data=====
+  const [slotDuration, setSlotDuration] = useState<SlotInteface[] | null>(null);
+  const [slots, setSlots] = useState<TimeSlot[] | null>(null);
+
   const insets = useSafeAreaInsets();
+  const navigation = useAppNavigation();
   const refRBSheet = useRef<RBSheet>(null);
+
+  useEffect(() => {
+    const filterCourt = _.find(
+      availableCourts,
+      (item, index) => item?.courtID === Number(courtId),
+    );
+    if (filterCourt) setSelectedCourt(filterCourt);
+  }, [courtId]);
+
+  useEffect(() => {
+    CourtManager.getSlots(
+      {},
+      res => {
+        // console.log("Slots===>", JSON.stringify(res, null, 2));
+        setSlotDuration(res?.data?.data);
+      },
+      err => {
+        console.log(err);
+      },
+    );
+  }, [!slotDuration]);
+
+  useEffect(() => {
+    if (slotId && pickedDate) {
+      let parsms = {
+        data: {
+          locationID: data?.locationID,
+          bookingDate: moment(pickedDate).format("YYYY-MM-DD"),
+          slotID: slotId,
+          customerID: user?.stakeholderID,
+        },
+      };
+      CourtManager.generateBookingSlots(
+        parsms,
+        res => {
+          // console.log("generateBookingSlots===>", JSON.stringify(res, null, 2));
+          setSlots(res?.data?.data);
+        },
+        err => {
+          console.log(err);
+        },
+      );
+    }
+  }, [slotId]);
 
   const onPressNext = (data: any) => {
     refRBSheet?.current?.open();
@@ -127,6 +216,15 @@ export default function ChooseSlot(props: any) {
 
   const afterSelectCourt = (data: any) => {
     refRBSheet?.current?.close();
+    navigation.navigate("CourtBooking", {
+      data,
+      pickedDate,
+      endTime,
+      startTime,
+      slotId,
+      courtId,
+      selectedCourt,
+    });
   };
 
   return (
@@ -184,60 +282,72 @@ export default function ChooseSlot(props: any) {
           {/*  ============== Slot Calendr Only ====== */}
           <SlotCalender getSelectedDate={(date: Date) => setPickedDate(date)} />
           {/*  ============== Select Duration ====== */}
-          <VerticalSpacing size={20} />
-          <AppText
-            fontStyle="600.semibold"
-            size={16}
-            style={{ paddingHorizontal: 15 }}>
-            Select Duration
-          </AppText>
-          <VerticalSpacing />
-          <View style={{ alignItems: "center", alignContent: "center" }}>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              style={{ alignSelf: "center", width: "100%" }}
-              contentContainerStyle={{
-                gap: moderateScale(10, 0.3),
-                paddingHorizontal: moderateScale(15, 0.3),
-              }}
-              data={DurationData}
-              renderItem={({ item, index }) => (
-                <DurationCard
-                  item={item}
-                  value={pickedDuration}
-                  onPress={() => setPickedDuration(item?.time)}
+          {slotDuration && (
+            <>
+              <VerticalSpacing size={20} />
+              <AppText
+                fontStyle="600.semibold"
+                size={16}
+                style={{ paddingHorizontal: 15 }}>
+                Select Duration
+              </AppText>
+              <VerticalSpacing />
+              <View style={{ alignItems: "center", alignContent: "center" }}>
+                <FlatList
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  style={{ alignSelf: "center", width: "100%" }}
+                  contentContainerStyle={{
+                    gap: moderateScale(10, 0.3),
+                    paddingHorizontal: moderateScale(15, 0.3),
+                  }}
+                  data={slotDuration}
+                  renderItem={({ item, index }) => (
+                    <DurationCard
+                      item={item}
+                      value={slotId}
+                      onPress={() => setSlotId(item?.slotID)}
+                    />
+                  )}
                 />
-              )}
-            />
-          </View>
+              </View>
+            </>
+          )}
           {/*  ============== Select Slot ====== */}
-          <VerticalSpacing size={20} />
-          <AppText
-            fontStyle="600.semibold"
-            size={16}
-            style={{ paddingHorizontal: 15 }}>
-            Select Slot
-          </AppText>
-          <VerticalSpacing />
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              flexWrap: "wrap",
-              // justifyContent: "space-between",
-              paddingHorizontal: moderateScale(15, 0.3),
-              columnGap: 15,
-            }}>
-            {_.map(SlotData, (item, index) => (
-              <SlotCard
-                key={index}
-                item={item}
-                value={pickedSlot}
-                onPress={() => setPickedSlot(item?.time)}
-              />
-            ))}
-          </View>
+          {slots && (
+            <>
+              <VerticalSpacing size={20} />
+              <AppText
+                fontStyle="600.semibold"
+                size={16}
+                style={{ paddingHorizontal: 15 }}>
+                Select Slot
+              </AppText>
+              <VerticalSpacing />
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  // justifyContent: "space-between",
+                  paddingHorizontal: moderateScale(15, 0.3),
+                  columnGap: 15,
+                }}>
+                {_.map(slots, (item, index) => (
+                  <SlotCard
+                    key={index}
+                    item={item}
+                    value={startTime}
+                    onPress={() => {
+                      setStartTime(item?.startTime);
+                      setEndTime(item?.endTime);
+                      setAvailableCourts(item?.availableCourts);
+                    }}
+                  />
+                ))}
+              </View>
+            </>
+          )}
         </View>
       </ScrollView>
       <RBSheet
@@ -269,49 +379,53 @@ export default function ChooseSlot(props: any) {
           </AppText>
           <ScrollView
             style={{ height: "100%", paddingHorizontal: 15 }}
-            contentContainerStyle={{ paddingTop: 20, paddingBottom: 100 }}>
+            contentContainerStyle={{ paddingTop: 20, paddingBottom: 50 }}>
             <RadioButton.Group
-              onValueChange={newValue => setPickedCourt(newValue)}
-              value={pickedCourt}>
-              {_.map(courtData, (item, index) => (
-                <TouchableOpacity
-                  key={index}
-                  activeOpacity={0.9}
-                  onPress={() => setPickedCourt(item?.name)}
-                  disabled={!item?.available}
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    padding: 10,
-                    backgroundColor: theme.modalBackgroundColor,
-                    marginBottom: 10,
-                    borderRadius: 10,
-                    ...theme.light_shadow,
-                  }}>
-                  <RadioButton.Android
-                    disabled={!item?.available}
-                    value={item.name}
-                    color={theme.secondary}
-                  />
-                  <View key={index} style={{}}>
-                    <AppText
-                      color={item?.available ? theme.textColor : theme.gray}
-                      fontStyle="400.bold">
-                      {item?.name}
-                    </AppText>
-                    <VerticalSpacing />
-                    <AppText
-                      size={16}
-                      fontStyle="500.semibold"
-                      color={item?.available ? theme.primary : theme.gray}>
-                      AED {item?.price}
-                    </AppText>
-                  </View>
-                </TouchableOpacity>
-              ))}
+              onValueChange={newValue => setCourtId(toString(newValue))}
+              value={courtId}>
+              {_.map(availableCourts, (item, index) => {
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    activeOpacity={0.9}
+                    onPress={() => {
+                      setCourtId(toString(item?.courtID));
+                    }}
+                    // disabled={!item?.courtID}
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      padding: 10,
+                      backgroundColor: theme.modalBackgroundColor,
+                      marginBottom: 10,
+                      borderRadius: 10,
+                      ...theme.light_shadow,
+                    }}>
+                    <RadioButton.Android
+                      // disabled={!item?.available}
+                      value={toString(item.courtID)}
+                      color={theme.secondary}
+                    />
+                    <View key={index} style={{}}>
+                      <AppText
+                        // color={item?.available ? theme.textColor : theme.gray}
+                        fontStyle="400.bold">
+                        {item?.courtName}
+                      </AppText>
+                      <VerticalSpacing />
+                      <AppText
+                        size={16}
+                        fontStyle="500.semibold"
+                        color={theme.primary}>
+                        AED {item?.["creditTypes.rate"]}
+                      </AppText>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
             </RadioButton.Group>
           </ScrollView>
-          {!!pickedCourt && (
+          {!!courtId && (
             <Animatable.View
               animation="fadeInUp"
               duration={500}
@@ -332,7 +446,7 @@ export default function ChooseSlot(props: any) {
           )}
         </View>
       </RBSheet>
-      {pickedDate && pickedDuration && pickedSlot && (
+      {pickedDate && slotId && startTime && (
         <Animatable.View
           animation="fadeInUp"
           duration={500}

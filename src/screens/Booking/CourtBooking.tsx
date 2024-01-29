@@ -1,0 +1,379 @@
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Platform,
+  Dimensions,
+  Alert,
+  Linking,
+} from "react-native";
+import AppContainer from "@src/components/Container/AppContainer";
+import { useAppSelector } from "@src/redux/store";
+import BackButtonWithTitle from "@src/components/Header/BackButtonWithTitle";
+import * as Animatable from "react-native-animatable";
+import { moderateScale } from "react-native-size-matters";
+import AppButton from "@src/components/Button/AppButton";
+import I18n from "i18n-js";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import AppText from "@src/components/Text/AppText";
+import { VerticalSpacing } from "@src/components/Spacing/Spacing";
+import moment from "moment";
+import FastImage from "react-native-fast-image";
+import images from "@src/common/AllImages";
+import svgs from "@src/common/AllSvgs";
+import { useAppNavigation } from "@src/navigation/Navigation";
+import AvailableCreditManager from "@src/services/features/AvailableCredit/AvailableCreditManager";
+import CourtManager from "@src/services/features/Court/CourtManager";
+// import { useStripe } from "@stripe/stripe-react-native";
+import { toString } from "lodash";
+
+const isIOS = Platform.OS === "ios";
+
+export default function CourtBooking(props: any) {
+  const {
+    data = null,
+    pickedDate = null,
+    startTime = null,
+    endTime = null,
+    slotId = null,
+    courtId = null,
+    selectedCourt = null,
+  } = props.route.params || {};
+  // const { initPaymentSheet, presentPaymentSheet, handleURLCallback } =
+  //   useStripe();
+
+  const { theme } = useAppSelector(state => state.theme);
+  const { user } = useAppSelector(state => state.user);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const navigation = useAppNavigation();
+  const insets = useSafeAreaInsets();
+
+  const STRIPE_SECRET_KEY =
+    "sk_test_51OYm22CjUZPEHdfTtHeIuiBIZt7m2hgtt7Gr23z24qbboU9vhh0gvLcTkLQs2YFiTDGeVhe3LPWrO3ueQYBVUYAB00OUM8egPv";
+  const STRIPE_PUBLISHABLE_KEY =
+    "pk_test_51OYm22CjUZPEHdfTgxLTR9ECnnY2hltvM4Q5BGvNhOkTtxOB2JhEGzUOmlD2vRUvmMS3XxIpap3sqEImyfC7Ps6800J3wELOoL";
+
+  // const handleDeepLink = useCallback(
+  //   async (url: string | null) => {
+  //     if (url) {
+  //       const stripeHandled = await handleURLCallback(url);
+  //       if (stripeHandled) {
+  //       } else {
+  //       }
+  //     }
+  //   },
+  //   [handleURLCallback],
+  // );
+
+  // useEffect(() => {
+  //   const getUrlAsync = async () => {
+  //     const initialUrl = await Linking.getInitialURL();
+  //     handleDeepLink(initialUrl);
+  //   };
+
+  //   getUrlAsync();
+
+  //   const deepLinkListener = Linking.addEventListener(
+  //     "url",
+  //     (event: { url: string }) => {
+  //       handleDeepLink(event.url);
+  //     },
+  //   );
+
+  //   return () => deepLinkListener.remove();
+  // }, [handleDeepLink]);
+
+  // const initializePaymentSheet = async () => {
+  //   const { error } = await initPaymentSheet({
+  //     merchantDisplayName: "prestige_spa",
+  //     customerId: toString(user?.stakeholderID),
+  //     customerEphemeralKeySecret: STRIPE_SECRET_KEY,
+  //     paymentIntentClientSecret: STRIPE_PUBLISHABLE_KEY,
+  //     returnURL: "your-app://stripe-redirect",
+  //     allowsDelayedPaymentMethods: true,
+  //     defaultBillingDetails: {
+  //       name: "Jane Doe",
+  //     },
+  //   });
+  //   console.log("====================================");
+  //   console.log(error);
+  //   console.log("====================================");
+  //   if (!error) {
+  //     // setLoading(true);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   initializePaymentSheet();
+  // }, []);
+
+  const onPressProceedToPay = () => {
+    createUserCredit();
+    // openPaymentSheet();
+  };
+
+  const openPaymentSheet = async () => {
+    const { error } = await presentPaymentSheet();
+
+    if (error) {
+      Alert.alert(`Error code: ${error.code}`, error.message);
+    } else {
+      Alert.alert("Success", "Your order is confirmed!");
+    }
+  };
+
+  function createUserCredit() {
+    setLoading(true);
+    let params = {
+      data: {
+        creditTypeID: selectedCourt?.["creditTypes.creditTypeID"],
+        stakeholderID: user?.stakeholderID,
+        quantity: 1,
+        amountPaid: selectedCourt?.["creditTypes.rate"],
+      },
+    };
+    AvailableCreditManager.createCredit(
+      params,
+      res => {
+        console.log("Res===>", JSON.stringify(res, null, 2));
+        // setSlotDuration(res?.data?.data);
+        createOneBooking();
+      },
+      err => {
+        setLoading(false);
+        console.log("Error createCredit===>", err);
+      },
+    );
+  }
+
+  function createOneBooking() {
+    setLoading(true);
+    const parsedDate = moment(pickedDate).utc(false);
+    const startedAtTime = moment(startTime, "hh:mm a");
+    const completedAtTime = moment(endTime, "hh:mm a");
+
+    const startDate = parsedDate.clone().set({
+      hour: startedAtTime.get("hour"),
+      minute: startedAtTime.get("minute"),
+      second: 0,
+    });
+
+    const endDate = parsedDate.clone().set({
+      hour: completedAtTime.get("hour"),
+      minute: completedAtTime.get("minute"),
+      second: 0,
+    });
+
+    console.log(startDate, endDate);
+
+    let params = {
+      data: {
+        courtID: courtId,
+        locationID: 13,
+        startTime: startDate,
+        endTime: endDate,
+        isPaymentDone: true,
+        customerID: user?.stakeholderID,
+        amount: selectedCourt?.["creditTypes.rate"],
+        email: user?.email,
+        courtName: selectedCourt?.courtName,
+        locationName: data?.locationName,
+        creditTypeID: selectedCourt?.["creditTypes.creditTypeID"],
+      },
+    };
+    CourtManager.createOneBooking(
+      params,
+      res => {
+        setLoading(false);
+        console.log("Res===>", JSON.stringify(res, null, 2));
+        navigation?.navigate("CourtBookingComplete", {
+          data: data,
+          date: pickedDate,
+          startTime: startTime,
+          endTime: endTime,
+          bookingId: res?.data?.data?.bookingNumber,
+          slot: endDate.diff(startDate, "minutes"),
+          amountPaid: selectedCourt?.["creditTypes.rate"],
+        });
+      },
+      err => {
+        setLoading(false);
+        console.log("Error createOneBooking===>", err);
+      },
+    );
+  }
+
+  return (
+    <AppContainer
+      hideStatusbar={false}
+      scrollable={false}
+      backgroundColor={theme.appBackgroundColor}
+      fullHeight={false}>
+      <BackButtonWithTitle title="Booking Confirmation" />
+      <ScrollView
+        style={{
+          flex: 1,
+          minHeight: isIOS ? "100%" : "auto",
+        }}
+        contentContainerStyle={{ paddingBottom: 100 }}>
+        <VerticalSpacing size={20} />
+        <View
+          style={{
+            backgroundColor: theme.modalBackgroundColor,
+            padding: 10,
+            paddingHorizontal: 15,
+            marginHorizontal: 15,
+            borderRadius: 10,
+            ...theme.light_shadow,
+          }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}>
+            <View>
+              <AppText
+                fontStyle="400.normal"
+                color={theme.gray}
+                style={{ marginBottom: 10 }}>
+                Date
+              </AppText>
+              <AppText fontStyle="600.semibold">
+                {moment(pickedDate).format("DD MMM, ddd")}
+              </AppText>
+            </View>
+            <View>
+              <AppText
+                fontStyle="400.normal"
+                color={theme.gray}
+                style={{ marginBottom: 10, textAlign: "right" }}>
+                Time
+              </AppText>
+              <AppText fontStyle="600.semibold" style={{ textAlign: "right" }}>
+                {startTime} - {endTime}
+              </AppText>
+            </View>
+          </View>
+        </View>
+        {/* ===== Court Details Card ===== */}
+        <VerticalSpacing size={5} />
+        <View
+          style={{
+            backgroundColor: theme.modalBackgroundColor,
+            margin: moderateScale(15, 0.3),
+            borderRadius: 10,
+            ...theme.light_shadow,
+          }}>
+          <View
+            style={{
+              padding: moderateScale(10, 0.3),
+              flexDirection: "row",
+            }}>
+            <FastImage
+              style={[
+                {
+                  height: moderateScale(100, 0.3),
+                  width: 110,
+                  borderRadius: 5,
+                },
+              ]}
+              defaultSource={images.Placeholder}
+              source={{
+                uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.courts[0]?.imagePath}`,
+                priority: FastImage.priority.high,
+              }}
+              resizeMode={FastImage.resizeMode.cover}
+            />
+            <View style={{ padding: moderateScale(10, 0.3) }}>
+              <AppText fontStyle="700.bold">{data?.locationName}</AppText>
+              <VerticalSpacing />
+              <View
+                style={{
+                  flexDirection: "row",
+                }}>
+                <svgs.LocationV2 color1={theme.secondary} height={20} />
+                <AppText numberOfLines={2}>{data?.locationAddress}</AppText>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 10,
+                }}>
+                <svgs.Court color1={theme.secondary} height={20} width={20} />
+                <AppText>{selectedCourt?.courtName}</AppText>
+              </View>
+            </View>
+          </View>
+        </View>
+        {/* ========= Bill INFO ========== */}
+        <VerticalSpacing />
+        <View style={{ paddingHorizontal: 15 }}>
+          <AppText fontStyle="500.normal" size={16}>
+            Bill Details
+          </AppText>
+          <VerticalSpacing size={20} />
+          <View
+            style={{
+              padding: 15,
+              paddingVertical: 20,
+              backgroundColor: theme.modalBackgroundColor,
+              borderRadius: 10,
+              ...theme.light_shadow,
+            }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 10,
+              }}>
+              <AppText fontStyle="400.normal" color={theme.gray}>
+                Total
+              </AppText>
+              <AppText fontStyle="400.normal" color={theme.gray}>
+                AED {selectedCourt?.["creditTypes.rate"]}
+              </AppText>
+            </View>
+            <svgs.Horizontal_Line height={2} width="100%" />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: 10,
+              }}>
+              <AppText fontStyle="500.semibold">Total</AppText>
+              <AppText fontStyle="600.semibold">
+                AED {selectedCourt?.["creditTypes.rate"]}
+              </AppText>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+      <Animatable.View
+        animation="fadeInUp"
+        duration={1000}
+        style={{
+          backgroundColor: theme.white,
+          padding: moderateScale(20, 0.3),
+          bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
+        }}>
+        <AppButton
+          loading={loading}
+          Title={I18n.t("screen_messages.button.Proceed_to_Payment")}
+          color={theme.primary}
+          fontStyle="600.normal"
+          fontSize={16}
+          height={50}
+          onPress={() => onPressProceedToPay()}
+        />
+      </Animatable.View>
+    </AppContainer>
+  );
+}
+
+const styles = StyleSheet.create({});

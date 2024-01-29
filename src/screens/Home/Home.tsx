@@ -15,11 +15,12 @@ import svgs from "@common/AllSvgs";
 import HomeHeader from "@src/screen-components/Home/HomeHeader";
 import HeaderWithTitleandSeeAll from "@src/screen-components/Header/HeaderWithTitleandSeeAll";
 import CourtManager from "@features/Court/CourtManager";
+import CoachManager from "@features/Coach/CoachManager";
 import CourtCard from "@cards/Home/CourtCard";
 import CoachCard from "@cards/Home/CoachCard";
 
 function Home() {
-  const { userToken } = useAppSelector(state => state.user);
+  const { userToken, user } = useAppSelector(state => state.user);
   const [courts, setCourts] = useState<any>(null);
   const [coachs, setCoachs] = useState<any>(null);
   const { theme } = useAppSelector(state => state.theme);
@@ -32,7 +33,7 @@ function Home() {
     CourtManager.getAllCourts(
       {},
       res => {
-        console.log("Court===>", JSON.stringify(res, null, 2));
+        // console.log("Court===>", JSON.stringify(res, null, 2));
         setCourts(res?.data?.data);
       },
       err => {
@@ -42,10 +43,10 @@ function Home() {
   }, [!courts]);
 
   useEffect(() => {
-    CourtManager.getAllCoach(
+    CoachManager.getAllCoach(
       {},
       res => {
-        console.log("Coach===>", JSON.stringify(res, null, 2));
+        // console.log("Coach===>", JSON.stringify(res, null, 2));
         setCoachs(res?.data?.data);
       },
       err => {

@@ -47,6 +47,8 @@
       "welcome": "Welcome To Druce",
       "msg": "Log in or sign up to get the most out of your Druce experience.",
       "signup_msg": "Hello! Register to get started",
+      "Current_position": "Current position",
+      "You_are_here": "You are here",
       "button": {
         "login": "Login",
         "logout": "Logout",
@@ -59,7 +61,9 @@
         "term": "Terms of Service",
         "privacy": "Privacy Policy",
         "Resend_Code": "Resend Code",
-        "Verify_Account": "Verify Account"
+        "Verify_Account": "Verify Account",
+        "done": "Done",
+        "Proceed_to_Payment": "Proceed to Payment"
       },
       "common": {
         "rupee": "₹",
