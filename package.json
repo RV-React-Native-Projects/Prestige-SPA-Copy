@@ -17,6 +17,7 @@
     "start_build": "yarn link_asset && cd android && ./gradlew --stop",
     "build_apk": "yarn start_build && cd android && ./gradlew assembleRelease && yarn stop",
     "build_aab": "yarn start_build && cd android && ./gradlew bundleRelease && yarn stop",
+    "build_ios": "npx react-native run-ios --mode Release",
     "test": "jest"
   },
   "dependencies": {
