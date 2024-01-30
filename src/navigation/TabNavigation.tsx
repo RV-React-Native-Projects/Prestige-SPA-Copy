@@ -25,6 +25,7 @@ export default function TabNavigation() {
     <Tab.Navigator
       initialRouteName="HomeTab"
       screenOptions={({ route }) => ({
+        orientation: "portrait",
         headerShown: false,
         tabBarActiveTintColor: theme.primary,
         tabBarStyle: (route => {
@@ -116,7 +117,7 @@ export default function TabNavigation() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="GroupTab"
         component={Group}
         options={{
@@ -137,7 +138,7 @@ export default function TabNavigation() {
             />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="CalenderTab"
         component={Calender}

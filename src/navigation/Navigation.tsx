@@ -98,7 +98,7 @@ function MyStack() {
   return (
     <Stack.Navigator
       initialRouteName="Landing"
-      screenOptions={{ headerShown: false }}>
+      screenOptions={{ headerShown: false, orientation: "portrait" }}>
       <Stack.Screen name="Landing" component={LandingPage} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="SignUp" component={SignUp} />

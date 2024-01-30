@@ -148,7 +148,7 @@ function Home() {
           <View>
             <HeaderWithTitleandSeeAll
               title="Location"
-              onPressLeft={onPressSeeAllLocation}
+              // onPressLeft={onPressSeeAllLocation}
             />
             <FlatList
               contentContainerStyle={{
@@ -172,7 +172,7 @@ function Home() {
           <View>
             <HeaderWithTitleandSeeAll
               title="Coaches"
-              onPressLeft={onPressSeeAllCoaches}
+              // onPressLeft={onPressSeeAllCoaches}
             />
             <FlatList
               contentContainerStyle={{
