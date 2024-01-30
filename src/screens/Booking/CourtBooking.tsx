@@ -26,7 +26,7 @@ import svgs from "@src/common/AllSvgs";
 import { useAppNavigation } from "@src/navigation/Navigation";
 import AvailableCreditManager from "@src/services/features/AvailableCredit/AvailableCreditManager";
 import CourtManager from "@src/services/features/Court/CourtManager";
-// import { useStripe } from "@stripe/stripe-react-native";
+import { useStripe } from "@stripe/stripe-react-native";
 import { toString } from "lodash";
 
 const isIOS = Platform.OS === "ios";
@@ -41,8 +41,8 @@ export default function CourtBooking(props: any) {
     courtId = null,
     selectedCourt = null,
   } = props.route.params || {};
-  // const { initPaymentSheet, presentPaymentSheet, handleURLCallback } =
-  //   useStripe();
+  const { initPaymentSheet, presentPaymentSheet, handleURLCallback } =
+    useStripe();
 
   const { theme } = useAppSelector(state => state.theme);
   const { user } = useAppSelector(state => state.user);
@@ -56,59 +56,56 @@ export default function CourtBooking(props: any) {
   const STRIPE_PUBLISHABLE_KEY =
     "pk_test_51OYm22CjUZPEHdfTgxLTR9ECnnY2hltvM4Q5BGvNhOkTtxOB2JhEGzUOmlD2vRUvmMS3XxIpap3sqEImyfC7Ps6800J3wELOoL";
 
-  // const handleDeepLink = useCallback(
-  //   async (url: string | null) => {
-  //     if (url) {
-  //       const stripeHandled = await handleURLCallback(url);
-  //       if (stripeHandled) {
-  //       } else {
-  //       }
-  //     }
-  //   },
-  //   [handleURLCallback],
-  // );
+  const handleDeepLink = useCallback(
+    async (url: string | null) => {
+      if (url) {
+        const stripeHandled = await handleURLCallback(url);
+        if (stripeHandled) {
+        } else {
+        }
+      }
+    },
+    [handleURLCallback],
+  );
 
-  // useEffect(() => {
-  //   const getUrlAsync = async () => {
-  //     const initialUrl = await Linking.getInitialURL();
-  //     handleDeepLink(initialUrl);
-  //   };
+  useEffect(() => {
+    const getUrlAsync = async () => {
+      const initialUrl = await Linking.getInitialURL();
+      handleDeepLink(initialUrl);
+    };
 
-  //   getUrlAsync();
+    getUrlAsync();
 
-  //   const deepLinkListener = Linking.addEventListener(
-  //     "url",
-  //     (event: { url: string }) => {
-  //       handleDeepLink(event.url);
-  //     },
-  //   );
+    const deepLinkListener = Linking.addEventListener(
+      "url",
+      (event: { url: string }) => {
+        handleDeepLink(event.url);
+      },
+    );
 
-  //   return () => deepLinkListener.remove();
-  // }, [handleDeepLink]);
+    return () => deepLinkListener.remove();
+  }, [handleDeepLink]);
 
-  // const initializePaymentSheet = async () => {
-  //   const { error } = await initPaymentSheet({
-  //     merchantDisplayName: "prestige_spa",
-  //     customerId: toString(user?.stakeholderID),
-  //     customerEphemeralKeySecret: STRIPE_SECRET_KEY,
-  //     paymentIntentClientSecret: STRIPE_PUBLISHABLE_KEY,
-  //     returnURL: "your-app://stripe-redirect",
-  //     allowsDelayedPaymentMethods: true,
-  //     defaultBillingDetails: {
-  //       name: "Jane Doe",
-  //     },
-  //   });
-  //   console.log("====================================");
-  //   console.log(error);
-  //   console.log("====================================");
-  //   if (!error) {
-  //     // setLoading(true);
-  //   }
-  // };
+  const initializePaymentSheet = async () => {
+    const { error } = await initPaymentSheet({
+      merchantDisplayName: "prestige_spa",
+      customerId: toString(user?.stakeholderID),
+      customerEphemeralKeySecret: STRIPE_SECRET_KEY,
+      paymentIntentClientSecret: STRIPE_PUBLISHABLE_KEY,
+      returnURL: "spoacd://stripe-redirect",
+      allowsDelayedPaymentMethods: true,
+      defaultBillingDetails: {
+        name: user?.username,
+      },
+    });
+    if (!error) {
+      // setLoading(true);
+    }
+  };
 
-  // useEffect(() => {
-  //   initializePaymentSheet();
-  // }, []);
+  useEffect(() => {
+    initializePaymentSheet();
+  }, []);
 
   const onPressProceedToPay = () => {
     createUserCredit();

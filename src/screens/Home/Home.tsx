@@ -29,30 +29,28 @@ function Home() {
   const navigation = useAppNavigation();
   const appToast = useAppToast();
 
-  useEffect(() => {
+  function getAllCourts() {
     CourtManager.getAllCourts(
       {},
-      res => {
-        // console.log("Court===>", JSON.stringify(res, null, 2));
-        setCourts(res?.data?.data);
-      },
-      err => {
-        console.log(err);
-      },
+      res => setCourts(res?.data?.data),
+      err => console.log(err),
     );
+  }
+
+  function getAllCoach() {
+    CoachManager.getAllCoach(
+      {},
+      res => setCoachs(res?.data?.data),
+      err => console.log(err),
+    );
+  }
+
+  useEffect(() => {
+    if (!courts) getAllCourts();
   }, [!courts]);
 
   useEffect(() => {
-    CoachManager.getAllCoach(
-      {},
-      res => {
-        // console.log("Coach===>", JSON.stringify(res, null, 2));
-        setCoachs(res?.data?.data);
-      },
-      err => {
-        console.log(err);
-      },
-    );
+    if (!coachs) getAllCoach();
   }, [!coachs]);
 
   useEffect(() => {
