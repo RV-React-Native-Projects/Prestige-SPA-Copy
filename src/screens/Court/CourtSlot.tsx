@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import AppContainer from "@components/Container/AppContainer";
 import { useAppSelector } from "@redux/store";
 import { moderateScale } from "react-native-size-matters";
@@ -28,6 +28,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { useAppNavigation } from "@src/navigation/Navigation";
 import CourtManager from "@src/services/features/Court/CourtManager";
 import moment from "moment";
+import SlotsDuration from "@src/cards/Slots/SlotsDuration";
 
 const isIOS = Platform.OS === "ios";
 
@@ -66,44 +67,6 @@ interface TimeSlot {
   availableCourts: Court[];
 }
 
-const DurationCard = (props: any) => {
-  const { item, onPress, value } = props;
-  const { theme } = useAppSelector(state => state.theme);
-  return (
-    <TouchableOpacity
-      activeOpacity={0.8}
-      style={{
-        minWidth: 65,
-        backgroundColor:
-          value === item?.slotID ? theme.primary : theme.modalBackgroundColor,
-        borderRadius: 10,
-        ...theme.light_shadow,
-        marginBottom: 10,
-      }}
-      onPress={onPress}>
-      <View
-        style={{
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: 10,
-        }}>
-        <AppText
-          color={value === item?.slotID ? theme.white : theme.textColor}
-          size={24}
-          fontStyle="600.semibold">
-          {item.slotMinutes}
-        </AppText>
-        <AppText
-          fontStyle="400.bold"
-          color={value === item?.slotID ? theme.white : theme.textColor}>
-          Mins
-        </AppText>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
 const SlotCard = (props: any) => {
   const { item, onPress, value } = props;
   const { theme } = useAppSelector(state => state.theme);
@@ -127,7 +90,7 @@ const SlotCard = (props: any) => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: 15,
+          padding: moderateScale(10, 0.3),
         }}>
         <AppText
           color={
@@ -138,7 +101,7 @@ const SlotCard = (props: any) => {
                 : theme.textColor
           }
           fontStyle="500.medium"
-          size={16}>
+          size={14}>
           {item.startTime}
           {/* {item.startTime} - {item.endTime} */}
         </AppText>
@@ -147,7 +110,7 @@ const SlotCard = (props: any) => {
   );
 };
 
-export default function ChooseSlot(props: any) {
+export default function CourtSlot(props: any) {
   const { theme, isDarkMode } = useAppSelector(state => state.theme);
   const { user } = useAppSelector(state => state.user);
   const { data } = props.route.params;
@@ -175,16 +138,18 @@ export default function ChooseSlot(props: any) {
   }, [courtId]);
 
   useEffect(() => {
-    CourtManager.getSlots(
-      {},
-      res => {
-        // console.log("Slots===>", JSON.stringify(res, null, 2));
-        setSlotDuration(res?.data?.data);
-      },
-      err => {
-        console.log(err);
-      },
-    );
+    if (!slotDuration) {
+      CourtManager.getSlots(
+        {},
+        res => {
+          // console.log("Slots===>", JSON.stringify(res, null, 2));
+          setSlotDuration(res?.data?.data);
+        },
+        err => {
+          console.log(err);
+        },
+      );
+    }
   }, [!slotDuration]);
 
   useEffect(() => {
@@ -303,7 +268,7 @@ export default function ChooseSlot(props: any) {
                   }}
                   data={slotDuration}
                   renderItem={({ item, index }) => (
-                    <DurationCard
+                    <SlotsDuration
                       item={item}
                       value={slotId}
                       onPress={() => setSlotId(item?.slotID)}
@@ -329,9 +294,8 @@ export default function ChooseSlot(props: any) {
                   flexDirection: "row",
                   alignItems: "center",
                   flexWrap: "wrap",
-                  // justifyContent: "space-between",
+                  justifyContent: "space-between",
                   paddingHorizontal: moderateScale(15, 0.3),
-                  columnGap: 15,
                 }}>
                 {_.map(slots, (item, index) => (
                   <SlotCard

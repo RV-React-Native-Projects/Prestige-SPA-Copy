@@ -8,6 +8,16 @@ interface CourtManager {
     successCallback: (userResponse: any) => void,
     errorCallback: (error: any) => void,
   ) => void;
+  generateBookingSlots: (
+    params: any,
+    successCallback: (userResponse: any) => void,
+    errorCallback: (error: any) => void,
+  ) => void;
+  CoachBookingCreateOne: (
+    params: any,
+    successCallback: (userResponse: any) => void,
+    errorCallback: (error: any) => void,
+  ) => void;
 }
 
 const CourtManager = (
@@ -31,8 +41,42 @@ const CourtManager = (
     );
   };
 
+  const generateBookingSlots = (
+    params: any,
+    successCallback: (userResponse: any) => void,
+    errorCallback: (error: any) => void,
+  ) => {
+    CoachResource.generateBookingSlots(params).then(
+      (userResponse: any) => {
+        successCallback(userResponse);
+      },
+      (error: any) => {
+        error = Utils.updateErrorObject(error);
+        errorCallback(error);
+      },
+    );
+  };
+
+  const CoachBookingCreateOne = (
+    params: any,
+    successCallback: (userResponse: any) => void,
+    errorCallback: (error: any) => void,
+  ) => {
+    CoachResource.CoachBookingCreateOne(params).then(
+      (userResponse: any) => {
+        successCallback(userResponse);
+      },
+      (error: any) => {
+        error = Utils.updateErrorObject(error);
+        errorCallback(error);
+      },
+    );
+  };
+
   return {
     getAllCoach,
+    generateBookingSlots,
+    CoachBookingCreateOne,
   };
 };
 

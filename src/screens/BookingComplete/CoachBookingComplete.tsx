@@ -3,7 +3,6 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   View,
   BackHandler,
 } from "react-native";
@@ -26,19 +25,23 @@ import moment from "moment";
 const isIOS = Platform.OS === "ios";
 const windowHeight = Dimensions.get("window").height;
 
-export default function CourtBookingComplete(props: any) {
+export default function CoachBookingComplete(props: any) {
   const {
+    bookingId = null,
+    bookingType = null,
     data = null,
     date = null,
-    amountPaid = null,
-    startTime = null,
-    endTime = null,
-    bookingId = null,
+    selectedSlot = null,
     slot = null,
+    amountPaid = null,
+    court = null,
   } = props.route.params || {};
+
   const { theme } = useAppSelector(state => state.theme);
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
+
+  console.log(JSON.stringify(slot, null, 2));
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -47,8 +50,6 @@ export default function CourtBookingComplete(props: any) {
     );
     return () => backHandler.remove();
   }, []);
-
-  console.log(data);
 
   const onPressDone = () => {
     navigation.reset({ index: 0, routes: [{ name: "Tab" }] });
@@ -107,17 +108,6 @@ export default function CourtBookingComplete(props: any) {
               <AppText fontStyle="400.normal">Booking ID</AppText>
               <AppText fontStyle="500.normal"># {bookingId}</AppText>
             </View>
-            {/* ======= seession Id is Not required for Now ======= */}
-            {/* <VerticalSpacing />
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}>
-              <AppText fontStyle="400.normal">Session ID</AppText>
-              <AppText fontStyle="500.normal">DGSG928378278</AppText>
-            </View> */}
             <VerticalSpacing />
             <View
               style={{
@@ -139,7 +129,7 @@ export default function CourtBookingComplete(props: any) {
               }}>
               <AppText fontStyle="400.normal">Time</AppText>
               <AppText fontStyle="500.normal">
-                {startTime} - {endTime}
+                {selectedSlot?.startTime} - {selectedSlot?.endTime}
               </AppText>
             </View>
             <VerticalSpacing />
@@ -150,7 +140,9 @@ export default function CourtBookingComplete(props: any) {
                 justifyContent: "space-between",
               }}>
               <AppText fontStyle="400.normal">Slot</AppText>
-              <AppText fontStyle="500.normal">{slot} Mins</AppText>
+              <AppText fontStyle="500.normal">
+                {slot?.slot?.slotMinutes} Mins
+              </AppText>
             </View>
           </View>
         </View>
@@ -166,26 +158,114 @@ export default function CourtBookingComplete(props: any) {
             Booking Summary
           </AppText>
           <VerticalSpacing />
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <FastImage
-              style={[
-                {
-                  height: moderateScale(80, 0.3),
-                  width: 110,
-                  borderRadius: 5,
-                  marginRight: 10,
-                },
-              ]}
-              defaultSource={images.Placeholder}
-              source={{
-                uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.courts[0]?.imagePath}`,
-                priority: FastImage.priority.high,
-              }}
-              resizeMode={FastImage.resizeMode.cover}
-            />
-            <AppText fontStyle="600.medium" size={16}>
-              {data?.locationName}
-            </AppText>
+          <View>
+            <View
+              style={{
+                padding: moderateScale(10, 0.3),
+                flexDirection: "row",
+              }}>
+              <FastImage
+                style={[
+                  {
+                    height: moderateScale(70, 0.3),
+                    width: moderateScale(70, 0.3),
+                    borderRadius: 200,
+                  },
+                ]}
+                defaultSource={images.user}
+                source={{
+                  uri: data?.stakeholder?.picturePathS3,
+                  priority: FastImage.priority.high,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+              />
+              <View style={{ marginLeft: 10 }}>
+                <View
+                  style={{
+                    backgroundColor:
+                      data?.coachCategoryID === 1
+                        ? theme.primary
+                        : theme.tertiaryText,
+                    width: 70,
+                    height: 25,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: 20,
+                    marginVertical: 10,
+                  }}>
+                  <AppText
+                    style={{}}
+                    fontStyle="400.medium"
+                    color={theme.white}>
+                    Tire {data?.coachCategoryID}
+                  </AppText>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    height: 20,
+                  }}>
+                  <AppText fontStyle="600.bold" size={16} numberOfLines={1}>
+                    {data?.stakeholder?.stakeholderName}
+                  </AppText>
+                </View>
+              </View>
+            </View>
+            <View
+              style={{
+                padding: moderateScale(10, 0.3),
+                flexDirection: "row",
+              }}>
+              <FastImage
+                style={[
+                  {
+                    height: moderateScale(75, 0.3),
+                    width: moderateScale(75, 0.3),
+                    borderRadius: 5,
+                  },
+                ]}
+                defaultSource={images.Placeholder}
+                source={{
+                  uri: `https://nodejsclusters-160185-0.cloudclusters.net/${court.imagePath}`,
+                  priority: FastImage.priority.high,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+              />
+              <View
+                style={{
+                  paddingHorizontal: moderateScale(10, 0.3),
+                  padding: moderateScale(5, 0.3),
+                }}>
+                <AppText
+                  fontStyle="700.bold"
+                  numberOfLines={1}
+                  style={{ maxWidth: "55%" }}>
+                  {court?.courtName}
+                </AppText>
+                <VerticalSpacing size={5} />
+                <View style={{ flexDirection: "row" }}>
+                  <svgs.Time height={20} width={18} color1={theme.secondary} />
+                  <AppText
+                    numberOfLines={1}
+                    style={{ textTransform: "capitalize", maxWidth: "50%" }}>
+                    {" "}
+                    {slot?.slot?.slotMinutes} mins{" - "}
+                    {slot?.coachSessionType?.sessionType} Session
+                  </AppText>
+                </View>
+                <VerticalSpacing size={5} />
+                <View style={{ flexDirection: "row" }}>
+                  <svgs.LocationV2
+                    color1={theme.secondary}
+                    height={20}
+                    width={20}
+                  />
+                  <AppText numberOfLines={1}>
+                    {court?.location?.locationAddress}
+                  </AppText>
+                </View>
+              </View>
+            </View>
           </View>
         </View>
         <View

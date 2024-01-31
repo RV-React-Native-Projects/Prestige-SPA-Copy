@@ -40,7 +40,7 @@ function CourtDetail(props: any) {
   const _map = useRef(null);
 
   const onPressNext = (data: any) => {
-    navigation.navigate("ChooseSlot", { data: data });
+    navigation.navigate("CourtSlot", { data: data });
   };
 
   return (
@@ -60,11 +60,6 @@ function CourtDetail(props: any) {
           <Swiper
             style={styles.wrapper}
             height={320}
-            // showsButtons
-            // showsPagination
-            // onMomentumScrollEnd={(e, state, context) => {}}
-            // autoplay
-            // loop
             dot={
               <View
                 style={{

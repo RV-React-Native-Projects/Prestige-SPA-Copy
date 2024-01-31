@@ -204,7 +204,7 @@ const Colors = {
   title: "#282828",
   header: "#000000",
   subHeader: "#5A5A5A",
-  paragraph: "#666666",
+  paragraph: "#6D6D6D",
 
   textColor: "#252F40",
   primaryText: "#CB0C9F",

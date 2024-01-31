@@ -63,7 +63,8 @@
         "Resend_Code": "Resend Code",
         "Verify_Account": "Verify Account",
         "done": "Done",
-        "Proceed_to_Payment": "Proceed to Payment"
+        "Proceed_to_Payment": "Proceed to Payment",
+        "Book_a_Session": "Book a Session"
       },
       "common": {
         "rupee": "₹",

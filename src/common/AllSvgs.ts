@@ -1,3 +1,4 @@
+import Age from "@assets/svgs/Age";
 import Bath from "@assets/svgs/Bath";
 import Beds from "@assets/svgs/Beds";
 import Bell from "@assets/svgs/Bell";
@@ -31,10 +32,13 @@ import Sell from "@assets/svgs/Sell";
 import Share from "@assets/svgs/Share";
 import Size from "@assets/svgs/Size";
 import Success from "@assets/svgs/Success";
+import Time from "@assets/svgs/Time";
+import User from "@assets/svgs/User";
 import Vertical_Line from "@assets/svgs/Vertical_Line";
 import Wishlist from "@assets/svgs/Wishlist";
 
 const svgs: any = {
+  Age,
   Bath,
   Beds,
   Bell,
@@ -68,6 +72,8 @@ const svgs: any = {
   Share,
   Size,
   Success,
+  Time,
+  User,
   Vertical_Line,
   Wishlist,
 };

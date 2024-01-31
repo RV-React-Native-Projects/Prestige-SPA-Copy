@@ -4,11 +4,10 @@ import { SVGProps } from "@common/CommonTypes";
 
 function SvgComponent(props: SVGProps) {
   const {
-    width = 20,
-    height = 20,
+    width = 30,
+    height = 30,
     color1 = "#266EFF",
-    color2 = "#FFF",
-    color3 = "#266EFF",
+    color2 = "#ffffff",
     fill = "none",
   } = props;
 
@@ -17,22 +16,27 @@ function SvgComponent(props: SVGProps) {
       xmlns="http://www.w3.org/2000/svg"
       width={width}
       height={height}
-      viewBox="0 0 20 21"
-      fill={fill}
+      viewBox="0 0 14 14"
+      fill="none"
       {...props}>
       <G
-        clipPath="url(#clip0_4177_18156)"
-        stroke={color1}
+        clipPath="url(#clip0_4357_862)"
+        strokeWidth={1.16667}
         strokeLinejoin="round">
         <Path
-          d="M10 18.833s6.25-5 6.25-10.416a6.25 6.25 0 10-12.5 0c0 5.416 6.25 10.416 6.25 10.416z"
-          fill={color3}
+          d="M7 12.833A5.833 5.833 0 107 1.166a5.833 5.833 0 000 11.667z"
+          fill={color1}
+          stroke={color1}
         />
-        <Path d="M10 11.416a3 3 0 100-6 3 3 0 000 6z" fill={color2} />
+        <Path
+          d="M7.002 3.5v3.503l2.473 2.473"
+          stroke={color2}
+          strokeLinecap="round"
+        />
       </G>
       <Defs>
-        <ClipPath id="clip0_4177_18156">
-          <Path fill={color2} transform="translate(0 .5)" d="M0 0H20V20H0z" />
+        <ClipPath id="clip0_4357_862">
+          <Path fill={color2} d="M0 0H14V14H0z" />
         </ClipPath>
       </Defs>
     </Svg>

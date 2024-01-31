@@ -24,8 +24,8 @@ import FastImage from "react-native-fast-image";
 import images from "@src/common/AllImages";
 import svgs from "@src/common/AllSvgs";
 import { useAppNavigation } from "@src/navigation/Navigation";
-import AvailableCreditManager from "@src/services/features/AvailableCredit/AvailableCreditManager";
-import CourtManager from "@src/services/features/Court/CourtManager";
+import AvailableCreditManager from "@features/AvailableCredit/AvailableCreditManager";
+import CourtManager from "@features/Court/CourtManager";
 import { useStripe } from "@stripe/stripe-react-native";
 import { toString } from "lodash";
 

@@ -18,8 +18,26 @@ const CoachResource = ($http: any) => {
     return $http.get(url, params?.data, params?.headers);
   };
 
+  const generateBookingSlots = (params: RequestOptions) => {
+    const url = `${host}/api/CoachBooking/generateBookingSlots`;
+
+    console.log("URL==>", url);
+    console.log("params==>", params);
+    return $http.post(url, params?.data, params?.headers);
+  };
+
+  const CoachBookingCreateOne = (params: RequestOptions) => {
+    const url = `${host}/api/CoachBooking/createOne`;
+
+    console.log("URL==>", url);
+    console.log("params==>", params);
+    return $http.post(url, params?.data, params?.headers);
+  };
+
   return {
     getAllCoach,
+    generateBookingSlots,
+    CoachBookingCreateOne,
   };
 };
 

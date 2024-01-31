@@ -18,6 +18,7 @@ import {
   VerticalSpacing,
 } from "@src/components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 interface CalendarDate {
   date: Date;

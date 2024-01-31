@@ -25,14 +25,18 @@ const SignUp = lazy(() => import("@screens/Auth/SignUp"));
 const Home = lazy(() => import("@screens/Home/Home"));
 const Court = lazy(() => import("@screens/Court/Court"));
 const CourtDetail = lazy(() => import("@screens/Court/CourtDetail"));
-const ChooseSlot = lazy(() => import("@screens/Court/ChooseSlot"));
+const CourtSlot = lazy(() => import("@screens/Court/CourtSlot"));
 const CourtBooking = lazy(() => import("@screens/Booking/CourtBooking"));
 const CourtBookingComplete = lazy(
   () => import("@screens/BookingComplete/CourtBookingComplete"),
 );
+const CoachBookingComplete = lazy(
+  () => import("@screens/BookingComplete/CoachBookingComplete"),
+);
 const Coach = lazy(() => import("@screens/Coach/Coach"));
 const CoachDetail = lazy(() => import("@screens/Coach/CoachDetail"));
 const CoachBooking = lazy(() => import("@screens/Booking/CoachBooking"));
+const CoachSlot = lazy(() => import("@screens/Coach/CoachSlot"));
 const Group = lazy(() => import("@screens/Group/Group"));
 const Calender = lazy(() => import("@screens/Calender/Calender"));
 const Details = lazy(() => import("@screens/Details/Details"));
@@ -114,7 +118,7 @@ function MyStack() {
         name="CourtDetail"
         component={CourtDetail}
       />
-      <Stack.Screen name="ChooseSlot" component={ChooseSlot} />
+      <Stack.Screen name="CourtSlot" component={CourtSlot} />
       <Stack.Screen name="CourtBooking" component={CourtBooking} />
       <Stack.Screen
         name="CourtBookingComplete"
@@ -124,6 +128,12 @@ function MyStack() {
       <Stack.Screen name="Coach" component={Coach} />
       <Stack.Screen name="CoachDetail" component={CoachDetail} />
       <Stack.Screen name="CoachBooking" component={CoachBooking} />
+      <Stack.Screen name="CoachSlot" component={CoachSlot} />
+      <Stack.Screen
+        name="CoachBookingComplete"
+        component={CoachBookingComplete}
+        options={{ gestureEnabled: false }}
+      />
       <Stack.Screen name="Group" component={Group} />
       <Stack.Screen name="Calender" component={Calender} />
     </Stack.Navigator>

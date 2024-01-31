@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TextProps } from "react-native";
+import { Text, TextProps, TextStyle } from "react-native";
 import _ from "lodash";
 import { moderateScale } from "react-native-size-matters";
 import { useAppSelector } from "@redux/store";
@@ -11,7 +11,7 @@ interface AppTextType extends TextProps {
   children?: React.ReactNode; // to have the childrens
   fontFamily?: string; // font Family for the Text
   onPress?: () => void; // function void()
-  style?: object;
+  style?: TextStyle;
   fontStyle?: string; // fontStyle for the Text
   numberOfLines?: number; // number of lines
 }

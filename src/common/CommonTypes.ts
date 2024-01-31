@@ -9,6 +9,7 @@ export interface SVGProps extends SvgProps {
   fill?: string;
   color1?: string;
   color2?: string;
+  color3?: string;
   strokeWidth: number;
   style: any;
 }
