@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import AppContainer from "@components/Container/AppContainer";
-import { useAppSelector } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux/store";
 import { RadioButton } from "react-native-paper";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
@@ -24,9 +24,8 @@ import svgs from "@common/AllSvgs";
 import AppText from "@components/Text/AppText";
 import RBSheet from "react-native-raw-bottom-sheet";
 import _, { toNumber, toString } from "lodash";
-import CourtManager from "@src/services/features/Court/CourtManager";
-import Utils from "@src/common/Utils";
 import SlotsDuration from "@src/cards/Slots/SlotsDuration";
+import { loadSlots } from "@src/redux/reducers/AppData";
 
 const isIOS = Platform.OS === "ios";
 
@@ -105,6 +104,8 @@ const BioCard = (props: any) => {
 function CoachDetail(props: any) {
   const { data } = props?.route?.params;
   const { theme } = useAppSelector(state => state.theme);
+  const { slots } = useAppSelector(state => state.appData);
+  const storeDispatch = useAppDispatch();
   const [bookingType, setBookingType] = useState<"SINGLE" | "MULTI" | string>(
     "SINGLE",
   );
@@ -113,7 +114,7 @@ function CoachDetail(props: any) {
   const [selectedSlot, setSelectedSlot] = useState<CreditType | null>(null);
 
   //  ===== API Data ====
-  const [slots, setSlots] = useState<Slot[] | null>(null);
+  // const [slots, setSlots] = useState<Slot[] | null>(null);
 
   const FilterSesstionTypes = useMemo(
     () =>
@@ -126,7 +127,7 @@ function CoachDetail(props: any) {
     [slotId],
   );
 
-  console.log(JSON.stringify(FilterSesstionTypes, null, 2));
+  // console.log(JSON.stringify(FilterSesstionTypes, null, 2));
 
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
@@ -134,13 +135,7 @@ function CoachDetail(props: any) {
   const refSeesionType = useRef<RBSheet>(null);
 
   useEffect(() => {
-    if (!slots) {
-      CourtManager.getSlots(
-        {},
-        res => setSlots(res?.data?.data),
-        err => console.log(err),
-      );
-    }
+    if (!slots) storeDispatch(loadSlots());
   }, [!slots]);
 
   const goToCoachSlot = () => {

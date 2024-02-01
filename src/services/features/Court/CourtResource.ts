@@ -46,7 +46,7 @@ const courtResource = ($http: any) => {
     getAllCourts,
     getSlots,
     generateBookingSlots,
-    createOneBooking
+    createOneBooking,
   };
 };
 

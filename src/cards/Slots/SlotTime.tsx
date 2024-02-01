@@ -20,7 +20,11 @@ export default function SlotTime(props: SlotTime) {
       activeOpacity={0.8}
       style={{
         backgroundColor:
-          value === time ? theme.primary : theme.modalBackgroundColor,
+          value === time
+            ? theme.primary
+            : isAvailable
+              ? theme.modalBackgroundColor
+              : theme.appBackgroundColor,
         borderRadius: 10,
         marginBottom: 10,
         ...theme.light_shadow,
@@ -31,7 +35,6 @@ export default function SlotTime(props: SlotTime) {
         style={{
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "space-between",
           padding: moderateScale(10, 0.3),
         }}>
         <AppText
@@ -42,6 +45,7 @@ export default function SlotTime(props: SlotTime) {
                 ? theme.white
                 : theme.textColor
           }
+          style={{ textTransform: "uppercase" }}
           fontStyle="500.medium"
           size={14}>
           {time}

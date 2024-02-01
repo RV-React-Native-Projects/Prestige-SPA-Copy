@@ -1,4 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import MonthPicker from "react-native-month-year-picker";
 import { moderateScale } from "react-native-size-matters";
@@ -11,6 +17,8 @@ import {
   VerticalSpacing,
 } from "@components/Spacing/Spacing";
 import RBSheet from "react-native-raw-bottom-sheet";
+
+const isIOS = Platform.OS === "ios";
 
 interface MonthYearPickerProps {
   getDate: (e: Date) => void;
@@ -51,7 +59,7 @@ export default function MonthYearPicker(props: MonthYearPickerProps) {
         activeOpacity={0.8}
         onPress={() => {
           showPicker(true);
-          refRBSheetaCalender.current?.open();
+          isIOS && refRBSheetaCalender.current?.open();
         }}
         style={{
           paddingVertical: moderateScale(15, 0.3),
@@ -109,6 +117,18 @@ export default function MonthYearPicker(props: MonthYearPickerProps) {
           )}
         </>
       </RBSheet>
+      {show && !isIOS && (
+        <View style={{ height: "100%" }}>
+          <MonthPicker
+            onChange={onValueChange}
+            value={date}
+            minimumDate={new Date()}
+            okButton="Ok"
+            cancelButton="Cancle"
+            autoTheme={true}
+          />
+        </View>
+      )}
     </>
   );
 }

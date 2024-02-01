@@ -154,7 +154,7 @@ function CourtDetail(props: any) {
             </AppText>
           </View>
           <AppText fontStyle="600.semibold" size={16}>
-            Diraction
+            Directions
           </AppText>
           <VerticalSpacing size={15} />
           <View style={{ height: 300 }}>

@@ -236,9 +236,8 @@ export default function CoachSlot(props: any) {
                   flexDirection: "row",
                   alignItems: "center",
                   flexWrap: "wrap",
-                  // justifyContent: "space-between",
+                  justifyContent: "space-between",
                   paddingHorizontal: moderateScale(15, 0.3),
-                  columnGap: 15,
                 }}>
                 {_.map(slots, (item, index) => (
                   <SlotTime

@@ -2,7 +2,6 @@ import {
   Animated,
   FlatList,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -13,12 +12,8 @@ import svgs from "@common/AllSvgs";
 import moment from "moment";
 import { useAppSelector } from "@src/redux/store";
 import AppText from "@src/components/Text/AppText";
-import {
-  HorizontalSpacing,
-  VerticalSpacing,
-} from "@src/components/Spacing/Spacing";
+import { VerticalSpacing } from "@src/components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
-import RBSheet from "react-native-raw-bottom-sheet";
 
 interface CalendarDate {
   date: Date;
