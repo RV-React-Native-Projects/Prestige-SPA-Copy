@@ -4,10 +4,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  FlatList,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import AppContainer from "@components/Container/AppContainer";
-import { useAppSelector } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux/store";
 import { moderateScale } from "react-native-size-matters";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import AppText from "@components/Text/AppText";
@@ -26,6 +27,7 @@ import { useAppNavigation } from "@src/navigation/Navigation";
 import moment from "moment";
 import CoachManager from "@src/services/features/Coach/CoachManager";
 import SlotTime from "@src/cards/Slots/SlotTime";
+import { loadTerms } from "@src/redux/reducers/AppData";
 
 const isIOS = Platform.OS === "ios";
 
@@ -66,10 +68,22 @@ interface SelectedSlot {
   startTime: string;
   endTime: string;
 }
+interface CoachSessionTerm {
+  CoachSessionTermID: number;
+  createdAt: string;
+  updatedAt: string;
+  termName: string;
+  startDate: string;
+  endDate: string;
+  termDuration: number;
+  noOfSessions: number;
+}
 
 export default function CoachSlot(props: any) {
   const { theme, isDarkMode } = useAppSelector(state => state.theme);
   const { user } = useAppSelector(state => state.user);
+  const { terms } = useAppSelector(state => state.appData);
+  const storeDispatch = useAppDispatch();
   const {
     data = null,
     bookingType = null,
@@ -85,6 +99,10 @@ export default function CoachSlot(props: any) {
   const [courtId, setCourtId] = useState<number | null>(null);
   const [court, setCourt] = useState<Court | null>(null);
   const [selectedSlot, setelectedSlot] = useState<SelectedSlot | null>(null);
+  const [selectedTerm, setSelectedTerm] = useState<CoachSessionTerm | null>(
+    null,
+  );
+  const [coachSessionID, setCoachSessionID] = useState<number | null>(null);
 
   //  ===== API Responses Data=====
   const [slots, setSlots] = useState<TimeSlot[] | null>(null);
@@ -92,6 +110,30 @@ export default function CoachSlot(props: any) {
   const insets = useSafeAreaInsets();
   const navigation = useAppNavigation();
   const refRBSheet = useRef<RBSheet>(null);
+
+  useEffect(() => {
+    if (!terms && bookingType === "MULTI") {
+      storeDispatch(loadTerms());
+    }
+  }, [!terms]);
+
+  // console.log(JSON.stringify(terms, null, 2));
+
+  useEffect(() => {
+    if (terms) {
+      const filteredData = _.filter(terms, item => {
+        const startDate = moment(item.startDate);
+        const endDate = moment(item.endDate);
+        return (
+          moment().isBetween(startDate, endDate, null, "[]") ||
+          moment().isSame(startDate, "day") ||
+          moment().isSame(endDate, "day")
+        );
+      });
+      setSelectedTerm(filteredData[0]);
+      setCoachSessionID(filteredData[0]?.CoachSessionTermID);
+    }
+  }, [terms]);
 
   useEffect(() => {
     if (slotId && pickedDate) {
@@ -106,7 +148,7 @@ export default function CoachSlot(props: any) {
       CoachManager.generateBookingSlots(
         parsms,
         res => {
-          console.log("generateBookingSlots===>", JSON.stringify(res, null, 2));
+          // console.log("generateBookingSlots===>", JSON.stringify(res, null, 2));
           setSlots(res?.data?.data);
         },
         err => {
@@ -136,6 +178,16 @@ export default function CoachSlot(props: any) {
     });
   };
 
+  useEffect(() => {
+    if (coachSessionID) {
+      const filterTerm = _.filter(
+        terms,
+        term => term.CoachSessionTermID === coachSessionID,
+      );
+      setSelectedTerm(filterTerm[0]);
+    }
+  }, [coachSessionID]);
+
   return (
     <AppContainer
       hideStatusbar={false}
@@ -144,10 +196,9 @@ export default function CoachSlot(props: any) {
       fullHeight={false}>
       <BackButtonWithTitle title="Choose Slot" />
       <ScrollView
-        style={{
-          minHeight: isIOS ? "100%" : "auto",
-        }}
-        contentContainerStyle={{ paddingBottom: 100 }}>
+        style={{ minHeight: isIOS ? "100%" : "auto" }}
+        contentContainerStyle={{ paddingBottom: 100 }}
+        showsVerticalScrollIndicator={false}>
         <View
           style={{
             backgroundColor: theme.modalBackgroundColor,
@@ -210,16 +261,89 @@ export default function CoachSlot(props: any) {
             </View>
           </View>
         </View>
+        {bookingType === "MULTI" && (
+          <>
+            <View style={{ paddingHorizontal: 15 }}>
+              <VerticalSpacing />
+              <AppText fontStyle="600.semibold" size={16}>
+                Select Term
+              </AppText>
+              <VerticalSpacing />
+            </View>
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={terms}
+              contentContainerStyle={{
+                paddingHorizontal: moderateScale(15, 0.3),
+                columnGap: moderateScale(10, 0.3),
+              }}
+              renderItem={({ item, index }) => (
+                <RadioButton.Group
+                  onValueChange={newValue =>
+                    setCoachSessionID(toNumber(newValue))
+                  }
+                  key={index}
+                  value={toString(coachSessionID)}>
+                  <TouchableOpacity
+                    activeOpacity={0.9}
+                    onPress={() => setCoachSessionID(item?.CoachSessionTermID)}
+                    key={index}
+                    style={{
+                      alignItems: "center",
+                      padding: moderateScale(10, 0.3),
+                      backgroundColor: theme.modalBackgroundColor,
+                      marginBottom: moderateScale(10, 0.3),
+                      borderRadius: moderateScale(10, 0.3),
+                      ...theme.light_shadow,
+                      width: 170,
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        width: "100%",
+                      }}>
+                      <RadioButton.Android
+                        value={toString(item?.CoachSessionTermID)}
+                        color={theme.secondary}
+                      />
+                      <AppText size={16} fontStyle="500.bold">
+                        {item?.termName}
+                      </AppText>
+                    </View>
+                    <AppText fontStyle="500.semibold" color={theme.paragraph}>
+                      {moment(item?.startDate).format("MMM YYYY")} -{" "}
+                      {moment(item?.endDate).format("MMM YYYY")}
+                    </AppText>
+                  </TouchableOpacity>
+                </RadioButton.Group>
+              )}
+            />
+          </>
+        )}
         <VerticalSpacing />
         <View>
           {/*  ============== Slot Calendr Only ====== */}
-          <SlotCalender
-            getSelectedDate={(date: Date) => {
-              setPickedDate(date);
-              setStartTime(null);
-              setAvailableCourts(null);
-            }}
-          />
+          {bookingType === "MULTI" ? (
+            <SlotCalender
+              getSelectedDate={(date: Date) => {
+                setPickedDate(date);
+                setStartTime(null);
+                setAvailableCourts(null);
+              }}
+              minimumDate={moment(selectedTerm?.startDate).toDate()}
+              maximumDate={moment(selectedTerm?.endDate).toDate()}
+            />
+          ) : (
+            <SlotCalender
+              getSelectedDate={(date: Date) => {
+                setPickedDate(date);
+                setStartTime(null);
+                setAvailableCourts(null);
+              }}
+            />
+          )}
           {/*  ============== Select Slot ====== */}
           {slots && (
             <>
@@ -227,7 +351,7 @@ export default function CoachSlot(props: any) {
               <AppText
                 fontStyle="600.semibold"
                 size={16}
-                style={{ paddingHorizontal: 15 }}>
+                style={{ paddingHorizontal: moderateScale(15, 0.3) }}>
                 Select Slot
               </AppText>
               <VerticalSpacing />
@@ -282,14 +406,20 @@ export default function CoachSlot(props: any) {
         dragFromTopOnly={true}>
         <View style={{ flex: 1 }}>
           <AppText
-            style={{ paddingHorizontal: 15 }}
+            style={{ paddingHorizontal: moderateScale(15, 0.3) }}
             fontStyle="600.semibold"
             size={18}>
             Select Court
           </AppText>
           <ScrollView
-            style={{ height: "100%", paddingHorizontal: 15 }}
-            contentContainerStyle={{ paddingTop: 20, paddingBottom: 50 }}>
+            style={{
+              height: "100%",
+              paddingHorizontal: moderateScale(15, 0.3),
+            }}
+            contentContainerStyle={{
+              paddingTop: moderateScale(20, 0.3),
+              paddingBottom: moderateScale(50, 0.3),
+            }}>
             <RadioButton.Group
               onValueChange={newValue => setCourtId(toNumber(newValue))}
               value={toString(courtId)}>

@@ -23,10 +23,23 @@ const isIOS = Platform.OS === "ios";
 interface MonthYearPickerProps {
   getDate: (e: Date) => void;
   value?: Date;
+  minimumDate?: Date | null;
+  maximumDate?: Date | null;
 }
 
 export default function MonthYearPicker(props: MonthYearPickerProps) {
-  const { getDate, value } = props;
+  let currentDate = new Date();
+  const {
+    getDate,
+    value,
+    minimumDate = new Date(),
+    maximumDate = new Date(
+      currentDate.getFullYear() + 5,
+      currentDate.getMonth(),
+      currentDate.getDate(),
+    ),
+  } = props;
+
   const { theme } = useAppSelector(state => state.theme);
   const [date, setDate] = useState(value || new Date());
   const [show, setShow] = useState(false);
@@ -46,7 +59,11 @@ export default function MonthYearPicker(props: MonthYearPickerProps) {
   );
 
   useEffect(() => {
-    if (value) setDate(value);
+    if (value) {
+      if (!!minimumDate && minimumDate < new Date()) {
+        setDate(new Date());
+      } else setDate(value);
+    }
   }, [value]);
 
   useEffect(() => {
@@ -76,7 +93,7 @@ export default function MonthYearPicker(props: MonthYearPickerProps) {
           ...theme.light_shadow,
         }}>
         <AppText fontStyle="600.semibold">
-          {moment(date).format("MMMM  YYYY")}
+          {moment(date).format("MMMM - YYYY")}
         </AppText>
         <View style={{ marginLeft: 10 }}>
           <svgs.Down height={15} width={15} />
@@ -86,7 +103,6 @@ export default function MonthYearPicker(props: MonthYearPickerProps) {
         ref={refRBSheetaCalender}
         closeOnDragDown={true}
         closeOnPressMask={true}
-        // height={moderateScale(500, 0.3)}
         customStyles={{
           container: {
             backgroundColor: theme.appBackgroundColor,
@@ -94,8 +110,7 @@ export default function MonthYearPicker(props: MonthYearPickerProps) {
             borderTopRightRadius: moderateScale(15, 0.3),
           },
           draggableIcon: {
-            width: moderateScale(110, 0.3),
-            // marginTop: moderateScale(15, 0.3),
+            width: moderateScale(50, 0.3),
           },
         }}
         animationType="fade"
@@ -108,8 +123,9 @@ export default function MonthYearPicker(props: MonthYearPickerProps) {
               <MonthPicker
                 onChange={onValueChange}
                 value={date}
-                minimumDate={new Date()}
-                okButton="Ok"
+                minimumDate={minimumDate ?? undefined}
+                maximumDate={maximumDate ?? undefined}
+                okButton="Done"
                 cancelButton="Cancle"
                 autoTheme={true}
               />
@@ -122,8 +138,9 @@ export default function MonthYearPicker(props: MonthYearPickerProps) {
           <MonthPicker
             onChange={onValueChange}
             value={date}
-            minimumDate={new Date()}
-            okButton="Ok"
+            minimumDate={minimumDate ?? undefined}
+            maximumDate={maximumDate ?? undefined}
+            okButton="Done"
             cancelButton="Cancle"
             autoTheme={true}
           />

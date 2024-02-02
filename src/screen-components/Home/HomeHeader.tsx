@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { useAppSelector } from "@src/redux/store";
 import svgs from "@common/AllSvgs";
@@ -48,12 +48,13 @@ export default function HomeHeader() {
           flexDirection: "row",
           alignItems: "center",
         }}>
-        <TouchableOpacity activeOpacity={0.8} style={{ padding: 5 }}>
+        {/* @RV === Not required for Now=== */}
+        {/* <TouchableOpacity activeOpacity={0.8} style={{ padding: 5 }}>
           <svgs.Wishlist />
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={0.8} style={{ padding: 5 }}>
           <svgs.Bell />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity activeOpacity={0.8} style={{ padding: 5 }}>
           <Image
             // source={{require:images.user}}

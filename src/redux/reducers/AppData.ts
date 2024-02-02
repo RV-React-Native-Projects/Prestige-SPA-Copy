@@ -8,16 +8,15 @@ export const loadSlots = createAsyncThunk("appdata/loadSlots", async () => {
       {},
       async res => {
         const data = await res?.data?.data;
-        resolve(data); // Resolve with the data received from the API
+        resolve(data);
       },
       async err => {
         console.log(err);
-        reject(err); // Reject with the error received from the API
+        reject(err);
       },
     );
   });
-
-  return response as Slot[]; // Assuming Slot is the type for your slot objects
+  return response as Slot[];
 });
 
 export const loadTerms = createAsyncThunk("appdata/loadTerms", async () => {
@@ -34,7 +33,7 @@ export const loadTerms = createAsyncThunk("appdata/loadTerms", async () => {
       },
     );
   });
-  return response;
+  return response as CoachSessionTerm[];
 });
 
 interface Slot {
@@ -43,12 +42,22 @@ interface Slot {
   updatedAt: string;
   slotMinutes: number;
 }
+interface CoachSessionTerm {
+  CoachSessionTermID: number;
+  createdAt: string;
+  updatedAt: string;
+  termName: string;
+  startDate: string;
+  endDate: string;
+  termDuration: number;
+  noOfSessions: number;
+}
 
 interface appDataSliceProps {
   loadingSlots: boolean;
   slots: Slot[] | null;
   loadingTerms: boolean;
-  terms: any | null;
+  terms: CoachSessionTerm[] | null;
 }
 
 const initialState: appDataSliceProps = {
@@ -80,6 +89,7 @@ const appDataSlice = createSlice({
         state.loadingTerms = true;
       })
       .addCase(loadTerms.fulfilled, (state, action) => {
+        console.log("At Data", action?.payload);
         state.loadingTerms = false;
         state.terms = action.payload;
       });

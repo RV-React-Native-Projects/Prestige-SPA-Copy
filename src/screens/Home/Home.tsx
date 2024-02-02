@@ -88,7 +88,7 @@ function Home() {
         showsVerticalScrollIndicator={false}>
         <HomeHeader />
         <VerticalSpacing />
-        <Searchbar
+        {/* <Searchbar
           placeholder="Search"
           onChangeText={setSearchQuery}
           value={searchQuery}
@@ -98,7 +98,7 @@ function Home() {
             marginHorizontal: moderateScale(10, 0.3),
           }}
         />
-        <VerticalSpacing size={15} />
+        <VerticalSpacing size={15} /> */}
         <View
           style={{
             flexDirection: "row",
@@ -143,7 +143,7 @@ function Home() {
             }
           />
         </View>
-        <VerticalSpacing />
+        <VerticalSpacing size={5} />
         {courts && (
           <View>
             <HeaderWithTitleandSeeAll

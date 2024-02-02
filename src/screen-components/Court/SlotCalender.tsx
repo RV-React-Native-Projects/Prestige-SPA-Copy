@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { RefObject, useEffect, useRef, useState } from "react";
+import React, { RefObject, memo, useEffect, useRef, useState } from "react";
 import MonthYearPicker from "@components/DateTimePicker/MonthYearPicker";
 import IconButton from "@components/Button/IconButton";
 import svgs from "@common/AllSvgs";
@@ -22,9 +22,10 @@ interface CalendarDate {
   month: string;
 }
 
-const DateCard = (props: any) => {
+const DateCard = memo((props: any) => {
   const { item, onPress, value } = props;
   const { theme } = useAppSelector(state => state.theme);
+
   return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -59,14 +60,21 @@ const DateCard = (props: any) => {
       </View>
     </TouchableOpacity>
   );
-};
+});
 
-export default function SlotCalender(props: any) {
-  const { getSelectedDate } = props;
+interface SlotCalenderProps {
+  getSelectedDate: (date: Date) => void;
+  minimumDate?: Date | null;
+  maximumDate?: Date | null;
+}
+
+function SlotCalender(props: SlotCalenderProps) {
+  const { getSelectedDate, minimumDate = null, maximumDate = null } = props;
+  const { theme } = useAppSelector(state => state.theme);
+
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [dates, setDates] = useState<CalendarDate[] | null>(null);
   const [pickedDate, setPickedDate] = useState<Date | null>(null);
-  const { theme } = useAppSelector(state => state.theme);
   const flatListRef: RefObject<FlatList<any>> = useRef(null);
   const [scrollX] = useState(new Animated.Value(0));
 
@@ -88,7 +96,7 @@ export default function SlotCalender(props: any) {
   };
 
   useEffect(() => {
-    if (getSelectedDate) getSelectedDate(pickedDate);
+    if (pickedDate && getSelectedDate) getSelectedDate(pickedDate);
   }, [pickedDate]);
 
   function getCalendarDates(date: Date) {
@@ -122,22 +130,6 @@ export default function SlotCalender(props: any) {
     setDates(dates);
   }
 
-  function subtractOneMonthFromDate() {
-    const currentDate = moment();
-
-    const currentMonth = currentDate.month();
-    const currentYear = currentDate.year();
-
-    const selectedMonth = moment(selectedDate).month();
-    const selectedYear = moment(selectedDate).year();
-    let selection;
-
-    if (!(selectedMonth === currentMonth && selectedYear === currentYear)) {
-      selection = moment(selectedDate).subtract(1, "months");
-      setSelectedDate(moment(selectedDate).subtract(1, "months").toDate());
-    }
-  }
-
   function modifyMonthFromDate(operation: "subtract" | "add") {
     const currentDate = moment();
     const currentMonth = currentDate.month();
@@ -156,7 +148,7 @@ export default function SlotCalender(props: any) {
   }
 
   useEffect(() => {
-    getCalendarDates(selectedDate);
+    if (selectedDate) getCalendarDates(selectedDate);
     handleScrollToOffset(moderateScale(150, 0.3));
   }, [selectedDate]);
 
@@ -172,14 +164,15 @@ export default function SlotCalender(props: any) {
         }}>
         <MonthYearPicker
           getDate={e => setSelectedDate(e)}
-          value={selectedDate}
+          value={minimumDate || selectedDate}
+          minimumDate={minimumDate}
+          maximumDate={maximumDate}
         />
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            // marginLeft: moderateScale(35, 0.3),
           }}>
           <IconButton
             icon={<svgs.Left height={25} width={25} />}
@@ -205,8 +198,10 @@ export default function SlotCalender(props: any) {
         <Animated.FlatList
           ref={flatListRef}
           data={dates}
+          keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => (
             <DateCard
+              key={index}
               item={item}
               onPress={() => setPickedDate(item?.date)}
               value={pickedDate}
@@ -224,5 +219,7 @@ export default function SlotCalender(props: any) {
     </View>
   );
 }
+
+export default memo(SlotCalender);
 
 const styles = StyleSheet.create({});
