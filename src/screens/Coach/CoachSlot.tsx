@@ -27,7 +27,7 @@ import { useAppNavigation } from "@src/navigation/Navigation";
 import moment from "moment";
 import CoachManager from "@src/services/features/Coach/CoachManager";
 import SlotTime from "@src/cards/Slots/SlotTime";
-import { loadTerms } from "@src/redux/reducers/AppData";
+import { loadTerms } from "@src/redux/reducers/AppDataSlice";
 
 const isIOS = Platform.OS === "ios";
 
@@ -237,7 +237,7 @@ export default function CoachSlot(props: any) {
                   height: 25,
                   alignItems: "center",
                   justifyContent: "center",
-                  borderRadius: 8,
+                  borderRadius: 100,
                   marginVertical: 10,
                 }}>
                 <AppText
@@ -342,6 +342,8 @@ export default function CoachSlot(props: any) {
                 setStartTime(null);
                 setAvailableCourts(null);
               }}
+              minimumDate={null}
+              maximumDate={null}
             />
           )}
           {/*  ============== Select Slot ====== */}

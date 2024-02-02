@@ -18,39 +18,55 @@ import CourtManager from "@features/Court/CourtManager";
 import CoachManager from "@features/Coach/CoachManager";
 import CourtCard from "@cards/Home/CourtCard";
 import CoachCard from "@cards/Home/CoachCard";
+import {
+  setCoachs,
+  setCourts,
+  setLoadingCoachs,
+  setLoadingCourts,
+} from "@src/redux/reducers/AppDataSlice";
 
 function Home() {
   const { userToken, user } = useAppSelector(state => state.user);
-  const [courts, setCourts] = useState<any>(null);
-  const [coachs, setCoachs] = useState<any>(null);
+  const { coachs, courts } = useAppSelector(state => state.appData);
   const { theme } = useAppSelector(state => state.theme);
-  const [searchQuery, setSearchQuery] = useState("");
   const storeDispatch = useAppDispatch();
+
+  const [searchQuery, setSearchQuery] = useState("");
   const navigation = useAppNavigation();
   const appToast = useAppToast();
 
-  function getAllCourts() {
-    CourtManager.getAllCourts(
-      {},
-      res => setCourts(res?.data?.data),
-      err => console.log(err),
-    );
-  }
-
-  function getAllCoach() {
-    CoachManager.getAllCoach(
-      {},
-      res => setCoachs(res?.data?.data),
-      err => console.log(err),
-    );
-  }
-
   useEffect(() => {
-    if (!courts) getAllCourts();
+    if (!courts) {
+      storeDispatch(setLoadingCourts(true));
+      CourtManager.getAllCourts(
+        {},
+        res => {
+          storeDispatch(setCourts(res?.data?.data));
+          storeDispatch(setLoadingCourts(false));
+        },
+        err => {
+          console.log(err);
+          storeDispatch(setLoadingCourts(false));
+        },
+      );
+    }
   }, [!courts]);
 
   useEffect(() => {
-    if (!coachs) getAllCoach();
+    if (!coachs) {
+      storeDispatch(setLoadingCoachs(true));
+      CoachManager.getAllCoach(
+        {},
+        res => {
+          storeDispatch(setCoachs(res?.data?.data));
+          storeDispatch(setLoadingCoachs(false));
+        },
+        err => {
+          console.log(err);
+          storeDispatch(setLoadingCoachs(false));
+        },
+      );
+    }
   }, [!coachs]);
 
   useEffect(() => {
@@ -59,16 +75,13 @@ function Home() {
     }
   }, [userToken]);
 
-  const onPressBookCourt = () => {
+  const gotoCourt = () => {
     navigation.navigate("CourtTab");
   };
 
-  const onPressBookCoach = () => {
+  const gotoCoach = () => {
     navigation.navigate("CoachTab");
   };
-
-  const onPressSeeAllLocation = () => {};
-  const onPressSeeAllCoaches = () => {};
 
   const onPressCourtCard = (data: any) => {
     navigation.navigate("CourtDetail", { data });
@@ -111,7 +124,7 @@ function Home() {
             width="48%"
             height={60}
             fontSize={14}
-            onPress={onPressBookCourt}
+            onPress={gotoCourt}
             color={theme.modalBackgroundColor}
             textColor={theme.textColor}
             borderRadius={10}
@@ -129,7 +142,7 @@ function Home() {
             width="48%"
             height={60}
             fontSize={14}
-            onPress={onPressBookCoach}
+            onPress={gotoCoach}
             color={theme.modalBackgroundColor}
             textColor={theme.textColor}
             borderRadius={10}
@@ -148,7 +161,7 @@ function Home() {
           <View>
             <HeaderWithTitleandSeeAll
               title="Location"
-              // onPressLeft={onPressSeeAllLocation}
+              onPressLeft={gotoCourt}
             />
             <FlatList
               contentContainerStyle={{
@@ -170,10 +183,7 @@ function Home() {
         )}
         {coachs && (
           <View>
-            <HeaderWithTitleandSeeAll
-              title="Coaches"
-              // onPressLeft={onPressSeeAllCoaches}
-            />
+            <HeaderWithTitleandSeeAll title="Coaches" onPressLeft={gotoCoach} />
             <FlatList
               contentContainerStyle={{
                 paddingHorizontal: 15,

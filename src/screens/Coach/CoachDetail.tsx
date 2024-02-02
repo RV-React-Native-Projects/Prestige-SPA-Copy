@@ -25,7 +25,7 @@ import AppText from "@components/Text/AppText";
 import RBSheet from "react-native-raw-bottom-sheet";
 import _, { toNumber, toString } from "lodash";
 import SlotsDuration from "@src/cards/Slots/SlotsDuration";
-import { loadSlots } from "@src/redux/reducers/AppData";
+import { loadSlots } from "@src/redux/reducers/AppDataSlice";
 
 const isIOS = Platform.OS === "ios";
 
@@ -181,7 +181,7 @@ function CoachDetail(props: any) {
                 height: 25,
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: 8,
+                borderRadius: 100,
                 marginVertical: 10,
               }}>
               <AppText

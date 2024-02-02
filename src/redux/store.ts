@@ -7,12 +7,12 @@ import {
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import themeReducer from "@reducers/ThemeSlice";
 import userReducer from "@reducers/UserSlice";
-import appReducer from "@reducers/AppData";
+import appDataReducer from "@src/redux/reducers/AppDataSlice";
 
 export const rootReducer = combineReducers({
   theme: themeReducer,
   user: userReducer,
-  appData: appReducer,
+  appData: appDataReducer,
 });
 
 const store = configureStore({

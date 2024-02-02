@@ -58,6 +58,10 @@ interface appDataSliceProps {
   slots: Slot[] | null;
   loadingTerms: boolean;
   terms: CoachSessionTerm[] | null;
+  loadingCourts: boolean;
+  courts: any | null;
+  loadingCoachs: boolean;
+  coachs: any | null;
 }
 
 const initialState: appDataSliceProps = {
@@ -65,6 +69,10 @@ const initialState: appDataSliceProps = {
   slots: null,
   loadingTerms: false,
   terms: null,
+  loadingCourts: false,
+  courts: null,
+  loadingCoachs: false,
+  coachs: null,
 };
 
 const appDataSlice = createSlice({
@@ -73,6 +81,24 @@ const appDataSlice = createSlice({
   reducers: {
     setAppData: (state, action) => {
       state = action.payload;
+    },
+    setLoadingSlots: (state, action) => {
+      state.loadingSlots = action.payload;
+    },
+    setSlots: (state, action) => {
+      state.slots = action.payload;
+    },
+    setLoadingCourts: (state, action) => {
+      state.loadingCourts = action.payload;
+    },
+    setCourts: (state, action) => {
+      state.courts = action.payload;
+    },
+    setLoadingCoachs: (state, action) => {
+      state.loadingCoachs = action.payload;
+    },
+    setCoachs: (state, action) => {
+      state.coachs = action.payload;
     },
   },
   extraReducers: builder => {
@@ -96,5 +122,13 @@ const appDataSlice = createSlice({
   },
 });
 
-export const { setAppData } = appDataSlice.actions;
+export const {
+  setAppData,
+  setLoadingSlots,
+  setSlots,
+  setLoadingCourts,
+  setCourts,
+  setLoadingCoachs,
+  setCoachs,
+} = appDataSlice.actions;
 export default appDataSlice.reducer;

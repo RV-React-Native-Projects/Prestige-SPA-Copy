@@ -45,7 +45,7 @@ export default function CoachCard(props: CoachCardProps) {
             height: 25,
             alignItems: "center",
             justifyContent: "center",
-            borderRadius: 8,
+            borderRadius: 100,
             marginVertical: 10,
           }}>
           <AppText
