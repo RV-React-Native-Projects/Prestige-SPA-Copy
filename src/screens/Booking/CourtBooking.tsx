@@ -1,11 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   ScrollView,
   Platform,
-  Dimensions,
   Alert,
   Linking,
 } from "react-native";
@@ -27,7 +25,7 @@ import { useAppNavigation } from "@src/navigation/Navigation";
 import AvailableCreditManager from "@features/AvailableCredit/AvailableCreditManager";
 import CourtManager from "@features/Court/CourtManager";
 import { useStripe } from "@stripe/stripe-react-native";
-import { toString } from "lodash";
+import StripeManager from "@features/Stripe/StripeManager";
 
 const isIOS = Platform.OS === "ios";
 
@@ -50,11 +48,6 @@ export default function CourtBooking(props: any) {
 
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
-
-  const STRIPE_SECRET_KEY =
-    "sk_test_51OYm22CjUZPEHdfTtHeIuiBIZt7m2hgtt7Gr23z24qbboU9vhh0gvLcTkLQs2YFiTDGeVhe3LPWrO3ueQYBVUYAB00OUM8egPv";
-  const STRIPE_PUBLISHABLE_KEY =
-    "pk_test_51OYm22CjUZPEHdfTgxLTR9ECnnY2hltvM4Q5BGvNhOkTtxOB2JhEGzUOmlD2vRUvmMS3XxIpap3sqEImyfC7Ps6800J3wELOoL";
 
   const handleDeepLink = useCallback(
     async (url: string | null) => {
@@ -87,38 +80,49 @@ export default function CourtBooking(props: any) {
   }, [handleDeepLink]);
 
   const initializePaymentSheet = async () => {
-    const { error } = await initPaymentSheet({
-      merchantDisplayName: "prestige_spa",
-      customerId: toString(user?.stakeholderID),
-      customerEphemeralKeySecret: STRIPE_SECRET_KEY,
-      paymentIntentClientSecret: STRIPE_PUBLISHABLE_KEY,
-      returnURL: "spoacd://stripe-redirect",
-      allowsDelayedPaymentMethods: true,
-      defaultBillingDetails: {
-        name: user?.username,
+    StripeManager.generatePaymentSheet(
+      { data: { amount: selectedCourt?.["creditTypes.rate"] } },
+      async res => {
+        // console.log("Res===>", JSON.stringify(res, null, 2));
+        const { error } = await initPaymentSheet({
+          merchantDisplayName: "prestige_spa",
+          customerId: res?.data?.customer,
+          customerEphemeralKeySecret: res?.data?.ephemeralKey,
+          paymentIntentClientSecret: res?.data?.paymentIntent,
+          returnURL: "spoacd://stripe-redirect",
+          allowsDelayedPaymentMethods: true,
+          defaultBillingDetails: {
+            name: user?.username,
+            email: user?.email,
+            phone: user?.phoneNumber,
+          },
+        });
+        if (!error) {
+          // setLoading(true);
+        } else {
+          console.log("Error At Initioalizing", error);
+        }
       },
-    });
-    if (!error) {
-      // setLoading(true);
-    }
+
+      err => {
+        setLoading(false);
+        console.log("Error createCredit===>", err);
+      },
+    );
   };
 
   useEffect(() => {
     initializePaymentSheet();
   }, []);
 
-  const onPressProceedToPay = () => {
-    createUserCredit();
-    // openPaymentSheet();
-  };
-
   const openPaymentSheet = async () => {
     const { error } = await presentPaymentSheet();
 
     if (error) {
       Alert.alert(`Error code: ${error.code}`, error.message);
+      console.log("ERR====>", error);
     } else {
-      Alert.alert("Success", "Your order is confirmed!");
+      createUserCredit();
     }
   };
 
@@ -366,7 +370,7 @@ export default function CourtBooking(props: any) {
           fontStyle="600.normal"
           fontSize={16}
           height={50}
-          onPress={() => onPressProceedToPay()}
+          onPress={() => openPaymentSheet()}
         />
       </Animatable.View>
     </AppContainer>

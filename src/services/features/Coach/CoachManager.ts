@@ -18,6 +18,11 @@ interface CourtManager {
     successCallback: (userResponse: any) => void,
     errorCallback: (error: any) => void,
   ) => void;
+  getAllBookingForCustomer: (
+    params: any,
+    successCallback: (userResponse: any) => void,
+    errorCallback: (error: any) => void,
+  ) => void;
 }
 
 const CourtManager = (
@@ -73,10 +78,27 @@ const CourtManager = (
     );
   };
 
+  const getAllBookingForCustomer = (
+    params: any,
+    successCallback: (userResponse: any) => void,
+    errorCallback: (error: any) => void,
+  ) => {
+    CoachResource.getAllBookingForCustomer(params).then(
+      (userResponse: any) => {
+        successCallback(userResponse);
+      },
+      (error: any) => {
+        error = Utils.updateErrorObject(error);
+        errorCallback(error);
+      },
+    );
+  };
+
   return {
     getAllCoach,
     generateBookingSlots,
     CoachBookingCreateOne,
+    getAllBookingForCustomer,
   };
 };
 

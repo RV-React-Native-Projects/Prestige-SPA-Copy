@@ -36,6 +36,8 @@ export default function TabNavigation() {
             routeName === "CoachTab" ||
             routeName === "GroupTab" ||
             routeName === "CalenderTab" ||
+            routeName === "UpcomingBookings" ||
+            routeName === "CompletedBookings" ||
             routeName === "" ||
             routeName === undefined
           ) {
@@ -148,7 +150,7 @@ export default function TabNavigation() {
               fontStyle={focused ? "600.bold" : "400.normal"}
               color={color}
               size={focused ? 14 : 12}>
-              {I18n.t("screen_messages.tab.calender")}
+              {I18n.t("screen_messages.tab.booking")}
             </AppText>
           ),
           tabBarIcon: ({ focused, color, size }) => (

@@ -89,7 +89,8 @@
         "court": "Court",
         "coach": "Coach",
         "group": "Group",
-        "calender": "Calender"
+        "calender": "Calender",
+        "booking": "Bookings"
       },
       "days": {
         "zero": "",

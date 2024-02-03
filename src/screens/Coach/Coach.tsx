@@ -1,30 +1,19 @@
-import React, { useState } from "react";
-import {
-  Dimensions,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import React from "react";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import AppContainer from "@components/Container/AppContainer";
 import { useAppSelector } from "@redux/store";
-import { Card, Searchbar } from "react-native-paper";
+import { Card } from "react-native-paper";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
-import { LettingData } from "@constants/LettingData";
-import PropertyCard from "@cards/Property/PropertyCard";
 import { useAppNavigation } from "@navigation/Navigation";
 import FastImage from "react-native-fast-image";
-import images from "@src/common/AllImages";
-import svgs from "@src/common/AllSvgs";
-import AppText from "@src/components/Text/AppText";
+import images from "@common/AllImages";
+import svgs from "@common/AllSvgs";
+import AppText from "@components/Text/AppText";
 
 const CoachCard = (props: any) => {
   const { theme } = useAppSelector(state => state.theme);
   const { data, onPress } = props;
-  console.log(JSON.stringify(data, null, 2));
 
   return (
     <Card
@@ -76,7 +65,7 @@ const CoachCard = (props: any) => {
               fontStyle="400.bold"
               numberOfLines={2}
               color={theme.paragraph}
-              style={{ paddingHorizontal: 15 }}>
+              style={{ paddingHorizontal: 5 }}>
               Experienc of 4 Years
             </AppText>
           </View>

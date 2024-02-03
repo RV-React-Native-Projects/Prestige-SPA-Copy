@@ -45,7 +45,9 @@ const DateCard = memo((props: any) => {
           justifyContent: "space-between",
           padding: 10,
         }}>
-        <AppText color={value === item?.date ? theme.white : theme.textColor}>
+        <AppText
+          size={12}
+          color={value === item?.date ? theme.white : theme.textColor}>
           {item?.day}
         </AppText>
         <AppText
@@ -54,7 +56,9 @@ const DateCard = memo((props: any) => {
           fontStyle="600.semibold">
           {item.dateNumber}
         </AppText>
-        <AppText color={value === item?.date ? theme.white : theme.textColor}>
+        <AppText
+          fontStyle="500.normal"
+          color={value === item?.date ? theme.white : theme.textColor}>
           {item.month}
         </AppText>
       </View>

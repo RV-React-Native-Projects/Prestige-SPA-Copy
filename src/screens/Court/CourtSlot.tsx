@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AppContainer from "@components/Container/AppContainer";
-import { useAppSelector } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux/store";
 import { moderateScale } from "react-native-size-matters";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import AppText from "@components/Text/AppText";
@@ -29,6 +29,7 @@ import { useAppNavigation } from "@src/navigation/Navigation";
 import CourtManager from "@src/services/features/Court/CourtManager";
 import moment from "moment";
 import SlotsDuration from "@src/cards/Slots/SlotsDuration";
+import { loadSlots } from "@src/redux/reducers/AppDataSlice";
 
 const isIOS = Platform.OS === "ios";
 
@@ -113,6 +114,7 @@ const SlotCard = (props: any) => {
 export default function CourtSlot(props: any) {
   const { theme, isDarkMode } = useAppSelector(state => state.theme);
   const { user } = useAppSelector(state => state.user);
+  const { slots: slotDuration } = useAppSelector(state => state.appData);
   const { data } = props.route.params;
   const [pickedDate, setPickedDate] = useState<Date | null>(null);
   const [slotId, setSlotId] = useState<number | null>(null);
@@ -122,11 +124,12 @@ export default function CourtSlot(props: any) {
   const [availableCourts, setAvailableCourts] = useState<Court[] | null>(null);
   const [courtId, setCourtId] = React.useState<string>("");
   //  ===== API Responses Data=====
-  const [slotDuration, setSlotDuration] = useState<SlotInteface[] | null>(null);
+  // const [slotDuration, setSlotDuration] = useState<SlotInteface[] | null>(null);
   const [slots, setSlots] = useState<TimeSlot[] | null>(null);
 
   const insets = useSafeAreaInsets();
   const navigation = useAppNavigation();
+  const storeDispatch = useAppDispatch();
   const refRBSheet = useRef<RBSheet>(null);
 
   useEffect(() => {
@@ -139,16 +142,7 @@ export default function CourtSlot(props: any) {
 
   useEffect(() => {
     if (!slotDuration) {
-      CourtManager.getSlots(
-        {},
-        res => {
-          // console.log("Slots===>", JSON.stringify(res, null, 2));
-          setSlotDuration(res?.data?.data);
-        },
-        err => {
-          console.log(err);
-        },
-      );
+      storeDispatch(loadSlots());
     }
   }, [!slotDuration]);
 
@@ -174,6 +168,14 @@ export default function CourtSlot(props: any) {
       );
     }
   }, [slotId]);
+
+  useEffect(() => {
+    setSlotId(null);
+    setStartTime(null);
+    setEndTime(null);
+    setAvailableCourts(null);
+    setSlots(null);
+  }, [pickedDate]);
 
   const onPressNext = (data: any) => {
     refRBSheet?.current?.open();
@@ -271,7 +273,13 @@ export default function CourtSlot(props: any) {
                     <SlotsDuration
                       item={item}
                       value={slotId}
-                      onPress={() => setSlotId(item?.slotID)}
+                      onPress={() => {
+                        setSlotId(item?.slotID);
+                        setStartTime(null);
+                        setEndTime(null);
+                        setAvailableCourts(null);
+                        setSlots(null);
+                      }}
                     />
                   )}
                 />

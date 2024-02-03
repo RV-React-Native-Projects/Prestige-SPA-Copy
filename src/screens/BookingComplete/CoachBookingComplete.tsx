@@ -41,8 +41,6 @@ export default function CoachBookingComplete(props: any) {
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
 
-  console.log(JSON.stringify(slot, null, 2));
-
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",

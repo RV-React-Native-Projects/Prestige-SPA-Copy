@@ -7,6 +7,7 @@ const host = "https://nodejsclusters-160185-0.cloudclusters.net";
 interface RequestOptions {
   headers?: Record<string, string>;
   data?: Record<string, any>;
+  id?: string | number;
 }
 
 const CoachResource = ($http: any) => {
@@ -34,10 +35,19 @@ const CoachResource = ($http: any) => {
     return $http.post(url, params?.data, params?.headers);
   };
 
+  const getAllBookingForCustomer = (params: RequestOptions) => {
+    const url = `${host}/api/CoachBooking/findAllForCustomer/${params?.id}`;
+
+    console.log("URL==>", url);
+    console.log("params==>", params);
+    return $http.get(url, params?.data, params?.headers);
+  };
+
   return {
     getAllCoach,
     generateBookingSlots,
     CoachBookingCreateOne,
+    getAllBookingForCustomer,
   };
 };
 

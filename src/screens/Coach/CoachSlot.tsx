@@ -493,7 +493,7 @@ export default function CoachSlot(props: any) {
           }}>
           <AppButton
             Title={I18n.t("screen_messages.button.next")}
-            color={theme.primary}
+            color={theme.secondary}
             fontStyle="600.normal"
             fontSize={16}
             height={50}
