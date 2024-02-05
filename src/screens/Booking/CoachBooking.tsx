@@ -1,4 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import {
   StyleSheet,
   View,
@@ -7,25 +12,35 @@ import {
   Alert,
   Linking,
 } from "react-native";
-import AppContainer from "@src/components/Container/AppContainer";
-import { useAppSelector } from "@src/redux/store";
-import BackButtonWithTitle from "@src/components/Header/BackButtonWithTitle";
+import AppContainer from "@components/Container/AppContainer";
+import { useAppSelector } from "@redux/store";
+import BackButtonWithTitle from "@components/Header/BackButtonWithTitle";
 import * as Animatable from "react-native-animatable";
 import { moderateScale } from "react-native-size-matters";
-import AppButton from "@src/components/Button/AppButton";
+import AppButton from "@components/Button/AppButton";
 import I18n from "i18n-js";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import AppText from "@src/components/Text/AppText";
-import { VerticalSpacing } from "@src/components/Spacing/Spacing";
+import AppText from "@components/Text/AppText";
+import { VerticalSpacing } from "@components/Spacing/Spacing";
 import moment from "moment";
 import FastImage from "react-native-fast-image";
-import images from "@src/common/AllImages";
-import svgs from "@src/common/AllSvgs";
-import { useAppNavigation } from "@src/navigation/Navigation";
+import images from "@common/AllImages";
+import svgs from "@common/AllSvgs";
+import { useAppNavigation } from "@navigation/Navigation";
 import AvailableCreditManager from "@features/AvailableCredit/AvailableCreditManager";
 import { useStripe } from "@stripe/stripe-react-native";
-import { toString } from "lodash";
-import CoachManager from "@src/services/features/Coach/CoachManager";
+import _, { toNumber, toString } from "lodash";
+import CoachManager from "@features/Coach/CoachManager";
+import StripeManager from "@features/Stripe/StripeManager";
+import SlotCard from "@cards/Slots/SlotCard";
+
+interface DateRangeProps {
+  startDate: Date;
+  endDate: Date;
+  startAt: string;
+  endAt: string;
+  slot: number;
+}
 
 const isIOS = Platform.OS === "ios";
 
@@ -41,9 +56,8 @@ export default function CoachBooking(props: any) {
     courtId = null,
     court = null,
     selectedSlot = null,
+    selectedTerm = null,
   } = props.route.params || {};
-
-  console.log("CoachBooking==>", JSON.stringify(slot, null, 2));
 
   const { initPaymentSheet, presentPaymentSheet, handleURLCallback } =
     useStripe();
@@ -51,15 +65,10 @@ export default function CoachBooking(props: any) {
   const { theme } = useAppSelector(state => state.theme);
   const { user } = useAppSelector(state => state.user);
   const [loading, setLoading] = useState<boolean>(false);
+  const [dateRange, setdateRange] = useState<DateRangeProps[] | null>(null);
 
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
-
-  //  @RV take care after Config Creation
-  const STRIPE_SECRET_KEY =
-    "sk_test_51OYm22CjUZPEHdfTtHeIuiBIZt7m2hgtt7Gr23z24qbboU9vhh0gvLcTkLQs2YFiTDGeVhe3LPWrO3ueQYBVUYAB00OUM8egPv";
-  const STRIPE_PUBLISHABLE_KEY =
-    "pk_test_51OYm22CjUZPEHdfTgxLTR9ECnnY2hltvM4Q5BGvNhOkTtxOB2JhEGzUOmlD2vRUvmMS3XxIpap3sqEImyfC7Ps6800J3wELOoL";
 
   const handleDeepLink = useCallback(
     async (url: string | null) => {
@@ -91,31 +100,75 @@ export default function CoachBooking(props: any) {
     return () => deepLinkListener.remove();
   }, [handleDeepLink]);
 
+  useLayoutEffect(() => {
+    if (bookingType === "MULTI") {
+      const dateRange: any = [];
+      const formattedTime = moment(selectedSlot?.startTime, "hh:mm A").format(
+        "HH:mm",
+      );
+
+      let currentDate = moment(pickedDate).add(moment.duration(formattedTime));
+      const targetEndDate = moment(selectedTerm?.endDate).startOf("day");
+
+      while (currentDate.isSameOrBefore(targetEndDate)) {
+        const dateObj = {
+          startDate: currentDate.utc(false).toISOString(),
+          endDate: currentDate
+            .clone()
+            .utc(false)
+            .add(slot?.slot?.slotMinutes, "minutes")
+            .toISOString(),
+          startAt: selectedSlot?.startTime || "",
+          endAt: selectedSlot?.endTime || "",
+          slot: slot?.slot?.slotMinutes || 0,
+        };
+        dateRange.push(dateObj);
+        currentDate = currentDate.add(7, "days");
+      }
+      setdateRange(dateRange);
+    }
+  }, [bookingType === "MULTI"]);
+
   const initializePaymentSheet = async () => {
-    const { error } = await initPaymentSheet({
-      merchantDisplayName: "prestige_spa",
-      customerId: toString(user?.stakeholderID),
-      customerEphemeralKeySecret: STRIPE_SECRET_KEY,
-      paymentIntentClientSecret: STRIPE_PUBLISHABLE_KEY,
-      returnURL: "spoacd://stripe-redirect",
-      allowsDelayedPaymentMethods: true,
-      defaultBillingDetails: {
-        name: user?.username,
-      },
-    });
-    if (!error) {
-      // setLoading(true);
+    const amount =
+      bookingType === "MULTI"
+        ? dateRange && slot?.multiSessionRate * dateRange?.length
+        : slot?.rate;
+    if (amount) {
+      StripeManager.generatePaymentSheet(
+        { data: { amount: amount } },
+        async res => {
+          console.log("Res===>", JSON.stringify(res, null, 2));
+          const { error } = await initPaymentSheet({
+            merchantDisplayName: "prestige_spa",
+            customerId: res?.data?.customer,
+            customerEphemeralKeySecret: res?.data?.ephemeralKey,
+            paymentIntentClientSecret: res?.data?.paymentIntent,
+            returnURL: "spoacd://stripe-redirect",
+            allowsDelayedPaymentMethods: true,
+            defaultBillingDetails: {
+              name: user?.username,
+              email: user?.email,
+              phone: user?.phoneNumber,
+            },
+          });
+          if (!error) {
+            console.log("Payment Sheet Initialized");
+          } else {
+            console.log("Error At Initioalizing", error);
+          }
+        },
+        err => {
+          setLoading(false);
+          console.log("Error At Stripe===>", err);
+        },
+      );
     }
   };
 
   useEffect(() => {
     initializePaymentSheet();
-  }, []);
-
-  const onPressProceedToPay = () => {
-    createUserCredit();
-    // openPaymentSheet();
-  };
+  }, [dateRange]);
 
   const openPaymentSheet = async () => {
     const { error } = await presentPaymentSheet();
@@ -123,7 +176,7 @@ export default function CoachBooking(props: any) {
     if (error) {
       Alert.alert(`Error code: ${error.code}`, error.message);
     } else {
-      Alert.alert("Success", "Your order is confirmed!");
+      createUserCredit();
     }
   };
 
@@ -170,8 +223,6 @@ export default function CoachBooking(props: any) {
       second: 0,
     });
 
-    console.log(startDate, endDate);
-
     let params = {
       data: {
         coachID: coachID,
@@ -202,8 +253,11 @@ export default function CoachBooking(props: any) {
           selectedSlot: selectedSlot,
           slot: slot,
           amountPaid:
-            bookingType === "SINGLE" ? slot?.rate : slot?.multiSessionRate,
+            bookingType === "SINGLE"
+              ? slot?.rate
+              : dateRange && slot?.multiSessionRate * dateRange?.length,
           court: court,
+          dateRange: dateRange,
         });
       },
       err => {
@@ -383,6 +437,21 @@ export default function CoachBooking(props: any) {
           </View>
         </View>
         <VerticalSpacing />
+        {bookingType === "MULTI" && (
+          <View style={{ paddingHorizontal: 15 }}>
+            <AppText fontStyle="500.bold" size={16}>
+              Sessions
+            </AppText>
+            <VerticalSpacing />
+            <View>
+              {dateRange &&
+                _.map(dateRange, (date, index) => (
+                  <SlotCard date={date} key={index} index={index + 1} />
+                ))}
+            </View>
+          </View>
+        )}
+        <VerticalSpacing />
         <View style={{ paddingHorizontal: 15 }}>
           <AppText fontStyle="500.normal" size={16}>
             Bill Details
@@ -411,6 +480,22 @@ export default function CoachBooking(props: any) {
                 {bookingType === "SINGLE" ? slot?.rate : slot?.multiSessionRate}
               </AppText>
             </View>
+            {bookingType === "MULTI" && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: 10,
+                }}>
+                <AppText fontStyle="400.normal" color={theme.gray}>
+                  Total Slots
+                </AppText>
+                <AppText fontStyle="400.normal" color={theme.gray}>
+                  {dateRange?.length}
+                </AppText>
+              </View>
+            )}
             <svgs.Horizontal_Line height={2} width="100%" />
             <View
               style={{
@@ -422,7 +507,9 @@ export default function CoachBooking(props: any) {
               <AppText fontStyle="500.semibold">Total</AppText>
               <AppText fontStyle="600.semibold">
                 AED{" "}
-                {bookingType === "SINGLE" ? slot?.rate : slot?.multiSessionRate}
+                {bookingType === "SINGLE"
+                  ? slot?.rate
+                  : dateRange && slot?.multiSessionRate * dateRange?.length}
               </AppText>
             </View>
           </View>
@@ -443,7 +530,7 @@ export default function CoachBooking(props: any) {
           fontStyle="600.normal"
           fontSize={16}
           height={50}
-          onPress={() => onPressProceedToPay()}
+          onPress={() => openPaymentSheet()}
         />
       </Animatable.View>
     </AppContainer>

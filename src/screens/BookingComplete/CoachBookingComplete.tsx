@@ -21,6 +21,8 @@ import FastImage from "react-native-fast-image";
 import images from "@src/common/AllImages";
 import svgs from "@src/common/AllSvgs";
 import moment from "moment";
+import SlotCard from "@src/cards/Slots/SlotCard";
+import _ from "lodash";
 
 const isIOS = Platform.OS === "ios";
 const windowHeight = Dimensions.get("window").height;
@@ -35,6 +37,7 @@ export default function CoachBookingComplete(props: any) {
     slot = null,
     amountPaid = null,
     court = null,
+    dateRange = null,
   } = props.route.params || {};
 
   const { theme } = useAppSelector(state => state.theme);
@@ -107,17 +110,47 @@ export default function CoachBookingComplete(props: any) {
               <AppText fontStyle="500.normal"># {bookingId}</AppText>
             </View>
             <VerticalSpacing />
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}>
-              <AppText fontStyle="400.normal">Date</AppText>
-              <AppText fontStyle="500.normal">
-                {moment(date).format("DD MMM YY")}
-              </AppText>
-            </View>
+            {bookingType === "MULTI" && dateRange?.length > 0 ? (
+              <>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}>
+                  <AppText fontStyle="400.normal">Start Date</AppText>
+                  <AppText fontStyle="500.normal">
+                    {moment(dateRange[0]?.startDate).format("DD MMM YY")}
+                  </AppText>
+                </View>
+                <VerticalSpacing />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}>
+                  <AppText fontStyle="400.normal">End Date</AppText>
+                  <AppText fontStyle="500.normal">
+                    {moment(dateRange[dateRange?.length - 1]?.endDate).format(
+                      "DD MMM YY",
+                    )}
+                  </AppText>
+                </View>
+              </>
+            ) : (
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}>
+                <AppText fontStyle="400.normal">Date</AppText>
+                <AppText fontStyle="500.normal">
+                  {moment(date).format("DD MMM YY")}
+                </AppText>
+              </View>
+            )}
             <VerticalSpacing />
             <View
               style={{
@@ -144,6 +177,23 @@ export default function CoachBookingComplete(props: any) {
             </View>
           </View>
         </View>
+        {dateRange && (
+          <View
+            style={{
+              backgroundColor: theme.modalBackgroundColor,
+              padding: 10,
+            }}>
+            <VerticalSpacing />
+            {_.map(dateRange, (date, index) => (
+              <SlotCard
+                backgroundColor="#FFF"
+                date={date}
+                key={index}
+                index={index + 1}
+              />
+            ))}
+          </View>
+        )}
         <View
           style={{
             padding: 15,

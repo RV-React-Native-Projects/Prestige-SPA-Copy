@@ -177,6 +177,7 @@ export default function CoachSlot(props: any) {
       courtId: courtId,
       court: court,
       selectedSlot: selectedSlot,
+      selectedTerm: selectedTerm,
     });
   };
 

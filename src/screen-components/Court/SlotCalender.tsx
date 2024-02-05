@@ -156,18 +156,17 @@ function SlotCalender(props: SlotCalenderProps) {
     [selectedDate],
   );
 
-  useEffect(() => {
-    if (minimumDate) {
-      setMonthDate(minimumDate);
-    } else setMonthDate(selectedDate);
-  }, [selectedDate, minimumDate]);
+  //  No Use for Now
+  // useEffect(() => {
+  //   if (minimumDate) {
+  //     setMonthDate(minimumDate);
+  //   } else setMonthDate(selectedDate);
+  // }, [selectedDate, minimumDate]);
 
   useEffect(() => {
     if (selectedDate) getCalendarDates(selectedDate);
     handleScrollToOffset(moderateScale(150, 0.3));
   }, [selectedDate]);
-
-  console.log("MONTH Date=======>", monthDate, selectedDate);
 
   return (
     <View>
@@ -181,7 +180,7 @@ function SlotCalender(props: SlotCalenderProps) {
         }}>
         <MonthYearPicker
           getDate={e => setSelectedDate(e)}
-          value={minimumDate ?? selectedDate}
+          value={selectedDate}
           minimumDate={minimumDate}
           maximumDate={maximumDate}
         />

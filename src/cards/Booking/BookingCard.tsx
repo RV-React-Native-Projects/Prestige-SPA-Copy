@@ -41,10 +41,10 @@ function BookingCard(props: BookingCardProps) {
       onPress={onPress}
       style={{
         width: "100%",
-        backgroundColor: theme.appBackgroundColor,
+        backgroundColor: theme.modalBackgroundColor,
         borderRadius: 10,
-        ...theme.light_shadow,
         padding: 15,
+        ...theme.light_shadow,
       }}>
       <View
         style={{
