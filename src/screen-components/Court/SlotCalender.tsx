@@ -5,7 +5,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { RefObject, memo, useEffect, useRef, useState } from "react";
+import React, {
+  RefObject,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import MonthYearPicker from "@components/DateTimePicker/MonthYearPicker";
 import IconButton from "@components/Button/IconButton";
 import svgs from "@common/AllSvgs";
@@ -77,6 +84,7 @@ function SlotCalender(props: SlotCalenderProps) {
   const { theme } = useAppSelector(state => state.theme);
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [monthDate, setMonthDate] = useState<Date>(new Date());
   const [dates, setDates] = useState<CalendarDate[] | null>(null);
   const [pickedDate, setPickedDate] = useState<Date | null>(null);
   const flatListRef: RefObject<FlatList<any>> = useRef(null);
@@ -88,11 +96,6 @@ function SlotCalender(props: SlotCalenderProps) {
       duration: 500,
       useNativeDriver: true,
     }).start();
-
-    //  This is If u want to Show Scroll Animation
-    // setTimeout(() => {
-    //   flatListRef.current?.scrollToOffset({ offset, animated: true });
-    // }, 1000);
 
     setTimeout(() => {
       flatListRef.current?.scrollToOffset({ offset: -offset, animated: true });
@@ -130,31 +133,41 @@ function SlotCalender(props: SlotCalenderProps) {
         month: monthName,
       });
     }
-
     setDates(dates);
   }
 
-  function modifyMonthFromDate(operation: "subtract" | "add") {
-    const currentDate = moment();
-    const currentMonth = currentDate.month();
-    const currentYear = currentDate.year();
+  const modifyMonthFromDate = useCallback(
+    (operation: "subtract" | "add") => {
+      const currentDate = moment();
+      const currentMonth = currentDate.month();
+      const currentYear = currentDate.year();
 
-    const selectedMonth = moment(selectedDate).month();
-    const selectedYear = moment(selectedDate).year();
+      const selectedMonth = moment(selectedDate).month();
+      const selectedYear = moment(selectedDate).year();
 
-    if (operation === "subtract") {
-      if (!(selectedMonth === currentMonth && selectedYear === currentYear)) {
-        setSelectedDate(moment(selectedDate).subtract(1, "months").toDate());
+      if (operation === "subtract") {
+        if (!(selectedMonth === currentMonth && selectedYear === currentYear)) {
+          setSelectedDate(moment(selectedDate).subtract(1, "months").toDate());
+        }
+      } else if (operation === "add") {
+        setSelectedDate(moment(selectedDate).add(1, "months").toDate());
       }
-    } else if (operation === "add") {
-      setSelectedDate(moment(selectedDate).add(1, "months").toDate());
-    }
-  }
+    },
+    [selectedDate],
+  );
+
+  useEffect(() => {
+    if (minimumDate) {
+      setMonthDate(minimumDate);
+    } else setMonthDate(selectedDate);
+  }, [selectedDate, minimumDate]);
 
   useEffect(() => {
     if (selectedDate) getCalendarDates(selectedDate);
     handleScrollToOffset(moderateScale(150, 0.3));
   }, [selectedDate]);
+
+  console.log("MONTH Date=======>", monthDate, selectedDate);
 
   return (
     <View>
@@ -168,7 +181,7 @@ function SlotCalender(props: SlotCalenderProps) {
         }}>
         <MonthYearPicker
           getDate={e => setSelectedDate(e)}
-          value={minimumDate || selectedDate}
+          value={minimumDate ?? selectedDate}
           minimumDate={minimumDate}
           maximumDate={maximumDate}
         />

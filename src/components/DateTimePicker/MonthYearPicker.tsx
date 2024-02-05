@@ -5,17 +5,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import MonthPicker from "react-native-month-year-picker";
 import { moderateScale } from "react-native-size-matters";
 import AppText from "@components/Text/AppText";
 import { useAppSelector } from "@redux/store";
 import moment from "moment";
 import svgs from "@common/AllSvgs";
-import {
-  HorizontalSpacing,
-  VerticalSpacing,
-} from "@components/Spacing/Spacing";
 import RBSheet from "react-native-raw-bottom-sheet";
 
 const isIOS = Platform.OS === "ios";
@@ -27,18 +23,18 @@ interface MonthYearPickerProps {
   maximumDate?: Date | null;
 }
 
-export default function MonthYearPicker(props: MonthYearPickerProps) {
+function MonthYearPicker(props: MonthYearPickerProps) {
   let currentDate = new Date();
-  const {
-    getDate,
-    value,
-    minimumDate = new Date(),
-    maximumDate = new Date(
+  const { getDate, value, minimumDate = null, maximumDate = null } = props;
+
+  var minDate = minimumDate ?? new Date();
+  var maxDate =
+    maximumDate ??
+    new Date(
       currentDate.getFullYear() + 5,
       currentDate.getMonth(),
       currentDate.getDate(),
-    ),
-  } = props;
+    );
 
   const { theme } = useAppSelector(state => state.theme);
   const [date, setDate] = useState(value || new Date());
@@ -59,17 +55,38 @@ export default function MonthYearPicker(props: MonthYearPickerProps) {
   );
 
   useEffect(() => {
-    if (value) {
-      if (!!minimumDate && minimumDate < new Date()) {
-        setDate(new Date());
-      } else setDate(value);
-    }
-  }, [value]);
-
-  useEffect(() => {
     if (getDate) getDate(date);
   }, [date]);
 
+  useEffect(() => {
+    if (value) setDate(value);
+  }, [value]);
+
+  // useEffect(() => {
+  //   const currentDate = new Date();
+  //   if (minimumDate) {
+  //     console.log("IS First");
+  //     if (minimumDate > currentDate) {
+  //       console.log("IS First of First", minimumDate);
+  //       setDate(minimumDate);
+  //     } else {
+  //       console.log("IS 2nd of First", minimumDate, currentDate);
+  //       setDate(currentDate);
+  //     }
+  //   } else if (value) {
+  //     console.log("IS 3rd ", value, currentDate);
+  //     setDate(value);
+  //   } else {
+  //     console.log("IS 4th", value, currentDate);
+  //     setDate(currentDate);
+  //   }
+  // }, [
+  //   minimumDate,
+  //   // (minimumDate && minimumDate > currentDate) ||
+  //   //   (minimumDate && minimumDate < currentDate),
+  // ]);
+
+  console.log("MIN + MAX===>", value);
   return (
     <>
       <TouchableOpacity
@@ -123,8 +140,8 @@ export default function MonthYearPicker(props: MonthYearPickerProps) {
               <MonthPicker
                 onChange={onValueChange}
                 value={date}
-                minimumDate={minimumDate ?? undefined}
-                maximumDate={maximumDate ?? undefined}
+                minimumDate={minDate}
+                maximumDate={maxDate}
                 okButton="Done"
                 cancelButton="Cancle"
                 autoTheme={true}
@@ -138,8 +155,8 @@ export default function MonthYearPicker(props: MonthYearPickerProps) {
           <MonthPicker
             onChange={onValueChange}
             value={date}
-            minimumDate={minimumDate ?? undefined}
-            maximumDate={maximumDate ?? undefined}
+            minimumDate={minDate}
+            maximumDate={maxDate}
             okButton="Done"
             cancelButton="Cancle"
             autoTheme={true}
@@ -149,5 +166,7 @@ export default function MonthYearPicker(props: MonthYearPickerProps) {
     </>
   );
 }
+
+export default MonthYearPicker;
 
 const styles = StyleSheet.create({});

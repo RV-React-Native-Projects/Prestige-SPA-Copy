@@ -136,6 +136,7 @@ export default function CoachSlot(props: any) {
   }, [terms]);
 
   useEffect(() => {
+    const controller = new AbortController();
     if (slotId && pickedDate) {
       let parsms = {
         data: {
@@ -156,6 +157,7 @@ export default function CoachSlot(props: any) {
         },
       );
     }
+    return () => controller.abort();
   }, [slotId, pickedDate]);
 
   const onPressNext = () => {
@@ -261,7 +263,7 @@ export default function CoachSlot(props: any) {
             </View>
           </View>
         </View>
-        {bookingType === "MULTI" && (
+        {bookingType === "MULTI" ? (
           <>
             <View style={{ paddingHorizontal: 15 }}>
               <VerticalSpacing />
@@ -321,31 +323,31 @@ export default function CoachSlot(props: any) {
               )}
             />
           </>
+        ) : null}
+        <VerticalSpacing size={5} />
+        {bookingType === "MULTI" ? (
+          <SlotCalender
+            getSelectedDate={(date: Date) => {
+              setPickedDate(date);
+              setStartTime(null);
+              setAvailableCourts(null);
+            }}
+            minimumDate={
+              selectedTerm && moment(selectedTerm?.startDate).toDate()
+            }
+            maximumDate={selectedTerm && moment(selectedTerm?.endDate).toDate()}
+          />
+        ) : (
+          <SlotCalender
+            getSelectedDate={(date: Date) => {
+              setPickedDate(date);
+              setStartTime(null);
+              setAvailableCourts(null);
+            }}
+          />
         )}
         <VerticalSpacing />
         <View>
-          {/*  ============== Slot Calendr Only ====== */}
-          {bookingType === "MULTI" ? (
-            <SlotCalender
-              getSelectedDate={(date: Date) => {
-                setPickedDate(date);
-                setStartTime(null);
-                setAvailableCourts(null);
-              }}
-              minimumDate={moment(selectedTerm?.startDate).toDate()}
-              maximumDate={moment(selectedTerm?.endDate).toDate()}
-            />
-          ) : (
-            <SlotCalender
-              getSelectedDate={(date: Date) => {
-                setPickedDate(date);
-                setStartTime(null);
-                setAvailableCourts(null);
-              }}
-              minimumDate={null}
-              maximumDate={null}
-            />
-          )}
           {/*  ============== Select Slot ====== */}
           {slots && (
             <>
@@ -493,7 +495,7 @@ export default function CoachSlot(props: any) {
           }}>
           <AppButton
             Title={I18n.t("screen_messages.button.next")}
-            color={theme.secondary}
+            color={theme.primary}
             fontStyle="600.normal"
             fontSize={16}
             height={50}
