@@ -23,6 +23,7 @@ import LocationV2 from "@assets/svgs/LocationV2";
 import LogoWithTitle from "@assets/svgs/LogoWithTitle";
 import MainLogo from "@assets/svgs/MainLogo";
 import MapCustomIcon from "@assets/svgs/MapCustomIcon";
+import NoBooking from "@assets/svgs/NoBooking";
 import Rent from "@assets/svgs/Rent";
 import Restaurants from "@assets/svgs/Restaurants";
 import Right from "@assets/svgs/Right";
@@ -63,6 +64,7 @@ const svgs: any = {
   LogoWithTitle,
   MainLogo,
   MapCustomIcon,
+  NoBooking,
   Rent,
   Restaurants,
   Right,

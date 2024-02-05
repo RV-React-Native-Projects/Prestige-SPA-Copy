@@ -1,68 +1,26 @@
-import React, { useEffect, useState } from "react";
-import {
-  Dimensions,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import React, { useCallback } from "react";
+import { StyleSheet } from "react-native";
 import AppContainer from "@components/Container/AppContainer";
-import { useAppSelector } from "@redux/store";
-import { Searchbar } from "react-native-paper";
-import { VerticalSpacing } from "@components/Spacing/Spacing";
-import { moderateScale } from "react-native-size-matters";
-import { LettingData } from "@constants/LettingData";
-import PropertyCard from "@cards/Property/PropertyCard";
-import { useAppNavigation } from "@navigation/Navigation";
-import CoachManager from "@src/services/features/Coach/CoachManager";
+import { useAppDispatch, useAppSelector } from "@redux/store";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import UpcomingBookings from "./UpcomingBookings";
 import CompletedBookings from "./CompletedBookings";
-import moment from "moment";
+import { loadBooking } from "@reducers/AppDataSlice";
+import { useFocusEffect } from "@react-navigation/native";
 
 const TopTab = createMaterialTopTabNavigator();
 
 function CalenderScreen() {
   const { theme } = useAppSelector(state => state.theme);
   const { user } = useAppSelector(state => state.user);
-  const [bookings, setBookings] = useState<any | null>(null);
-  const [upComing, setUpComing] = useState<any | null>(null);
-  const [completed, setCompleted] = useState<any | null>(null);
+  const { bookings } = useAppSelector(state => state.appData);
+  const storeDispatch = useAppDispatch();
 
-  function getAllBookings() {
-    CoachManager.getAllBookingForCustomer(
-      { id: user?.stakeholderID },
-      res => setBookings(res?.data?.data),
-      err => console.log(err),
-    );
-  }
-
-  useEffect(() => {
-    if (!bookings) getAllBookings();
-  }, [!bookings]);
-
-  useEffect(() => {
-    const today = moment().startOf("day");
-    if (bookings && bookings.length > 0) {
-      const filteredUpcoming = bookings.filter((booking: any) => {
-        const bookingDate = moment(booking.bookingDate);
-        return bookingDate.isSameOrAfter(today, "day");
-      });
-      filteredUpcoming.sort((a: any, b: any) =>
-        moment(a.bookingDate).diff(moment(b.bookingDate)),
-      );
-      setUpComing(filteredUpcoming);
-      const completedBookings = bookings.filter((booking: any) => {
-        const bookingDate = moment(booking.bookingDate);
-        return bookingDate.isBefore(today, "day");
-      });
-      completedBookings.sort((a: any, b: any) =>
-        moment(a.bookingDate).diff(moment(b.bookingDate)),
-      );
-      setCompleted(completedBookings);
-    }
-  }, [bookings]);
+  useFocusEffect(
+    useCallback(() => {
+      if (!bookings && user) storeDispatch(loadBooking(user?.stakeholderID));
+    }, [!bookings]),
+  );
 
   return (
     <AppContainer
@@ -88,7 +46,6 @@ function CalenderScreen() {
           }}
           name="UpcomingBookings"
           component={UpcomingBookings}
-          initialParams={{ upComing: upComing }}
         />
         <TopTab.Screen
           options={{
@@ -96,7 +53,6 @@ function CalenderScreen() {
           }}
           name="CompletedBookings"
           component={CompletedBookings}
-          initialParams={{ completed: completed }}
         />
       </TopTab.Navigator>
     </AppContainer>

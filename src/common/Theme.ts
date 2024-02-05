@@ -200,8 +200,15 @@ const Colors = {
   logout: "#FF3D00",
   green: "#007639",
 
+  completedLight: "#ECFDF3",
+  completed: "#037847",
+  ongoingLight: "#FFF3E3",
+  ongoing: "#EB8600",
+  cancelLight: "#FDECEC",
+  cancel: "#EF3F49",
+
   // Text Color
-  title: "#282828",
+  title: "#394153",
   header: "#000000",
   subHeader: "#5A5A5A",
   paragraph: "#6D6D6D",

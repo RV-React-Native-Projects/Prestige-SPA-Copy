@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { BookingTypes } from "@src/Types/BookingTypes";
+import CoachManager from "@src/services/features/Coach/CoachManager";
 import CourtManager from "@src/services/features/Court/CourtManager";
 import TermManager from "@src/services/features/Term/TermManager";
+import moment from "moment";
 
 export const loadSlots = createAsyncThunk("appdata/loadSlots", async () => {
   const response = await new Promise((resolve, reject) => {
@@ -36,6 +39,26 @@ export const loadTerms = createAsyncThunk("appdata/loadTerms", async () => {
   return response as CoachSessionTerm[];
 });
 
+export const loadBooking = createAsyncThunk(
+  "appdata/loadBooking",
+  async (userId: number) => {
+    const response = await new Promise((resolve, reject) => {
+      CoachManager.getAllBookingForCustomer(
+        { id: userId },
+        async res => {
+          const data = await res?.data?.data;
+          resolve(data);
+        },
+        async err => {
+          console.log(err);
+          reject(err);
+        },
+      );
+    });
+    return response as BookingTypes[];
+  },
+);
+
 interface Slot {
   slotID: number;
   createdAt: string;
@@ -62,6 +85,10 @@ interface appDataSliceProps {
   courts: any | null;
   loadingCoachs: boolean;
   coachs: any | null;
+  loadingBookings: boolean;
+  bookings: BookingTypes[] | null;
+  upComingBookings: BookingTypes[] | null;
+  completedBookings: BookingTypes[] | null;
 }
 
 const initialState: appDataSliceProps = {
@@ -73,6 +100,10 @@ const initialState: appDataSliceProps = {
   courts: null,
   loadingCoachs: false,
   coachs: null,
+  loadingBookings: false,
+  bookings: null,
+  upComingBookings: null,
+  completedBookings: null,
 };
 
 const appDataSlice = createSlice({
@@ -100,6 +131,29 @@ const appDataSlice = createSlice({
     setCoachs: (state, action) => {
       state.coachs = action.payload;
     },
+    setLoadingBookings: (state, action) => {
+      state.loadingBookings = action.payload;
+    },
+    setBookings: (state, action) => {
+      const today = moment().startOf("day");
+      state.bookings = action.payload;
+      const filteredUpcoming = action.payload.filter((booking: any) => {
+        const bookingDate = moment(booking.bookingDate);
+        return bookingDate.isSameOrAfter(today, "day");
+      });
+      filteredUpcoming.sort((a: any, b: any) =>
+        moment(a.bookingDate).diff(moment(b.bookingDate)),
+      );
+      state.upComingBookings = filteredUpcoming;
+      const completedBookings = action.payload.filter((booking: any) => {
+        const bookingDate = moment(booking.bookingDate);
+        return bookingDate.isBefore(today, "day");
+      });
+      completedBookings.sort((a: any, b: any) =>
+        moment(a.bookingDate).diff(moment(b.bookingDate)),
+      );
+      state.completedBookings = completedBookings;
+    },
   },
   extraReducers: builder => {
     builder
@@ -115,9 +169,32 @@ const appDataSlice = createSlice({
         state.loadingTerms = true;
       })
       .addCase(loadTerms.fulfilled, (state, action) => {
-        console.log("At Data", action?.payload);
         state.loadingTerms = false;
         state.terms = action.payload;
+      })
+      .addCase(loadBooking.pending, state => {
+        state.loadingBookings = true;
+      })
+      .addCase(loadBooking.fulfilled, (state, action) => {
+        const today = moment().startOf("day");
+        state.loadingBookings = false;
+        state.bookings = action.payload;
+        const filteredUpcoming = action.payload.filter((booking: any) => {
+          const bookingDate = moment(booking.bookingDate);
+          return bookingDate.isSameOrAfter(today, "day");
+        });
+        filteredUpcoming.sort((a: any, b: any) =>
+          moment(a.bookingDate).diff(moment(b.bookingDate)),
+        );
+        state.upComingBookings = filteredUpcoming;
+        const completedBookings = action.payload.filter((booking: any) => {
+          const bookingDate = moment(booking.bookingDate);
+          return bookingDate.isBefore(today, "day");
+        });
+        completedBookings.sort((a: any, b: any) =>
+          moment(b.bookingDate).diff(moment(a.bookingDate)),
+        );
+        state.completedBookings = completedBookings;
       });
   },
 });
@@ -130,5 +207,7 @@ export const {
   setCourts,
   setLoadingCoachs,
   setCoachs,
+  setLoadingBookings,
+  setBookings,
 } = appDataSlice.actions;
 export default appDataSlice.reducer;
