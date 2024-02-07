@@ -59,9 +59,9 @@ export default function TabNavigation() {
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText
-              fontStyle={focused ? "600.bold" : "400.normal"}
+              fontStyle={focused ? "500.medium" : "400.normal"}
               color={color}
-              size={focused ? 14 : 12}>
+              size={focused ? 13 : 12}>
               {I18n.t("screen_messages.tab.home")}
             </AppText>
           ),
@@ -81,9 +81,9 @@ export default function TabNavigation() {
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText
-              fontStyle={focused ? "600.bold" : "400.normal"}
+              fontStyle={focused ? "500.medium" : "400.normal"}
               color={color}
-              size={focused ? 14 : 12}>
+              size={focused ? 13 : 12}>
               {I18n.t("screen_messages.tab.court")}
             </AppText>
           ),
@@ -103,9 +103,9 @@ export default function TabNavigation() {
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText
-              fontStyle={focused ? "600.bold" : "400.normal"}
+              fontStyle={focused ? "500.medium" : "400.normal"}
               color={color}
-              size={focused ? 14 : 12}>
+              size={focused ? 13 : 12}>
               {I18n.t("screen_messages.tab.coach")}
             </AppText>
           ),
@@ -125,9 +125,9 @@ export default function TabNavigation() {
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText
-              fontStyle={focused ? "600.bold" : "400.normal"}
+              fontStyle={focused ? "500.medium" : "400.normal"}
               color={color}
-              size={focused ? 14 : 12}>
+              size={focused ? 13 : 12}>
               {I18n.t("screen_messages.tab.group")}
             </AppText>
           ),
@@ -147,9 +147,9 @@ export default function TabNavigation() {
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText
-              fontStyle={focused ? "600.bold" : "400.normal"}
+              fontStyle={focused ? "500.medium" : "400.normal"}
               color={color}
-              size={focused ? 14 : 12}>
+              size={focused ? 13 : 12}>
               {I18n.t("screen_messages.tab.booking")}
             </AppText>
           ),

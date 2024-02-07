@@ -49,7 +49,7 @@ const Login = () => {
   const { setStorage } = useEncryptedStorage();
 
   const formInitialvalue = {
-    email: "mohsinali694@gmail.com",
+    email: "fatima.waseem@dxfuturetech.com",
     password: "12345",
   };
 

@@ -177,23 +177,7 @@ export default function CoachBookingComplete(props: any) {
             </View>
           </View>
         </View>
-        {dateRange && (
-          <View
-            style={{
-              backgroundColor: theme.modalBackgroundColor,
-              padding: 10,
-            }}>
-            <VerticalSpacing />
-            {_.map(dateRange, (date, index) => (
-              <SlotCard
-                backgroundColor="#FFF"
-                date={date}
-                key={index}
-                index={index + 1}
-              />
-            ))}
-          </View>
-        )}
+
         <View
           style={{
             padding: 15,
@@ -316,6 +300,23 @@ export default function CoachBookingComplete(props: any) {
             </View>
           </View>
         </View>
+        {dateRange && (
+          <View
+            style={{
+              backgroundColor: theme.modalBackgroundColor,
+              padding: 10,
+            }}>
+            <VerticalSpacing />
+            {_.map(dateRange, (date, index) => (
+              <SlotCard
+                backgroundColor="#FFF"
+                date={date}
+                key={index}
+                index={index + 1}
+              />
+            ))}
+          </View>
+        )}
         <View
           style={{
             padding: 15,

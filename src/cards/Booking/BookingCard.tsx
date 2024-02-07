@@ -57,8 +57,8 @@ function BookingCard(props: BookingCardProps) {
             Date
           </AppText>
           <AppText fontStyle="500.medium" size={12}>
-            {moment(startTime).format("DD MMM, ddd")} -{" "}
-            {moment(endTime).format("DD MMM, ddd")}
+            {moment(startTime).utc(false).format("DD MMM, ddd")} -{" "}
+            {moment(endTime).utc(false).format("DD MMM, ddd")}
           </AppText>
         </View>
         <View>
@@ -66,8 +66,8 @@ function BookingCard(props: BookingCardProps) {
             Time
           </AppText>
           <AppText fontStyle="500.medium" size={12}>
-            {moment(startTime).format("hh:mm A")} -{" "}
-            {moment(endTime).format("hh:mm A")}
+            {moment(startTime).utc(false).format("hh:mm A")} -{" "}
+            {moment(endTime).utc(false).format("hh:mm A")}
           </AppText>
         </View>
       </View>
@@ -162,7 +162,7 @@ function BookingCard(props: BookingCardProps) {
           <AppText style={{ paddingBottom: 5 }} size={12}>
             Booking ID
           </AppText>
-          <AppText fontStyle="500.medium" size={12}>
+          <AppText selectable fontStyle="500.medium" size={12}>
             # {bookingNumber}
           </AppText>
         </View>

@@ -29,14 +29,15 @@ import svgs from "@common/AllSvgs";
 import { useAppNavigation } from "@navigation/Navigation";
 import AvailableCreditManager from "@features/AvailableCredit/AvailableCreditManager";
 import { useStripe } from "@stripe/stripe-react-native";
-import _, { toNumber, toString } from "lodash";
+import _ from "lodash";
 import CoachManager from "@features/Coach/CoachManager";
 import StripeManager from "@features/Stripe/StripeManager";
 import SlotCard from "@cards/Slots/SlotCard";
+import useAppToast from "@components/Alert/AppToast";
 
 interface DateRangeProps {
-  startDate: Date;
-  endDate: Date;
+  startDate: string | moment.Moment | Date;
+  endDate: string | moment.Moment | Date;
   startAt: string;
   endAt: string;
   slot: number;
@@ -64,6 +65,7 @@ export default function CoachBooking(props: any) {
 
   const { theme } = useAppSelector(state => state.theme);
   const { user } = useAppSelector(state => state.user);
+  const appToast = useAppToast();
   const [loading, setLoading] = useState<boolean>(false);
   const [dateRange, setdateRange] = useState<DateRangeProps[] | null>(null);
 
@@ -100,32 +102,38 @@ export default function CoachBooking(props: any) {
     return () => deepLinkListener.remove();
   }, [handleDeepLink]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (bookingType === "MULTI") {
-      const dateRange: any = [];
+      const dateRange: DateRangeProps[] = [];
       const formattedTime = moment(selectedSlot?.startTime, "hh:mm A").format(
         "HH:mm",
       );
+      const formattedEndTime = moment(selectedSlot?.endTime, "hh:mm A").format(
+        "HH:mm",
+      );
 
-      let currentDate = moment(pickedDate).add(moment.duration(formattedTime));
-      const targetEndDate = moment(selectedTerm?.endDate).startOf("day");
+      let currentDate = moment
+        .utc(pickedDate)
+        .add(moment.duration(formattedTime));
+      const targetEndDate = moment
+        .utc(selectedTerm?.endDate)
+        .add(moment.duration(formattedEndTime));
 
       while (currentDate.isSameOrBefore(targetEndDate)) {
-        const dateObj = {
+        dateRange.push({
           startDate: currentDate.utc(false).toISOString(),
           endDate: currentDate
             .clone()
-            .utc(false)
             .add(slot?.slot?.slotMinutes, "minutes")
             .toISOString(),
           startAt: selectedSlot?.startTime || "",
           endAt: selectedSlot?.endTime || "",
           slot: slot?.slot?.slotMinutes || 0,
-        };
-        dateRange.push(dateObj);
-        currentDate = currentDate.add(7, "days");
+        });
+        currentDate.add(7, "days");
       }
-      setdateRange(dateRange);
+
+      dateRange ? setdateRange(dateRange) : setdateRange(null);
     }
   }, [bookingType === "MULTI"]);
 
@@ -174,7 +182,14 @@ export default function CoachBooking(props: any) {
     const { error } = await presentPaymentSheet();
 
     if (error) {
-      Alert.alert(`Error code: ${error.code}`, error.message);
+      appToast.showToast({
+        title: error?.code,
+        description: error?.message,
+        status: "warning",
+        duration: 3000,
+        placement: "top",
+        variant: "top-accent",
+      });
     } else {
       createUserCredit();
     }
@@ -208,6 +223,10 @@ export default function CoachBooking(props: any) {
   function createOneBooking() {
     setLoading(true);
     const parsedDate = moment(pickedDate).utc(false);
+    const parsedEndDate =
+      bookingType === "MULTI"
+        ? selectedTerm && moment.utc(selectedTerm?.endDate)
+        : moment(pickedDate).utc(false);
     const startedAtTime = moment(selectedSlot?.startTime, "hh:mm a");
     const completedAtTime = moment(selectedSlot?.endTime, "hh:mm a");
 
@@ -217,7 +236,7 @@ export default function CoachBooking(props: any) {
       second: 0,
     });
 
-    const endDate = parsedDate.clone().set({
+    const endDate = parsedEndDate.clone().set({
       hour: completedAtTime.get("hour"),
       minute: completedAtTime.get("minute"),
       second: 0,
@@ -238,6 +257,9 @@ export default function CoachBooking(props: any) {
         amount: bookingType === "SINGLE" ? slot?.rate : slot?.multiSessionRate,
         creditTypeID: creditTypeID,
         email: user?.email,
+        coachSessionTermID:
+          bookingType === "MULTI" ? selectedTerm?.CoachSessionTermID : null,
+        termName: bookingType === "MULTI" ? selectedTerm?.termName : null,
       },
     };
     CoachManager.CoachBookingCreateOne(
@@ -369,7 +391,7 @@ export default function CoachBooking(props: any) {
                     style={{}}
                     fontStyle="500.medium"
                     color={theme.white}>
-                    Tire {data?.coachCategoryID}
+                    Tier {data?.coachCategoryID}
                   </AppText>
                 </View>
                 <View
@@ -473,7 +495,7 @@ export default function CoachBooking(props: any) {
                 marginBottom: 10,
               }}>
               <AppText fontStyle="400.normal" color={theme.gray}>
-                Total
+                Per Session Amount
               </AppText>
               <AppText fontStyle="400.normal" color={theme.gray}>
                 AED{" "}
@@ -489,10 +511,10 @@ export default function CoachBooking(props: any) {
                   marginBottom: 10,
                 }}>
                 <AppText fontStyle="400.normal" color={theme.gray}>
-                  Total Slots
+                  Total Sessions
                 </AppText>
                 <AppText fontStyle="400.normal" color={theme.gray}>
-                  {dateRange?.length}
+                  X {dateRange?.length}
                 </AppText>
               </View>
             )}

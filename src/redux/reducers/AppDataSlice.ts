@@ -59,6 +59,46 @@ export const loadBooking = createAsyncThunk(
   },
 );
 
+export const loadAllCourts = createAsyncThunk(
+  "appdata/loadAllCourts",
+  async () => {
+    const response = await new Promise((resolve, reject) => {
+      CourtManager.getAllCourts(
+        {},
+        async res => {
+          const data = await res?.data?.data;
+          resolve(data);
+        },
+        async err => {
+          console.log(err);
+          reject(err);
+        },
+      );
+    });
+    return response as BookingTypes[];
+  },
+);
+
+export const loadAllCoach = createAsyncThunk(
+  "appdata/loadAllCoach",
+  async () => {
+    const response = await new Promise((resolve, reject) => {
+      CoachManager.getAllCoach(
+        {},
+        async res => {
+          const data = await res?.data?.data;
+          resolve(data);
+        },
+        async err => {
+          console.log(err);
+          reject(err);
+        },
+      );
+    });
+    return response as BookingTypes[];
+  },
+);
+
 interface Slot {
   slotID: number;
   createdAt: string;
@@ -171,6 +211,20 @@ const appDataSlice = createSlice({
       .addCase(loadTerms.fulfilled, (state, action) => {
         state.loadingTerms = false;
         state.terms = action.payload;
+      })
+      .addCase(loadAllCourts.pending, state => {
+        state.loadingCourts = true;
+      })
+      .addCase(loadAllCourts.fulfilled, (state, action) => {
+        state.loadingCourts = false;
+        state.courts = action.payload;
+      })
+      .addCase(loadAllCoach.pending, state => {
+        state.loadingCoachs = true;
+      })
+      .addCase(loadAllCoach.fulfilled, (state, action) => {
+        state.loadingCoachs = false;
+        state.coachs = action.payload;
       })
       .addCase(loadBooking.pending, state => {
         state.loadingBookings = true;

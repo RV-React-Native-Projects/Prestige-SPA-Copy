@@ -5,9 +5,12 @@ import svgs from "@common/AllSvgs";
 import AppText from "@components/Text/AppText";
 import I18n from "i18n-js";
 import images from "@src/common/AllImages";
+import FastImage from "react-native-fast-image";
+import { moderateScale } from "react-native-size-matters";
 
 export default function HomeHeader() {
   const { theme } = useAppSelector(state => state.theme);
+  const { user } = useAppSelector(state => state.user);
 
   return (
     <View
@@ -56,17 +59,21 @@ export default function HomeHeader() {
           <svgs.Bell />
         </TouchableOpacity> */}
         <TouchableOpacity activeOpacity={0.8} style={{ padding: 5 }}>
-          <Image
-            // source={{require:images.user}}
-            source={images.user}
+          <FastImage
             style={{
-              height: 40,
-              width: 40,
-              borderRadius: 40,
-              objectFit: "cover",
+              height: moderateScale(45, 0.3),
+              width: moderateScale(45, 0.3),
+              borderRadius: moderateScale(45, 0.3),
+              borderWidth: moderateScale(1, 0.3),
+              borderColor: theme.secondary,
             }}
+            defaultSource={images.user}
+            source={{
+              uri: user?.picturePathS3,
+              priority: FastImage.priority.high,
+            }}
+            resizeMode={FastImage.resizeMode.cover}
           />
-          {/* <svgs.Bell /> */}
         </TouchableOpacity>
       </View>
     </View>

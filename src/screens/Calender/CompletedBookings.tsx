@@ -5,30 +5,28 @@ import {
   RefreshControl,
   Dimensions,
 } from "react-native";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@redux/store";
 import BookingCard from "@cards/Booking/BookingCard";
-import Utils from "@common/Utils";
 import { loadBooking } from "@reducers/AppDataSlice";
 import svgs from "@common/AllSvgs";
 import AppText from "@components/Text/AppText";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
+import { moderateScale } from "react-native-size-matters";
 
 const windowHeight = Dimensions.get("window").height;
 
 export default function CompletedBookings(props: any) {
-  const { theme } = useAppSelector(state => state.theme);
   const { user } = useAppSelector(state => state.user);
   const storeDispatch = useAppDispatch();
-  const { completedBookings } = useAppSelector(state => state.appData);
-  const [refreshing, setRefreshing] = useState(false);
+  const { completedBookings, loadingBookings } = useAppSelector(
+    state => state.appData,
+  );
 
   const scrollUpBookings = useRef<FlatList>(null);
 
   const onRefresh = useCallback(() => {
     if (user?.stakeholderID) storeDispatch(loadBooking(user?.stakeholderID));
-    setRefreshing(true);
-    Utils.wait(2000).then(() => setRefreshing(false));
   }, []);
 
   return (
@@ -36,15 +34,18 @@ export default function CompletedBookings(props: any) {
       {completedBookings && CompletedBookings.length > 0 ? (
         <FlatList
           ref={scrollUpBookings}
-          contentContainerStyle={{
-            paddingTop: 15,
-            paddingBottom: 100,
-            rowGap: 10,
-            marginHorizontal: 15,
-          }}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              refreshing={loadingBookings}
+              onRefresh={onRefresh}
+            />
           }
+          contentContainerStyle={{
+            paddingTop: moderateScale(15, 0.3),
+            paddingBottom: moderateScale(100, 0.3),
+            rowGap: moderateScale(10, 0.3),
+            marginHorizontal: moderateScale(15, 0.3),
+          }}
           showsVerticalScrollIndicator={false}
           data={completedBookings}
           renderItem={({ item, index }) => (
@@ -65,7 +66,10 @@ export default function CompletedBookings(props: any) {
       ) : (
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <svgs.NoBooking height={windowHeight / 2.5} width="80%" />
+          <svgs.NoBooking
+            height={moderateScale(windowHeight / 2.5, 0.3)}
+            width="80%"
+          />
           <VerticalSpacing />
           <AppText fontStyle="500.bold" size={16}>
             Booking History

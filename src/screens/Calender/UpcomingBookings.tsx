@@ -5,30 +5,28 @@ import {
   RefreshControl,
   Dimensions,
 } from "react-native";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@redux/store";
 import BookingCard from "@cards/Booking/BookingCard";
-import Utils from "@common/Utils";
 import { loadBooking } from "@reducers/AppDataSlice";
 import svgs from "@common/AllSvgs";
 import AppText from "@src/components/Text/AppText";
 import { VerticalSpacing } from "@src/components/Spacing/Spacing";
+import { moderateScale } from "react-native-size-matters";
 
 const windowHeight = Dimensions.get("window").height;
 
 export default function UpcomingBookings(props: any) {
-  const { theme } = useAppSelector(state => state.theme);
   const { user } = useAppSelector(state => state.user);
   const storeDispatch = useAppDispatch();
-  const { upComingBookings } = useAppSelector(state => state.appData);
-  const [refreshing, setRefreshing] = useState(false);
+  const { upComingBookings, loadingBookings } = useAppSelector(
+    state => state.appData,
+  );
 
   const scrollUpBookings = useRef<FlatList>(null);
 
   const onRefresh = useCallback(() => {
     if (user?.stakeholderID) storeDispatch(loadBooking(user?.stakeholderID));
-    setRefreshing(true);
-    Utils.wait(2000).then(() => setRefreshing(false));
   }, []);
 
   return (
@@ -37,13 +35,16 @@ export default function UpcomingBookings(props: any) {
         <FlatList
           ref={scrollUpBookings}
           contentContainerStyle={{
-            paddingTop: 15,
-            paddingBottom: 100,
-            rowGap: 10,
-            marginHorizontal: 15,
+            paddingTop: moderateScale(15, 0.3),
+            paddingBottom: moderateScale(100, 0.3),
+            rowGap: moderateScale(10, 0.3),
+            marginHorizontal: moderateScale(15, 0.3),
           }}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              refreshing={loadingBookings}
+              onRefresh={onRefresh}
+            />
           }
           showsVerticalScrollIndicator={false}
           data={upComingBookings}
@@ -65,7 +66,10 @@ export default function UpcomingBookings(props: any) {
       ) : (
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <svgs.NoBooking height={windowHeight / 2.5} width="80%" />
+          <svgs.NoBooking
+            height={moderateScale(windowHeight / 2.5, 0.3)}
+            width="80%"
+          />
           <VerticalSpacing />
           <AppText fontStyle="500.bold" size={16}>
             You haven’t made a booking yet

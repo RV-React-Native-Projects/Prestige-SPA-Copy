@@ -1,10 +1,4 @@
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import MonthPicker from "react-native-month-year-picker";
 import { moderateScale } from "react-native-size-matters";
@@ -62,31 +56,6 @@ function MonthYearPicker(props: MonthYearPickerProps) {
     if (value) setDate(value);
   }, [value]);
 
-  // useEffect(() => {
-  //   const currentDate = new Date();
-  //   if (minimumDate) {
-  //     console.log("IS First");
-  //     if (minimumDate > currentDate) {
-  //       console.log("IS First of First", minimumDate);
-  //       setDate(minimumDate);
-  //     } else {
-  //       console.log("IS 2nd of First", minimumDate, currentDate);
-  //       setDate(currentDate);
-  //     }
-  //   } else if (value) {
-  //     console.log("IS 3rd ", value, currentDate);
-  //     setDate(value);
-  //   } else {
-  //     console.log("IS 4th", value, currentDate);
-  //     setDate(currentDate);
-  //   }
-  // }, [
-  //   minimumDate,
-  //   // (minimumDate && minimumDate > currentDate) ||
-  //   //   (minimumDate && minimumDate < currentDate),
-  // ]);
-
-  console.log("MIN + MAX===>", value);
   return (
     <>
       <TouchableOpacity
@@ -167,6 +136,6 @@ function MonthYearPicker(props: MonthYearPickerProps) {
   );
 }
 
-export default MonthYearPicker;
+export default memo(MonthYearPicker);
 
 const styles = StyleSheet.create({});

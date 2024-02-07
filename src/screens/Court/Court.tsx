@@ -1,14 +1,21 @@
-import React from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useCallback, useRef } from "react";
+import {
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import AppContainer from "@components/Container/AppContainer";
-import { useAppSelector } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux/store";
 import { Card } from "react-native-paper";
 import { moderateScale } from "react-native-size-matters";
 import { useAppNavigation } from "@navigation/Navigation";
-import AppText from "@src/components/Text/AppText";
+import AppText from "@components/Text/AppText";
 import FastImage from "react-native-fast-image";
-import images from "@src/common/AllImages";
-import svgs from "@src/common/AllSvgs";
+import images from "@common/AllImages";
+import svgs from "@common/AllSvgs";
+import { loadAllCourts } from "@reducers/AppDataSlice";
 
 const CourtCard = (props: any) => {
   const { theme } = useAppSelector(state => state.theme);
@@ -71,12 +78,18 @@ const CourtCard = (props: any) => {
 
 function CourtScreen() {
   const { theme } = useAppSelector(state => state.theme);
-  const { courts } = useAppSelector(state => state.appData);
+  const { courts, loadingCourts } = useAppSelector(state => state.appData);
   const navigation = useAppNavigation();
+  const storeDispatch = useAppDispatch();
+  const scrollCourtRef = useRef<FlatList>(null);
 
   const gotoCourt = (data: any) => {
     navigation.navigate("CourtDetail", { data });
   };
+
+  const onRefresh = useCallback(() => {
+    storeDispatch(loadAllCourts());
+  }, []);
 
   return (
     <AppContainer
@@ -84,6 +97,10 @@ function CourtScreen() {
       scrollable={false}
       backgroundColor={theme.appBackgroundColor}>
       <FlatList
+        ref={scrollCourtRef}
+        refreshControl={
+          <RefreshControl refreshing={loadingCourts} onRefresh={onRefresh} />
+        }
         data={courts}
         renderItem={({ item, index }) => (
           <CourtCard key={index} data={item} onPress={() => gotoCourt(item)} />
@@ -91,7 +108,7 @@ function CourtScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingBottom: 100,
-          paddingTop: 30,
+          paddingTop: 15,
           rowGap: 10,
           paddingHorizontal: 15,
         }}

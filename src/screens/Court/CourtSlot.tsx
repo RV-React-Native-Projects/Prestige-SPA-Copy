@@ -30,6 +30,7 @@ import CourtManager from "@src/services/features/Court/CourtManager";
 import moment from "moment";
 import SlotsDuration from "@src/cards/Slots/SlotsDuration";
 import { loadSlots } from "@src/redux/reducers/AppDataSlice";
+import RectangleSK from "@src/assets/skelton/RectangleSK";
 
 const isIOS = Platform.OS === "ios";
 
@@ -126,6 +127,7 @@ export default function CourtSlot(props: any) {
   //  ===== API Responses Data=====
   // const [slotDuration, setSlotDuration] = useState<SlotInteface[] | null>(null);
   const [slots, setSlots] = useState<TimeSlot[] | null>(null);
+  const [loadingSlot, setLoadingSlot] = useState<boolean>(false);
 
   const insets = useSafeAreaInsets();
   const navigation = useAppNavigation();
@@ -148,6 +150,7 @@ export default function CourtSlot(props: any) {
 
   useEffect(() => {
     if (slotId && pickedDate) {
+      setLoadingSlot(true);
       let parsms = {
         data: {
           locationID: data?.locationID,
@@ -159,11 +162,12 @@ export default function CourtSlot(props: any) {
       CourtManager.generateBookingSlots(
         parsms,
         res => {
-          // console.log("generateBookingSlots===>", JSON.stringify(res, null, 2));
           setSlots(res?.data?.data);
+          setLoadingSlot(false);
         },
         err => {
           console.log(err);
+          setLoadingSlot(false);
         },
       );
     }
@@ -287,38 +291,53 @@ export default function CourtSlot(props: any) {
             </>
           )}
           {/*  ============== Select Slot ====== */}
-          {slots && (
-            <>
-              <VerticalSpacing size={20} />
-              <AppText
-                fontStyle="600.semibold"
-                size={16}
-                style={{ paddingHorizontal: 15 }}>
-                Select Slot
-              </AppText>
-              <VerticalSpacing />
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  justifyContent: "space-between",
-                  paddingHorizontal: moderateScale(15, 0.3),
-                }}>
-                {_.map(slots, (item, index) => (
-                  <SlotCard
-                    key={index}
-                    item={item}
-                    value={startTime}
-                    onPress={() => {
-                      setStartTime(item?.startTime);
-                      setEndTime(item?.endTime);
-                      setAvailableCourts(item?.availableCourts);
-                    }}
-                  />
-                ))}
-              </View>
-            </>
+          {loadingSlot ? (
+            <View
+              style={{
+                flexDirection: "row",
+                flexWrap: "wrap",
+                gap: 10,
+                marginHorizontal: 15,
+                marginTop: 50,
+              }}>
+              {_.times(16, index => (
+                <RectangleSK key={index} />
+              ))}
+            </View>
+          ) : (
+            slots && (
+              <>
+                <VerticalSpacing size={20} />
+                <AppText
+                  fontStyle="600.semibold"
+                  size={16}
+                  style={{ paddingHorizontal: 15 }}>
+                  Select Slot
+                </AppText>
+                <VerticalSpacing />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    justifyContent: "space-between",
+                    paddingHorizontal: moderateScale(15, 0.3),
+                  }}>
+                  {_.map(slots, (item, index) => (
+                    <SlotCard
+                      key={index}
+                      item={item}
+                      value={startTime}
+                      onPress={() => {
+                        setStartTime(item?.startTime);
+                        setEndTime(item?.endTime);
+                        setAvailableCourts(item?.availableCourts);
+                      }}
+                    />
+                  ))}
+                </View>
+              </>
+            )
           )}
         </View>
       </ScrollView>

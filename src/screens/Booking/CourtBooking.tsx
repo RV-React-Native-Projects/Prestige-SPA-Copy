@@ -21,11 +21,12 @@ import moment from "moment";
 import FastImage from "react-native-fast-image";
 import images from "@src/common/AllImages";
 import svgs from "@src/common/AllSvgs";
-import { useAppNavigation } from "@src/navigation/Navigation";
+import { useAppNavigation } from "@navigation/Navigation";
 import AvailableCreditManager from "@features/AvailableCredit/AvailableCreditManager";
 import CourtManager from "@features/Court/CourtManager";
 import { useStripe } from "@stripe/stripe-react-native";
 import StripeManager from "@features/Stripe/StripeManager";
+import useAppToast from "@components/Alert/AppToast";
 
 const isIOS = Platform.OS === "ios";
 
@@ -45,6 +46,7 @@ export default function CourtBooking(props: any) {
   const { theme } = useAppSelector(state => state.theme);
   const { user } = useAppSelector(state => state.user);
   const [loading, setLoading] = useState<boolean>(false);
+  const appToast = useAppToast();
 
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
@@ -103,10 +105,9 @@ export default function CourtBooking(props: any) {
           console.log("Error At Initioalizing", error);
         }
       },
-
       err => {
         setLoading(false);
-        console.log("Error createCredit===>", err);
+        console.log("Error At Initializing===>", err);
       },
     );
   };
@@ -117,9 +118,15 @@ export default function CourtBooking(props: any) {
 
   const openPaymentSheet = async () => {
     const { error } = await presentPaymentSheet();
-
     if (error) {
-      Alert.alert(`Error code: ${error.code}`, error.message);
+      appToast.showToast({
+        title: error?.code,
+        description: error?.message,
+        status: "warning",
+        duration: 3000,
+        placement: "top",
+        variant: "top-accent",
+      });
       console.log("ERR====>", error);
     } else {
       createUserCredit();

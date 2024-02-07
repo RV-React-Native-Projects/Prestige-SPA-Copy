@@ -1,7 +1,13 @@
-import React from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useCallback, useRef } from "react";
+import {
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import AppContainer from "@components/Container/AppContainer";
-import { useAppSelector } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux/store";
 import { Card } from "react-native-paper";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
@@ -10,6 +16,7 @@ import FastImage from "react-native-fast-image";
 import images from "@common/AllImages";
 import svgs from "@common/AllSvgs";
 import AppText from "@components/Text/AppText";
+import { loadAllCoach } from "@reducers/AppDataSlice";
 
 const CoachCard = (props: any) => {
   const { theme } = useAppSelector(state => state.theme);
@@ -77,12 +84,19 @@ const CoachCard = (props: any) => {
 
 function CoachScreen() {
   const { theme } = useAppSelector(state => state.theme);
-  const { coachs } = useAppSelector(state => state.appData);
+  const { coachs, loadingCoachs } = useAppSelector(state => state.appData);
   const navigation = useAppNavigation();
+  const storeDispatch = useAppDispatch();
+
+  const scrollCoachRef = useRef<FlatList>(null);
 
   const gotoCoach = (data: any) => {
     navigation.navigate("CoachDetail", { data: data });
   };
+
+  const onRefresh = useCallback(() => {
+    storeDispatch(loadAllCoach());
+  }, []);
 
   return (
     <AppContainer
@@ -90,6 +104,10 @@ function CoachScreen() {
       scrollable={false}
       backgroundColor={theme.appBackgroundColor}>
       <FlatList
+        ref={scrollCoachRef}
+        refreshControl={
+          <RefreshControl refreshing={loadingCoachs} onRefresh={onRefresh} />
+        }
         data={coachs}
         renderItem={({ item, index }) => (
           <CoachCard key={index} data={item} onPress={() => gotoCoach(item)} />
@@ -97,7 +115,7 @@ function CoachScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingBottom: 100,
-          paddingTop: 30,
+          paddingTop: 15,
           rowGap: 10,
           paddingHorizontal: 15,
         }}
