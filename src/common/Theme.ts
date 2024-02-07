@@ -276,8 +276,8 @@ const darkColors = {
   // BackGround Color
   primaryBackgroundColor: "#171717",
   secondaryBackgroundColor: "#262626",
-  modalBackgroundColor: "#171717",
-  appBackgroundColor: "#282828",
+  modalBackgroundColor: "#191919",
+  appBackgroundColor: "#202020",
   cardBackgroundColor: "#262626",
   cardOverlay: "#FFFFFF20",
   // Card Color

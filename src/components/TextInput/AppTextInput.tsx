@@ -61,7 +61,7 @@ export default function AppTextInput(props: AppTextInputTypes) {
     onBlur, // function void()
     editable = true, // editable : boolean
     height = 50, // height of the text input
-    backgroundColor = "#FFF", // background color of the text Input
+    backgroundColor = theme.modalBackgroundColor, // background color of the text Input
     styles, // custome style={{}}
     autoFocus = false, // autoFocus : boolean
     secureTextEntry = false, // secureTextEntry: boolean
@@ -126,6 +126,7 @@ export default function AppTextInput(props: AppTextInputTypes) {
           disabled={disabled}
           placeholder={placeholder}
           selectionColor={selectionColor}
+          placeholderTextColor={theme.gray}
           activeOutlineColor={activeOutlineColor}
           multiline={multiline}
           onFocus={() => {
@@ -147,7 +148,7 @@ export default function AppTextInput(props: AppTextInputTypes) {
             fontSize: moderateScale(16, 0.3),
             paddingLeft: leftIcon ? 45 : 10,
             paddingRight: rightIcon ? 45 : 10,
-            color: theme.black,
+            color: theme.title,
             ...styles,
           }}
           {...props}

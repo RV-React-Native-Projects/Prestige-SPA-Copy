@@ -76,7 +76,7 @@ const userSlice = createSlice({
     setRefreshToken: (state, action) => {
       state.refreshToken = action.payload;
     },
-    appLogout: (state, action) => {
+    appLogout: state => {
       state.user = null;
       state.authHeader = null;
       state.isUserLoggedIn = false;

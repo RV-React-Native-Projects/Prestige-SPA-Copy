@@ -1,87 +1,102 @@
-interface PlayerCategory {
+export interface CustomerBooking {
+  customerBookingID: number;
   createdAt: string;
-  playerCategory: string;
-  playerCategoryID: number;
   updatedAt: string;
-}
-
-interface PreferredLocation {
-  area: number;
-  createdAt: string;
-  imagePath: string;
-  lat: number;
-  locationAddress: string;
-  locationDescription: string;
+  startTime: string;
+  endTime: string;
+  bookingDate: string;
+  slotMinutes: number;
+  customerID: number;
+  familyMemberID: number;
   locationID: number;
-  locationName: string;
-  long: number;
-  updatedAt: string;
+  courtID: number;
+  creditTypeID: number;
+  coachID: any;
+  coachSessionTermID: any;
+  coachSessionTypeID: any;
+  coachTermBookingID: any;
+  bookingType: string;
+  bookingStatusType: string;
+  amount: number;
+  isPaymentDone: boolean;
+  bookingNumber: string;
 }
 
-interface Stakeholder {
-  address: string;
-  age: number;
+export interface PlayerCategory {
+  playerCategoryID: number;
   createdAt: string;
-  dateOfBirth: string;
-  email: string;
-  emiratesID: string;
-  emiratesIDExpiry: string;
-  gender: string;
-  password: string;
-  phoneNumber: string;
-  picturePathS3: string;
+  updatedAt: string;
+  playerCategory: string;
+}
+
+export interface Parent {
   stakeholderID: number;
   stakeholderName: string;
-  stakeholderType: string;
-  updatedAt: string;
   username: string;
+  password: string;
+  email: string;
+  stakeholderType: string;
+  phoneNumber: string;
+  createdAt: string;
+  updatedAt: string;
+  picturePathS3: string;
+  emiratesID: string;
+  emiratesIDExpiry: string;
+  age: number;
+  address: string;
+  gender: string;
+  dateOfBirth: string;
+  hasFamily: boolean;
+  playerCategoryID: any;
 }
 
-interface Membership {
+export interface FamilyMember {
+  familyMemberID: number;
   createdAt: string;
-  customerID: number;
-  expiryDate: string;
-  filePath: string;
-  locationID: number;
+  updatedAt: string;
+  name: string;
+  dateOfBirth: string;
+  playerCategoryID: number;
+  parentID: number;
+  relationship: string;
+  age: number;
+  customerBookings: CustomerBooking[];
+  playerCategory: PlayerCategory;
+  parent: Parent;
+}
+
+export interface Membership {
   membershipID: number;
+  createdAt: string;
+  updatedAt: string;
+  locationID: number;
+  customerID: number;
   membershipType: string;
+  filePath: string;
+  expiryDate?: string | null;
   status: number;
   statusDescription: string;
-  updatedAt: string;
-}
-
-interface CustomerProfile {
-  createdAt: string;
-  customerProfileID: number;
-  isMember: boolean;
-  memberSince: string;
-  membershipNo: string | null;
-  playerCategory: PlayerCategory;
-  playerCategoryID: number;
-  preferredLocation: PreferredLocation;
-  preferredLocationID: number;
-  stakeholder: Stakeholder;
-  stakeholderID: number;
-  updatedAt: string;
 }
 
 export interface UserProps {
-  address: string;
-  age: number;
-  createdAt: string;
-  customerProfile: CustomerProfile;
-  dateOfBirth: string;
-  email: string;
-  emiratesID: string;
-  emiratesIDExpiry: string;
-  gender: string;
-  memberships: Membership[];
-  password: string;
-  phoneNumber: string;
-  picturePathS3: string;
   stakeholderID: number;
   stakeholderName: string;
-  stakeholderType: string;
-  updatedAt: string;
   username: string;
+  password: string;
+  email: string;
+  stakeholderType: string;
+  phoneNumber: string;
+  createdAt: string;
+  updatedAt: string;
+  picturePathS3: string;
+  emiratesID: string;
+  emiratesIDExpiry: string;
+  age: number;
+  address: string;
+  gender: string;
+  dateOfBirth: string;
+  hasFamily: boolean;
+  playerCategoryID: any | null;
+  memberships: Membership[];
+  familyMembers: FamilyMember[];
 }

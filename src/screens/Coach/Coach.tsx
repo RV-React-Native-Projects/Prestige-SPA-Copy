@@ -30,6 +30,7 @@ const CoachCard = (props: any) => {
         marginRight: 15,
         borderRadius: 10,
         position: "relative",
+        backgroundColor: theme.modalBackgroundColor,
       }}>
       <TouchableOpacity
         activeOpacity={0.8}

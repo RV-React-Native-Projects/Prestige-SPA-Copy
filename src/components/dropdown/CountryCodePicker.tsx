@@ -1,6 +1,9 @@
 import React, { useEffect, useLayoutEffect, useState, memo } from "react";
 import { StyleSheet, View } from "react-native";
-import CountryPicker, { DARK_THEME } from "react-native-country-picker-modal";
+import CountryPicker, {
+  DARK_THEME,
+  DEFAULT_THEME,
+} from "react-native-country-picker-modal";
 import svgs from "@common/AllSvgs";
 import { moderateScale } from "react-native-size-matters";
 import * as RNLocalize from "react-native-localize";
@@ -77,7 +80,7 @@ export default function CountryCodePicker(props: CountryCodePickerProps) {
         justifyContent: "space-between",
       }}>
       <CountryPicker
-        // theme={isDarkMode ? DARK_THEME : LIGHT_THEME}
+        theme={isDarkMode ? DARK_THEME : DEFAULT_THEME}
         countryCode={selected}
         withFilter={true}
         withFlag={true}

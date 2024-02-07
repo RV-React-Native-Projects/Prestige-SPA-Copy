@@ -25,6 +25,7 @@ export default function CoachCard(props: CoachCardProps) {
         marginRight: 15,
         borderRadius: 10,
         position: "relative",
+        backgroundColor: theme.modalBackgroundColor,
       }}>
       <TouchableOpacity activeOpacity={0.8} onPress={onPressCard}>
         <FastImage

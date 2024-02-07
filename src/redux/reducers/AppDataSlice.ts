@@ -150,6 +150,7 @@ const appDataSlice = createSlice({
   name: "appData",
   initialState: initialState,
   reducers: {
+    resetAppData: () => initialState,
     setAppData: (state, action) => {
       state = action.payload;
     },
@@ -254,6 +255,7 @@ const appDataSlice = createSlice({
 });
 
 export const {
+  resetAppData,
   setAppData,
   setLoadingSlots,
   setSlots,

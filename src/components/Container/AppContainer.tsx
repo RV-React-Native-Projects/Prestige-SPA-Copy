@@ -29,6 +29,7 @@ interface AppContainerTypes extends StatusBarProps {
   KeyboardAvoidingViewBehavior?: "height" | "padding" | "position" | undefined;
   showHideTransition?: "slide" | "fade" | "none";
   fullHeight?: boolean;
+  backgroundColor?: string;
 }
 
 function AppContainer(props: AppContainerTypes) {
@@ -36,9 +37,7 @@ function AppContainer(props: AppContainerTypes) {
 
   const {
     children,
-    statusBarColor = isDarkMode
-      ? theme.modalBackgroundColor
-      : theme.modalBackgroundColor,
+    statusBarColor = theme.modalBackgroundColor,
     barStyle = isDarkMode ? "light-content" : "dark-content",
     hidden = false,
     translucent = true,
@@ -49,6 +48,7 @@ function AppContainer(props: AppContainerTypes) {
     KeyboardAvoidingViewBehavior = undefined,
     showHideTransition = "slide",
     fullHeight = true,
+    backgroundColor = theme.appBackgroundColor,
   } = props || {};
   const insets = useSafeAreaInsets();
 
@@ -80,7 +80,11 @@ function AppContainer(props: AppContainerTypes) {
         <ScrollView
           keyboardShouldPersistTaps="never"
           style={{ flex: 1, minHeight: windowHeight, ...style }}
-          contentContainerStyle={{ paddingBottom: 150, ...ContainerStyle }}>
+          contentContainerStyle={{
+            backgroundColor: backgroundColor,
+            paddingBottom: 150,
+            ...ContainerStyle,
+          }}>
           {hideStatusbar ? (
             <View>{children}</View>
           ) : (
@@ -107,6 +111,7 @@ function AppContainer(props: AppContainerTypes) {
             flex: 1,
             height: "100%",
             minHeight: fullHeight ? "100%" : "auto",
+            backgroundColor: backgroundColor,
             ...style,
           }}>
           <View style={{ marginTop: isIOS ? -insets.top : null }} />
