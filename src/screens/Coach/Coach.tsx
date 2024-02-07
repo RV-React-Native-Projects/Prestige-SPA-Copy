@@ -58,7 +58,10 @@ const CoachCard = (props: any) => {
               borderRadius: 100,
               marginVertical: 10,
             }}>
-            <AppText fontStyle="600.bold" color={theme.white} numberOfLines={2}>
+            <AppText
+              fontStyle="600.bold"
+              color={theme.modalBackgroundColor}
+              numberOfLines={2}>
               Tire {data?.coachCategoryID}
             </AppText>
           </View>
@@ -106,7 +109,12 @@ function CoachScreen() {
       <FlatList
         ref={scrollCoachRef}
         refreshControl={
-          <RefreshControl refreshing={loadingCoachs} onRefresh={onRefresh} />
+          <RefreshControl
+            colors={[theme.secondary]}
+            tintColor={theme.title}
+            refreshing={loadingCoachs}
+            onRefresh={onRefresh}
+          />
         }
         data={coachs}
         renderItem={({ item, index }) => (

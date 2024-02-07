@@ -7,7 +7,7 @@ import { useAppSelector } from "@redux/store";
 interface AppTextType extends TextProps {
   size?: number; // size of the Text
   fontWeight?: string; // fontWeight of the Text
-  color?: string; // color for the Text
+  color?: string | null; // color for the Text
   children?: React.ReactNode; // to have the childrens
   fontFamily?: string; // font Family for the Text
   onPress?: () => void; // function void()

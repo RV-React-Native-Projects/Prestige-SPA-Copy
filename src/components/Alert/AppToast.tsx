@@ -56,7 +56,7 @@ const ToastAlert: React.FC<
                 size={18}
                 color={
                   variant === "solid"
-                    ? theme.white
+                    ? theme.modalBackgroundColor
                     : variant !== "outline"
                       ? theme.black
                       : undefined
@@ -82,7 +82,7 @@ const ToastAlert: React.FC<
             size={14}
             color={
               variant === "solid"
-                ? theme.white
+                ? theme.modalBackgroundColor
                 : variant !== "outline"
                   ? theme.black
                   : undefined

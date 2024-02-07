@@ -95,7 +95,10 @@ function BookingCard(props: BookingCardProps) {
                 borderRadius: 100,
                 marginVertical: 5,
               }}>
-              <AppText fontStyle="400.medium" size={12} color={theme.white}>
+              <AppText
+                fontStyle="400.medium"
+                size={12}
+                color={theme.modalBackgroundColor}>
                 Tire {coachSessionTypeID}
               </AppText>
             </View>

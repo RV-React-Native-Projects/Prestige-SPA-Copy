@@ -20,11 +20,7 @@ export default function SlotTime(props: SlotTime) {
       activeOpacity={0.8}
       style={{
         backgroundColor:
-          value === time
-            ? theme.primary
-            : isAvailable
-              ? theme.modalBackgroundColor
-              : theme.appBackgroundColor,
+          value === time ? theme.primary : theme.modalBackgroundColor,
         borderRadius: 10,
         marginBottom: 10,
         ...theme.light_shadow,
@@ -38,13 +34,7 @@ export default function SlotTime(props: SlotTime) {
           padding: moderateScale(10, 0.3),
         }}>
         <AppText
-          color={
-            !isAvailable
-              ? theme.gray
-              : value === time
-                ? theme.white
-                : theme.textColor
-          }
+          color={isAvailable ? theme.title : theme.gray}
           style={{ textTransform: "uppercase" }}
           fontStyle="500.medium"
           size={14}>

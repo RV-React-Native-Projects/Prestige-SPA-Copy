@@ -92,7 +92,7 @@ function Home() {
             fontSize={14}
             onPress={gotoCourt}
             color={theme.modalBackgroundColor}
-            textColor={theme.textColor}
+            textColor={theme.paragraph}
             borderRadius={10}
             leftIcon={
               <svgs.Court
@@ -110,7 +110,7 @@ function Home() {
             fontSize={14}
             onPress={gotoCoach}
             color={theme.modalBackgroundColor}
-            textColor={theme.textColor}
+            textColor={theme.paragraph}
             borderRadius={10}
             leftIcon={
               <svgs.Coach

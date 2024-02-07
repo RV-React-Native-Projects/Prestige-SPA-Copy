@@ -188,7 +188,7 @@ function CoachDetail(props: any) {
                 style={{}}
                 fontStyle="600.bold"
                 size={14}
-                color={theme.white}
+                color={theme.modalBackgroundColor}
                 numberOfLines={2}>
                 Tire {data?.coachCategoryID}
               </AppText>
@@ -323,7 +323,7 @@ function CoachDetail(props: any) {
               animation="fadeInUp"
               duration={500}
               style={{
-                backgroundColor: theme.white,
+                backgroundColor: theme.modalBackgroundColor,
                 padding: moderateScale(20, 0.3),
                 // bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
               }}>
@@ -455,7 +455,7 @@ function CoachDetail(props: any) {
                   animation="fadeInUp"
                   duration={500}
                   style={{
-                    backgroundColor: theme.white,
+                    backgroundColor: theme.modalBackgroundColor,
                     padding: moderateScale(20, 0.3),
                     // bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
                   }}>
@@ -477,7 +477,7 @@ function CoachDetail(props: any) {
         animation="fadeInUp"
         duration={500}
         style={{
-          backgroundColor: theme.white,
+          backgroundColor: theme.modalBackgroundColor,
           padding: moderateScale(20, 0.3),
           bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
           ...theme.dark_shadow,

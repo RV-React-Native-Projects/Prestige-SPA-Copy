@@ -11,6 +11,7 @@ import { StripeProvider } from "@stripe/stripe-react-native";
 
 import { enGB, registerTranslation } from "react-native-paper-dates";
 import { loadUserData } from "@reducers/UserSlice";
+import { loadUserTheme } from "@reducers/ThemeSlice";
 registerTranslation("en-GB", enGB);
 
 // -- TODO @RV ==> Move this key to .env After Seeting Up Configuratio
@@ -26,6 +27,7 @@ LogBox.ignoreLogs([
 ]);
 
 store.dispatch(loadUserData());
+store.dispatch(loadUserTheme());
 
 const App = () => {
   return (

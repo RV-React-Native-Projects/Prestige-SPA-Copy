@@ -52,7 +52,7 @@ function Landing() {
             }}>
             <AppButton
               Title={I18n.t("screen_messages.button.signup")}
-              color={theme.white}
+              color={theme.modalBackgroundColor}
               textColor={theme.textColor}
               height={50}
               fontSize={16}

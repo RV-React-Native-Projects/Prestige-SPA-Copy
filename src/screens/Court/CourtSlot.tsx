@@ -31,6 +31,7 @@ import moment from "moment";
 import SlotsDuration from "@src/cards/Slots/SlotsDuration";
 import { loadSlots } from "@src/redux/reducers/AppDataSlice";
 import RectangleSK from "@src/assets/skelton/RectangleSK";
+import SlotTime from "@src/cards/Slots/SlotTime";
 
 const isIOS = Platform.OS === "ios";
 
@@ -69,48 +70,42 @@ interface TimeSlot {
   availableCourts: Court[];
 }
 
-const SlotCard = (props: any) => {
-  const { item, onPress, value } = props;
-  const { theme } = useAppSelector(state => state.theme);
+// const SlotCard = (props: any) => {
+//   const { item, onPress, value } = props;
+//   const { theme } = useAppSelector(state => state.theme);
 
-  return (
-    <TouchableOpacity
-      activeOpacity={0.8}
-      style={{
-        backgroundColor:
-          value === item?.startTime
-            ? theme.primary
-            : theme.modalBackgroundColor,
-        borderRadius: 10,
-        marginBottom: 10,
-        ...theme.light_shadow,
-      }}
-      onPress={onPress}
-      disabled={!item?.isAvailable}>
-      <View
-        style={{
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: moderateScale(10, 0.3),
-        }}>
-        <AppText
-          color={
-            !item?.isAvailable
-              ? theme.gray
-              : value === item?.startTime
-                ? theme.white
-                : theme.textColor
-          }
-          fontStyle="500.medium"
-          size={14}>
-          {item.startTime}
-          {/* {item.startTime} - {item.endTime} */}
-        </AppText>
-      </View>
-    </TouchableOpacity>
-  );
-};
+//   return (
+//     <TouchableOpacity
+//       activeOpacity={0.8}
+//       style={{
+//         backgroundColor:
+//           value === item?.startTime
+//             ? theme.primary
+//             : theme.modalBackgroundColor,
+//         borderRadius: 10,
+//         marginBottom: 10,
+//         ...theme.light_shadow,
+//       }}
+//       onPress={onPress}
+//       disabled={!item?.isAvailable}>
+//       <View
+//         style={{
+//           flexDirection: "column",
+//           alignItems: "center",
+//           justifyContent: "space-between",
+//           padding: moderateScale(10, 0.3),
+//         }}>
+//         <AppText
+//           color={item?.isAvailable ? theme.title : theme.gray}
+//           fontStyle="500.medium"
+//           size={14}>
+//           {item.startTime}
+//           {/* {item.startTime} - {item.endTime} */}
+//         </AppText>
+//       </View>
+//     </TouchableOpacity>
+//   );
+// };
 
 export default function CourtSlot(props: any) {
   const { theme, isDarkMode } = useAppSelector(state => state.theme);
@@ -324,9 +319,10 @@ export default function CourtSlot(props: any) {
                     paddingHorizontal: moderateScale(15, 0.3),
                   }}>
                   {_.map(slots, (item, index) => (
-                    <SlotCard
+                    <SlotTime
                       key={index}
-                      item={item}
+                      time={item?.startTime}
+                      isAvailable={item?.isAvailable}
                       value={startTime}
                       onPress={() => {
                         setStartTime(item?.startTime);
@@ -400,7 +396,7 @@ export default function CourtSlot(props: any) {
                     <View key={index} style={{}}>
                       <AppText
                         // color={item?.available ? theme.textColor : theme.gray}
-                        fontStyle="400.bold">
+                        fontStyle="500.bold">
                         {item?.courtName}
                       </AppText>
                       <VerticalSpacing />
@@ -421,9 +417,8 @@ export default function CourtSlot(props: any) {
               animation="fadeInUp"
               duration={500}
               style={{
-                backgroundColor: theme.white,
+                backgroundColor: theme.modalBackgroundColor,
                 padding: moderateScale(20, 0.3),
-                // bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
               }}>
               <AppButton
                 Title={I18n.t("screen_messages.button.next")}
@@ -442,7 +437,7 @@ export default function CourtSlot(props: any) {
           animation="fadeInUp"
           duration={500}
           style={{
-            backgroundColor: theme.white,
+            backgroundColor: theme.modalBackgroundColor,
             padding: moderateScale(20, 0.3),
             bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
           }}>

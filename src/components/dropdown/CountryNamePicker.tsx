@@ -91,7 +91,7 @@ function CountryNamePicker(props: CountryCodePickerProps) {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          backgroundColor: theme.white,
+          backgroundColor: theme.modalBackgroundColor,
           paddingHorizontal: 15,
           borderWidth: 1,
           borderColor: theme.gray,

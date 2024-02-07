@@ -228,7 +228,7 @@ export default function CoachBookingComplete(props: any) {
                   <AppText
                     style={{}}
                     fontStyle="400.medium"
-                    color={theme.white}>
+                    color={theme.modalBackgroundColor}>
                     Tire {data?.coachCategoryID}
                   </AppText>
                 </View>
@@ -309,7 +309,7 @@ export default function CoachBookingComplete(props: any) {
             <VerticalSpacing />
             {_.map(dateRange, (date, index) => (
               <SlotCard
-                backgroundColor="#FFF"
+                backgroundColor={theme.modalBackgroundColor}
                 date={date}
                 key={index}
                 index={index + 1}
@@ -345,7 +345,7 @@ export default function CoachBookingComplete(props: any) {
         animation="fadeInUp"
         duration={1000}
         style={{
-          backgroundColor: theme.white,
+          backgroundColor: theme.modalBackgroundColor,
           padding: moderateScale(20, 0.3),
         }}>
         <AppButton

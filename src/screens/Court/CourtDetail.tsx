@@ -1,22 +1,9 @@
-import React, { useRef, useState } from "react";
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  Platform,
-  ScrollView,
-  StyleProp,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import React, { useRef } from "react";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import AppContainer from "@components/Container/AppContainer";
 import { useAppSelector } from "@redux/store";
-import { Searchbar } from "react-native-paper";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
-import { LettingData } from "@constants/LettingData";
-import PropertyCard from "@cards/Property/PropertyCard";
 import { useAppNavigation } from "@navigation/Navigation";
 import BackButton from "@components/Header/BackButton";
 import Swiper from "react-native-swiper";
@@ -35,7 +22,6 @@ const isIOS = Platform.OS === "ios";
 function CourtDetail(props: any) {
   const { data } = props.route.params;
   const { theme } = useAppSelector(state => state.theme);
-  const [searchQuery, setSearchQuery] = useState("");
   const navigation = useAppNavigation();
   const _map = useRef(null);
 
@@ -188,7 +174,7 @@ function CourtDetail(props: any) {
         animation="fadeInUp"
         duration={1000}
         style={{
-          backgroundColor: theme.white,
+          backgroundColor: theme.modalBackgroundColor,
           padding: moderateScale(20, 0.3),
         }}>
         <AppButton

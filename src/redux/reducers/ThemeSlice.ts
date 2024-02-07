@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { lightTheme, darkTheme } from "@common/Theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEncryptedStorage } from "@src/hooks/useEncryptedStorage";
 
 export const loadUserTheme = createAsyncThunk("user/theme", async () => {
-  var isDark = (await AsyncStorage.getItem("SPA_Theme")) ?? false;
+  const { getStorage } = useEncryptedStorage();
+  var isDark = (await getStorage("SPA_Theme")) ?? false;
   return isDark;
 });
 
@@ -17,9 +19,9 @@ const themeSlice = createSlice({
   name: "theme",
   initialState: initialState,
   reducers: {
-    toggleTheme: (state, action) => {
-      console.log("toggleTheme ACTION===>", action);
-      AsyncStorage.setItem("SPA_Theme", JSON.stringify(!state.isDarkMode));
+    toggleTheme: state => {
+      const { setStorage } = useEncryptedStorage();
+      setStorage("SPA_Theme", !state.isDarkMode);
       state.isDarkMode = !state.isDarkMode;
       state.theme = state.isDarkMode ? { ...darkTheme } : { ...lightTheme };
     },

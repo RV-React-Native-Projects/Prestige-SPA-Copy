@@ -18,6 +18,7 @@ const windowHeight = Dimensions.get("window").height;
 
 export default function CompletedBookings(props: any) {
   const { user } = useAppSelector(state => state.user);
+  const { theme } = useAppSelector(state => state.theme);
   const storeDispatch = useAppDispatch();
   const { completedBookings, loadingBookings } = useAppSelector(
     state => state.appData,
@@ -36,6 +37,8 @@ export default function CompletedBookings(props: any) {
           ref={scrollUpBookings}
           refreshControl={
             <RefreshControl
+              colors={[theme.secondary]}
+              tintColor={theme.title}
               refreshing={loadingBookings}
               onRefresh={onRefresh}
             />
@@ -64,19 +67,21 @@ export default function CompletedBookings(props: any) {
           )}
         />
       ) : (
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <svgs.NoBooking
-            height={moderateScale(windowHeight / 2.5, 0.3)}
-            width="80%"
-          />
-          <VerticalSpacing />
-          <AppText fontStyle="500.bold" size={16}>
-            Booking History
-          </AppText>
-          <VerticalSpacing />
-          <AppText>Track your ongoing and completed bookings here</AppText>
-        </View>
+        !loadingBookings && (
+          <View
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <svgs.NoBooking
+              height={moderateScale(windowHeight / 2.5, 0.3)}
+              width="80%"
+            />
+            <VerticalSpacing />
+            <AppText fontStyle="500.bold" size={16}>
+              Booking History
+            </AppText>
+            <VerticalSpacing />
+            <AppText>Track your ongoing and completed bookings here</AppText>
+          </View>
+        )
       )}
     </View>
   );

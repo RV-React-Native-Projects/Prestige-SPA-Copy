@@ -52,7 +52,7 @@ export default function CoachCard(props: CoachCardProps) {
             style={{}}
             fontStyle="600.bold"
             size={14}
-            color={theme.white}
+            color={theme.modalBackgroundColor}
             numberOfLines={2}>
             Tire {data?.coachCategoryID}
           </AppText>

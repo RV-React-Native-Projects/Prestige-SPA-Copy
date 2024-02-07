@@ -23,6 +23,7 @@ import LocationV2 from "@assets/svgs/LocationV2";
 import LogoWithTitle from "@assets/svgs/LogoWithTitle";
 import MainLogo from "@assets/svgs/MainLogo";
 import MapCustomIcon from "@assets/svgs/MapCustomIcon";
+import Moon from "@assets/svgs/Moon";
 import NoBooking from "@assets/svgs/NoBooking";
 import Rent from "@assets/svgs/Rent";
 import Restaurants from "@assets/svgs/Restaurants";
@@ -33,6 +34,7 @@ import Sell from "@assets/svgs/Sell";
 import Share from "@assets/svgs/Share";
 import Size from "@assets/svgs/Size";
 import Success from "@assets/svgs/Success";
+import Sun from "@assets/svgs/Sun";
 import Time from "@assets/svgs/Time";
 import User from "@assets/svgs/User";
 import Vertical_Line from "@assets/svgs/Vertical_Line";
@@ -64,6 +66,7 @@ const svgs: any = {
   LogoWithTitle,
   MainLogo,
   MapCustomIcon,
+  Moon,
   NoBooking,
   Rent,
   Restaurants,
@@ -74,6 +77,7 @@ const svgs: any = {
   Share,
   Size,
   Success,
+  Sun,
   Time,
   User,
   Vertical_Line,

@@ -23,7 +23,7 @@ export default function LoadingContainer(props: LoadingContainerTypes) {
     loading = false,
     children,
     loadingContainerStyles,
-    color = theme.white,
+    color = theme.modalBackgroundColor,
     ...rest
   } = props || {};
 
@@ -38,8 +38,7 @@ export default function LoadingContainer(props: LoadingContainerTypes) {
           paddingTop: paddingTop,
           ...style,
         },
-      ]}
-    >
+      ]}>
       {children}
       {loading ? (
         <View
@@ -52,8 +51,7 @@ export default function LoadingContainer(props: LoadingContainerTypes) {
               elevation: 10000,
               ...props?.loadingContainerStyles,
             },
-          ]}
-        >
+          ]}>
           <BallIndicator color={color} animating={true} size={60} />
         </View>
       ) : undefined}

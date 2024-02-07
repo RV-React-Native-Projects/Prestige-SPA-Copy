@@ -32,10 +32,10 @@ export default function Avatar(props: AvatarTypes) {
     isOutlined && isDashed
       ? "dashed"
       : isOutlined && isDotted
-      ? "dotted"
-      : isOutlined
-      ? "solid"
-      : null;
+        ? "dotted"
+        : isOutlined
+          ? "solid"
+          : null;
 
   const {
     picUrl,
@@ -45,7 +45,7 @@ export default function Avatar(props: AvatarTypes) {
     initials,
     textSize = 20,
     outlined = false,
-    labelColor = isOutlined ? theme.primary : theme.white,
+    labelColor = isOutlined ? theme.primary : theme.modalBackgroundColor,
     dashed,
     dotted,
     borderColor = theme.primary,
@@ -91,10 +91,10 @@ export default function Avatar(props: AvatarTypes) {
               isOutlined && isDashed
                 ? "dashed"
                 : isOutlined && isDotted
-                ? "dotted"
-                : isOutlined
-                ? "solid"
-                : "solid",
+                  ? "dotted"
+                  : isOutlined
+                    ? "solid"
+                    : "solid",
             borderColor: borderColor || "#000",
           }}>
           {icon}
@@ -113,10 +113,10 @@ export default function Avatar(props: AvatarTypes) {
                 outlined && dashed
                   ? "dashed"
                   : outlined && dotted
-                  ? "dotted"
-                  : outlined
-                  ? "solid"
-                  : "solid",
+                    ? "dotted"
+                    : outlined
+                      ? "solid"
+                      : "solid",
               borderColor: borderColor || "#000",
               backgroundColor: outlined
                 ? "transparent"

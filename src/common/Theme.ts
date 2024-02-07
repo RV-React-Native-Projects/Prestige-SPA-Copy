@@ -188,6 +188,7 @@ const Colors = {
   lightGray: "#D0D5DD",
   light: "#e9ecef",
   dark: "#252f40",
+  iconColor: "#000000",
 
   warning: "#EF3F49",
   info: "#3C9AFB",
@@ -269,6 +270,7 @@ const Colors = {
 const darkColors = {
   // Text Color
   title: "#E9ECEF",
+  textColor: "#E9ECEF",
   secondaryTitle: "#E9ECEF",
   secondaryText: "#E9ECEF",
   // BackGround Color
@@ -282,6 +284,7 @@ const darkColors = {
   cardColor: "#262626",
   cardBackground: "#171717",
   cardTitle: "#E9ECEF",
+  iconColor: "#e9ecef",
 };
 
 const gradient = {

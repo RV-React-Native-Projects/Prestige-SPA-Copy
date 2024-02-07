@@ -85,7 +85,7 @@ export default memo(GenderDropDown);
 const style = (theme: any) => {
   return StyleSheet.create({
     container: {
-      backgroundColor: theme.white,
+      backgroundColor: theme.modalBackgroundColor,
       borderRadius: 5,
     },
     dropdown: {

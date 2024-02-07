@@ -18,6 +18,7 @@ const windowHeight = Dimensions.get("window").height;
 
 export default function UpcomingBookings(props: any) {
   const { user } = useAppSelector(state => state.user);
+  const { theme } = useAppSelector(state => state.theme);
   const storeDispatch = useAppDispatch();
   const { upComingBookings, loadingBookings } = useAppSelector(
     state => state.appData,
@@ -42,6 +43,8 @@ export default function UpcomingBookings(props: any) {
           }}
           refreshControl={
             <RefreshControl
+              colors={[theme.secondary]}
+              tintColor={theme.title}
               refreshing={loadingBookings}
               onRefresh={onRefresh}
             />
@@ -64,19 +67,21 @@ export default function UpcomingBookings(props: any) {
           )}
         />
       ) : (
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <svgs.NoBooking
-            height={moderateScale(windowHeight / 2.5, 0.3)}
-            width="80%"
-          />
-          <VerticalSpacing />
-          <AppText fontStyle="500.bold" size={16}>
-            You haven’t made a booking yet
-          </AppText>
-          <VerticalSpacing />
-          <AppText>Once you make a booking, it will appear here.</AppText>
-        </View>
+        !loadingBookings && (
+          <View
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <svgs.NoBooking
+              height={moderateScale(windowHeight / 2.5, 0.3)}
+              width="80%"
+            />
+            <VerticalSpacing />
+            <AppText fontStyle="500.bold" size={16}>
+              You haven’t made a booking yet
+            </AppText>
+            <VerticalSpacing />
+            <AppText>Once you make a booking, it will appear here.</AppText>
+          </View>
+        )
       )}
     </View>
   );

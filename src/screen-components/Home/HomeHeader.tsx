@@ -7,10 +7,16 @@ import I18n from "i18n-js";
 import images from "@src/common/AllImages";
 import FastImage from "react-native-fast-image";
 import { moderateScale } from "react-native-size-matters";
+import { useAppNavigation } from "@src/navigation/Navigation";
 
 export default function HomeHeader() {
   const { theme } = useAppSelector(state => state.theme);
   const { user } = useAppSelector(state => state.user);
+  const navigation = useAppNavigation();
+
+  const gotoProfile = () => {
+    navigation.navigate("Profile");
+  };
 
   return (
     <View
@@ -58,7 +64,10 @@ export default function HomeHeader() {
         <TouchableOpacity activeOpacity={0.8} style={{ padding: 5 }}>
           <svgs.Bell />
         </TouchableOpacity> */}
-        <TouchableOpacity activeOpacity={0.8} style={{ padding: 5 }}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={{ padding: 5 }}
+          onPress={gotoProfile}>
           <FastImage
             style={{
               height: moderateScale(45, 0.3),

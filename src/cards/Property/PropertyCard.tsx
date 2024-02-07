@@ -63,7 +63,7 @@ export default function PropertyCard(props: PropertyCardPorps) {
       style={{
         marginBottom: moderateScale(15, 0.3),
         borderRadius: moderateScale(10, 0.3),
-        backgroundColor: theme.white,
+        backgroundColor: theme.modalBackgroundColor,
         position: "relative",
         ...theme.mid_shadow,
       }}>
@@ -102,7 +102,7 @@ export default function PropertyCard(props: PropertyCardPorps) {
         <View style={{ padding: 20 }}>
           <View
             style={{
-              backgroundColor: theme.white,
+              backgroundColor: theme.modalBackgroundColor,
               maxWidth: "30%",
               borderRadius: 5,
               alignItems: "center",
@@ -130,7 +130,7 @@ export default function PropertyCard(props: PropertyCardPorps) {
               top: -15,
             }}>
             <AppText
-              color={theme.white}
+              color={theme.modalBackgroundColor}
               fontStyle="400.normal"
               numberOfLines={1}>
               {item?.propertyFeatures?.propertyStatus}

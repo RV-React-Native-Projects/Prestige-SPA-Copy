@@ -36,7 +36,9 @@ function AppContainer(props: AppContainerTypes) {
 
   const {
     children,
-    statusBarColor = theme.white,
+    statusBarColor = isDarkMode
+      ? theme.modalBackgroundColor
+      : theme.modalBackgroundColor,
     barStyle = isDarkMode ? "light-content" : "dark-content",
     hidden = false,
     translucent = true,

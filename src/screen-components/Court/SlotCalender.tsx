@@ -54,18 +54,18 @@ const DateCard = memo((props: any) => {
         }}>
         <AppText
           size={12}
-          color={value === item?.date ? theme.white : theme.textColor}>
+          color={value === item?.date ? theme.white : theme.title}>
           {item?.day}
         </AppText>
         <AppText
-          color={value === item?.date ? theme.white : theme.textColor}
+          color={value === item?.date ? theme.white : theme.title}
           size={24}
           fontStyle="600.semibold">
           {item.dateNumber}
         </AppText>
         <AppText
           fontStyle="500.normal"
-          color={value === item?.date ? theme.white : theme.textColor}>
+          color={value === item?.date ? theme.white : theme.title}>
           {item.month}
         </AppText>
       </View>
@@ -156,13 +156,6 @@ function SlotCalender(props: SlotCalenderProps) {
     [selectedDate],
   );
 
-  //  No Use for Now
-  // useEffect(() => {
-  //   if (minimumDate) {
-  //     setMonthDate(minimumDate);
-  //   } else setMonthDate(selectedDate);
-  // }, [selectedDate, minimumDate]);
-
   useEffect(() => {
     if (selectedDate) getCalendarDates(selectedDate);
     handleScrollToOffset(moderateScale(150, 0.3));
@@ -191,12 +184,12 @@ function SlotCalender(props: SlotCalenderProps) {
             justifyContent: "space-between",
           }}>
           <IconButton
-            icon={<svgs.Left height={25} width={25} />}
+            icon={<svgs.Left height={25} width={25} color1={theme.iconColor} />}
             onPressIcon={() => modifyMonthFromDate("subtract")}
           />
           <View style={{ width: 10 }} />
           <IconButton
-            icon={<svgs.Right />}
+            icon={<svgs.Right color1={theme.iconColor} />}
             onPressIcon={() => modifyMonthFromDate("add")}
           />
         </View>

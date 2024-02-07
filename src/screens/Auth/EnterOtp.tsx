@@ -185,7 +185,7 @@ const EnterOtp = (props: any) => {
         animation="fadeInUp"
         duration={1000}
         style={{
-          backgroundColor: theme.white,
+          backgroundColor: theme.modalBackgroundColor,
           padding: moderateScale(20, 0.3),
         }}>
         <AppButton

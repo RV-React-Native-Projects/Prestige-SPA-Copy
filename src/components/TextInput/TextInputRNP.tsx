@@ -52,7 +52,7 @@ export default function TextInputRNP(
     onBlur,
     editable = true,
     height = 50,
-    backgroundColor = isDisabled ? theme.light : theme.white,
+    backgroundColor = isDisabled ? theme.light : theme.modalBackgroundColor,
     styles,
     autoFocus = false,
     secureTextEntry = false,
@@ -99,7 +99,7 @@ export default function TextInputRNP(
           width: "100%",
           backgroundColor: backgroundColor,
           fontSize: moderateScale(15, 0.3),
-          color: theme.white,
+          color: theme.modalBackgroundColor,
           ...styles,
         }}
         outlineStyle={{

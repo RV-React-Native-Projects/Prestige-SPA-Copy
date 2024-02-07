@@ -70,7 +70,7 @@ export default function CountryCodePicker(props: CountryCodePickerProps) {
         borderWidth: 1,
         borderColor: theme.gray,
         borderRadius: 5,
-        backgroundColor: theme.white,
+        backgroundColor: theme.modalBackgroundColor,
         paddingHorizontal: 5,
         marginRight: 5,
         alignItems: "center",

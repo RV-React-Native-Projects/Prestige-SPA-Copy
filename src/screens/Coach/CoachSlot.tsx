@@ -273,7 +273,7 @@ export default function CoachSlot(props: any) {
                   style={{}}
                   fontStyle="600.bold"
                   size={14}
-                  color={theme.white}
+                  color={theme.modalBackgroundColor}
                   numberOfLines={2}>
                   Tire {data?.coachCategoryID}
                 </AppText>
@@ -553,7 +553,7 @@ export default function CoachSlot(props: any) {
               animation="fadeInUp"
               duration={500}
               style={{
-                backgroundColor: theme.white,
+                backgroundColor: theme.modalBackgroundColor,
                 padding: moderateScale(20, 0.3),
                 // bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
               }}>
@@ -574,7 +574,7 @@ export default function CoachSlot(props: any) {
           animation="fadeInUp"
           duration={500}
           style={{
-            backgroundColor: theme.white,
+            backgroundColor: theme.modalBackgroundColor,
             padding: moderateScale(20, 0.3),
             bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
           }}>

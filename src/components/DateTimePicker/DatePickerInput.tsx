@@ -63,7 +63,7 @@ const DatePickerInput = (props: DatePickerProps) => {
           borderColor: theme.gray,
           height: 50,
           width: "100%",
-          backgroundColor: theme.white,
+          backgroundColor: theme.modalBackgroundColor,
           borderRadius: 5,
           justifyContent: "center",
           paddingLeft: 10,

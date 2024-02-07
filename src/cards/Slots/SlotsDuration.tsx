@@ -32,14 +32,14 @@ const SlotsDuration = (props: DurationCardProps) => {
           padding: 10,
         }}>
         <AppText
-          color={value === item?.slotID ? theme.white : theme.textColor}
+          color={value === item?.slotID ? theme.white : theme.title}
           size={24}
           fontStyle="600.semibold">
           {item.slotMinutes}
         </AppText>
         <AppText
           fontStyle="400.bold"
-          color={value === item?.slotID ? theme.white : theme.textColor}>
+          color={value === item?.slotID ? theme.white : theme.title}>
           Mins
         </AppText>
       </View>

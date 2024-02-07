@@ -31,7 +31,7 @@ export default function BackButton() {
         activeOpacity={0.7}
         onPress={() => goBack()}
         style={{
-          backgroundColor: theme.white,
+          backgroundColor: theme.modalBackgroundColor,
           height: moderateScale(40, 0.3),
           width: moderateScale(40, 0.3),
           alignItems: "center",
@@ -39,10 +39,10 @@ export default function BackButton() {
           marginLeft: moderateScale(15, 0.3),
           marginTop: moderateScale(10, 0.3),
           borderRadius: moderateScale(10, 0.3),
-          borderColor: theme.lightGray,
+          borderColor: theme.light,
           borderWidth: moderateScale(1, 0.3),
         }}>
-        <svgs.Left height={25} width={25} />
+        <svgs.Left height={25} width={25} color1={theme.iconColor} />
       </TouchableOpacity>
     </Animatable.View>
   );

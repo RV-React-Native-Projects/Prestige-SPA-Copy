@@ -63,7 +63,7 @@ export default function CoachBooking(props: any) {
   const { initPaymentSheet, presentPaymentSheet, handleURLCallback } =
     useStripe();
 
-  const { theme } = useAppSelector(state => state.theme);
+  const { theme, isDarkMode } = useAppSelector(state => state.theme);
   const { user } = useAppSelector(state => state.user);
   const appToast = useAppToast();
   const [loading, setLoading] = useState<boolean>(false);
@@ -154,6 +154,7 @@ export default function CoachBooking(props: any) {
             paymentIntentClientSecret: res?.data?.paymentIntent,
             returnURL: "spoacd://stripe-redirect",
             allowsDelayedPaymentMethods: true,
+            style: isDarkMode ? "alwaysDark" : "alwaysLight",
             defaultBillingDetails: {
               name: user?.username,
               email: user?.email,
@@ -390,7 +391,7 @@ export default function CoachBooking(props: any) {
                   <AppText
                     style={{}}
                     fontStyle="500.medium"
-                    color={theme.white}>
+                    color={theme.modalBackgroundColor}>
                     Tier {data?.coachCategoryID}
                   </AppText>
                 </View>
@@ -541,7 +542,7 @@ export default function CoachBooking(props: any) {
         animation="fadeInUp"
         duration={1000}
         style={{
-          backgroundColor: theme.white,
+          backgroundColor: theme.modalBackgroundColor,
           padding: moderateScale(20, 0.3),
           bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
         }}>

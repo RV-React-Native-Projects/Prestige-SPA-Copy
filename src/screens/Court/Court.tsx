@@ -99,7 +99,12 @@ function CourtScreen() {
       <FlatList
         ref={scrollCourtRef}
         refreshControl={
-          <RefreshControl refreshing={loadingCourts} onRefresh={onRefresh} />
+          <RefreshControl
+            colors={[theme.secondary]}
+            tintColor={theme.title}
+            refreshing={loadingCourts}
+            onRefresh={onRefresh}
+          />
         }
         data={courts}
         renderItem={({ item, index }) => (

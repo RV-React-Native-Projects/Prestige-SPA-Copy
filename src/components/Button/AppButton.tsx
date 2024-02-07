@@ -98,11 +98,11 @@ export default function AppButton(props: AppButtonType) {
     borderStyle = isOutlined && isDotted
       ? "dotted"
       : isOutlined && isDashed
-      ? "dashed"
-      : "solid",
+        ? "dashed"
+        : "solid",
     loading = false,
     indicatorBackgroundColor = theme.primary,
-    indicatorColor = theme.white,
+    indicatorColor = theme.modalBackgroundColor,
     style,
     extraStyle,
     size = height as number,
@@ -123,10 +123,10 @@ export default function AppButton(props: AppButtonType) {
             backgroundColor: disabled
               ? disabledBackgroundColor || theme.subHeader
               : Outlined
-              ? "transparent"
-              : LinkButton
-              ? "transparent"
-              : color,
+                ? "transparent"
+                : LinkButton
+                  ? "transparent"
+                  : color,
             height: moderateScale(height, 0.3),
             borderRadius: moderateScale(borderRadius, 0.3),
             ...style,
@@ -171,10 +171,10 @@ export default function AppButton(props: AppButtonType) {
                 backgroundColor: disabled
                   ? disabledBackgroundColor || theme.subHeader
                   : Outlined
-                  ? theme.white
-                  : LinkButton
-                  ? "transparent"
-                  : color,
+                    ? theme.modalBackgroundColor
+                    : LinkButton
+                      ? "transparent"
+                      : color,
                 borderRadius: moderateScale(borderRadius, 0.3),
                 borderWidth: Outlined ? moderateScale(borderWidth, 0.3) : 0,
                 borderColor: Outlined ? borderColor : "transparent",
