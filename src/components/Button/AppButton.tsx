@@ -140,6 +140,7 @@ export default function AppButton(props: AppButtonType) {
         <>
           {LinkButton ? (
             <TouchableOpacity
+              activeOpacity={activeOpacity}
               onPress={onPress}
               disabled={disabled}
               style={{ alignSelf: "center", ...style }}>

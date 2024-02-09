@@ -6,6 +6,7 @@ import { useAppSelector } from "@redux/store";
 import * as Animatable from "react-native-animatable";
 import { moderateScale } from "react-native-size-matters";
 import AppText from "../Text/AppText";
+
 const isIOS = Platform.OS === "ios";
 
 interface BackButtonWithTitlePorps {

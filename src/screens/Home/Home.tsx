@@ -57,6 +57,8 @@ function Home() {
     navigation.navigate("CoachDetail", { data });
   };
 
+  console.log(JSON.stringify(coachs, null, 2));
+
   return (
     <AppContainer
       hideStatusbar={false}
@@ -170,8 +172,11 @@ function Home() {
                 data={coachs}
                 renderItem={({ item, index }) => (
                   <CoachCard
-                    key={index}
-                    data={item}
+                  key={index}
+                    imagePath={item?.stakeholder?.imagePath}
+                    tire={item?.coachCategory?.coachCategory}
+                    stakeholderName={item?.stakeholder?.stakeholderName}
+                    about={item?.about}
                     onPressCard={() => onPressCouchCard(item)}
                   />
                 )}

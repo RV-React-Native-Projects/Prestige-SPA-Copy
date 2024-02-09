@@ -37,7 +37,7 @@ const ProfileButton = (props: ProfileButtonProps) => {
         },
         !hideBorder && {
           borderBottomWidth: 0.3,
-          borderBottomColor: theme.light,
+          borderBottomColor: theme.gray,
         },
       ]}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -81,8 +81,8 @@ export default function ProfileScreen() {
           }}>
           <FastImage
             style={{
-              height: moderateScale(100, 0.3),
-              width: moderateScale(100, 0.3),
+              height: moderateScale(80, 0.3),
+              width: moderateScale(80, 0.3),
               borderRadius: moderateScale(100, 0.3),
               borderWidth: moderateScale(1, 0.3),
               borderColor: theme.secondary,
@@ -99,11 +99,11 @@ export default function ProfileScreen() {
             <AppText numberOfLines={1} fontStyle="600.bold" size={16}>
               {user?.stakeholderName}
             </AppText>
-            <VerticalSpacing />
+            <VerticalSpacing size={5} />
             <AppText selectable numberOfLines={1}>
               {user?.email}
             </AppText>
-            <VerticalSpacing />
+            <VerticalSpacing size={5} />
             <AppText selectable fontStyle="400.normal" numberOfLines={1}>
               {user?.phoneNumber}
             </AppText>
@@ -114,6 +114,7 @@ export default function ProfileScreen() {
               fontSize={16}
               Title="Edit"
               LinkButton
+              onPress={() => {}}
             />
           </View>
         </View>
@@ -127,13 +128,33 @@ export default function ProfileScreen() {
           <View style={{ borderRadius: 10, overflow: "hidden" }}>
             <ProfileButton
               title="Memberships"
-              icon={<svgs.MemberShip />}
+              icon={<svgs.MemberShip color1={theme.iconColor} />}
+              onPress={() => {}}
+            />
+            <ProfileButton
+              title="Family Members"
+              icon={<svgs.Group width={25} color1={theme.iconColor} />}
+              onPress={() => {}}
+            />
+            <ProfileButton
+              title="Addresses"
+              icon={<svgs.Address width={25} color1={theme.iconColor} />}
+              onPress={() => {}}
+            />
+            <ProfileButton
+              title="Notifications"
+              icon={<svgs.Notification width={25} color1={theme.iconColor} />}
+              onPress={() => {}}
+            />
+            <ProfileButton
+              title="About"
+              icon={<svgs.Info width={25} color1={theme.iconColor} />}
               onPress={() => {}}
             />
             <ProfileButton
               hideBorder
               title="Logout"
-              icon={<svgs.Logout />}
+              icon={<svgs.Logout color1={theme.iconColor} />}
               onPress={logoutUser}
             />
           </View>

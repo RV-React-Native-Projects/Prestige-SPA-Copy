@@ -10,12 +10,15 @@ import FastImage from "react-native-fast-image";
 import images from "@src/common/AllImages";
 
 interface CoachCardProps {
-  data: any;
+  imagePath: string;
+  tire: string;
+  stakeholderName: string;
+  about: string;
   onPressCard?: () => void;
 }
 
 export default function CoachCard(props: CoachCardProps) {
-  const { data, onPressCard } = props;
+  const { imagePath, tire, stakeholderName, about, onPressCard } = props;
   const { theme } = useAppSelector(state => state.theme);
   return (
     <Card
@@ -31,7 +34,7 @@ export default function CoachCard(props: CoachCardProps) {
         <FastImage
           style={{ height: 150, width: "auto", borderRadius: 200 }}
           source={{
-            uri: data?.stakeholder?.picturePathS3,
+            uri: `https://nodejsclusters-160185-0.cloudclusters.net/${imagePath}`,
             priority: FastImage.priority.high,
           }}
           resizeMode={FastImage.resizeMode.cover}
@@ -41,7 +44,7 @@ export default function CoachCard(props: CoachCardProps) {
         <View
           style={{
             backgroundColor:
-              data?.coachCategoryID === 1 ? theme.primary : theme.tertiaryText,
+              tire === "TIER 1" ? theme.primary : theme.tertiaryText,
             width: 80,
             height: 25,
             alignItems: "center",
@@ -55,7 +58,7 @@ export default function CoachCard(props: CoachCardProps) {
             size={14}
             color={theme.modalBackgroundColor}
             numberOfLines={2}>
-            Tire {data?.coachCategoryID}
+            {tire}
           </AppText>
         </View>
         <View
@@ -64,17 +67,18 @@ export default function CoachCard(props: CoachCardProps) {
             height: 20,
           }}>
           <AppText fontStyle="600.bold" size={16} numberOfLines={1}>
-            {data?.stakeholder?.stakeholderName}
+            {stakeholderName}
           </AppText>
         </View>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View
+          style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
           <svgs.CoachV2 color1={theme.secondary} height={20} />
           <AppText
             fontStyle="400.bold"
             numberOfLines={2}
             color={theme.gray}
             style={{ paddingHorizontal: 15, height: 40 }}>
-            Experienc of 4 Years
+            {about}
           </AppText>
         </View>
       </TouchableOpacity>

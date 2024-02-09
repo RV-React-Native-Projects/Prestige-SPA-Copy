@@ -1,12 +1,17 @@
-import React, { useCallback } from "react";
+import React, { lazy, useCallback } from "react";
 import { StyleSheet } from "react-native";
 import AppContainer from "@components/Container/AppContainer";
 import { useAppDispatch, useAppSelector } from "@redux/store";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import UpcomingBookings from "./UpcomingBookings";
-import CompletedBookings from "./CompletedBookings";
 import { loadBooking } from "@reducers/AppDataSlice";
 import { useFocusEffect } from "@react-navigation/native";
+
+const UpcomingBookings = lazy(
+  () => import("@screens/Calender/UpcomingBookings"),
+);
+const CompletedBookings = lazy(
+  () => import("@screens/Calender/CompletedBookings"),
+);
 
 const TopTab = createMaterialTopTabNavigator();
 

@@ -154,10 +154,10 @@ export default function TabNavigation() {
             </AppText>
           ),
           tabBarIcon: ({ focused, color, size }) => (
-            <svgs.CalenderV2
+            <svgs.Booking
               color1={color}
-              height={35}
-              width={35}
+              height={20}
+              width={20}
               strokeWidth={focused ? 2 : 1.5}
             />
           ),
