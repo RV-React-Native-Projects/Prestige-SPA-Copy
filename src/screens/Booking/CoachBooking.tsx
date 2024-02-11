@@ -369,7 +369,7 @@ export default function CoachBooking(props: any) {
                 ]}
                 defaultSource={images.user}
                 source={{
-                  uri: data?.stakeholder?.picturePathS3,
+                  uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.stakeholder?.imagePath}`,
                   priority: FastImage.priority.high,
                 }}
                 resizeMode={FastImage.resizeMode.cover}
@@ -392,7 +392,7 @@ export default function CoachBooking(props: any) {
                     style={{}}
                     fontStyle="500.medium"
                     color={theme.modalBackgroundColor}>
-                    Tier {data?.coachCategoryID}
+                    {data?.coachCategory?.coachCategory}
                   </AppText>
                 </View>
                 <View

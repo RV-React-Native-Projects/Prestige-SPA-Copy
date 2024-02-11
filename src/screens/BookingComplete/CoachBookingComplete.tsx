@@ -206,7 +206,7 @@ export default function CoachBookingComplete(props: any) {
                 ]}
                 defaultSource={images.user}
                 source={{
-                  uri: data?.stakeholder?.picturePathS3,
+                  uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.stakeholder?.imagePath}`,
                   priority: FastImage.priority.high,
                 }}
                 resizeMode={FastImage.resizeMode.cover}
@@ -229,7 +229,7 @@ export default function CoachBookingComplete(props: any) {
                     style={{}}
                     fontStyle="400.medium"
                     color={theme.modalBackgroundColor}>
-                    Tire {data?.coachCategoryID}
+                    {data?.coachCategory?.coachCategory}
                   </AppText>
                 </View>
                 <View

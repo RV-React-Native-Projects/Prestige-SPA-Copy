@@ -50,6 +50,19 @@ interface Court {
   courtDescription: string;
   area: number;
   imagePath: string;
+  // creditTypes: {
+  //   creditTypeID: number;
+  //   createdAt: string;
+  //   updatedAt: string;
+  //   bookingType: string;
+  //   slotID: number;
+  //   coachCategoryID: number | null;
+  //   coachSessionTypeID: number | null;
+  //   locationID: number;
+  //   courtID: number;
+  //   rate: number;
+  //   multiSessionRate: number;
+  // };
   "creditTypes.creditTypeID": number;
   "creditTypes.createdAt": string;
   "creditTypes.updatedAt": string;
@@ -69,43 +82,6 @@ interface TimeSlot {
   isAvailable: boolean;
   availableCourts: Court[];
 }
-
-// const SlotCard = (props: any) => {
-//   const { item, onPress, value } = props;
-//   const { theme } = useAppSelector(state => state.theme);
-
-//   return (
-//     <TouchableOpacity
-//       activeOpacity={0.8}
-//       style={{
-//         backgroundColor:
-//           value === item?.startTime
-//             ? theme.primary
-//             : theme.modalBackgroundColor,
-//         borderRadius: 10,
-//         marginBottom: 10,
-//         ...theme.light_shadow,
-//       }}
-//       onPress={onPress}
-//       disabled={!item?.isAvailable}>
-//       <View
-//         style={{
-//           flexDirection: "column",
-//           alignItems: "center",
-//           justifyContent: "space-between",
-//           padding: moderateScale(10, 0.3),
-//         }}>
-//         <AppText
-//           color={item?.isAvailable ? theme.title : theme.gray}
-//           fontStyle="500.medium"
-//           size={14}>
-//           {item.startTime}
-//           {/* {item.startTime} - {item.endTime} */}
-//         </AppText>
-//       </View>
-//     </TouchableOpacity>
-//   );
-// };
 
 export default function CourtSlot(props: any) {
   const { theme, isDarkMode } = useAppSelector(state => state.theme);

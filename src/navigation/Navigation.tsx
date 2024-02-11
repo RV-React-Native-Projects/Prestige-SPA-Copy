@@ -40,6 +40,10 @@ const CoachSlot = lazy(() => import("@screens/Coach/CoachSlot"));
 const Group = lazy(() => import("@screens/Group/Group"));
 const Calender = lazy(() => import("@screens/Calender/Calender"));
 const Profile = lazy(() => import("@screens/Profile/Profile"));
+const Memberships = lazy(() => import("@screens/Membership/Memberships"));
+const EditMemberShip = lazy(() => import("@screens/Membership/EditMemberShip"));
+const FamilyMembers = lazy(() => import("@screens/FamilyMember/FamilyMembers"));
+const AddNewFamily = lazy(() => import("@screens/FamilyMember/AddNewFamily"));
 // const Details = lazy(() => import("@screens/Details/Details"));
 
 export const useAppNavigation: () => NavigationProp<ParamListBase> =
@@ -138,6 +142,10 @@ function MyStack() {
       <Stack.Screen name="Group" component={Group} />
       <Stack.Screen name="Calender" component={Calender} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Memberships" component={Memberships} />
+      <Stack.Screen name="EditMemberShip" component={EditMemberShip} />
+      <Stack.Screen name="FamilyMembers" component={FamilyMembers} />
+      <Stack.Screen name="AddNewFamily" component={AddNewFamily} />
     </Stack.Navigator>
   );
 }

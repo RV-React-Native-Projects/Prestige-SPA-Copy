@@ -59,8 +59,8 @@ export const loadBooking = createAsyncThunk(
   },
 );
 
-export const loadAllCourts = createAsyncThunk(
-  "appdata/loadAllCourts",
+export const loadAllLocations = createAsyncThunk(
+  "appdata/loadAllLocations",
   async () => {
     const response = await new Promise((resolve, reject) => {
       CourtManager.getAllCourts(
@@ -121,8 +121,8 @@ interface appDataSliceProps {
   slots: Slot[] | null;
   loadingTerms: boolean;
   terms: CoachSessionTerm[] | null;
-  loadingCourts: boolean;
-  courts: any | null;
+  loadingLocations: boolean;
+  locations: any | null;
   loadingCoachs: boolean;
   coachs: any | null;
   loadingBookings: boolean;
@@ -136,8 +136,8 @@ const initialState: appDataSliceProps = {
   slots: null,
   loadingTerms: false,
   terms: null,
-  loadingCourts: false,
-  courts: null,
+  loadingLocations: false,
+  locations: null,
   loadingCoachs: false,
   coachs: null,
   loadingBookings: false,
@@ -160,11 +160,11 @@ const appDataSlice = createSlice({
     setSlots: (state, action) => {
       state.slots = action.payload;
     },
-    setLoadingCourts: (state, action) => {
-      state.loadingCourts = action.payload;
+    setLoadingLocations: (state, action) => {
+      state.loadingLocations = action.payload;
     },
-    setCourts: (state, action) => {
-      state.courts = action.payload;
+    setLocations: (state, action) => {
+      state.locations = action.payload;
     },
     setLoadingCoachs: (state, action) => {
       state.loadingCoachs = action.payload;
@@ -213,12 +213,12 @@ const appDataSlice = createSlice({
         state.loadingTerms = false;
         state.terms = action.payload;
       })
-      .addCase(loadAllCourts.pending, state => {
-        state.loadingCourts = true;
+      .addCase(loadAllLocations.pending, state => {
+        state.loadingLocations = true;
       })
-      .addCase(loadAllCourts.fulfilled, (state, action) => {
-        state.loadingCourts = false;
-        state.courts = action.payload;
+      .addCase(loadAllLocations.fulfilled, (state, action) => {
+        state.loadingLocations = false;
+        state.locations = action.payload;
       })
       .addCase(loadAllCoach.pending, state => {
         state.loadingCoachs = true;
@@ -259,8 +259,8 @@ export const {
   setAppData,
   setLoadingSlots,
   setSlots,
-  setLoadingCourts,
-  setCourts,
+  setLoadingLocations,
+  setLocations,
   setLoadingCoachs,
   setCoachs,
   setLoadingBookings,

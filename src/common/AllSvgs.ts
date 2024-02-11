@@ -7,9 +7,11 @@ import Booking from "@assets/svgs/Booking";
 import Bus from "@assets/svgs/Bus";
 import Calender from "@assets/svgs/Calender";
 import CalenderV2 from "@assets/svgs/CalenderV2";
+import Clear from "@assets/svgs/Clear";
 import Coach from "@assets/svgs/Coach";
 import CoachV2 from "@assets/svgs/CoachV2";
 import Court from "@assets/svgs/Court";
+import Document from "@assets/svgs/Document";
 import Down from "@assets/svgs/Down";
 import EyeClose from "@assets/svgs/EyeClose";
 import Group from "@assets/svgs/Group";
@@ -29,6 +31,7 @@ import LogoWithTitle from "@assets/svgs/LogoWithTitle";
 import MainLogo from "@assets/svgs/MainLogo";
 import MapCustomIcon from "@assets/svgs/MapCustomIcon";
 import MemberShip from "@assets/svgs/MemberShip";
+import MemberShipV2 from "@assets/svgs/MemberShipV2";
 import Moon from "@assets/svgs/Moon";
 import NoBooking from "@assets/svgs/NoBooking";
 import Notification from "@assets/svgs/Notification";
@@ -43,6 +46,7 @@ import Share from "@assets/svgs/Share";
 import Size from "@assets/svgs/Size";
 import Success from "@assets/svgs/Success";
 import Sun from "@assets/svgs/Sun";
+import Upload from "@assets/svgs/Upload";
 import Time from "@assets/svgs/Time";
 import User from "@assets/svgs/User";
 import Vertical_Line from "@assets/svgs/Vertical_Line";
@@ -58,9 +62,11 @@ const svgs: any = {
   Bus,
   Calender,
   CalenderV2,
+  Clear,
   Coach,
   CoachV2,
   Court,
+  Document,
   Down,
   EyeClose,
   Group,
@@ -80,6 +86,7 @@ const svgs: any = {
   MainLogo,
   MapCustomIcon,
   MemberShip,
+  MemberShipV2,
   Moon,
   NoBooking,
   Notification,
@@ -94,6 +101,7 @@ const svgs: any = {
   Size,
   Success,
   Sun,
+  Upload,
   Time,
   User,
   Vertical_Line,

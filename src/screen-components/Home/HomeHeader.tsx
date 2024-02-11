@@ -78,7 +78,7 @@ export default function HomeHeader() {
             }}
             defaultSource={images.user}
             source={{
-              uri: user?.picturePathS3,
+              uri: `https://nodejsclusters-160185-0.cloudclusters.net/${user?.imagePath}`,
               priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover}

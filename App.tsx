@@ -23,6 +23,7 @@ LogBox.ignoreLogs([
   "Sending",
   "new NativeEventEmitter",
   "Non-serializable",
+  "Non-Serializable",
   "Possible unhandled",
 ]);
 

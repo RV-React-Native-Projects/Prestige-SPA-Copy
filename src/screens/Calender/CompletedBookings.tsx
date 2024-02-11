@@ -63,6 +63,7 @@ export default function CompletedBookings(props: any) {
               court={item?.court}
               coach={item?.coach}
               location={item?.location}
+              tier={item?.coach?.coachProfile?.coachCategory?.coachCategory}
             />
           )}
         />

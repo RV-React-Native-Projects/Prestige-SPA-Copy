@@ -178,7 +178,7 @@ const Colors = {
   primary: "#4C9A2A",
   primaryLight: "#88C5FE",
   secondary: "#266EFF",
-  secondaryLight: "#CEFFCD",
+  secondaryLight: "#D2E3FC",
   tertiary: "#00AF62",
   tertiaryDark: "#AB7B00",
   tertiaryLight: "#FFF065",
@@ -201,12 +201,12 @@ const Colors = {
   logout: "#FF3D00",
   green: "#007639",
 
-  completedLight: "#ECFDF3",
   completed: "#037847",
-  ongoingLight: "#FFF3E3",
+  completedLight: "#ECFDF3",
   ongoing: "#EB8600",
-  cancelLight: "#FDECEC",
+  ongoingLight: "#FFF3E3",
   cancel: "#EF3F49",
+  cancelLight: "#FDECEC",
 
   // Text Color
   title: "#394153",

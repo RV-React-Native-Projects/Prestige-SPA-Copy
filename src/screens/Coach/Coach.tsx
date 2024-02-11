@@ -39,7 +39,7 @@ const CoachCard = (props: any) => {
         <FastImage
           style={{ height: 100, width: 100, borderRadius: 200 }}
           source={{
-            uri: data?.stakeholder?.picturePathS3,
+            uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.stakeholder?.imagePath}`,
             priority: FastImage.priority.high,
           }}
           resizeMode={FastImage.resizeMode.cover}
@@ -63,7 +63,7 @@ const CoachCard = (props: any) => {
               fontStyle="600.bold"
               color={theme.modalBackgroundColor}
               numberOfLines={2}>
-              Tire {data?.coachCategoryID}
+              {data?.coachCategory?.coachCategory}
             </AppText>
           </View>
           <AppText fontStyle="600.bold" size={16} numberOfLines={2}>

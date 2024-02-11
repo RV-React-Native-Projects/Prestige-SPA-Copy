@@ -15,12 +15,15 @@ import HomeHeader from "@src/screen-components/Home/HomeHeader";
 import HeaderWithTitleandSeeAll from "@src/screen-components/Header/HeaderWithTitleandSeeAll";
 import CourtCard from "@cards/Home/CourtCard";
 import CoachCard from "@cards/Home/CoachCard";
-import { loadAllCoach, loadAllCourts } from "@src/redux/reducers/AppDataSlice";
+import {
+  loadAllCoach,
+  loadAllLocations,
+} from "@src/redux/reducers/AppDataSlice";
 import HomeDateSK from "@src/assets/skelton/HomeDateSK";
 
 function Home() {
   const { userToken, user } = useAppSelector(state => state.user);
-  const { coachs, courts, loadingCoachs, loadingCourts } = useAppSelector(
+  const { coachs, locations, loadingCoachs, loadingLocations } = useAppSelector(
     state => state.appData,
   );
   const { theme } = useAppSelector(state => state.theme);
@@ -31,9 +34,9 @@ function Home() {
   const appToast = useAppToast();
 
   useEffect(() => {
-    if (!courts) storeDispatch(loadAllCourts());
+    if (!locations) storeDispatch(loadAllLocations());
     if (!coachs) storeDispatch(loadAllCoach());
-  }, [courts, coachs]);
+  }, [locations, coachs]);
 
   useEffect(() => {
     if (!userToken) {
@@ -56,8 +59,6 @@ function Home() {
   const onPressCouchCard = (data: any) => {
     navigation.navigate("CoachDetail", { data });
   };
-
-  console.log(JSON.stringify(coachs, null, 2));
 
   return (
     <AppContainer
@@ -125,10 +126,10 @@ function Home() {
           />
         </View>
         <VerticalSpacing size={5} />
-        {loadingCourts ? (
+        {loadingLocations ? (
           <HomeDateSK />
         ) : (
-          courts && (
+          locations && (
             <View>
               <HeaderWithTitleandSeeAll
                 title="Location"
@@ -141,7 +142,7 @@ function Home() {
                 }}
                 showsHorizontalScrollIndicator={false}
                 horizontal
-                data={courts}
+                data={locations}
                 renderItem={({ item, index }) => (
                   <CourtCard
                     key={index}
@@ -172,7 +173,7 @@ function Home() {
                 data={coachs}
                 renderItem={({ item, index }) => (
                   <CoachCard
-                  key={index}
+                    key={index}
                     imagePath={item?.stakeholder?.imagePath}
                     tire={item?.coachCategory?.coachCategory}
                     stakeholderName={item?.stakeholder?.stakeholderName}

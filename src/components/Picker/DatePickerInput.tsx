@@ -1,11 +1,12 @@
 import React, { memo, useEffect, useState } from "react";
-import { Button, TouchableOpacity } from "react-native";
+import { Button, TouchableOpacity, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import AppTextInput from "../TextInput/AppTextInput";
 import { useAppSelector } from "@src/redux/store";
 import AppText from "../Text/AppText";
 import I18n from "i18n-js";
 import moment from "moment";
+import svgs from "@common/AllSvgs";
 
 interface DatePickerProps {
   label?: string;
@@ -13,7 +14,7 @@ interface DatePickerProps {
   error?: boolean;
   required?: boolean;
   getDate?: (date: Date) => void;
-  value: string | Date;
+  value?: string | Date | null;
   maximumDate?: Date;
   minimumDate?: Date;
   placeholder?: string;
@@ -68,13 +69,22 @@ const DatePickerInput = (props: DatePickerProps) => {
           justifyContent: "center",
           paddingLeft: 10,
         }}>
-        <AppText
-          size={16}
-          fontStyle="400.normal"
-          color={!confirmDate ? theme.gray : theme.title}
-          style={{ paddingVertical: 5 }}>
-          {confirmDate ?? placeholder}
-        </AppText>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingRight: 10,
+          }}>
+          <AppText
+            size={16}
+            fontStyle="400.normal"
+            color={!confirmDate ? theme.gray : theme.title}
+            style={{ paddingVertical: 5 }}>
+            {confirmDate ?? placeholder}
+          </AppText>
+          <svgs.Calender color1={theme.secondary} />
+        </View>
       </TouchableOpacity>
       <DatePicker
         modal

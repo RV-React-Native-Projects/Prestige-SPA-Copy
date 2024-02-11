@@ -13,6 +13,7 @@ import { VerticalSpacing } from "@components/Spacing/Spacing";
 import AppButton from "@components/Button/AppButton";
 import { removeUserData, resetUser } from "@reducers/UserSlice";
 import { resetAppData } from "@reducers/AppDataSlice";
+import { useAppNavigation } from "@src/navigation/Navigation";
 
 interface ProfileButtonProps {
   title: string;
@@ -55,12 +56,18 @@ export default function ProfileScreen() {
   const { theme } = useAppSelector(state => state.theme);
   const { user } = useAppSelector(state => state.user);
   const storeDispatch = useAppDispatch();
+  const navigation = useAppNavigation();
 
   const logoutUser = () => {
     storeDispatch(removeUserData());
     storeDispatch(resetUser());
     storeDispatch(resetAppData());
   };
+
+  const gotoMemberships = () => {
+    navigation.navigate("Memberships");
+  };
+
   return (
     <AppContainer
       hideStatusbar={false}
@@ -89,7 +96,7 @@ export default function ProfileScreen() {
             }}
             defaultSource={images.user}
             source={{
-              uri: user?.picturePathS3,
+              uri: `https://nodejsclusters-160185-0.cloudclusters.net/${user?.imagePath}`,
               priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover}
@@ -129,7 +136,7 @@ export default function ProfileScreen() {
             <ProfileButton
               title="Memberships"
               icon={<svgs.MemberShip color1={theme.iconColor} />}
-              onPress={() => {}}
+              onPress={gotoMemberships}
             />
             <ProfileButton
               title="Family Members"

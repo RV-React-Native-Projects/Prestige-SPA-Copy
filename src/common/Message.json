@@ -141,6 +141,11 @@
         "Customer": "Customer",
         "Developer": "Developer"
       },
+      "doc_type": {
+        "Tenancy Contract": "Tenancy Contract",
+        "Purchase": "Purchase Contract"
+      },
+      "document_type": "Document Type",
       "term_service": "By continuing, you agree to our",
       "and": "and",
       "Verify_Account": "Verify Account",

@@ -19,6 +19,7 @@ interface BookingCardProps {
   court?: any;
   coachSessionTypeID?: number;
   location?: any;
+  tier?: string;
 }
 
 function BookingCard(props: BookingCardProps) {
@@ -33,8 +34,13 @@ function BookingCard(props: BookingCardProps) {
     court,
     coachSessionTypeID,
     location,
+    tier,
   } = props;
+
   const { theme } = useAppSelector(state => state.theme);
+
+  console.log(JSON.stringify(coach, null, 2));
+
   return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -77,7 +83,7 @@ function BookingCard(props: BookingCardProps) {
           <FastImage
             style={{ height: 80, width: 80, borderRadius: 200 }}
             source={{
-              uri: coach?.picturePathS3,
+              uri: `https://nodejsclusters-160185-0.cloudclusters.net/${coach?.imagePath}`,
               priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover}
@@ -95,11 +101,8 @@ function BookingCard(props: BookingCardProps) {
                 borderRadius: 100,
                 marginVertical: 5,
               }}>
-              <AppText
-                fontStyle="400.medium"
-                size={12}
-                color={theme.modalBackgroundColor}>
-                Tire {coachSessionTypeID}
+              <AppText fontStyle="400.medium" size={12} color={theme.white}>
+                {tier}
               </AppText>
             </View>
             <AppText

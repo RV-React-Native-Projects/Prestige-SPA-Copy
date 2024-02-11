@@ -13,7 +13,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import MonthYearPicker from "@components/DateTimePicker/MonthYearPicker";
+import MonthYearPicker from "@src/components/Picker/MonthYearPicker";
 import IconButton from "@components/Button/IconButton";
 import svgs from "@common/AllSvgs";
 import moment from "moment";

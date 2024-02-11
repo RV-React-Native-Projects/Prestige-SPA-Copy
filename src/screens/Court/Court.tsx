@@ -15,7 +15,7 @@ import AppText from "@components/Text/AppText";
 import FastImage from "react-native-fast-image";
 import images from "@common/AllImages";
 import svgs from "@common/AllSvgs";
-import { loadAllCourts } from "@reducers/AppDataSlice";
+import { loadAllLocations } from "@reducers/AppDataSlice";
 
 const CourtCard = (props: any) => {
   const { theme } = useAppSelector(state => state.theme);
@@ -78,7 +78,9 @@ const CourtCard = (props: any) => {
 
 function CourtScreen() {
   const { theme } = useAppSelector(state => state.theme);
-  const { courts, loadingCourts } = useAppSelector(state => state.appData);
+  const { locations, loadingLocations } = useAppSelector(
+    state => state.appData,
+  );
   const navigation = useAppNavigation();
   const storeDispatch = useAppDispatch();
   const scrollCourtRef = useRef<FlatList>(null);
@@ -88,7 +90,7 @@ function CourtScreen() {
   };
 
   const onRefresh = useCallback(() => {
-    storeDispatch(loadAllCourts());
+    storeDispatch(loadAllLocations());
   }, []);
 
   return (
@@ -102,11 +104,11 @@ function CourtScreen() {
           <RefreshControl
             colors={[theme.secondary]}
             tintColor={theme.title}
-            refreshing={loadingCourts}
+            refreshing={loadingLocations}
             onRefresh={onRefresh}
           />
         }
-        data={courts}
+        data={locations}
         renderItem={({ item, index }) => (
           <CourtCard key={index} data={item} onPress={() => gotoCourt(item)} />
         )}

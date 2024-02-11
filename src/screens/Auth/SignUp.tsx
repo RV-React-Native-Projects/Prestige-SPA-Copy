@@ -29,7 +29,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import useAppToast from "@components/Alert/AppToast";
 import GenderDropDown from "@src/components/dropdown/GenderDropDown";
-import DatePickerInput from "@src/components/DateTimePicker/DatePickerInput";
+import DatePickerInput from "@src/components/Picker/DatePickerInput";
 
 const isIOS = Platform.OS === "ios";
 

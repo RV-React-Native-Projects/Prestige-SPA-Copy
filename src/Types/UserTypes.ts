@@ -39,7 +39,7 @@ export interface Parent {
   phoneNumber: string;
   createdAt: string;
   updatedAt: string;
-  picturePathS3: string;
+  imagePath: string;
   emiratesID: string;
   emiratesIDExpiry: string;
   age: number;
@@ -88,7 +88,7 @@ export interface UserProps {
   phoneNumber: string;
   createdAt: string;
   updatedAt: string;
-  picturePathS3: string;
+  imagePath: string;
   emiratesID: string;
   emiratesIDExpiry: string;
   age: number;

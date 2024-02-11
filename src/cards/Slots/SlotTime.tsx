@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { useAppSelector } from "@src/redux/store";
 import { moderateScale } from "react-native-size-matters";
@@ -13,7 +13,7 @@ interface SlotTime {
 
 export default function SlotTime(props: SlotTime) {
   const { onPress, value, time, isAvailable } = props;
-  const { theme } = useAppSelector(state => state.theme);
+  const { theme, isDarkMode } = useAppSelector(state => state.theme);
 
   return (
     <TouchableOpacity
@@ -34,7 +34,13 @@ export default function SlotTime(props: SlotTime) {
           padding: moderateScale(10, 0.3),
         }}>
         <AppText
-          color={isAvailable ? theme.title : theme.gray}
+          color={
+            !isAvailable
+              ? theme.gray
+              : value === time
+                ? theme.white
+                : theme.title
+          }
           style={{ textTransform: "uppercase" }}
           fontStyle="500.medium"
           size={14}>

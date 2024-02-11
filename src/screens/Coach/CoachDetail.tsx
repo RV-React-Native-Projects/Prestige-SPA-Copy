@@ -127,7 +127,7 @@ function CoachDetail(props: any) {
     [slotId],
   );
 
-  // console.log(JSON.stringify(FilterSesstionTypes, null, 2));
+  console.log(JSON.stringify(data, null, 2));
 
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
@@ -164,7 +164,7 @@ function CoachDetail(props: any) {
           <FastImage
             style={{ height: 100, width: 100, borderRadius: 200 }}
             source={{
-              uri: data?.stakeholder?.picturePathS3,
+              uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.stakeholder?.imagePath}`,
               priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover}
@@ -190,7 +190,7 @@ function CoachDetail(props: any) {
                 size={14}
                 color={theme.modalBackgroundColor}
                 numberOfLines={2}>
-                Tire {data?.coachCategoryID}
+                {data?.coachCategory?.coachCategory}
               </AppText>
             </View>
             <View
