@@ -67,6 +67,9 @@ export interface FamilyMember {
 
 export interface Membership {
   membershipID: number;
+  locationName?: string | undefined;
+  imagePath?: string | undefined;
+
   createdAt: string;
   updatedAt: string;
   locationID: number;

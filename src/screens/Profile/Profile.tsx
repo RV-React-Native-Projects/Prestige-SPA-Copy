@@ -43,7 +43,7 @@ const ProfileButton = (props: ProfileButtonProps) => {
       ]}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={{ marginRight: 10 }}>{icon}</View>
-        <AppText numberOfLines={1} size={16} fontStyle="400.bold">
+        <AppText numberOfLines={1} size={16} fontStyle="400.medium">
           {title}
         </AppText>
       </View>

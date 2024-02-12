@@ -31,8 +31,14 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera Permission Required!</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Location Permission Required!</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Gallry Permission Required!</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Gallry Permission Required!</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Bold.ttf</string>

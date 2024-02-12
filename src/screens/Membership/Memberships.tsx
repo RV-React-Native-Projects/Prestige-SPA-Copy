@@ -13,6 +13,7 @@ import { VerticalSpacing } from "@components/Spacing/Spacing";
 import moment from "moment";
 import { Card } from "react-native-paper";
 import { moderateScale } from "react-native-size-matters";
+import { Membership } from "@src/Types/UserTypes";
 
 interface Court {
   minRate: number;
@@ -37,19 +38,6 @@ interface CourtDetail {
   imagePath: string;
 }
 
-interface Membership {
-  membershipID: number;
-  createdAt: string;
-  updatedAt: string;
-  locationID: number;
-  customerID: number;
-  membershipType: string;
-  filePath: string;
-  expiryDate?: any;
-  status: number;
-  statusDescription: string;
-}
-
 interface MemberShipData {
   status: "Pending" | "Approved" | "Rejected" | "Expired" | string;
   data: { membership: Membership; loaction: Court }[];
@@ -60,13 +48,13 @@ interface MemberCardProps {
   length: number;
   index: number;
   locationName: string;
-  expiryDate: string;
+  expiryDate: string | null | undefined;
   tag: string;
   type: "Pending" | "Approved" | "Rejected" | "Expired";
   OnPressEdit?: (data: any) => void;
 }
 
-const MemberCard = (props: MemberCardProps) => {
+const MemberCard = (props: MemberCardProps | any) => {
   const { theme } = useAppSelector(state => state.theme);
   const {
     imagePath,
@@ -85,8 +73,8 @@ const MemberCard = (props: MemberCardProps) => {
         padding: moderateScale(10, 0.3),
         backgroundColor: theme.modalBackgroundColor,
         borderRadius: moderateScale(10, 0.3),
-        borderBottomWidth: length - 1 > index ? 0.3 : 0,
-        borderBlockColor: theme.gray,
+        borderTopWidth: index > 0 ? 0.3 : 0,
+        borderTopColor: theme.gray,
         flexDirection: "row",
         width: "100%",
       }}>
@@ -154,22 +142,23 @@ const MemberCard = (props: MemberCardProps) => {
           <AppText numberOfLines={1} size={12}>
             Membership expiry date : {moment(expiryDate).format("DD MMM, YYYY")}
           </AppText>
-        ) : type === "Pending" ? (
-          <TouchableOpacity
-            activeOpacity={0.8}
-            hitSlop={{ bottom: 5, top: 5, left: 5, right: 5 }}
-            onPress={data => OnPressEdit && OnPressEdit(data)}
-            style={{ flexDirection: "row", alignItems: "center" }}>
-            <AppText
-              fontStyle="500.normal"
-              style={{ alignItems: "center" }}
-              color={theme.ongoing}
-              numberOfLines={1}>
-              Edit Membership{" "}
-            </AppText>
-            <svgs.Right height={18} width={18} color1={theme.ongoing} />
-          </TouchableOpacity>
-        ) : (
+        ) : type === "Pending" ? null : (
+          // (
+          //   <TouchableOpacity
+          //     activeOpacity={0.8}
+          //     hitSlop={{ bottom: 5, top: 5, left: 5, right: 5 }}
+          //     onPress={data => OnPressEdit && OnPressEdit(data)}
+          //     style={{ flexDirection: "row", alignItems: "center" }}>
+          //     <AppText
+          //       fontStyle="500.normal"
+          //       style={{ alignItems: "center" }}
+          //       color={theme.ongoing}
+          //       numberOfLines={1}>
+          //       Edit Membership{" "}
+          //     </AppText>
+          //     <svgs.Right height={18} width={18} color1={theme.ongoing} />
+          //   </TouchableOpacity>
+          // )
           <TouchableOpacity
             activeOpacity={0.8}
             hitSlop={{ bottom: 5, top: 5, left: 5, right: 5 }}
@@ -192,12 +181,12 @@ const MemberCard = (props: MemberCardProps) => {
 
 function Memberships() {
   const { theme } = useAppSelector(state => state.theme);
-  const { user } = useAppSelector(state => state.user);
+  const { user, membership } = useAppSelector(state => state.user);
   const { locations } = useAppSelector(state => state.appData);
   const storeDispatch = useAppDispatch();
   const navigation = useAppNavigation();
 
-  const OnPressEdit = (data: { membership: Membership; loaction: Court }) => {
+  const OnPressEdit = (data: any) => {
     navigation.navigate("EditMemberShip", { data });
   };
 
@@ -213,6 +202,7 @@ function Memberships() {
     useState<MemberShipData | null>(null);
   const [expiredMemberShip, setExpiredMemberShip] =
     useState<MemberShipData | null>(null);
+  const [notMemberShip, setNotMemberShip] = useState<Membership[] | null>(null);
 
   useEffect(() => {
     if (locations) {
@@ -224,7 +214,7 @@ function Memberships() {
       ].map(status => {
         return {
           status: status,
-          data: _.filter(user?.memberships, {
+          data: _.filter(membership, {
             statusDescription: status,
           }).map(memberShip => {
             return {
@@ -264,6 +254,18 @@ function Memberships() {
     }
   }, [memberShipData]);
 
+  useEffect(() => {
+    if (membership) {
+      const membershipLocationIDs: Set<number> = new Set(
+        membership.map(m => m.locationID),
+      );
+      const locationsNotInMembership = locations.filter(
+        (location: any) => !membershipLocationIDs.has(location.locationID),
+      );
+      setNotMemberShip(locationsNotInMembership);
+    }
+  }, [membership]);
+
   return (
     <AppContainer
       hideStatusbar={false}
@@ -271,7 +273,7 @@ function Memberships() {
       backgroundColor={theme.appBackgroundColor}>
       <BackButtonWithTitle title="Memberships" />
       <ScrollView contentContainerStyle={{ padding: moderateScale(15, 0.3) }}>
-        {approvedMemberShip && (
+        {approvedMemberShip && approvedMemberShip?.data?.length > 0 && (
           <View>
             <AppText fontStyle="500.medium" size={16}>
               Verified Memberships
@@ -297,9 +299,9 @@ function Memberships() {
             </Card>
           </View>
         )}
-        <VerticalSpacing size={20} />
-        {pendingMemberShip && (
+        {pendingMemberShip && pendingMemberShip?.data?.length > 0 && (
           <View>
+            <VerticalSpacing size={20} />
             <AppText fontStyle="500.medium" size={16}>
               Under Verification
             </AppText>
@@ -325,11 +327,11 @@ function Memberships() {
             </Card>
           </View>
         )}
-        <VerticalSpacing size={20} />
-        {rejectedMemberShip && (
+        {rejectedMemberShip && rejectedMemberShip?.data?.length > 0 && (
           <View>
+            <VerticalSpacing size={20} />
             <AppText fontStyle="500.medium" size={16}>
-              Not a Member
+              Rejected Membership
             </AppText>
             <VerticalSpacing />
             <Card
@@ -342,7 +344,7 @@ function Memberships() {
                   key={index}
                   index={index}
                   type="Rejected"
-                  tag="Not a Member"
+                  tag="Rejected Membership"
                   length={rejectedMemberShip?.data?.length}
                   locationName={item?.loaction?.locationName}
                   imagePath={item?.loaction?.imagePath}
@@ -353,9 +355,9 @@ function Memberships() {
             </Card>
           </View>
         )}
-        <VerticalSpacing size={20} />
-        {expiredMemberShip && (
+        {expiredMemberShip && expiredMemberShip?.data?.length > 0 && (
           <View>
+            <VerticalSpacing size={20} />
             <AppText fontStyle="500.medium" size={16}>
               Expired Membership
             </AppText>
@@ -375,6 +377,34 @@ function Memberships() {
                   locationName={item?.loaction?.locationName}
                   imagePath={item?.loaction?.imagePath}
                   expiryDate={item?.membership?.expiryDate}
+                  OnPressEdit={() => OnPressEdit(item)}
+                />
+              ))}
+            </Card>
+          </View>
+        )}
+        {notMemberShip && (
+          <View>
+            <VerticalSpacing size={20} />
+            <AppText fontStyle="500.medium" size={16}>
+              Not a Member
+            </AppText>
+            <VerticalSpacing />
+            <Card
+              style={{
+                backgroundColor: theme.modalBackgroundColor,
+                ...theme.light_shadow,
+              }}>
+              {_.map(notMemberShip, (item, index) => (
+                <MemberCard
+                  key={index}
+                  index={index}
+                  type="Expired"
+                  tag="Not a Member"
+                  length={notMemberShip?.length}
+                  locationName={item?.locationName}
+                  imagePath={item?.imagePath}
+                  expiryDate={item?.expiryDate}
                   OnPressEdit={() => OnPressEdit(item)}
                 />
               ))}

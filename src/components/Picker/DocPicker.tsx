@@ -1,24 +1,54 @@
-import I18n from "i18n-js";
 import React, { memo, useEffect, useState } from "react";
-import { Dimensions, Platform, StyleSheet, View } from "react-native";
+import { useAppSelector } from "@redux/store";
+import {
+  Dimensions,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Modal from "react-native-modal";
-import svgs from "@common/AllSvgs";
-import AppButton from "@components/Button/AppButton";
-import { VerticalSpacing } from "@components/Spacing/Spacing";
 import AppText from "@components/Text/AppText";
+import I18n from "i18n-js";
+import { VerticalSpacing } from "@components/Spacing/Spacing";
+import AppButton from "@components/Button/AppButton";
+import svgs from "@common/AllSvgs";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import ImagePicker from "react-native-image-crop-picker";
 import Permissions from "@helpers/Permissions";
 import { moderateScale } from "react-native-size-matters";
-import DocumentPicker, { types } from "react-native-document-picker";
-import _ from "lodash";
-// import DocDetails from "@components/DocDetails/DocDetails";
-import { useAppSelector } from "@redux/store";
+import DocumentPicker, {
+  DocumentPickerResponse,
+  types,
+} from "react-native-document-picker";
 
-var windowHeight = Dimensions.get("window").height;
-var windowWidth = Dimensions.get("window").width;
-var isIOS = Platform.OS === "ios";
+const windowHeight = Dimensions.get("screen").height;
+const windowWidth = Dimensions.get("screen").width;
 
-const DocPicker = (props: any) => {
+interface Props {
+  visible: boolean;
+  toggleModal: () => void;
+  modalHeight?: number;
+  modalWidth?: number;
+  animationInTiming?: number;
+  animationOutTiming?: number;
+  avoidKeyboard?: boolean;
+  toBottom?: boolean;
+  backgroundColor?: string;
+  showHeader?: boolean;
+  content?: React.ReactNode;
+  getImages?: (images: any) => void;
+  multiImages?: boolean;
+  dismissAfterOneSelect?: boolean;
+  onlyImages?: boolean;
+  allowMultiSelection?: boolean;
+  lightShadow?: boolean;
+}
+
+const isIOS = Platform.OS === "ios";
+
+const DocPicker: React.FC<Props> = props => {
   const { theme } = useAppSelector(state => state.theme);
   const {
     visible = false,
@@ -38,56 +68,18 @@ const DocPicker = (props: any) => {
     onlyImages = false,
     allowMultiSelection = false,
     lightShadow = false,
-    clearAfterSelection = false,
-    hideDocs = false,
   } = props || {};
 
-  const [image, setImage] = useState("");
-  const [multi, setMulti] = useState([]);
-
-  const setImages = (val: any) => {
-    if (multiImages) {
-      if (Array.isArray(val)) {
-        setMulti([...val, ...multi]);
-      } else setMulti([val, ...multi]);
-    } else if (Array.isArray(val)) {
-      setImage(val);
-    } else setImage([val]);
-    if (dismissAfterOneSelect) toggleModal();
-  };
-
-  const resetImages = () => {
-    setMulti([]);
-    setImage("");
-  };
+  const [images, setImages] = useState<DocumentPickerResponse | any | null>(
+    null,
+  );
 
   useEffect(() => {
-    if (getImages) {
-      if (multiImages && multi?.length > 0) {
-        // var allImgs = _.map(multi, (item, i) => {
-        //   return { id: i, ...item };
-        // });
-        getImages(multi);
-        if (
-          clearAfterSelection &&
-          (multi?.length > 0 || (image != "" && image != null))
-        ) {
-          resetImages();
-        }
-      } else if (image != "" || image != null) {
-        getImages(image);
-        if (
-          clearAfterSelection &&
-          (multi?.length > 0 || (image != "" && image != null))
-        ) {
-          resetImages();
-        }
-      }
-    }
-  }, [image, multi]);
+    if (getImages) getImages(images);
+  }, [images]);
 
-  const takePhotoFromCamera = async () => {
-    const hasCameraPermission = await Permissions.requestCameraPermission();
+  const openCamera = async () => {
+    const hasCameraPermission = await Permissions.getCameraPermissions();
     if (hasCameraPermission) {
       ImagePicker.openCamera({
         width: 950,
@@ -96,13 +88,14 @@ const DocPicker = (props: any) => {
         compressImageQuality: isIOS ? 0.1 : 0.5,
         multiple: false,
       }).then(image => {
-        console.log(image);
-        setImages(image);
+        // console.log(image);
+        toggleModal();
+        image && setImages(image);
       });
     }
   };
 
-  const choosePhotoFromLibrary = async () => {
+  const openGallery = async () => {
     const openPicker = () => {
       DocumentPicker.pick({
         type: onlyImages
@@ -125,7 +118,8 @@ const DocPicker = (props: any) => {
         presentationStyle: "fullScreen",
       })
         .then(image => {
-          console.log("choosePhotoFromLibrary==>", image);
+          // console.log("choosePhotoFromLibrary==>", image);
+          toggleModal();
           setImages(image);
         })
         .catch(err => console.log(err));
@@ -139,66 +133,67 @@ const DocPicker = (props: any) => {
     } else if (hasStoragePermission) openPicker();
   };
 
-  const deleteImages = id => {
-    if (multiImages && multi.length > 0) {
-      var filtered = _.filter(
-        multi,
-        img => (img?.path ?? img?.fileCopyUri) != id,
-      );
-      setMulti(filtered);
-    } else setImage(null);
+  const removeImage = (id: string) => {
+    const filterImages = images.filter(
+      (image: any) => image.fileCopyUri !== id,
+    );
+    if (filterImages?.length > 0) setImages(filterImages);
+    else setImages(null);
   };
 
   return (
     <>
-      {!hideDocs && multiImages && multi.length > 0 ? (
+      {images && (
         <View
           style={{
-            width: "100%",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            // justifyContent: "center",
+            marginHorizontal: 15,
+            padding: 15,
+            paddingVertical: 20,
+            backgroundColor: theme.appBackgroundColor,
+            borderRadius: 10,
+            borderWidth: 0.4,
+            borderColor: theme.gray,
           }}>
-          {_.map(multi, (item, index) => (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}>
+            <svgs.Document />
+            <AppText
+              numberOfLines={1}
+              style={{ width: "80%", maxWidth: "80%", marginLeft: 10 }}>
+              {images[0]?.name}
+            </AppText>
             <View
-              key={item?.fileCopyUri ?? item?.path}
               style={{
-                width: multi?.length === 1 ? "100%" : "47%",
-                marginTop: moderateScale(8, 0.3),
-                marginHorizontal: multi?.length === 1 ? 0 : 5,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
               }}>
-              <DocDetails
-                file_name={item?.file_name ?? item?.fileCopyUri ?? item?.path}
-                url={item?.fileCopyUri ?? item?.path}
-                isDeleteAble
-                isDownloadAble={false}
-                onDelete={() => deleteImages(item?.fileCopyUri ?? item?.path)}
-              />
+              {/* <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={{ marginRight: 5 }}>
+                  <AntDesign name="edit" size={20} />
+                </TouchableOpacity> */}
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={{ marginRight: 5 }}
+                onPress={() => removeImage(images[0]?.fileCopyUri)}>
+                <AntDesign name="delete" size={20} color={theme.error} />
+              </TouchableOpacity>
             </View>
-          ))}
+          </View>
+          <AppText
+            numberOfLines={1}
+            color={theme.primary}
+            style={{ marginVertical: 5 }}
+            fontStyle="500.normal">
+            {Math.floor(images[0]?.size / 1000)} KB
+          </AppText>
         </View>
-      ) : !multiImages && image?.length > 0 ? (
-        <View
-          style={{
-            width: image?.length > 0 ? "100%" : "45%",
-            flexDirection: "row",
-            flexWrap: "wrap",
-          }}>
-          {_.map(image, item => (
-            <View
-              key={item?.fileCopyUri ?? item?.path}
-              style={{ marginTop: moderateScale(8, 0.3), width: "100%" }}>
-              <DocDetails
-                file_name={item?.name ?? item?.fileCopyUri ?? item?.path}
-                url={item?.fileCopyUri ?? item?.path}
-                isDeleteAble
-                isDownloadAble={false}
-                onDelete={() => deleteImages(item?.fileCopyUri ?? item?.path)}
-              />
-            </View>
-          ))}
-        </View>
-      ) : null}
+      )}
       <Modal
         isVisible={visible}
         onBackdropPress={toggleModal}
@@ -207,7 +202,7 @@ const DocPicker = (props: any) => {
         animationInTiming={animationInTiming}
         animationOutTiming={animationOutTiming}
         avoidKeyboard={avoidKeyboard}
-        deviceHeight={windowHeight + 20}
+        deviceHeight={windowHeight}
         deviceWidth={windowWidth}
         backdropOpacity={lightShadow ? 0.1 : 0.3}>
         <View
@@ -216,18 +211,14 @@ const DocPicker = (props: any) => {
               backgroundColor: backgroundColor,
               height: modalHeight,
               width: modalWidth,
-              minHeight: moderateScale(modalHeight, 0.3),
+              minHeight: modalHeight,
               alignSelf: "center",
               alignContent: "center",
-              borderTopRightRadius: moderateScale(20, 0.3),
-              borderTopLeftRadius: moderateScale(20, 0.3),
+              borderTopRightRadius: 20,
+              borderTopLeftRadius: 20,
             },
             toBottom
-              ? {
-                  alignSelf: "center",
-                  position: "absolute",
-                  bottom: moderateScale(-25),
-                }
+              ? { alignSelf: "center", position: "absolute", bottom: -25 }
               : null,
           ]}>
           {showHeader ? (
@@ -238,67 +229,63 @@ const DocPicker = (props: any) => {
             </View>
           ) : null}
           {content ?? (
-            <View style={{ paddingHorizontal: moderateScale(20, 0.3) }}>
+            <View style={{ paddingHorizontal: 20 }}>
               <View style={{ alignItems: "center" }}>
                 <AppText
                   fontStyle="500.normal"
-                  size={22}
-                  style={{ paddingVertical: moderateScale(15, 0.3) }}>
-                  {I18n.t("screen_messages.Upload_Photo")}
+                  size={18}
+                  style={{ paddingVertical: 15 }}>
+                  {I18n.t("screen_messages.upload")}
                 </AppText>
               </View>
               <VerticalSpacing size={10} />
-              <AppButton
-                Title={I18n.t("screen_messages.button.Take_Photo")}
-                color={theme.subHeader}
-                borderRadius={10}
-                height={45}
-                onPress={() => takePhotoFromCamera()}
-                fontSize={16}
-                Outlined
-                leftIcon={
-                  <svgs.Camera
-                    height={moderateScale(25, 0.3)}
-                    width={moderateScale(25, 0.3)}
-                    color={theme.textColor}
-                  />
-                }
-                IcontoEnd
-                textStyle={{
-                  textAlign: "left",
-                  width: "100%",
-                  marginLeft: moderateScale(30, 0.3),
-                }}
-              />
-              <VerticalSpacing size={10} />
-              <AppButton
-                Title={I18n.t("screen_messages.button.Choose_From_Gallery")}
-                color={theme.subHeader}
-                borderRadius={10}
-                fontSize={16}
-                height={45}
-                onPress={() => choosePhotoFromLibrary()}
-                Outlined
-                leftIcon={
-                  <svgs.Gallery
-                    height={moderateScale(30, 0.3)}
-                    width={moderateScale(30, 0.3)}
-                  />
-                }
-                textStyle={{
-                  textAlign: "left",
-                  width: "100%",
-                  // marginLeft: 30,
-                }}
-              />
-              <VerticalSpacing size={25} />
-              <AppButton
-                Title={I18n.t("screen_messages.button.cancel")}
-                color={image?.length > 0 ? theme.primary : theme.warning}
-                height={50}
-                onPress={toggleModal}
-                rounded
-              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                }}>
+                <TouchableOpacity
+                  style={{ alignItems: "center" }}
+                  activeOpacity={0.8}
+                  onPress={openCamera}>
+                  <View
+                    style={{
+                      height: 100,
+                      width: 100,
+                      borderRadius: 100,
+                      backgroundColor: theme.light,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginBottom: 10,
+                    }}>
+                    <AntDesign name="camera" size={50} />
+                  </View>
+                  <AppText fontStyle="500.normal" size={16}>
+                    {I18n.t("screen_messages.button.camera")}
+                  </AppText>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ alignItems: "center" }}
+                  activeOpacity={0.8}
+                  onPress={openGallery}>
+                  <View
+                    style={{
+                      height: 100,
+                      width: 100,
+                      borderRadius: 100,
+                      backgroundColor: theme.light,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginBottom: 10,
+                    }}>
+                    <FontAwesome name="photo" size={50} />
+                  </View>
+                  <AppText fontStyle="500.normal" size={16}>
+                    {I18n.t("screen_messages.button.gallery")}
+                  </AppText>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         </View>

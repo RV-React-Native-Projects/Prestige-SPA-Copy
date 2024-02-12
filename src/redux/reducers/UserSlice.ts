@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { useEncryptedStorage } from "@hooks/useEncryptedStorage";
-import { UserProps } from "@src/Types/UserTypes";
+import { Membership, UserProps } from "@src/Types/UserTypes";
+import MemberShipManager from "@src/services/features/MemberShip/MemberShipManager";
 
 export const loadUserData = createAsyncThunk("user/loaduser", async () => {
   const { getStorage } = useEncryptedStorage();
@@ -23,6 +24,26 @@ export const removeUserData = createAsyncThunk(
   },
 );
 
+export const getAllMembership = createAsyncThunk(
+  "appdata/getAllMembership",
+  async (userId: number) => {
+    const response = await new Promise((resolve, reject) => {
+      MemberShipManager.findAllForCustomer(
+        { id: userId },
+        async res => {
+          const data = await res?.data?.data;
+          resolve(data);
+        },
+        async err => {
+          console.log(err);
+          reject(err);
+        },
+      );
+    });
+    return response as Membership[];
+  },
+);
+
 interface userSliceProperties {
   loadingUser?: boolean;
   user?: UserProps | null;
@@ -34,6 +55,8 @@ interface userSliceProperties {
   userToken?: string | null;
   authToken?: string | null;
   refreshToken?: string | null;
+  loadingMembership?: boolean;
+  membership?: Membership[] | null;
 }
 
 const initialState: userSliceProperties = {
@@ -47,6 +70,8 @@ const initialState: userSliceProperties = {
   userToken: null,
   authToken: null,
   refreshToken: null,
+  loadingMembership: false,
+  membership: null,
 };
 
 const userSlice = createSlice({
@@ -58,6 +83,7 @@ const userSlice = createSlice({
       state.userEmail = action.payload.email;
       state.userName = action.payload.Account_name;
       state.userPhone = action.payload.phone;
+      state.membership = action?.payload?.memberships;
     },
     setLoadingUser: (state, action) => {
       state.loadingUser = action.payload;

@@ -12,6 +12,7 @@ interface DatePickerProps {
   label?: string;
   labelSize?: number;
   error?: boolean;
+  errorMsg?: string;
   required?: boolean;
   getDate?: (date: Date) => void;
   value?: string | Date | null;
@@ -31,6 +32,7 @@ const DatePickerInput = (props: DatePickerProps) => {
     label = "lable", // lable for the Text Input
     labelSize = 14, // size of the lable
     error = false, // if we have error in the field
+    errorMsg = "", // if we have error msg
     required = false, // diable : boolean
     value,
     getDate, // onChnange function()
@@ -61,7 +63,7 @@ const DatePickerInput = (props: DatePickerProps) => {
         disabled={disabled}
         style={{
           borderWidth: 1,
-          borderColor: theme.gray,
+          borderColor: error ? theme.error : theme.gray,
           height: 50,
           width: "100%",
           backgroundColor: theme.modalBackgroundColor,
@@ -86,6 +88,11 @@ const DatePickerInput = (props: DatePickerProps) => {
           <svgs.Calender color1={theme.secondary} />
         </View>
       </TouchableOpacity>
+      {error && errorMsg ? (
+        <AppText style={{ paddingVertical: 5 }} size={12} color={theme.error}>
+          {errorMsg}
+        </AppText>
+      ) : null}
       <DatePicker
         modal
         open={open}

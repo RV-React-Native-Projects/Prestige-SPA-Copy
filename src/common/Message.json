@@ -64,7 +64,10 @@
         "Verify_Account": "Verify Account",
         "done": "Done",
         "Proceed_to_Payment": "Proceed to Payment",
-        "Book_a_Session": "Book a Session"
+        "Book_a_Session": "Book a Session",
+        "cancel": "Cancel",
+        "camera": "Camera",
+        "gallery": "Gallery"
       },
       "common": {
         "rupee": "₹",
@@ -146,6 +149,7 @@
         "Purchase": "Purchase Contract"
       },
       "document_type": "Document Type",
+      "upload": "Upload",
       "term_service": "By continuing, you agree to our",
       "and": "and",
       "Verify_Account": "Verify Account",

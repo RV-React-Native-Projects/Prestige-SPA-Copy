@@ -1,4 +1,4 @@
-package com.prestige_spa
+package com.prestige.android
 
 import android.os.Bundle
 import com.facebook.react.ReactActivity

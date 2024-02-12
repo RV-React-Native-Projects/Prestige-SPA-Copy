@@ -75,14 +75,15 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.prestige_spa"
+    namespace "com.prestige.android"
     defaultConfig {
-        applicationId "com.prestige_spa"
+        applicationId "com.prestige.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
         debug {
@@ -94,7 +95,7 @@ android {
         release {
             storeFile file('prestige_spa.keystore')
             storePassword 'spa12345'
-            keyAlias 'com.prestige_spa.android'
+            keyAlias 'com.prestige.android'
             keyPassword 'spa12345'
         }
     }
@@ -105,7 +106,6 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
-            // proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

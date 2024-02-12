@@ -1,5 +1,5 @@
 import React, { memo, useReducer } from "react";
-import { Image, Keyboard, StyleSheet, View } from "react-native";
+import { Image, Keyboard, StyleSheet, View, ScrollView } from "react-native";
 import I18n from "i18n-js";
 import AppContainer from "@components/Container/AppContainer";
 import svgs from "@common/AllSvgs";
@@ -117,7 +117,7 @@ const Login = () => {
       backgroundColor={theme.appBackgroundColor}
       fullHeight={false}>
       <BackButton />
-      <View style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }}>
         <Animatable.View
           animation="fadeInUp"
           duration={1000}
@@ -195,7 +195,31 @@ const Login = () => {
                   style={{ alignSelf: "flex-end" }}
                   onPress={() => onPressForgotPassword(values.email)}
                 /> */}
-                <VerticalSpacing size={30} />
+                <Animatable.View
+                  animation="fadeInUp"
+                  duration={1000}
+                  style={{
+                    flexDirection: "row",
+                    padding: moderateScale(20, 0.3),
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}>
+                  <AppText
+                    size={16}
+                    fontStyle="400.normal"
+                    style={{ paddingVertical: 5 }}>
+                    {I18n.t("screen_messages.have_account")}{" "}
+                  </AppText>
+                  <AppButton
+                    LinkButton
+                    Title={I18n.t("screen_messages.button.signup")}
+                    color={theme.info}
+                    fontStyle="600.normal"
+                    fontSize={16}
+                    onPress={onPressSignUp}
+                  />
+                </Animatable.View>
+                <VerticalSpacing size={10} />
                 <Animatable.View animation="fadeInUp" duration={1000}>
                   <AppButton
                     disabled={false}
@@ -214,31 +238,7 @@ const Login = () => {
             </>
           )}
         </Formik>
-      </View>
-      <Animatable.View
-        animation="fadeInUp"
-        duration={1000}
-        style={{
-          flexDirection: "row",
-          padding: moderateScale(20, 0.3),
-          alignItems: "center",
-          justifyContent: "center",
-        }}>
-        <AppText
-          size={16}
-          fontStyle="400.normal"
-          style={{ paddingVertical: 5 }}>
-          {I18n.t("screen_messages.have_account")}{" "}
-        </AppText>
-        <AppButton
-          LinkButton
-          Title={I18n.t("screen_messages.button.signup")}
-          color={theme.info}
-          fontStyle="600.normal"
-          fontSize={16}
-          onPress={onPressSignUp}
-        />
-      </Animatable.View>
+      </ScrollView>
     </AppContainer>
   );
 };
