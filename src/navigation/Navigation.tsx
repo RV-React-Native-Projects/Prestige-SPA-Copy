@@ -43,7 +43,7 @@ const Profile = lazy(() => import("@screens/Profile/Profile"));
 const Memberships = lazy(() => import("@screens/Membership/Memberships"));
 const EditMemberShip = lazy(() => import("@screens/Membership/EditMemberShip"));
 const Family = lazy(() => import("@src/screens/Family/Family"));
-const AddNewFamily = lazy(() => import("@src/screens/Family/AddNewFamily"));
+const AddFamily = lazy(() => import("@src/screens/Family/AddFamily"));
 // const Details = lazy(() => import("@screens/Details/Details"));
 
 export const useAppNavigation: () => NavigationProp<ParamListBase> =
@@ -145,7 +145,7 @@ function MyStack() {
       <Stack.Screen name="Memberships" component={Memberships} />
       <Stack.Screen name="EditMemberShip" component={EditMemberShip} />
       <Stack.Screen name="Family" component={Family} />
-      <Stack.Screen name="AddNewFamily" component={AddNewFamily} />
+      <Stack.Screen name="AddFamily" component={AddFamily} />
     </Stack.Navigator>
   );
 }

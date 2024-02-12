@@ -68,6 +68,10 @@ export default function ProfileScreen() {
     navigation.navigate("Memberships");
   };
 
+  const gotoFamily = () => {
+    navigation.navigate("Family");
+  };
+
   return (
     <AppContainer
       hideStatusbar={false}
@@ -141,7 +145,7 @@ export default function ProfileScreen() {
             <ProfileButton
               title="Family Members"
               icon={<svgs.Group width={25} color1={theme.iconColor} />}
-              onPress={() => {}}
+              onPress={gotoFamily}
             />
             <ProfileButton
               title="Addresses"

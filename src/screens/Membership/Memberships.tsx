@@ -1,5 +1,11 @@
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
-import React, { memo, useEffect, useState } from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  RefreshControl,
+} from "react-native";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@redux/store";
 import AppContainer from "@components/Container/AppContainer";
 import { useAppNavigation } from "@navigation/Navigation";
@@ -14,6 +20,7 @@ import moment from "moment";
 import { Card } from "react-native-paper";
 import { moderateScale } from "react-native-size-matters";
 import { Membership } from "@src/Types/UserTypes";
+import { getAllMembership } from "@reducers/UserSlice";
 
 interface Court {
   minRate: number;
@@ -181,7 +188,9 @@ const MemberCard = (props: MemberCardProps | any) => {
 
 function Memberships() {
   const { theme } = useAppSelector(state => state.theme);
-  const { user, membership } = useAppSelector(state => state.user);
+  const { user, membership, loadingMembership } = useAppSelector(
+    state => state.user,
+  );
   const { locations } = useAppSelector(state => state.appData);
   const storeDispatch = useAppDispatch();
   const navigation = useAppNavigation();
@@ -227,11 +236,11 @@ function Memberships() {
         };
       });
 
-      filteredMemberships
+      filteredMemberships && filteredMemberships?.length > 0
         ? setMemberShipData(filteredMemberships)
         : setMemberShipData(null);
     }
-  }, [locations]);
+  }, [locations, membership]);
 
   useEffect(() => {
     if (memberShipData) {
@@ -266,13 +275,27 @@ function Memberships() {
     }
   }, [membership]);
 
+  const onRefresh = useCallback(() => {
+    if (user?.stakeholderID)
+      storeDispatch(getAllMembership(user?.stakeholderID));
+  }, [user?.stakeholderID]);
+
   return (
     <AppContainer
       hideStatusbar={false}
       scrollable={false}
       backgroundColor={theme.appBackgroundColor}>
       <BackButtonWithTitle title="Memberships" />
-      <ScrollView contentContainerStyle={{ padding: moderateScale(15, 0.3) }}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            colors={[theme.secondary]}
+            tintColor={theme.title}
+            refreshing={loadingMembership}
+            onRefresh={onRefresh}
+          />
+        }
+        contentContainerStyle={{ padding: moderateScale(15, 0.3) }}>
         {approvedMemberShip && approvedMemberShip?.data?.length > 0 && (
           <View>
             <AppText fontStyle="500.medium" size={16}>

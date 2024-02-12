@@ -16,6 +16,7 @@
       "pass_match_fail": "Password does not Match!",
       "pass_validation": "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character",
       "first_name_req": "First name is Required",
+      "name_req": "Name is Required",
       "first_name_valid": "Enter a valid first name",
       "last_name_req": "Last name is Required",
       "last_name_valid": "Enter a valid last name",
@@ -67,7 +68,9 @@
         "Book_a_Session": "Book a Session",
         "cancel": "Cancel",
         "camera": "Camera",
-        "gallery": "Gallery"
+        "gallery": "Gallery",
+        "Add_Family": "Add a Family Member",
+        "Add_Member": "Add Member"
       },
       "common": {
         "rupee": "₹",
@@ -85,8 +88,11 @@
           "zero": "Pickup point",
           "one": "Drop point",
           "other": "Hold point"
-        }
+        },
+        "for_who": "Who's the Booking For?",
+        "Add_Family_Member": "Add a Family Member"
       },
+      "Myself": "Myself",
       "tab": {
         "home": "Home",
         "court": "Court",
@@ -113,6 +119,7 @@
       "input_lable": {
         "email": "Email",
         "password": "Password",
+        "Name": "Name",
         "First_Name": "First Name",
         "Last_Name": "Last Name",
         "Date_of_Birth": "Date of Birth",
@@ -129,6 +136,7 @@
         "password": "Enter your password",
         "pass_len": "Must contain a minimum of 8 characters",
         "First_Name": "Enter First Name",
+        "Name": "Enter Name",
         "Last_Name": "Enter Last Name",
         "Date_of_Birth": "Select Date of Birth",
         "Gender": "Select Gender",
@@ -161,7 +169,8 @@
       "enter_mail_for_otp": "Enter your email address below and we will send a code to reset your password",
       "enter_otp": "Enter the 6-digit code",
       "Create_New_Password": "Create New Password",
-      "confirm_pass_msg": "Please enter and confirm your new password. You will need to login after you reset."
+      "confirm_pass_msg": "Please enter and confirm your new password. You will need to login after you reset.",
+      "family_msg": "After adding a family member, you can include them when booking a court or coach."
     }
   },
   "en-UK": {

@@ -7,6 +7,7 @@ import AppText from "../Text/AppText";
 import I18n from "i18n-js";
 import moment from "moment";
 import svgs from "@common/AllSvgs";
+import { FormikErrors } from "formik";
 
 interface DatePickerProps {
   label?: string;
@@ -32,7 +33,7 @@ const DatePickerInput = (props: DatePickerProps) => {
     label = "lable", // lable for the Text Input
     labelSize = 14, // size of the lable
     error = false, // if we have error in the field
-    errorMsg = "", // if we have error msg
+    errorMsg = I18n.t("error_messages.required"), // if we have error msg
     required = false, // diable : boolean
     value,
     getDate, // onChnange function()
@@ -52,7 +53,7 @@ const DatePickerInput = (props: DatePickerProps) => {
         <AppText
           size={labelSize}
           fontStyle="600.semibold"
-          color={error ? theme.warning : theme.subHeader}
+          color={error ? theme.error : theme.subHeader}
           style={{ marginVertical: 5 }}>
           {label} {required && <AppText color={theme.error}> *</AppText>}
         </AppText>
@@ -90,7 +91,7 @@ const DatePickerInput = (props: DatePickerProps) => {
       </TouchableOpacity>
       {error && errorMsg ? (
         <AppText style={{ paddingVertical: 5 }} size={12} color={theme.error}>
-          {errorMsg}
+          {errorMsg as string}
         </AppText>
       ) : null}
       <DatePicker
@@ -98,7 +99,7 @@ const DatePickerInput = (props: DatePickerProps) => {
         open={open}
         date={date}
         mode="date"
-        onConfirm={date => {
+        onConfirm={(date: any) => {
           setOpen(false);
           setDate(date);
           setConfirm(date);

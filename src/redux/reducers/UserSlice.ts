@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { useEncryptedStorage } from "@hooks/useEncryptedStorage";
-import { Membership, UserProps } from "@src/Types/UserTypes";
-import MemberShipManager from "@src/services/features/MemberShip/MemberShipManager";
+import { FamilyMember, Membership, UserProps } from "@src/Types/UserTypes";
+import MemberShipManager from "@features/MemberShip/MemberShipManager";
+import FamilyManager from "@features/Family/FamilyManager";
 
 export const loadUserData = createAsyncThunk("user/loaduser", async () => {
   const { getStorage } = useEncryptedStorage();
@@ -44,19 +45,69 @@ export const getAllMembership = createAsyncThunk(
   },
 );
 
+export const getAllFamily = createAsyncThunk(
+  "appdata/getAllFamily",
+  async (userId: number) => {
+    const response = await new Promise((resolve, reject) => {
+      FamilyManager.findAllFamily(
+        { id: userId },
+        async res => {
+          const data = await res?.data?.data;
+          resolve(data);
+        },
+        async err => {
+          console.log(err);
+          reject(err);
+        },
+      );
+    });
+    return response as FamilyMember[];
+  },
+);
+
+export const getAllPlayerCategory = createAsyncThunk(
+  "appdata/getAllPlayerCategory",
+  async () => {
+    const response = await new Promise((resolve, reject) => {
+      FamilyManager.findAllPlayerCategory(
+        {},
+        async res => {
+          const data = await res?.data?.data;
+          resolve(data);
+        },
+        async err => {
+          console.log(err);
+          reject(err);
+        },
+      );
+    });
+    return response as playerCategoryDate[];
+  },
+);
+
+interface playerCategoryDate {
+  playerCategoryID: 1;
+  createdAt: string;
+  updatedAt: string;
+  playerCategory: string;
+}
 interface userSliceProperties {
-  loadingUser?: boolean;
-  user?: UserProps | null;
-  authHeader?: Record<string, string> | null;
-  isUserLoggedIn?: boolean;
-  userEmail?: string | null;
-  userName?: string | null;
-  userPhone?: string | null;
-  userToken?: string | null;
-  authToken?: string | null;
-  refreshToken?: string | null;
-  loadingMembership?: boolean;
-  membership?: Membership[] | null;
+  loadingUser: boolean;
+  user: UserProps | null;
+  authHeader: Record<string, string> | null;
+  isUserLoggedIn: boolean;
+  userEmail: string | null;
+  userName: string | null;
+  userPhone: string | null;
+  userToken: string | null;
+  authToken: string | null;
+  refreshToken: string | null;
+  loadingMembership: boolean;
+  membership: Membership[] | null;
+  loadingFamily: boolean;
+  family: FamilyMember[] | null;
+  loadingPlayerCategory: boolean;
+  playerCategory: playerCategoryDate[] | null;
 }
 
 const initialState: userSliceProperties = {
@@ -72,6 +123,10 @@ const initialState: userSliceProperties = {
   refreshToken: null,
   loadingMembership: false,
   membership: null,
+  loadingFamily: false,
+  family: null,
+  loadingPlayerCategory: false,
+  playerCategory: null,
 };
 
 const userSlice = createSlice({
@@ -84,6 +139,7 @@ const userSlice = createSlice({
       state.userName = action.payload.Account_name;
       state.userPhone = action.payload.phone;
       state.membership = action?.payload?.memberships;
+      state.family = action?.payload?.familyMembers;
     },
     setLoadingUser: (state, action) => {
       state.loadingUser = action.payload;
@@ -139,6 +195,8 @@ const userSlice = createSlice({
               "ngrok-skip-browser-warning": "true",
             }
           : null;
+        state.membership = action?.payload?.user?.memberships;
+        state.family = action?.payload?.user?.familyMembers;
         state.loadingUser = false;
       })
       .addCase(removeUserData.pending, state => {
@@ -151,6 +209,27 @@ const userSlice = createSlice({
         state.refreshToken = null;
         state.authHeader = null;
         state.loadingUser = false;
+      })
+      .addCase(getAllMembership.pending, state => {
+        state.loadingMembership = true;
+      })
+      .addCase(getAllMembership.fulfilled, (state, action) => {
+        state.membership = action.payload;
+        state.loadingMembership = false;
+      })
+      .addCase(getAllFamily.pending, state => {
+        state.loadingFamily = true;
+      })
+      .addCase(getAllFamily.fulfilled, (state, action) => {
+        state.family = action.payload;
+        state.loadingFamily = false;
+      })
+      .addCase(getAllPlayerCategory.pending, state => {
+        state.loadingPlayerCategory = true;
+      })
+      .addCase(getAllPlayerCategory.fulfilled, (state, action) => {
+        state.playerCategory = action.payload;
+        state.loadingPlayerCategory = false;
       });
   },
 });

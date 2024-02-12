@@ -73,7 +73,7 @@ const SignUp = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [gender, setGender] = useState("");
-  const [DOB, setDOB] = useState<Date>();
+  const [DOB, setDOB] = useState<Date | any>();
 
   const formInitialvalue = {
     userType: "Customer",

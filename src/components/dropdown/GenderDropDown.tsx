@@ -3,6 +3,7 @@ import { useAppSelector } from "@src/redux/store";
 import React, { memo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
+import { moderateScale } from "react-native-size-matters";
 
 interface DropdownComponentPorps {
   label?: string;
@@ -12,6 +13,10 @@ interface DropdownComponentPorps {
   required?: boolean;
   labelSize?: number;
   error?: boolean;
+  errorMessage?: string;
+  data?: DataTypes[];
+  // labelField?: string;
+  // valueField?: string;
 }
 
 interface DataTypes {
@@ -19,7 +24,7 @@ interface DataTypes {
   value: string;
 }
 
-const data: DataTypes[] = [
+const genderData: DataTypes[] = [
   { label: "Male", value: "Male" },
   { label: "Female", value: "Female" },
   { label: "Other", value: "Other" },
@@ -30,13 +35,17 @@ const GenderDropDown = (props: DropdownComponentPorps) => {
   const styles = style(theme);
 
   const {
+    data = genderData,
     label = "lable",
     placeholder = "Placeholder",
     value,
     getValue,
     required = false,
     labelSize = 14,
+    // labelField = "label",
+    // valueField = "value",
     error = false,
+    errorMessage = "This Field is Required!",
   } = props || {};
 
   const [selectedValue, setSelectedValue] = useState<string | null>(
@@ -57,7 +66,11 @@ const GenderDropDown = (props: DropdownComponentPorps) => {
       ) : null}
       <View style={styles.container}>
         <Dropdown
-          style={[styles.dropdown, isFocus && { borderColor: theme.primary }]}
+          style={[
+            styles.dropdown,
+            error && { borderColor: theme.error },
+            isFocus && { borderColor: theme.primary },
+          ]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           itemTextStyle={{ color: theme.black }}
@@ -69,13 +82,22 @@ const GenderDropDown = (props: DropdownComponentPorps) => {
           value={selectedValue}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
-          onChange={(item: any) => {
+          onChange={(item: DataTypes) => {
             setSelectedValue(item.value);
             setIsFocus(false);
             getValue && getValue(item.value);
           }}
         />
       </View>
+      {!isFocus && error && errorMessage ? (
+        <AppText
+          color={theme.warning}
+          size={12}
+          fontStyle="400.normal"
+          style={{ paddingVertical: moderateScale(5, 0.3) }}>
+          * {errorMessage}
+        </AppText>
+      ) : null}
     </>
   );
 };
