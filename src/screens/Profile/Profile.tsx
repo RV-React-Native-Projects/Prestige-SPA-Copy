@@ -147,7 +147,7 @@ export default function ProfileScreen() {
               icon={<svgs.Group width={25} color1={theme.iconColor} />}
               onPress={gotoFamily}
             />
-            <ProfileButton
+            {/* <ProfileButton
               title="Addresses"
               icon={<svgs.Address width={25} color1={theme.iconColor} />}
               onPress={() => {}}
@@ -161,7 +161,7 @@ export default function ProfileScreen() {
               title="About"
               icon={<svgs.Info width={25} color1={theme.iconColor} />}
               onPress={() => {}}
-            />
+            /> */}
             <ProfileButton
               hideBorder
               title="Logout"

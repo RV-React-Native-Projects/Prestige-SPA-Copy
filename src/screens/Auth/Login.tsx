@@ -83,9 +83,10 @@ const Login = () => {
         setLoading(false);
         setStorage("SPA_User_Token", res.data.data.token);
         setStorage("SPA_User", res.data.data.stakeHolders);
+        setStorage("SPA_Email", res.data.data.stakeHolders?.email);
         storeDispatch(setUserToken(res.data.data.token));
         storeDispatch(setUser(res.data.data.stakeHolders));
-        appToast.showNormalToast({ title: I18n.t("toast.login_succes") });
+        appToast.showNormalToast({ title: "Login Successfully!" });
         navigation.reset({ index: 0, routes: [{ name: "Tab" }] });
       },
       err => {

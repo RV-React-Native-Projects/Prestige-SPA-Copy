@@ -93,7 +93,7 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('prestige_spa.keystore')
+            storeFile file('prestige.keystore')
             storePassword 'spa12345'
             keyAlias 'com.prestige.android'
             keyPassword 'spa12345'

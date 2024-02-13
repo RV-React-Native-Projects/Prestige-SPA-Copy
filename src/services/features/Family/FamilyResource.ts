@@ -34,10 +34,28 @@ const FamilyResource = ($http: any) => {
     return $http.post(url, params?.data, params?.headers);
   };
 
+  const updateFamily = (params: RequestOptions) => {
+    const url = `${host}/api/FamilyMember/updateOne/${params.id}`;
+
+    console.log("URL==>", url);
+    console.log("params==>", params);
+    return $http.put(url, params?.data, params?.headers);
+  };
+
+  const deleteFamily = (params: RequestOptions) => {
+    const url = `${host}/api/FamilyMember/deleteOne/${params.id}`;
+
+    console.log("URL==>", url);
+    console.log("params==>", params);
+    return $http.delete(url, params?.headers, params?.data);
+  };
+
   return {
     findAllPlayerCategory,
     findAllFamily,
     createFamily,
+    updateFamily,
+    deleteFamily,
   };
 };
 

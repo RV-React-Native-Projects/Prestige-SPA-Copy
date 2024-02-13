@@ -14,7 +14,7 @@ interface AppTextInputTypes extends TextInputProps {
   label?: string;
   labelSize?: number;
   error?: boolean;
-  errorMessage?: string;
+  errorMessage?: string | any;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   disabled?: boolean;

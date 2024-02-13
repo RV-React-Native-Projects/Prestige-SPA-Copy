@@ -1,2 +1,10 @@
 CN=Prestige SportsAccedemy, OU=DXTech, O=DXTech, L=UAE, ST=UAE, C=UAE
 pass:spa12345
+
+
+CN=Prestige Sports Accedemy, OU=DX-Feture-Tech, O=DX-Feture-Tech, L=UAE, ST=UAR, C=UAE
+
+storeFile file('prestige.keystore')
+storePassword 'spa12345'
+keyAlias 'com.prestige.android'
+keyPassword 'spa12345'

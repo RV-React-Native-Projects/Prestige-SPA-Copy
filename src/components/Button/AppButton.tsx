@@ -128,6 +128,7 @@ export default function AppButton(props: AppButtonType) {
                   ? "transparent"
                   : color,
             height: moderateScale(height, 0.3),
+            width: width as any,
             borderRadius: moderateScale(borderRadius, 0.3),
             ...style,
           }}>

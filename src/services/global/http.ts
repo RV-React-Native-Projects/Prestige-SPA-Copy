@@ -95,7 +95,7 @@ function post(
       .post(url, data, {
         responseType: "json",
         withCredentials: isStaging ? false : true,
-        headers: { ...headers },
+        headers: { "Content-Type": "application/json", ...headers },
         ...body,
       })
       .then((response: AxiosResponse) => {
@@ -127,7 +127,10 @@ function put(
     axios
       .put(url, JSON.stringify(params), {
         withCredentials: isStaging ? false : true,
-        headers: { "Content-Type": "application/json", ...headers },
+        headers: {
+          "Content-Type": "application/json",
+          ...headers,
+        },
         ...body,
       })
       .then((response: AxiosResponse) => {

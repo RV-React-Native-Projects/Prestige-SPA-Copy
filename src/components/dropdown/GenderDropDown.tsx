@@ -13,10 +13,12 @@ interface DropdownComponentPorps {
   required?: boolean;
   labelSize?: number;
   error?: boolean;
-  errorMessage?: string;
+  errorMessage?: string | any;
   data?: DataTypes[];
   // labelField?: string;
   // valueField?: string;
+  dropdownPosition?: "auto" | "top" | "bottom";
+  inverted?: boolean;
 }
 
 interface DataTypes {
@@ -46,6 +48,8 @@ const GenderDropDown = (props: DropdownComponentPorps) => {
     // valueField = "value",
     error = false,
     errorMessage = "This Field is Required!",
+    dropdownPosition = "auto",
+    inverted = false,
   } = props || {};
 
   const [selectedValue, setSelectedValue] = useState<string | null>(
@@ -76,9 +80,11 @@ const GenderDropDown = (props: DropdownComponentPorps) => {
           itemTextStyle={{ color: theme.black }}
           iconStyle={styles.iconStyle}
           data={data}
+          dropdownPosition={dropdownPosition}
           labelField="label"
           valueField="value"
           placeholder={placeholder}
+          inverted={inverted}
           value={selectedValue}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}

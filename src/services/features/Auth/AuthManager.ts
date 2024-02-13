@@ -3,6 +3,11 @@ import ErrorConstant from "@common/ErrorConstant";
 import AuthResource from "./AuthResource";
 
 interface AuthManager {
+  getUserData: (
+    params: any,
+    successCallback: (userResponse: any) => void,
+    errorCallback: (error: any) => void,
+  ) => void;
   userLogin: (
     params: any,
     successCallback: (userResponse: any) => void,
@@ -81,6 +86,22 @@ const AuthManager = (
   ErrorConstant: any,
 ): AuthManager => {
   // Login User
+  const getUserData = (
+    params: any,
+    successCallback: (userResponse: any) => void,
+    errorCallback: (error: any) => void,
+  ) => {
+    AuthResource.getUserData(params).then(
+      (userResponse: any) => {
+        successCallback(userResponse);
+      },
+      (error: any) => {
+        error = Utils.updateErrorObject(error);
+        errorCallback(error);
+      },
+    );
+  };
+
   const userLogin = (
     params: any,
     successCallback: (userResponse: any) => void,
@@ -306,6 +327,7 @@ const AuthManager = (
   };
 
   return {
+    getUserData,
     userLogin,
     verifyOTP,
     getUserInfo,

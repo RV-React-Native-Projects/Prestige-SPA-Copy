@@ -24,10 +24,13 @@ import { moderateScale } from "react-native-size-matters";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import MemberShipManager from "@features/MemberShip/MemberShipManager";
 import { getAllMembership } from "@reducers/UserSlice";
+import { stringify } from "qs";
+import Utils from "@src/common/Utils";
+import moment from "moment";
 
 const contractDate = [
   { code: "Tenancy", title: "Tenancy Contract" },
-  { code: "Purchase", title: "Purchase Contract" },
+  { code: "Owner", title: "Owner Contract" },
 ];
 
 const isIOS = Platform.OS === "ios";
@@ -42,7 +45,7 @@ export default function EditMemberShip(props: any) {
   const insets = useSafeAreaInsets();
 
   const [contractType, setContractType] = useState<
-    "Tenancy" | "Purchase" | string
+    "Tenancy" | "Owner" | string
   >("Tenancy");
   const [expiryDate, setExpiryDate] = useState<Date | null>(null);
   const [showPicker, setShowPicker] = useState<boolean>(false);
@@ -67,11 +70,31 @@ export default function EditMemberShip(props: any) {
       data?.loaction?.locationID ?? data?.locationID,
     );
     formData.append("customerID", user?.stakeholderID);
-    formData.append("expiryDate", expiryDate);
-    formData.append("file", images ? images[0]?.fileCopyUri : null);
-    formData.append("membershipType", data?.membership?.membershipType ?? "");
+    formData.append("expiryDate", moment(expiryDate).format("YYYY-MM-DD"));
+    formData.append(
+      "file",
+      images
+        ? {
+            uri: images[0]?.fileCopyUri,
+            name: Utils.getFilename(images[0]?.fileCopyUri),
+            type: images[0].mime,
+          }
+        : null,
+    );
+    formData.append(
+      "membershipType",
+      data?.membership?.membershipType ?? contractType,
+    );
 
-    let parsms = { data: formData };
+    let parsms = {
+      data: formData,
+      headers: {
+        Accept: "application/json, text/plain, /",
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    console.log(JSON.stringify(formData, null, 2));
 
     setLoading(true);
     MemberShipManager.createMemberShip(

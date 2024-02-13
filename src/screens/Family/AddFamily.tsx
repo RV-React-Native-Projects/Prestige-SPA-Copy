@@ -1,11 +1,4 @@
-import {
-  Keyboard,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Keyboard, Platform, ScrollView, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@src/redux/store";
 import { useAppNavigation } from "@src/navigation/Navigation";
@@ -20,33 +13,23 @@ import AppText from "@src/components/Text/AppText";
 import AppTextInput from "@src/components/TextInput/AppTextInput";
 import GenderDropDown from "@src/components/dropdown/GenderDropDown";
 import DatePickerInput from "@src/components/Picker/DatePickerInput";
-import CountryCodePicker from "@src/components/dropdown/CountryCodePicker";
 import AppButton from "@src/components/Button/AppButton";
 import BackButtonWithTitle from "@src/components/Header/BackButtonWithTitle";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getAllPlayerCategory } from "@src/redux/reducers/UserSlice";
-import _, { toString } from "lodash";
+import _, { capitalize, toLower, toNumber, toString } from "lodash";
+import ProfilePicker from "@src/components/Picker/ProfilePicker";
+import moment from "moment";
+import FamilyManager from "@src/services/features/Family/FamilyManager";
+import Utils from "@src/common/Utils";
 
 const isIOS = Platform.OS === "ios";
 
 const signUpSchema = Yup.object().shape({
   name: Yup.string().required(I18n.t("error_messages.first_name_req")),
-  mobile: Yup.string()
-    .min(7, I18n.t("error_messages.phone_len"))
-    .required(I18n.t("error_messages.phone_req")),
-  email: Yup.string()
-    .email(I18n.t("error_messages.email_invalid"))
-    .required(I18n.t("error_messages.email_required"))
-    .matches(
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      I18n.t("error_messages.email_invalid"),
-    ),
-  // countryName: Yup.string().required(I18n.t("error_messages.required")),
-  callCode: Yup.string().required(I18n.t("error_messages.required")),
   gender: Yup.string().required(I18n.t("error_messages.required")),
   plrCategory: Yup.string().required(I18n.t("error_messages.required")),
   relation: Yup.string().required(I18n.t("error_messages.required")),
-  DOB: Yup.date().required(I18n.t("error_messages.required")),
 });
 
 interface DataTypes {
@@ -63,9 +46,11 @@ const RelationData: DataTypes[] = [
   { label: "Wife", value: "Wife" },
   { label: "Son", value: "Son" },
   { label: "Daughter", value: "Daughter" },
+  { label: "Other", value: "Other" },
 ];
 
-export default function AddNewFamily() {
+export default function AddNewFamily(props: any) {
+  const { data = null } = props?.route?.params;
   const { theme } = useAppSelector(state => state.theme);
   const { user, loadingPlayerCategory, playerCategory } = useAppSelector(
     state => state.user,
@@ -75,9 +60,12 @@ export default function AddNewFamily() {
   const insets = useSafeAreaInsets();
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [DOB, setDOB] = useState<Date>();
+  const [DOB, setDOB] = useState<Date | null>(
+    !!data ? new Date(data?.dateOfBirth) : null,
+  );
   const [errorDOB, setErrorDOB] = useState<boolean>(false);
   const [playerCatData, setPlayerCatData] = useState<DataTypes[] | null>(null);
+  const [pickedImage, setPickedImage] = useState<any>(false);
 
   useEffect(() => {
     if (!playerCategory) storeDispatch(getAllPlayerCategory());
@@ -97,22 +85,52 @@ export default function AddNewFamily() {
     }
   }, [playerCategory]);
 
-  // console.log(JSON.stringify(playerCategory, null, 2));
+  console.log(JSON.stringify(DOB, null, 2));
 
   const formInitialvalue = {
-    name: "",
-    callCode: "",
-    email: "",
-    mobile: "",
-    gender: "",
-    plrCategory: "",
-    relation: "",
-    DOB: new Date(),
+    name: !!data ? data?.name : "",
+    gender: !!data ? data?.gender : "",
+    plrCategory: !!data ? toString(data?.playerCategoryID) : "",
+    relation: !!data ? capitalize(data?.relationship) : "",
   };
 
   const createNewfamily = (value: any) => {
-    // setErrorDOB(false);
-    // if (!DOB) setErrorDOB(true);
+    const formData = new FormData();
+    formData.append("name", value.name);
+    formData.append("dateOfBirth", moment(DOB).format("YYYY-MM-DD"));
+    formData.append("file", {
+      uri: pickedImage?.path ?? pickedImage?.fileCopyUri,
+      type: pickedImage?.mime,
+      name: toLower(
+        Utils.getFilename(pickedImage?.path ?? pickedImage?.fileCopyUri),
+      ),
+    });
+    formData.append("gender", value.gender);
+    formData.append("parentID", user?.stakeholderID);
+    formData.append("playerCategoryID", toNumber(value.plrCategory));
+    formData.append("relationship", value.relation);
+
+    console.log(JSON.stringify(formData, null, 2));
+
+    let params = {
+      data: formData,
+      headers: {
+        Accept: "application/json, text/plain, /",
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    setLoading(true);
+    FamilyManager.createFamily(
+      params,
+      res => {
+        console.log("Res===>", JSON.stringify(res, null, 2));
+        setLoading(false);
+      },
+      err => {
+        setLoading(false);
+        console.log("Error createCredit===>", err);
+      },
+    );
   };
 
   return (
@@ -144,9 +162,10 @@ export default function AddNewFamily() {
                 paddingHorizontal: moderateScale(15, 0.3),
                 minHeight: isIOS ? "100%" : "auto",
               }}
-              contentContainerStyle={{ paddingBottom: moderateScale(200, 0.3) }}
+              contentContainerStyle={{ paddingBottom: moderateScale(100, 0.3) }}
               showsVerticalScrollIndicator={false}>
               <VerticalSpacing />
+              <ProfilePicker getImages={image => setPickedImage(image)} />
               <View>
                 <VerticalSpacing size={20} />
                 <AppTextInput
@@ -161,49 +180,6 @@ export default function AddNewFamily() {
                   autoCapitalize="words"
                   autoComplete="name"
                   autoCorrect
-                />
-                <VerticalSpacing />
-                <View>
-                  <AppText
-                    fontStyle="600.semibold"
-                    style={{ paddingBottom: 5 }}>
-                    {I18n.t("screen_messages.input_lable.Mobile")}{" "}
-                    <AppText color={theme.error}> *</AppText>
-                  </AppText>
-                  <View style={{ flexDirection: "row" }}>
-                    <CountryCodePicker
-                      getCountryCode={handleChange("callCode")}
-                    />
-                    <AppTextInput
-                      // label={I18n.t("screen_messages.input_lable.Mobile")}
-                      placeholder={I18n.t(
-                        "screen_messages.input_placeholder.Mobile",
-                      )}
-                      value={values?.mobile}
-                      onChangeText={handleChange("mobile")}
-                      error={touched.mobile && errors.mobile ? true : false}
-                      errorMessage={errors.mobile}
-                      keyboardType="phone-pad"
-                      required
-                      autoComplete="cc-number"
-                      maxLength={13}
-                    />
-                  </View>
-                </View>
-                <VerticalSpacing />
-                <AppTextInput
-                  label={I18n.t("screen_messages.input_lable.Email")}
-                  placeholder={I18n.t(
-                    "screen_messages.input_placeholder.Email",
-                  )}
-                  value={values?.email}
-                  onChangeText={handleChange("email")}
-                  error={touched.email && errors.email ? true : false}
-                  errorMessage={errors.email}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  required
-                  autoComplete="email"
                 />
                 <VerticalSpacing />
                 <GenderDropDown
@@ -223,10 +199,7 @@ export default function AddNewFamily() {
                   required
                   getDate={e => setDOB(e)}
                   error={errorDOB}
-                  // error={touched.DOB && errors.DOB ? true : false}
-                  // errorMsg={errors.DOB}
                 />
-
                 <VerticalSpacing />
                 {playerCatData && (
                   <GenderDropDown
@@ -252,6 +225,7 @@ export default function AddNewFamily() {
                   getValue={handleChange("relation")}
                   error={touched.relation && errors.relation ? true : false}
                   errorMessage={errors.relation}
+                  dropdownPosition="top"
                 />
               </View>
               <VerticalSpacing size={40} />
@@ -273,9 +247,9 @@ export default function AddNewFamily() {
                 height={50}
                 onPress={() => {
                   Keyboard.dismiss();
-                  setErrorDOB(false);
-                  if (!DOB) setErrorDOB(true);
                   handleSubmit();
+                  // setErrorDOB(false);
+                  // if (!DOB) setErrorDOB(true);
                 }}
               />
             </Animatable.View>

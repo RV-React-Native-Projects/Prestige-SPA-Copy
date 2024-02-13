@@ -60,6 +60,7 @@ export interface FamilyMember {
   parentID: number;
   relationship: string;
   age: number;
+  imagePath: string | null;
   customerBookings: CustomerBooking[];
   playerCategory: PlayerCategory;
   parent: Parent;

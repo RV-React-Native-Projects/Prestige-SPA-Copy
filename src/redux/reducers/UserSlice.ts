@@ -10,8 +10,9 @@ export const loadUserData = createAsyncThunk("user/loaduser", async () => {
   var userToken = (await getStorage("SPA_User_Token")) ?? null;
   var authToken = (await getStorage("SPA_Auth_Token")) ?? null;
   var refreshToken = (await getStorage("SPA_Refresh_Token")) ?? null;
-  var user = (await getStorage("SPA_User")) ?? null;
-  return { userToken, authToken, refreshToken, user };
+  var email = (await getStorage("SPA_Email")) ?? null;
+  // var user = (await getStorage("SPA_User")) ?? null;
+  return { userToken, authToken, refreshToken, email };
 });
 
 export const removeUserData = createAsyncThunk(
@@ -22,6 +23,7 @@ export const removeUserData = createAsyncThunk(
     await removeStorage("SPA_User_Token");
     await removeStorage("SPA_Auth_Token");
     await removeStorage("SPA_Refresh_Token");
+    await removeStorage("SPA_Email");
   },
 );
 
@@ -140,6 +142,7 @@ const userSlice = createSlice({
       state.userPhone = action.payload.phone;
       state.membership = action?.payload?.memberships;
       state.family = action?.payload?.familyMembers;
+      // state.loadingUser = false;
     },
     setLoadingUser: (state, action) => {
       state.loadingUser = action.payload;
@@ -181,7 +184,7 @@ const userSlice = createSlice({
         state.userToken = !!action?.payload?.userToken
           ? action?.payload?.userToken
           : null;
-        state.user = !!action?.payload?.user ? action?.payload?.user : null;
+        // state.user = !!action?.payload?.user ? action?.payload?.user : null;
         state.authToken = !!action.payload.authToken
           ? action.payload.authToken
           : null;
@@ -195,9 +198,10 @@ const userSlice = createSlice({
               "ngrok-skip-browser-warning": "true",
             }
           : null;
-        state.membership = action?.payload?.user?.memberships;
-        state.family = action?.payload?.user?.familyMembers;
-        state.loadingUser = false;
+        // state.membership = action?.payload?.user?.memberships;
+        // state.family = action?.payload?.user?.familyMembers;
+        state.userEmail = action?.payload?.email;
+        // state.loadingUser = state?.user ? false : true;
       })
       .addCase(removeUserData.pending, state => {
         state.loadingUser = true;

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useCallback } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import I18n from "i18n-js";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppDispatch, useAppSelector } from "@src/redux/store";
@@ -25,20 +25,23 @@ import _ from "lodash";
 import FastImage from "react-native-fast-image";
 import images from "@src/common/AllImages";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import FamilyManager from "@src/services/features/Family/FamilyManager";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 const isIOS = Platform.OS === "ios";
 
 interface FamilyCardProps {
   name?: string;
   relationship?: string;
-  imagePath?: string;
+  imagePath?: string | null;
   onPressEdit?: (data: any) => void;
-  onPressDelete?: (id: string | number) => void;
+  onPressDelete?: (id: any) => void;
 }
 
 const FamilyCard = (props: FamilyCardProps) => {
   const { name, relationship, imagePath, onPressEdit, onPressDelete } = props;
   const { theme } = useAppSelector(state => state.theme);
+
   return (
     <View
       style={{
@@ -85,7 +88,7 @@ const FamilyCard = (props: FamilyCardProps) => {
           </AppText>
         </View>
       </View>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      {/* <View style={{ flexDirection: "row", alignItems: "center" }}>
         <TouchableOpacity
           onPress={onPressEdit}
           activeOpacity={0.8}
@@ -95,11 +98,10 @@ const FamilyCard = (props: FamilyCardProps) => {
         <TouchableOpacity
           activeOpacity={0.8}
           style={{ marginRight: 5 }}
-          // onPress={() => removeImage(images[0]?.fileCopyUri)}
-        >
+          onPress={onPressDelete}>
           <AntDesign name="delete" size={22} color={theme.error} />
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -110,19 +112,41 @@ export default function FamilyMembers() {
   const storeDispatch = useAppDispatch();
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
+  const deleteSheetRef = useRef<RBSheet>(null);
+  const [deleteId, setDeleteId] = useState<string | number | null>(null);
+  const [loadingDelete, setLoadingDelete] = useState<boolean>(false);
 
   const onRefresh = useCallback(() => {
     if (user?.stakeholderID) storeDispatch(getAllFamily(user?.stakeholderID));
   }, [user?.stakeholderID]);
 
   function onPressAddFamily() {
-    navigation.navigate("AddFamily");
+    navigation.navigate("AddFamily", { data: null });
   }
 
-  function onPressEdit(data: any) {}
-  function onPressDelete(id: number | string) {}
+  function onPressEdit(data: any) {
+    navigation.navigate("AddFamily", { data: data });
+  }
 
-  console.log(JSON.stringify(family, null, 2));
+  function deleteMember() {
+    setLoadingDelete(true);
+    FamilyManager.deleteFamily(
+      { id: deleteId },
+      res => {
+        // console.log("Res===>", JSON.stringify(res, null, 2));
+        if (user?.stakeholderID)
+          storeDispatch(getAllFamily(user?.stakeholderID));
+        deleteSheetRef.current?.close();
+        setLoadingDelete(false);
+      },
+      err => {
+        setLoadingDelete(false);
+        console.log("Error deleteFamily===>", err);
+      },
+    );
+  }
+
+  // console.log(JSON.stringify(family, null, 2));
 
   return (
     <AppContainer
@@ -140,8 +164,8 @@ export default function FamilyMembers() {
             onRefresh={onRefresh}
           />
         }
-        style={{ flex: 1, minHeight: isIOS ? "100%" : "auto", padding: 15 }}
-        contentContainerStyle={{ paddingBottom: 100 }}>
+        style={{ flex: 1, minHeight: isIOS ? "100%" : "auto" }}
+        contentContainerStyle={{ paddingBottom: 100, padding: 15 }}>
         <AppText size={16} fontStyle="400.normal">
           {I18n.t("screen_messages.family_msg")}
         </AppText>
@@ -151,12 +175,63 @@ export default function FamilyMembers() {
             key={index}
             name={item?.name}
             relationship={item?.relationship}
-            imagePath={item?.parent?.imagePath}
+            imagePath={item?.imagePath}
             onPressEdit={() => onPressEdit(item)}
-            onPressDelete={() => onPressDelete(item?.familyMemberID)}
+            onPressDelete={() => {
+              deleteSheetRef.current?.open();
+              setDeleteId(item?.familyMemberID);
+            }}
           />
         ))}
       </ScrollView>
+      <RBSheet
+        height={moderateScale(180, 0.3)}
+        ref={deleteSheetRef}
+        customStyles={{
+          container: {
+            elevation: 100,
+            backgroundColor: theme.appBackgroundColor,
+            borderTopLeftRadius: moderateScale(15, 0.3),
+            borderTopRightRadius: moderateScale(15, 0.3),
+            padding: moderateScale(15, 0.3),
+          },
+        }}>
+        <>
+          <VerticalSpacing />
+          <AppText fontStyle="500.medium" size={20} color={theme.error}>
+            Attention!
+          </AppText>
+          <VerticalSpacing />
+          <AppText fontStyle="500.normal" size={16}>
+            Are You sure you want to delete?
+          </AppText>
+          <VerticalSpacing size={40} />
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}>
+            <AppButton
+              loading={loadingDelete}
+              height={45}
+              color={theme.green}
+              Title="Keep"
+              width="49%"
+              onPress={() => deleteSheetRef.current?.close()}
+            />
+            <AppButton
+              loading={loadingDelete}
+              height={45}
+              color={theme.error}
+              Title="Delete"
+              width="49%"
+              onPress={deleteMember}
+            />
+          </View>
+        </>
+      </RBSheet>
       <Animatable.View
         animation="fadeInUp"
         duration={1000}
@@ -171,7 +246,7 @@ export default function FamilyMembers() {
           color={theme.title}
           // loading={loading}
           Outlined
-          fontStyle="600.normal"
+          fontStyle="600.semibold"
           fontSize={16}
           height={50}
           onPress={onPressAddFamily}

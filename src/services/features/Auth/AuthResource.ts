@@ -7,9 +7,20 @@ const host = "https://nodejsclusters-160185-0.cloudclusters.net";
 interface RequestOptions {
   headers?: Record<string, string>;
   data?: Record<string, any>;
+  email?: string;
+  id?: number | string;
 }
 
 const usersResource = ($http: any) => {
+  const getUserData = (params: RequestOptions) => {
+    const url = `${host}/api/Stakeholder/findOne/${params.email}`;
+
+    console.log("URL==>", url);
+    console.log("params==>", params);
+    console.log("userLogin headers==>", params?.headers);
+    return $http.get(url, params?.data, params?.headers);
+  };
+
   const userLogin = (params: RequestOptions) => {
     const url = `${host}/api/Stakeholder/login`;
 
@@ -126,6 +137,7 @@ const usersResource = ($http: any) => {
   };
 
   return {
+    getUserData,
     userLogin,
     verifyOTP,
     getUserInfo,

@@ -18,6 +18,16 @@ interface FamilyManager {
     successCallback: (userResponse: any) => void,
     errorCallback: (error: any) => void,
   ) => void;
+  updateFamily: (
+    params: any,
+    successCallback: (userResponse: any) => void,
+    errorCallback: (error: any) => void,
+  ) => void;
+  deleteFamily: (
+    params: any,
+    successCallback: (userResponse: any) => void,
+    errorCallback: (error: any) => void,
+  ) => void;
 }
 
 const FamilyManager = (
@@ -70,10 +80,42 @@ const FamilyManager = (
     );
   };
 
+  const updateFamily = (
+    params: any,
+    successCallback: (userResponse: any) => void,
+    errorCallback: (error: any) => void,
+  ) => {
+    TermResource.updateFamily(params).then(
+      (userResponse: any) => {
+        successCallback(userResponse);
+      },
+      (error: any) => {
+        errorCallback(error);
+      },
+    );
+  };
+
+  const deleteFamily = (
+    params: any,
+    successCallback: (userResponse: any) => void,
+    errorCallback: (error: any) => void,
+  ) => {
+    TermResource.deleteFamily(params).then(
+      (userResponse: any) => {
+        successCallback(userResponse);
+      },
+      (error: any) => {
+        errorCallback(error);
+      },
+    );
+  };
+
   return {
     findAllPlayerCategory,
     findAllFamily,
     createFamily,
+    updateFamily,
+    deleteFamily,
   };
 };
 

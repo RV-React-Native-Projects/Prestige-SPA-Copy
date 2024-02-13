@@ -14,16 +14,27 @@ import Utils from "@common/Utils";
 
 function Loading() {
   const navigation = useAppNavigation();
-  const { userToken, user, loadingUser } = useAppSelector(state => state.user);
+  const { user, userToken, loadingUser, userEmail } = useAppSelector(
+    state => state.user,
+  );
   const storeDispatch = useAppDispatch();
   const { setStorage } = useEncryptedStorage();
 
+  // @RV take a Look at these Logics after the Splash Scrren in Place
   useEffect(() => {
-    if (user) {
-      navigation.reset({ index: 0, routes: [{ name: "Tab" }] });
-      SplashScreen.hide();
+    if (userEmail) {
+      AuthManager.getUserData(
+        { email: userEmail },
+        res => {
+          storeDispatch(setUser(res?.data?.data));
+          navigation.reset({ index: 0, routes: [{ name: "Tab" }] });
+          storeDispatch(setLoadingUser(false));
+          SplashScreen.hide();
+        },
+        err => console.log(err),
+      );
     } else if (!loadingUser) SplashScreen.hide();
-  }, [userToken]);
+  }, [userEmail]);
 
   return (
     <Suspense fallback="">
