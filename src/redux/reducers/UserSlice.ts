@@ -11,7 +11,6 @@ export const loadUserData = createAsyncThunk("user/loaduser", async () => {
   var authToken = (await getStorage("SPA_Auth_Token")) ?? null;
   var refreshToken = (await getStorage("SPA_Refresh_Token")) ?? null;
   var email = (await getStorage("SPA_Email")) ?? null;
-  // var user = (await getStorage("SPA_User")) ?? null;
   return { userToken, authToken, refreshToken, email };
 });
 
@@ -144,6 +143,9 @@ const userSlice = createSlice({
       state.family = action?.payload?.familyMembers;
       // state.loadingUser = false;
     },
+    setUserEmail: (state, action) => {
+      state.userEmail = action.payload;
+    },
     setLoadingUser: (state, action) => {
       state.loadingUser = action.payload;
     },
@@ -240,6 +242,7 @@ const userSlice = createSlice({
 
 export const {
   setUser,
+  setUserEmail,
   setUserToken,
   setAuthToken,
   setRefreshToken,

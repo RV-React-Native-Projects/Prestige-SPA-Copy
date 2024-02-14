@@ -2,16 +2,14 @@ import {
   StyleSheet,
   View,
   ScrollView,
-  TouchableOpacity,
   Platform,
   Keyboard,
   Linking,
 } from "react-native";
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import I18n from "i18n-js";
 import AppContainer from "@components/Container/AppContainer";
-import svgs from "@common/AllSvgs";
-import { useAppSelector } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux/store";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import AppText from "@components/Text/AppText";
 import AppButton from "@components/Button/AppButton";
@@ -20,7 +18,6 @@ import AppTextInput from "@components/TextInput/AppTextInput";
 import BackButton from "@components/Header/BackButton";
 import { moderateScale } from "react-native-size-matters";
 import * as Animatable from "react-native-animatable";
-import { RadioButton } from "react-native-paper";
 import CountryCodePicker from "@components/dropdown/CountryCodePicker";
 import CountryNamePicker from "@components/dropdown/CountryNamePicker";
 import AuthManager from "@services/features/Auth/AuthManager";
@@ -30,13 +27,21 @@ import { Formik } from "formik";
 import useAppToast from "@components/Alert/AppToast";
 import GenderDropDown from "@src/components/dropdown/GenderDropDown";
 import DatePickerInput from "@src/components/Picker/DatePickerInput";
+import {
+  getAllPlayerCategory,
+  setUserEmail,
+} from "@src/redux/reducers/UserSlice";
+import _, { toLower, toString } from "lodash";
+import moment from "moment";
+import Utils from "@src/common/Utils";
+import ProfilePicker from "@src/components/Picker/ProfilePicker";
 
 const isIOS = Platform.OS === "ios";
 
 const signUpSchema = Yup.object().shape({
-  userType: Yup.string().required(I18n.t("error_messages.first_name_req")),
-  firstName: Yup.string().required(I18n.t("error_messages.first_name_req")),
-  lastName: Yup.string().required(I18n.t("error_messages.last_name_req")),
+  stakeholderType: Yup.string().required(I18n.t("error_messages.required")),
+  stakeholderName: Yup.string().required(I18n.t("error_messages.name_req")),
+  callCode: Yup.string().required(I18n.t("error_messages.required")),
   mobile: Yup.string()
     .min(7, I18n.t("error_messages.phone_len"))
     .required(I18n.t("error_messages.phone_req")),
@@ -47,11 +52,11 @@ const signUpSchema = Yup.object().shape({
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       I18n.t("error_messages.email_invalid"),
     ),
-  // countryName: Yup.string().required(I18n.t("error_messages.required")),
-  callCode: Yup.string().required(I18n.t("error_messages.required")),
-  // address: Yup.string()
-  //   .min(8, I18n.t("error_messages.address_len"))
-  //   .required(I18n.t("error_messages.address_req")),
+  emiratesID: Yup.string().required(I18n.t("error_messages.required")),
+  countryName: Yup.string().required(I18n.t("error_messages.required")),
+  address: Yup.string()
+    .min(8, I18n.t("error_messages.address_len"))
+    .required(I18n.t("error_messages.address_req")),
   password: Yup.string()
     .min(8, I18n.t("error_messages.pass_length"))
     .required(I18n.t("error_messages.password_invalid"))
@@ -63,72 +68,134 @@ const signUpSchema = Yup.object().shape({
     .min(8, I18n.t("error_messages.pass_length"))
     .oneOf([Yup.ref("password")], I18n.t("error_messages.pass_match_fail"))
     .required(I18n.t("error_messages.password_invalid")),
+  gender: Yup.string().required(I18n.t("error_messages.required")),
+  plrCategory: Yup.string().required(I18n.t("error_messages.required")),
 });
 
+interface DataTypes {
+  label: string;
+  value: string;
+}
+
 const SignUp = () => {
+  const currentDate = new Date();
   const { theme } = useAppSelector(state => state.theme);
+  const { playerCategory } = useAppSelector(state => state.user);
+  const storeDispatch = useAppDispatch();
   const navigation = useAppNavigation();
   const { setStorage } = useEncryptedStorage();
   const appToast = useAppToast();
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [gender, setGender] = useState("");
   const [DOB, setDOB] = useState<Date | any>();
+  const [errorDOB, setErrorDOB] = useState<boolean>(false);
+  const [emiratesIDExpiry, setEmiratesIDExpiry] = useState<Date | any>();
+  const [errorExpiry, setErrorExpiry] = useState<boolean>(false);
 
   const formInitialvalue = {
-    userType: "Customer",
-    firstName: "",
-    lastName: "",
-    // countryName: "",
+    stakeholderType: "Customer",
+    stakeholderName: "",
+    countryName: "",
     callCode: "",
     email: "",
     mobile: "",
-    // address: "",
+    address: "",
     password: "",
     confirmPassword: "",
+    emiratesID: "",
+    gender: "",
+    plrCategory: "",
   };
 
+  const [playerCatData, setPlayerCatData] = useState<DataTypes[] | null>(null);
+  const [pickedImage, setPickedImage] = useState<any | null>(null);
+
+  useEffect(() => {
+    if (!playerCategory) storeDispatch(getAllPlayerCategory());
+  }, [playerCategory]);
+
+  useEffect(() => {
+    if (playerCategory) {
+      const filteredPlayerDate = _.map(playerCategory, (player, index) => {
+        return {
+          label: player.playerCategory,
+          value: toString(player.playerCategoryID),
+        };
+      });
+      filteredPlayerDate?.length > 0
+        ? setPlayerCatData(filteredPlayerDate)
+        : setPlayerCatData(null);
+    }
+  }, [playerCategory]);
+
   const onPressCreateAccount = (values: typeof formInitialvalue) => {
-    // setLoading(true);
+    const formData = new FormData();
+
+    formData.append("stakeholderName", values?.stakeholderName);
+    formData.append("email", values?.email);
+    formData.append("password", values?.confirmPassword);
+    formData.append("stakeholderType", values?.stakeholderType);
+    formData.append("phoneNumber", values?.callCode + values?.mobile);
+    formData.append("emiratesID", values?.emiratesID);
+    formData.append(
+      "emiratesIDExpiry",
+      moment(emiratesIDExpiry).format("YYYY-MM-DD"),
+    );
+    formData.append("file", {
+      uri: pickedImage?.path ?? pickedImage?.fileCopyUri,
+      type: pickedImage?.mime,
+      name: toLower(
+        Utils.getFilename(pickedImage?.path ?? pickedImage?.fileCopyUri),
+      ),
+    });
+    formData.append("address", values?.address);
+    formData.append("gender", values?.gender);
+    formData.append("dateOfBirth", moment(DOB).format("YYYY-MM-DD"));
+    formData.append("playerCategoryID", values?.plrCategory);
+    formData.append("hasFamily", false);
+
     const params = {
-      data: {
-        userType: values?.userType,
-        firstName: values?.firstName,
-        lastName: values?.lastName,
-        email: values?.email,
-        phone: `+${values?.callCode}${values?.mobile}`,
-        password: values?.password,
-        // country: values?.countryName,
-        // address: values?.address,
-        leadType: "Letting",
+      data: formData,
+      headers: {
+        Accept: "application/json, text/plain, /",
+        "Content-Type": "multipart/form-data",
       },
     };
-    console.log(JSON.stringify(params, null, 2));
-    // AuthManager.signUpUser(
-    //   params,
-    //   res => {
-    //     console.log("signUp Res===>", res);
-    //     // setStorage("SPA_user_Token", res.data.response);
-    //     // storeDispatch(setUserToken(res.data.response));
-    //     appToast.showNormalToast({ title: I18n.t("toast.otp") });
-    //     navigation.navigate("VerifyAccount", {
-    //       email: values?.email,
-    //       isRegister: true,
-    //     });
-    //     setLoading(false);
-    //   },
-    //   err => {
-    //     console.log("Error ", err);
-    //     appToast.showToast({
-    //       title: I18n.t("toast.verification_err"),
-    //       description: err.message?.message ?? err?.message,
-    //       status: "error",
-    //       duration: 10000,
-    //       placement: "top",
-    //     });
-    //     setLoading(false);
-    //   },
-    // );
+
+    AuthManager.signUpUser(
+      params,
+      res => {
+        console.log("signUp Res===>", res);
+        setStorage("SPA_Email", res.data?.data?.email);
+        storeDispatch(setUserEmail(res.data?.data?.email));
+        appToast.showNormalToast({ title: "SignUp Successfully!" });
+        setLoading(false);
+      },
+      err => {
+        console.log("Error ", err);
+        appToast.showToast({
+          title: I18n.t("toast.verification_err"),
+          description: err.message?.message ?? err?.message,
+          status: "error",
+          duration: 10000,
+          placement: "top",
+        });
+        setLoading(false);
+      },
+    );
+  };
+
+  useEffect(() => {
+    if (DOB) setErrorDOB(false);
+    if (emiratesIDExpiry) setErrorExpiry(false);
+  }, [DOB, emiratesIDExpiry]);
+
+  const onSubmit = () => {
+    setErrorDOB(false);
+    setErrorExpiry(false);
+    Keyboard.dismiss();
+    if (!DOB) setErrorDOB(true);
+    if (!emiratesIDExpiry) return setErrorExpiry(true);
   };
 
   const onPressTermOfService = () => {
@@ -172,52 +239,21 @@ const SignUp = () => {
               <AppText fontStyle="500.medium" size={20}>
                 {I18n.t("screen_messages.signup_msg")}
               </AppText>
-              {/* <VerticalSpacing size={20} />
-        <View style={{ flexDirection: "row" }}>
-          <AppText>{I18n.t("screen_messages.register.as")}</AppText>
-          <AppText color={theme.error}> * </AppText>
-          <svgs.Help />
-        </View>
-        <View
-          style={{ flexDirection: "row", marginTop: moderateScale(10, 0.3) }}>
-          <TouchableOpacity
-            style={{ flexDirection: "row", alignItems: "center" }}
-            activeOpacity={0.7}
-            onPress={() => setUserType("Customer")}>
-            <RadioButton.Android
-              value="Customer"
-              status={userType === "Customer" ? "checked" : "unchecked"}
-              onPress={() => setUserType("Customer")}
-            />
-            <AppText fontStyle="500.normal">
-              {I18n.t("screen_messages.register.Customer")}
-            </AppText>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ flexDirection: "row", alignItems: "center" }}
-            activeOpacity={0.7}
-            onPress={() => setUserType("Developer")}>
-            <RadioButton.Android
-              status={userType === "Developer" ? "checked" : "unchecked"}
-              value="Developer"
-              onPress={() => setUserType("Developer")}
-            />
-            <AppText fontStyle="500.normal">
-              {I18n.t("screen_messages.register.Developer")}
-            </AppText>
-          </TouchableOpacity>
-        </View> */}
+              <VerticalSpacing size={30} />
+              <ProfilePicker getImages={image => setPickedImage(image)} />
               <View>
                 <VerticalSpacing size={20} />
                 <AppTextInput
-                  label={I18n.t("screen_messages.input_lable.First_Name")}
-                  placeholder={I18n.t(
-                    "screen_messages.input_placeholder.First_Name",
-                  )}
-                  value={values?.firstName}
-                  onChangeText={handleChange("firstName")}
-                  error={touched.firstName && errors.firstName ? true : false}
-                  errorMessage={errors.firstName}
+                  label={I18n.t("screen_messages.input_lable.Name")}
+                  placeholder={I18n.t("screen_messages.input_placeholder.Name")}
+                  value={values?.stakeholderName}
+                  onChangeText={handleChange("stakeholderName")}
+                  error={
+                    touched.stakeholderName && errors.stakeholderName
+                      ? true
+                      : false
+                  }
+                  errorMessage={errors.stakeholderName}
                   keyboardType="name-phone-pad"
                   required
                   autoCapitalize="words"
@@ -226,33 +262,48 @@ const SignUp = () => {
                 />
                 <VerticalSpacing />
                 <AppTextInput
-                  label={I18n.t("screen_messages.input_lable.Last_Name")}
+                  label={I18n.t("screen_messages.input_lable.Email")}
                   placeholder={I18n.t(
-                    "screen_messages.input_placeholder.Last_Name",
+                    "screen_messages.input_placeholder.Email",
                   )}
-                  value={values?.lastName}
-                  onChangeText={handleChange("lastName")}
-                  error={touched.lastName && errors.lastName ? true : false}
-                  errorMessage={errors.lastName}
-                  keyboardType="name-phone-pad"
+                  value={values?.email}
+                  onChangeText={handleChange("email")}
+                  error={touched.email && errors.email ? true : false}
+                  errorMessage={errors.email}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  required
+                  autoComplete="email"
+                />
+                <VerticalSpacing />
+                <AppTextInput
+                  label={"emiratesID"}
+                  placeholder={"emiratesID"}
+                  value={values?.emiratesID}
+                  onChangeText={handleChange("emiratesID")}
+                  error={touched.emiratesID && errors.emiratesID ? true : false}
+                  errorMessage={errors.emiratesID}
+                  keyboardType="default"
                   required
                   autoComplete="name-family"
                 />
                 <VerticalSpacing />
-                <GenderDropDown
-                  label="Gender"
-                  placeholder="Select a Gender"
-                  value={gender}
-                  required
-                  getValue={e => setGender(e)}
-                />
-                <VerticalSpacing />
                 <DatePickerInput
-                  label="DOB"
-                  placeholder="Select DOB"
-                  value={DOB || new Date()}
+                  label="emiratesID Expiry Date"
+                  placeholder="DD/MM/YYYY"
+                  value={emiratesIDExpiry}
+                  minimumDate={new Date()}
+                  maximumDate={
+                    new Date(
+                      currentDate.getFullYear() + 2,
+                      currentDate.getMonth(),
+                      currentDate.getDate(),
+                    )
+                  }
                   required
-                  getDate={e => setDOB(e)}
+                  getDate={e => setEmiratesIDExpiry(e)}
+                  error={errorExpiry}
+                  errorMsg="Expiry Date required!"
                 />
                 <VerticalSpacing />
                 <View>
@@ -283,29 +334,40 @@ const SignUp = () => {
                   </View>
                 </View>
                 <VerticalSpacing />
-                <AppTextInput
-                  label={I18n.t("screen_messages.input_lable.Email")}
-                  placeholder={I18n.t(
-                    "screen_messages.input_placeholder.Email",
-                  )}
-                  value={values?.email}
-                  onChangeText={handleChange("email")}
-                  error={touched.email && errors.email ? true : false}
-                  errorMessage={errors.email}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
+                <GenderDropDown
+                  label="Gender"
+                  placeholder="Select a Gender"
+                  value={values?.gender}
                   required
-                  autoComplete="email"
+                  getValue={handleChange("gender")}
+                  error={touched.gender && errors.gender ? true : false}
+                  errorMessage={errors.gender}
+                />
+                {/* <GenderDropDown
+                  label="Gender"
+                  placeholder="Select a Gender"
+                  value={gender}
+                  required
+                  getValue={e => setGender(e)}
+                /> */}
+                <VerticalSpacing />
+                <DatePickerInput
+                  label="DOB"
+                  placeholder="DD/MM/YYYY"
+                  value={DOB || new Date()}
+                  required
+                  getDate={e => setDOB(e)}
+                  error={errorDOB}
                 />
                 <VerticalSpacing />
-                {/* <CountryNamePicker
+                <CountryNamePicker
                   label={I18n.t(
                     "screen_messages.input_lable.Country_of_residence",
                   )}
                   getCountryName={handleChange("countryName")}
                   required
-                /> */}
-                {/* <VerticalSpacing />
+                />
+                <VerticalSpacing />
                 <AppTextInput
                   label={I18n.t("screen_messages.input_lable.address")}
                   placeholder={I18n.t(
@@ -318,7 +380,22 @@ const SignUp = () => {
                   keyboardType="visible-password"
                   autoComplete="address-line1"
                   required
-                /> */}
+                />
+                <VerticalSpacing />
+                {playerCatData && (
+                  <GenderDropDown
+                    data={playerCatData}
+                    label="Player Category"
+                    placeholder="Select Player Category"
+                    value={values?.plrCategory}
+                    required
+                    getValue={handleChange("plrCategory")}
+                    error={
+                      touched.plrCategory && errors.plrCategory ? true : false
+                    }
+                    errorMessage={errors.plrCategory}
+                  />
+                )}
                 <VerticalSpacing />
                 <AppTextInput
                   label={I18n.t("screen_messages.input_lable.password")}
@@ -359,7 +436,7 @@ const SignUp = () => {
                   autoComplete="password"
                 />
               </View>
-              <VerticalSpacing size={40} />
+              {/* <VerticalSpacing size={40} />
               <View
                 style={{
                   flexDirection: "row",
@@ -393,7 +470,7 @@ const SignUp = () => {
                   height={50}
                   onPress={onPressPrivacyPolicy}
                 />
-              </View>
+              </View> */}
             </ScrollView>
             <Animatable.View
               animation="fadeInUp"
@@ -410,7 +487,7 @@ const SignUp = () => {
                 fontSize={16}
                 height={50}
                 onPress={() => {
-                  Keyboard.dismiss();
+                  onSubmit();
                   handleSubmit();
                 }}
               />

@@ -22,7 +22,7 @@ import {
 import HomeDateSK from "@src/assets/skelton/HomeDateSK";
 
 function Home() {
-  const { userToken, user } = useAppSelector(state => state.user);
+  const { userToken, user, userEmail } = useAppSelector(state => state.user);
   const { coachs, locations, loadingCoachs, loadingLocations } = useAppSelector(
     state => state.appData,
   );
@@ -39,10 +39,10 @@ function Home() {
   }, [locations, coachs]);
 
   useEffect(() => {
-    if (!userToken) {
+    if (!userEmail) {
       navigation.reset({ index: 0, routes: [{ name: "Landing" }] });
     }
-  }, [userToken]);
+  }, [userEmail]);
 
   const gotoCourt = () => {
     navigation.navigate("CourtTab");

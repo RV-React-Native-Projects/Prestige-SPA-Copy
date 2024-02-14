@@ -85,7 +85,7 @@ export default function AddNewFamily(props: any) {
     }
   }, [playerCategory]);
 
-  console.log(JSON.stringify(DOB, null, 2));
+  // console.log(JSON.stringify(DOB, null, 2));
 
   const formInitialvalue = {
     name: !!data ? data?.name : "",

@@ -82,7 +82,6 @@ const Login = () => {
         console.log("Login Res===>", JSON.stringify(res.data.data, null, 2));
         setLoading(false);
         setStorage("SPA_User_Token", res.data.data.token);
-        setStorage("SPA_User", res.data.data.stakeHolders);
         setStorage("SPA_Email", res.data.data.stakeHolders?.email);
         storeDispatch(setUserToken(res.data.data.token));
         storeDispatch(setUser(res.data.data.stakeHolders));

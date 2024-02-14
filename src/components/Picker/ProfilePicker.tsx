@@ -12,8 +12,6 @@ import Modal from "react-native-modal";
 import AppText from "@components/Text/AppText";
 import I18n from "i18n-js";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
-import AppButton from "@components/Button/AppButton";
-import svgs from "@common/AllSvgs";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import ImagePicker from "react-native-image-crop-picker";
@@ -120,8 +118,8 @@ const ProfilePicker: React.FC<Props> = props => {
         style={{
           position: "relative",
           alignItems: "center",
-          height: 150,
-          width: 150,
+          height: moderateScale(150, 0.3),
+          width: moderateScale(150, 0.3),
           alignSelf: "center",
         }}>
         {pickedImage ? (
@@ -129,9 +127,9 @@ const ProfilePicker: React.FC<Props> = props => {
             style={{
               height: "100%",
               width: "100%",
-              borderRadius: 200,
+              borderRadius: moderateScale(200, 0.3),
               backgroundColor: theme.light,
-              borderWidth: 3,
+              borderWidth: moderateScale(3, 0.3),
               borderColor: theme.secondary,
             }}
             source={{
@@ -146,11 +144,11 @@ const ProfilePicker: React.FC<Props> = props => {
             style={{
               height: "100%",
               width: "100%",
-              borderRadius: 200,
+              borderRadius: moderateScale(200, 0.3),
               backgroundColor: theme.light,
-              borderWidth: 3,
+              borderWidth: moderateScale(3, 0.3),
               borderColor: theme.secondary,
-              objectFit: "cover",
+              objectFit: "contain",
             }}
             source={images.user}
           />
@@ -160,9 +158,9 @@ const ProfilePicker: React.FC<Props> = props => {
           activeOpacity={0.8}
           onPress={toggleModal}
           style={{
-            height: 50,
-            width: 50,
-            borderRadius: 50,
+            height: moderateScale(50, 0.3),
+            width: moderateScale(50, 0.3),
+            borderRadius: moderateScale(50, 0.3),
             backgroundColor: theme.modalBackgroundColor,
             alignItems: "center",
             justifyContent: "center",
@@ -171,7 +169,11 @@ const ProfilePicker: React.FC<Props> = props => {
             bottom: 0,
             ...theme.mid_shadow,
           }}>
-          <AntDesign name="camera" size={35} color={theme.iconColor} />
+          <AntDesign
+            name="camera"
+            size={moderateScale(35, 0.3)}
+            color={theme.iconColor}
+          />
         </TouchableOpacity>
       </View>
       <Modal
@@ -182,8 +184,8 @@ const ProfilePicker: React.FC<Props> = props => {
         animationInTiming={animationInTiming}
         animationOutTiming={animationOutTiming}
         avoidKeyboard={avoidKeyboard}
-        deviceHeight={windowHeight}
-        deviceWidth={windowWidth}
+        deviceHeight={moderateScale(windowHeight, 0.3)}
+        deviceWidth={moderateScale(windowWidth, 0.3)}
         backdropOpacity={lightShadow ? 0.1 : 0.3}>
         <View
           style={[
@@ -194,11 +196,15 @@ const ProfilePicker: React.FC<Props> = props => {
               minHeight: modalHeight,
               alignSelf: "center",
               alignContent: "center",
-              borderTopRightRadius: 20,
-              borderTopLeftRadius: 20,
+              borderTopRightRadius: moderateScale(20, 0.3),
+              borderTopLeftRadius: moderateScale(20, 0.3),
             },
             toBottom
-              ? { alignSelf: "center", position: "absolute", bottom: -25 }
+              ? {
+                  alignSelf: "center",
+                  position: "absolute",
+                  bottom: moderateScale(-25, 0.3),
+                }
               : null,
           ]}>
           {showHeader ? (
@@ -209,12 +215,12 @@ const ProfilePicker: React.FC<Props> = props => {
             </View>
           ) : null}
           {content ?? (
-            <View style={{ paddingHorizontal: 20 }}>
+            <View style={{ paddingHorizontal: moderateScale(20, 0.3) }}>
               <View style={{ alignItems: "center" }}>
                 <AppText
                   fontStyle="500.normal"
                   size={18}
-                  style={{ paddingVertical: 15 }}>
+                  style={{ paddingVertical: moderateScale(15, 0.3) }}>
                   {I18n.t("screen_messages.upload")}
                 </AppText>
               </View>
@@ -231,13 +237,13 @@ const ProfilePicker: React.FC<Props> = props => {
                   onPress={openCamera}>
                   <View
                     style={{
-                      height: 100,
-                      width: 100,
-                      borderRadius: 100,
+                      height: moderateScale(100, 0.3),
+                      width: moderateScale(100, 0.3),
+                      borderRadius: moderateScale(100, 0.3),
                       backgroundColor: theme.light,
                       alignItems: "center",
                       justifyContent: "center",
-                      marginBottom: 10,
+                      marginBottom: moderateScale(10, 0.3),
                     }}>
                     <AntDesign name="camera" size={50} />
                   </View>
@@ -251,13 +257,13 @@ const ProfilePicker: React.FC<Props> = props => {
                   onPress={openGallery}>
                   <View
                     style={{
-                      height: 100,
-                      width: 100,
-                      borderRadius: 100,
+                      height: moderateScale(100, 0.3),
+                      width: moderateScale(100, 0.3),
+                      borderRadius: moderateScale(100, 0.3),
                       backgroundColor: theme.light,
                       alignItems: "center",
                       justifyContent: "center",
-                      marginBottom: 10,
+                      marginBottom: moderateScale(10, 0.3),
                     }}>
                     <FontAwesome name="photo" size={50} />
                   </View>
@@ -284,18 +290,18 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     shadowOpacity: 0.4,
     elevation: 5,
-    paddingTop: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    paddingTop: moderateScale(20, 0.3),
+    borderTopLeftRadius: moderateScale(20, 0.3),
+    borderTopRightRadius: moderateScale(20, 0.3),
   },
   panelHeader: {
     alignItems: "center",
   },
   panelHandle: {
-    width: 40,
-    height: 8,
-    borderRadius: 4,
+    width: moderateScale(40, 0.3),
+    height: moderateScale(8, 0.3),
+    borderRadius: moderateScale(4, 0.3),
     backgroundColor: "#00000040",
-    marginBottom: 15,
+    marginBottom: moderateScale(15, 0.3),
   },
 });
