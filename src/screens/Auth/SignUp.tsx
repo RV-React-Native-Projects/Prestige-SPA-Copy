@@ -235,8 +235,11 @@ const SignUp = () => {
               }}
               contentContainerStyle={{ paddingBottom: moderateScale(100, 0.3) }}
               showsVerticalScrollIndicator={false}>
-              <VerticalSpacing size={80} />
-              <AppText fontStyle="500.medium" size={20}>
+              <VerticalSpacing size={50} />
+              <AppText
+                style={{ textAlign: "center" }}
+                fontStyle="500.medium"
+                size={20}>
                 {I18n.t("screen_messages.signup_msg")}
               </AppText>
               <VerticalSpacing size={30} />

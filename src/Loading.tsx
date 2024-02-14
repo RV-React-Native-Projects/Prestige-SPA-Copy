@@ -31,7 +31,10 @@ function Loading() {
           storeDispatch(setLoadingUser(false));
           SplashScreen.hide();
         },
-        err => console.log(err),
+        err => {
+          console.log(err);
+          storeDispatch(setLoadingUser(false));
+        },
       );
     } else if (!loadingUser) SplashScreen.hide();
   }, [userEmail]);

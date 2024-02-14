@@ -86,7 +86,7 @@ const Login = () => {
         storeDispatch(setUserToken(res.data.data.token));
         storeDispatch(setUser(res.data.data.stakeHolders));
         appToast.showNormalToast({ title: "Login Successfully!" });
-        navigation.reset({ index: 0, routes: [{ name: "Tab" }] });
+        // navigation.reset({ index: 0, routes: [{ name: "Tab" }] });
       },
       err => {
         console.log("Error ", err);
