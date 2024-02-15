@@ -1,13 +1,12 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { useAppSelector } from "@src/redux/store";
-import { Card } from "react-native-paper";
 import { moderateScale } from "react-native-size-matters";
-import { VerticalSpacing } from "@src/components/Spacing/Spacing";
-import AppText from "@src/components/Text/AppText";
+import { VerticalSpacing } from "@components/Spacing/Spacing";
+import AppText from "@components/Text/AppText";
 import svgs from "@common/AllSvgs";
 import FastImage from "react-native-fast-image";
-import images from "@src/common/AllImages";
+import images from "@common/AllImages";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import I18n from "i18n-js";
 
@@ -38,16 +37,20 @@ const CourtCard = (props: CourtCardProps) => {
     <View
       style={{
         padding: moderateScale(10, 0.3),
-        width: 180,
-        marginRight: 15,
-        borderRadius: 10,
+        width: moderateScale(175, 0.3),
+        marginRight: moderateScale(10, 0.3),
+        borderRadius: moderateScale(10, 0.3),
         position: "relative",
         backgroundColor: theme.modalBackgroundColor,
         ...theme.light_shadow,
       }}>
       <TouchableOpacity activeOpacity={0.8} onPress={onPressCard}>
         <FastImage
-          style={{ height: 150, width: "auto", borderRadius: 5 }}
+          style={{
+            height: moderateScale(140, 0.3),
+            width: "auto",
+            borderRadius: moderateScale(5, 0.3),
+          }}
           source={{
             uri: `https://nodejsclusters-160185-0.cloudclusters.net/${imagePath}`,
             priority: FastImage.priority.high,
@@ -57,20 +60,20 @@ const CourtCard = (props: CourtCardProps) => {
         />
         <VerticalSpacing />
         <AppText
-          style={{ height: 50 }}
+          style={{ height: moderateScale(45, 0.3) }}
           fontStyle="600.bold"
           size={16}
           numberOfLines={2}>
           {locationName}
         </AppText>
-        <View style={{ flexDirection: "row", height: 20 }}>
+        <View style={{ flexDirection: "row", height: moderateScale(20, 0.3) }}>
           <svgs.LocationV2 color1={theme.secondary} height={20} />
           <AppText fontStyle="400.normal" numberOfLines={1} color={theme.gray}>
             {distance} KM
           </AppText>
         </View>
         <AppText
-          style={{ height: 40, marginTop: 5 }}
+          style={{ height: moderateScale(40, 0.3), marginTop: 5 }}
           fontStyle="400.normal"
           numberOfLines={2}
           color={theme.gray}>
@@ -84,13 +87,15 @@ const CourtCard = (props: CourtCardProps) => {
               marginTop: 5,
             }}>
             <MaterialIcons name="verified" size={20} color={theme.secondary} />
-            <AppText style={{ marginLeft: 5 }} fontStyle="600.bold">
+            <AppText
+              style={{ marginLeft: moderateScale(5, 0.3) }}
+              fontStyle="600.bold">
               {I18n.t("screen_messages.Verified")}
             </AppText>
           </View>
         ) : (
           <AppText
-            style={{ marginTop: 5 }}
+            style={{ marginTop: moderateScale(5, 0.3) }}
             fontStyle="600.semibold"
             numberOfLines={2}
             color={theme.primary}>
