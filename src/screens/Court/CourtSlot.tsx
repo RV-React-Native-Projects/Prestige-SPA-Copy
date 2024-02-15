@@ -165,7 +165,9 @@ export default function CourtSlot(props: any) {
       scrollable={false}
       backgroundColor={theme.appBackgroundColor}
       fullHeight={false}>
-      <BackButtonWithTitle title="Choose Slot" />
+      <BackButtonWithTitle
+        title={I18n.t("screen_messages.header.Choose_Slot")}
+      />
       <ScrollView
         style={{
           minHeight: isIOS ? "100%" : "auto",
@@ -185,8 +187,8 @@ export default function CourtSlot(props: any) {
               style={[
                 {
                   height: moderateScale(100, 0.3),
-                  width: 110,
-                  borderRadius: 5,
+                  width: moderateScale(110, 0.3),
+                  borderRadius: moderateScale(5, 0.3),
                 },
               ]}
               defaultSource={images.Placeholder}
@@ -197,14 +199,21 @@ export default function CourtSlot(props: any) {
               resizeMode={FastImage.resizeMode.cover}
             />
             <View style={{ padding: moderateScale(10, 0.3) }}>
-              <AppText fontStyle="700.bold">{data?.locationName}</AppText>
+              <AppText
+                numberOfLines={2}
+                fontStyle="700.bold"
+                style={{ maxWidth: "55%" }}>
+                {data?.locationName}
+              </AppText>
               <VerticalSpacing />
               <View
                 style={{
                   flexDirection: "row",
                 }}>
                 <svgs.LocationV2 color1={theme.secondary} height={20} />
-                <AppText numberOfLines={2}>{data?.locationAddress}</AppText>
+                <AppText numberOfLines={2} style={{ maxWidth: "50%" }}>
+                  {data?.locationAddress}
+                </AppText>
               </View>
             </View>
           </View>
@@ -220,8 +229,8 @@ export default function CourtSlot(props: any) {
               <AppText
                 fontStyle="600.semibold"
                 size={16}
-                style={{ paddingHorizontal: 15 }}>
-                Select Duration
+                style={{ paddingHorizontal: moderateScale(15, 0.3) }}>
+                {I18n.t("screen_messages.Select_Duration")}
               </AppText>
               <VerticalSpacing />
               <View style={{ alignItems: "center", alignContent: "center" }}>
@@ -257,9 +266,9 @@ export default function CourtSlot(props: any) {
               style={{
                 flexDirection: "row",
                 flexWrap: "wrap",
-                gap: 10,
-                marginHorizontal: 15,
-                marginTop: 50,
+                gap: moderateScale(10, 0.3),
+                marginHorizontal: moderateScale(15, 0.3),
+                marginTop: moderateScale(15, 0.3),
               }}>
               {_.times(16, index => (
                 <RectangleSK key={index} />
@@ -273,7 +282,7 @@ export default function CourtSlot(props: any) {
                   fontStyle="600.semibold"
                   size={16}
                   style={{ paddingHorizontal: 15 }}>
-                  Select Slot
+                  {I18n.t("screen_messages.Select_Slot")}
                 </AppText>
                 <VerticalSpacing />
                 <View
@@ -329,7 +338,7 @@ export default function CourtSlot(props: any) {
             style={{ paddingHorizontal: 15 }}
             fontStyle="600.semibold"
             size={18}>
-            Select Court
+            {I18n.t("screen_messages.Select_Court")}
           </AppText>
           <ScrollView
             style={{ height: "100%", paddingHorizontal: 15 }}
@@ -373,7 +382,9 @@ export default function CourtSlot(props: any) {
                             size={16}
                             fontStyle="500.semibold"
                             color={theme.primary}>
-                            AED {item?.["creditTypes.rate"]}
+                            {I18n.t("screen_messages.price", {
+                              price: item?.["creditTypes.rate"],
+                            })}
                           </AppText>
                         )}
                       </View>

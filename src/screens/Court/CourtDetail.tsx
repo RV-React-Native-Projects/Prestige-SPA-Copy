@@ -75,11 +75,11 @@ function CourtDetail(props: any) {
           flex: 1,
           minHeight: isIOS ? "100%" : "auto",
         }}
-        contentContainerStyle={{ paddingBottom: 100 }}>
-        <View style={{ height: 300 }}>
+        contentContainerStyle={{ paddingBottom: moderateScale(100, 0.3) }}>
+        <View style={{ height: moderateScale(300, 0.3) }}>
           <Swiper
             style={styles.wrapper}
-            height={320}
+            height={moderateScale(300, 0.3)}
             dot={
               <View
                 style={{
@@ -142,20 +142,23 @@ function CourtDetail(props: any) {
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                marginTop: 5,
+                marginTop: moderateScale(5, 0.3),
               }}>
               <MaterialIcons
                 name="verified"
                 size={20}
                 color={theme.secondary}
               />
-              <AppText style={{ marginLeft: 5 }} fontStyle="600.bold">
+              <AppText
+                style={{ marginLeft: moderateScale(5, 0.3) }}
+                fontStyle="600.bold">
                 {I18n.t("screen_messages.Verified")}
               </AppText>
             </View>
           ) : (
             <AppText fontStyle="600.semibold" size={16} color={theme.primary}>
-              AED {data?.minRate} - AED {data?.maxRate}
+              {I18n.t("screen_messages.price", { price: data?.minRate })} -{" "}
+              {I18n.t("screen_messages.price", { price: data?.maxRate })}
             </AppText>
           )}
           <VerticalSpacing />
@@ -175,14 +178,14 @@ function CourtDetail(props: any) {
                 numberOfLines={2}
                 color={theme.gray}
                 fontStyle="500.semibold">
-                5.4 KM
+                {I18n.t("screen_messages.distance", { distance: 5.4 })}
               </AppText>
             </View>
             <AppText
               style={{
-                height: 40,
-                marginTop: 5,
-                marginLeft: 25,
+                height: moderateScale(40, 0.3),
+                marginTop: moderateScale(5, 0.3),
+                marginLeft: moderateScale(25, 0.3),
                 maxWidth: "90%",
               }}
               numberOfLines={2}
@@ -192,14 +195,20 @@ function CourtDetail(props: any) {
             </AppText>
           </View>
           <AppText fontStyle="600.semibold" size={16}>
-            Directions
+            {I18n.t("screen_messages.Directions")}
           </AppText>
           <VerticalSpacing size={15} />
-          <View style={{ height: 300 }}>
+          <View style={{ height: moderateScale(300, 0.3) }}>
             <MapView
               ref={_map}
               mapType="standard"
-              style={[styles.map, { height: 300, borderRadius: 10 }]}
+              style={[
+                styles.map,
+                {
+                  height: 300,
+                  borderRadius: moderateScale(10, 0.3),
+                },
+              ]}
               scrollEnabled={false}
               zoomEnabled={false}
               minZoomLevel={15}
@@ -225,7 +234,7 @@ function CourtDetail(props: any) {
           ref={refRBSheet}
           closeOnDragDown={true}
           closeOnPressMask={true}
-          height={moderateScale(windowHeight - 200, 0.3)}
+          height={moderateScale(windowHeight / 1.3, 0.3)}
           customStyles={{
             container: {
               backgroundColor: theme.appBackgroundColor,
@@ -241,17 +250,23 @@ function CourtDetail(props: any) {
           closeOnPressBack={true}
           keyboardAvoidingViewEnabled={true}
           dragFromTopOnly={true}>
-          <View style={{ flex: 1, marginTop: 10 }}>
+          <View style={{ flex: 1, marginTop: moderateScale(10, 0.3) }}>
             <AppText
-              style={{ paddingHorizontal: 15 }}
+              style={{ paddingHorizontal: moderateScale(15, 0.3) }}
               fontStyle="600.semibold"
               size={18}>
               {I18n.t("screen_messages.header.Booking_For")}
             </AppText>
             <VerticalSpacing />
             <ScrollView
-              style={{ height: "100%", paddingHorizontal: 15 }}
-              contentContainerStyle={{ paddingTop: 20, paddingBottom: 50 }}>
+              style={{
+                height: "100%",
+                paddingHorizontal: moderateScale(15, 0.3),
+              }}
+              contentContainerStyle={{
+                paddingTop: moderateScale(20, 0.3),
+                paddingBottom: moderateScale(50, 0.3),
+              }}>
               <TouchableOpacity
                 // key={index}
                 activeOpacity={0.9}
@@ -260,11 +275,11 @@ function CourtDetail(props: any) {
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  padding: 10,
-                  paddingVertical: 15,
+                  padding: moderateScale(10, 0.3),
+                  paddingVertical: moderateScale(15, 0.3),
                   backgroundColor: theme.modalBackgroundColor,
-                  marginBottom: 10,
-                  borderRadius: 10,
+                  marginBottom: moderateScale(10, 0.3),
+                  borderRadius: moderateScale(10, 0.3),
                   ...theme.light_shadow,
                 }}>
                 <RadioButton.Android
@@ -276,9 +291,9 @@ function CourtDetail(props: any) {
                 {user?.imagePath ? (
                   <FastImage
                     style={{
-                      height: 50,
-                      width: 50,
-                      borderRadius: 200,
+                      height: moderateScale(50, 0.3),
+                      width: moderateScale(50, 0.3),
+                      borderRadius: moderateScale(200, 0.3),
                       backgroundColor: theme.light,
                     }}
                     source={{
@@ -292,9 +307,9 @@ function CourtDetail(props: any) {
                   <Image
                     source={images.user}
                     style={{
-                      height: 50,
-                      width: 50,
-                      borderRadius: 200,
+                      height: moderateScale(50, 0.3),
+                      width: moderateScale(50, 0.3),
+                      borderRadius: moderateScale(200, 0.3),
                       backgroundColor: theme.light,
                       objectFit: "cover",
                     }}
@@ -333,11 +348,11 @@ function CourtDetail(props: any) {
                       style={{
                         flexDirection: "row",
                         alignItems: "center",
-                        padding: 10,
-                        paddingVertical: 15,
+                        padding: moderateScale(10, 0.3),
+                        paddingVertical: moderateScale(15, 0.3),
                         backgroundColor: theme.modalBackgroundColor,
-                        marginBottom: 10,
-                        borderRadius: 10,
+                        marginBottom: moderateScale(10, 0.3),
+                        borderRadius: moderateScale(10, 0.3),
                         ...theme.light_shadow,
                       }}>
                       <RadioButton.Android
@@ -348,9 +363,9 @@ function CourtDetail(props: any) {
                       {item?.imagePath ? (
                         <FastImage
                           style={{
-                            height: 50,
-                            width: 50,
-                            borderRadius: 200,
+                            height: moderateScale(50, 0.3),
+                            width: moderateScale(50, 0.3),
+                            borderRadius: moderateScale(200, 0.3),
                             backgroundColor: theme.light,
                           }}
                           source={{
@@ -364,9 +379,9 @@ function CourtDetail(props: any) {
                         <Image
                           source={images.user}
                           style={{
-                            height: 50,
-                            width: 50,
-                            borderRadius: 200,
+                            height: moderateScale(50, 0.3),
+                            width: moderateScale(50, 0.3),
+                            borderRadius: moderateScale(200, 0.3),
                             backgroundColor: theme.light,
                             objectFit: "cover",
                           }}
@@ -374,7 +389,10 @@ function CourtDetail(props: any) {
                       )}
                       <View
                         key={index}
-                        style={{ marginLeft: 10, width: "100%" }}>
+                        style={{
+                          marginLeft: moderateScale(10, 0.3),
+                          width: "100%",
+                        }}>
                         <AppText
                           style={{ maxWidth: "75%" }}
                           numberOfLines={1}
@@ -418,7 +436,7 @@ function CourtDetail(props: any) {
                 fontStyle="600.normal"
                 fontSize={16}
                 height={50}
-                // onPress={() => onPressNext(data)}
+                onPress={() => onPressNext(data)}
               />
             </Animatable.View>
           </View>

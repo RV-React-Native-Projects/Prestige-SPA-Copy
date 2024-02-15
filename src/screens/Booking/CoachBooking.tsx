@@ -254,6 +254,7 @@ export default function CoachBooking(props: any) {
         startTime: startDate,
         endTime: endDate,
         isPaymentDone: true,
+        // familyMemberID: familyID,
         customerID: user?.stakeholderID,
         amount: bookingType === "SINGLE" ? slot?.rate : slot?.multiSessionRate,
         creditTypeID: creditTypeID,

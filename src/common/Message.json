@@ -83,13 +83,21 @@
         "successfull": "Success Full !",
         "opps": "Opps !"
       },
+      "price": "AED %{price}",
+      "distance": "%{distance} KM",
+      "Directions": "Directions",
       "good_morning": "Good Morning!",
       "header": {
         "Profile": "Profile",
         "for_who": "Who's the Booking For?",
         "Add_Family_Member": "Add a Family Member",
-        "Booking_For": "Who's the Booking For?"
+        "Booking_For": "Who's the Booking For?",
+        "Choose_Slot": "Choose Slot"
       },
+      "Select_Date": "Select Date",
+      "Select_Duration": "Select Duration",
+      "Select_Slot": "Select Slot",
+      "Select_Court": "Select Court",
       "Myself": "Myself",
       "Verified": "Verified",
       "verified_member": "Congratulations! You're Verified Member",

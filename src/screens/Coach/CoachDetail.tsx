@@ -127,7 +127,7 @@ function CoachDetail(props: any) {
     [slotId],
   );
 
-  console.log(JSON.stringify(data, null, 2));
+  // console.log(JSON.stringify(data, null, 2));
 
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();

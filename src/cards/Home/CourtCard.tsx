@@ -69,7 +69,7 @@ const CourtCard = (props: CourtCardProps) => {
         <View style={{ flexDirection: "row", height: moderateScale(20, 0.3) }}>
           <svgs.LocationV2 color1={theme.secondary} height={20} />
           <AppText fontStyle="400.normal" numberOfLines={1} color={theme.gray}>
-            {distance} KM
+            {I18n.t("screen_messages.distance", { distance: distance })}
           </AppText>
         </View>
         <AppText
@@ -99,7 +99,8 @@ const CourtCard = (props: CourtCardProps) => {
             fontStyle="600.semibold"
             numberOfLines={2}
             color={theme.primary}>
-            AED {minRate} - AED {maxRate}
+            {I18n.t("screen_messages.price", { price: minRate })} -{" "}
+            {I18n.t("screen_messages.price", { price: maxRate })}
           </AppText>
         )}
       </TouchableOpacity>

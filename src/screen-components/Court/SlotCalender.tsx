@@ -21,6 +21,7 @@ import { useAppSelector } from "@src/redux/store";
 import AppText from "@src/components/Text/AppText";
 import { VerticalSpacing } from "@src/components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
+import I18n from "i18n-js";
 
 interface CalendarDate {
   date: Date;
@@ -200,7 +201,7 @@ function SlotCalender(props: SlotCalenderProps) {
         fontStyle="600.semibold"
         size={16}
         style={{ paddingHorizontal: 15 }}>
-        Select Date
+        {I18n.t("screen_messages.Select_Date")}
       </AppText>
       <VerticalSpacing />
       <View style={{ alignItems: "center", alignContent: "center" }}>
