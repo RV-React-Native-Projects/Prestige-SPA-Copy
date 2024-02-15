@@ -16,7 +16,10 @@ import DatePickerInput from "@src/components/Picker/DatePickerInput";
 import AppButton from "@src/components/Button/AppButton";
 import BackButtonWithTitle from "@src/components/Header/BackButtonWithTitle";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { getAllPlayerCategory } from "@src/redux/reducers/UserSlice";
+import {
+  getAllFamily,
+  getAllPlayerCategory,
+} from "@src/redux/reducers/UserSlice";
 import _, { capitalize, toLower, toNumber, toString } from "lodash";
 import ProfilePicker from "@src/components/Picker/ProfilePicker";
 import moment from "moment";
@@ -125,6 +128,9 @@ export default function AddNewFamily(props: any) {
       res => {
         console.log("Res===>", JSON.stringify(res, null, 2));
         setLoading(false);
+        if (user?.stakeholderID)
+          storeDispatch(getAllFamily(user?.stakeholderID));
+        navigation.goBack();
       },
       err => {
         setLoading(false);

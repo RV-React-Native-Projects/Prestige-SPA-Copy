@@ -1,5 +1,11 @@
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
-import React from "react";
+import {
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useCallback } from "react";
 import AppContainer from "@components/Container/AppContainer";
 import { useAppDispatch, useAppSelector } from "@redux/store";
 import BackButtonWithTitle from "@components/Header/BackButtonWithTitle";
@@ -11,7 +17,7 @@ import images from "@common/AllImages";
 import AppText from "@components/Text/AppText";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import AppButton from "@components/Button/AppButton";
-import { removeUserData, resetUser } from "@reducers/UserSlice";
+import { refreshUser, removeUserData, resetUser } from "@reducers/UserSlice";
 import { resetAppData } from "@reducers/AppDataSlice";
 import { useAppNavigation } from "@src/navigation/Navigation";
 
@@ -54,7 +60,7 @@ const ProfileButton = (props: ProfileButtonProps) => {
 
 export default function ProfileScreen() {
   const { theme } = useAppSelector(state => state.theme);
-  const { user } = useAppSelector(state => state.user);
+  const { user, loadingUser, userEmail } = useAppSelector(state => state.user);
   const storeDispatch = useAppDispatch();
   const navigation = useAppNavigation();
 
@@ -72,13 +78,26 @@ export default function ProfileScreen() {
     navigation.navigate("Family");
   };
 
+  const onRefresh = useCallback(() => {
+    if (userEmail) storeDispatch(refreshUser(userEmail));
+  }, [userEmail]);
+
   return (
     <AppContainer
       hideStatusbar={false}
       scrollable={false}
       backgroundColor={theme.appBackgroundColor}>
       <BackButtonWithTitle title="Profile" rightIcon={<LightDarkSwitch />} />
-      <ScrollView contentContainerStyle={{ padding: 15 }}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            colors={[theme.secondary]}
+            tintColor={theme.title}
+            refreshing={loadingUser}
+            onRefresh={onRefresh}
+          />
+        }
+        contentContainerStyle={{ padding: 15 }}>
         <View
           style={{
             padding: 10,

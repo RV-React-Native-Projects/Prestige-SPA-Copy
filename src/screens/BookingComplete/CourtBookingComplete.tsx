@@ -48,7 +48,7 @@ export default function CourtBookingComplete(props: any) {
     return () => backHandler.remove();
   }, []);
 
-  console.log(data);
+  // console.log(JSON.stringify(data, null, 2));
 
   const onPressDone = () => {
     navigation.reset({ index: 0, routes: [{ name: "Tab" }] });

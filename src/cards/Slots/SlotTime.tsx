@@ -21,8 +21,8 @@ export default function SlotTime(props: SlotTime) {
       style={{
         backgroundColor:
           value === time ? theme.primary : theme.modalBackgroundColor,
-        borderRadius: 10,
-        marginBottom: 10,
+        borderRadius: moderateScale(10, 0.3),
+        marginBottom: moderateScale(10, 0.3),
         ...theme.light_shadow,
       }}
       onPress={onPress}

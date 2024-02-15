@@ -19,9 +19,12 @@ import {
   loadAllLocations,
 } from "@src/redux/reducers/AppDataSlice";
 import HomeDateSK from "@src/assets/skelton/HomeDateSK";
+import _ from "lodash";
 
 function Home() {
-  const { userToken, user, userEmail } = useAppSelector(state => state.user);
+  const { userToken, user, userEmail, approvedMembership } = useAppSelector(
+    state => state.user,
+  );
   const { coachs, locations, loadingCoachs, loadingLocations } = useAppSelector(
     state => state.appData,
   );
@@ -31,6 +34,8 @@ function Home() {
   // const [searchQuery, setSearchQuery] = useState("");
   const navigation = useAppNavigation();
   const appToast = useAppToast();
+
+  // console.log(JSON.stringify(user, null, 2));
 
   useEffect(() => {
     if (!locations) storeDispatch(loadAllLocations());
@@ -65,7 +70,7 @@ function Home() {
       scrollable={false}
       backgroundColor={theme.appBackgroundColor}>
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: moderateScale(100, 0.3) }}
         showsVerticalScrollIndicator={false}>
         <HomeHeader />
         <VerticalSpacing />
@@ -85,7 +90,7 @@ function Home() {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            paddingHorizontal: 15,
+            paddingHorizontal: moderateScale(15, 0.3),
           }}>
           <AppButton
             Title="Book a Court"
@@ -136,8 +141,8 @@ function Home() {
               />
               <FlatList
                 contentContainerStyle={{
-                  paddingHorizontal: 15,
-                  paddingVertical: 10,
+                  paddingHorizontal: moderateScale(15, 0.3),
+                  paddingVertical: moderateScale(10, 0.3),
                 }}
                 showsHorizontalScrollIndicator={false}
                 horizontal
@@ -145,8 +150,19 @@ function Home() {
                 renderItem={({ item, index }) => (
                   <CourtCard
                     key={index}
-                    data={item}
+                    imagePath={item.courts[0]?.imagePath}
+                    locationName={item?.locationName}
+                    locationAddress={item?.locationAddress}
+                    minRate={item?.minRate}
+                    maxRate={item?.maxRate}
                     onPressCard={() => onPressCourtCard(item)}
+                    isVerified={
+                      approvedMembership && approvedMembership?.length > 0
+                        ? approvedMembership.some(
+                            mem => mem.locationID === item?.locationID,
+                          )
+                        : false
+                    }
                   />
                 )}
               />
@@ -164,8 +180,8 @@ function Home() {
               />
               <FlatList
                 contentContainerStyle={{
-                  paddingHorizontal: 15,
-                  paddingVertical: 10,
+                  paddingHorizontal: moderateScale(15, 0.3),
+                  paddingVertical: moderateScale(10, 0.3),
                 }}
                 showsHorizontalScrollIndicator={false}
                 horizontal

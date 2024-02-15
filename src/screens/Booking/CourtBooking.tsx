@@ -27,6 +27,7 @@ import CourtManager from "@features/Court/CourtManager";
 import { useStripe } from "@stripe/stripe-react-native";
 import StripeManager from "@features/Stripe/StripeManager";
 import useAppToast from "@components/Alert/AppToast";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const isIOS = Platform.OS === "ios";
 
@@ -39,6 +40,8 @@ export default function CourtBooking(props: any) {
     slotId = null,
     courtId = null,
     selectedCourt = null,
+    familyID = null,
+    isVerified = false,
   } = props.route.params || {};
   const { initPaymentSheet, presentPaymentSheet, handleURLCallback } =
     useStripe();
@@ -128,34 +131,33 @@ export default function CourtBooking(props: any) {
         variant: "top-accent",
       });
       console.log("ERR====>", error);
-    } else {
-      createUserCredit();
-    }
+    } else createOneBooking();
   };
 
-  function createUserCredit() {
-    setLoading(true);
-    let params = {
-      data: {
-        creditTypeID: selectedCourt?.["creditTypes.creditTypeID"],
-        stakeholderID: user?.stakeholderID,
-        quantity: 1,
-        amountPaid: selectedCourt?.["creditTypes.rate"],
-      },
-    };
-    AvailableCreditManager.createCredit(
-      params,
-      res => {
-        console.log("Res===>", JSON.stringify(res, null, 2));
-        // setSlotDuration(res?.data?.data);
-        createOneBooking();
-      },
-      err => {
-        setLoading(false);
-        console.log("Error createCredit===>", err);
-      },
-    );
-  }
+  // @As per ANAS this API is not required!
+  // function createUserCredit() {
+  //   setLoading(true);
+  //   let params = {
+  //     data: {
+  //       creditTypeID: selectedCourt?.["creditTypes.creditTypeID"],
+  //       stakeholderID: user?.stakeholderID,
+  //       quantity: 1,
+  //       amountPaid: selectedCourt?.["creditTypes.rate"],
+  //     },
+  //   };
+  //   AvailableCreditManager.createCredit(
+  //     params,
+  //     res => {
+  //       console.log("Res===>", JSON.stringify(res, null, 2));
+  //       // setSlotDuration(res?.data?.data);
+  //       createOneBooking();
+  //     },
+  //     err => {
+  //       setLoading(false);
+  //       console.log("Error createCredit===>", err);
+  //     },
+  //   );
+  // }
 
   function createOneBooking() {
     setLoading(true);
@@ -184,12 +186,14 @@ export default function CourtBooking(props: any) {
         startTime: startDate,
         endTime: endDate,
         isPaymentDone: true,
+        familyMemberID: familyID,
         customerID: user?.stakeholderID,
         amount: selectedCourt?.["creditTypes.rate"],
         email: user?.email,
         courtName: selectedCourt?.courtName,
         locationName: data?.locationName,
         creditTypeID: selectedCourt?.["creditTypes.creditTypeID"],
+        isMember: isVerified,
       },
     };
     CourtManager.createOneBooking(
@@ -204,7 +208,7 @@ export default function CourtBooking(props: any) {
           endTime: endTime,
           bookingId: res?.data?.data?.bookingNumber,
           slot: endDate.diff(startDate, "minutes"),
-          amountPaid: selectedCourt?.["creditTypes.rate"],
+          amountPaid: isVerified ? 0 : selectedCourt?.["creditTypes.rate"],
         });
       },
       err => {
@@ -319,6 +323,40 @@ export default function CourtBooking(props: any) {
         </View>
         {/* ========= Bill INFO ========== */}
         <VerticalSpacing />
+        {isVerified ? (
+          <View
+            style={{
+              marginHorizontal: 15,
+              padding: 15,
+              borderRadius: 10,
+              backgroundColor: theme.modalBackgroundColor,
+            }}>
+            <AppText fontStyle="500.bold" size={18} color={theme.info}>
+              {I18n.t("screen_messages.Membership_Benefits")}
+            </AppText>
+            <VerticalSpacing />
+            <AppText fontStyle="400.normal" color={theme.gray}>
+              {I18n.t("screen_messages.club_membership")}
+            </AppText>
+            <VerticalSpacing />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginTop: 5,
+              }}>
+              <MaterialIcons
+                name="verified"
+                size={30}
+                color={theme.secondary}
+              />
+              <AppText style={{ marginLeft: 5 }} fontStyle="600.bold">
+                {I18n.t("screen_messages.verified_member")}
+              </AppText>
+            </View>
+          </View>
+        ) : null}
+        <VerticalSpacing />
         <View style={{ paddingHorizontal: 15 }}>
           <AppText fontStyle="500.normal" size={16}>
             Bill Details
@@ -340,7 +378,7 @@ export default function CourtBooking(props: any) {
                 marginBottom: 10,
               }}>
               <AppText fontStyle="400.normal" color={theme.gray}>
-                Total
+                {I18n.t("screen_messages.total")}
               </AppText>
               <AppText fontStyle="400.normal" color={theme.gray}>
                 AED {selectedCourt?.["creditTypes.rate"]}
@@ -354,9 +392,11 @@ export default function CourtBooking(props: any) {
                 justifyContent: "space-between",
                 marginTop: 10,
               }}>
-              <AppText fontStyle="500.semibold">Total</AppText>
+              <AppText fontStyle="500.semibold">
+                {I18n.t("screen_messages.To_Pay")}
+              </AppText>
               <AppText fontStyle="600.semibold">
-                AED {selectedCourt?.["creditTypes.rate"]}
+                AED {isVerified ? 0 : selectedCourt?.["creditTypes.rate"]}
               </AppText>
             </View>
           </View>
@@ -372,12 +412,16 @@ export default function CourtBooking(props: any) {
         }}>
         <AppButton
           loading={loading}
-          Title={I18n.t("screen_messages.button.Proceed_to_Payment")}
+          Title={
+            isVerified
+              ? I18n.t("screen_messages.button.book_now")
+              : I18n.t("screen_messages.button.Proceed_to_Payment")
+          }
           color={theme.primary}
           fontStyle="600.normal"
           fontSize={16}
           height={50}
-          onPress={() => openPaymentSheet()}
+          onPress={() => (isVerified ? createOneBooking() : openPaymentSheet())}
         />
       </Animatable.View>
     </AppContainer>

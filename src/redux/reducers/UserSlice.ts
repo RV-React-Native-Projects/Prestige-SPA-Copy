@@ -3,6 +3,8 @@ import { useEncryptedStorage } from "@hooks/useEncryptedStorage";
 import { FamilyMember, Membership, UserProps } from "@src/Types/UserTypes";
 import MemberShipManager from "@features/MemberShip/MemberShipManager";
 import FamilyManager from "@features/Family/FamilyManager";
+import _ from "lodash";
+import AuthManager from "@features/Auth/AuthManager";
 
 export const loadUserData = createAsyncThunk("user/loaduser", async () => {
   const { getStorage } = useEncryptedStorage();
@@ -86,6 +88,26 @@ export const getAllPlayerCategory = createAsyncThunk(
   },
 );
 
+export const refreshUser = createAsyncThunk(
+  "appdata/refreshUser",
+  async (email: string) => {
+    const response = await new Promise((resolve, reject) => {
+      AuthManager.getUserData(
+        { email: email },
+        async res => {
+          const data = await res?.data?.data;
+          resolve(data);
+        },
+        async err => {
+          console.log(err);
+          reject(err);
+        },
+      );
+    });
+    return response as UserProps;
+  },
+);
+
 interface playerCategoryDate {
   playerCategoryID: 1;
   createdAt: string;
@@ -109,6 +131,7 @@ interface userSliceProperties {
   family: FamilyMember[] | null;
   loadingPlayerCategory: boolean;
   playerCategory: playerCategoryDate[] | null;
+  approvedMembership: Membership[] | null;
 }
 
 const initialState: userSliceProperties = {
@@ -128,6 +151,7 @@ const initialState: userSliceProperties = {
   family: null,
   loadingPlayerCategory: false,
   playerCategory: null,
+  approvedMembership: null,
 };
 
 const userSlice = createSlice({
@@ -141,6 +165,10 @@ const userSlice = createSlice({
       state.userPhone = action.payload.phone;
       state.membership = action?.payload?.memberships;
       state.family = action?.payload?.familyMembers;
+      const approved = _.filter(action?.payload?.memberships, {
+        statusDescription: "Approved",
+      });
+      state.approvedMembership = approved?.length > 0 ? approved : null;
       // state.loadingUser = false;
     },
     setUserEmail: (state, action) => {
@@ -200,8 +228,6 @@ const userSlice = createSlice({
               "ngrok-skip-browser-warning": "true",
             }
           : null;
-        // state.membership = action?.payload?.user?.memberships;
-        // state.family = action?.payload?.user?.familyMembers;
         state.userEmail = action?.payload?.email;
         // state.loadingUser = state?.user ? false : true;
       })
@@ -221,6 +247,10 @@ const userSlice = createSlice({
       })
       .addCase(getAllMembership.fulfilled, (state, action) => {
         state.membership = action.payload;
+        const approved = _.filter(action?.payload, {
+          statusDescription: "Approved",
+        });
+        state.approvedMembership = approved?.length > 0 ? approved : null;
         state.loadingMembership = false;
       })
       .addCase(getAllFamily.pending, state => {
@@ -236,6 +266,20 @@ const userSlice = createSlice({
       .addCase(getAllPlayerCategory.fulfilled, (state, action) => {
         state.playerCategory = action.payload;
         state.loadingPlayerCategory = false;
+      })
+      .addCase(refreshUser.pending, state => {
+        state.loadingUser = true;
+      })
+      .addCase(refreshUser.fulfilled, (state, action) => {
+        // state.playerCategory = action.payload;
+        state.user = action.payload;
+        state.family = action.payload?.familyMembers;
+        state.membership = action.payload?.memberships;
+        const approved = _.filter(action?.payload?.memberships, {
+          statusDescription: "Approved",
+        });
+        state.approvedMembership = approved?.length > 0 ? approved : null;
+        state.loadingUser = false;
       });
   },
 });

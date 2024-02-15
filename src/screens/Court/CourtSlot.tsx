@@ -32,6 +32,7 @@ import SlotsDuration from "@src/cards/Slots/SlotsDuration";
 import { loadSlots } from "@src/redux/reducers/AppDataSlice";
 import RectangleSK from "@src/assets/skelton/RectangleSK";
 import SlotTime from "@src/cards/Slots/SlotTime";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const isIOS = Platform.OS === "ios";
 
@@ -50,19 +51,6 @@ interface Court {
   courtDescription: string;
   area: number;
   imagePath: string;
-  // creditTypes: {
-  //   creditTypeID: number;
-  //   createdAt: string;
-  //   updatedAt: string;
-  //   bookingType: string;
-  //   slotID: number;
-  //   coachCategoryID: number | null;
-  //   coachSessionTypeID: number | null;
-  //   locationID: number;
-  //   courtID: number;
-  //   rate: number;
-  //   multiSessionRate: number;
-  // };
   "creditTypes.creditTypeID": number;
   "creditTypes.createdAt": string;
   "creditTypes.updatedAt": string;
@@ -87,7 +75,7 @@ export default function CourtSlot(props: any) {
   const { theme, isDarkMode } = useAppSelector(state => state.theme);
   const { user } = useAppSelector(state => state.user);
   const { slots: slotDuration } = useAppSelector(state => state.appData);
-  const { data } = props.route.params;
+  const { data, familyID = null, isVerified = false } = props.route.params;
   const [pickedDate, setPickedDate] = useState<Date | null>(null);
   const [slotId, setSlotId] = useState<number | null>(null);
   const [startTime, setStartTime] = useState<string | null>(null);
@@ -166,6 +154,8 @@ export default function CourtSlot(props: any) {
       slotId,
       courtId,
       selectedCourt,
+      familyID,
+      isVerified,
     });
   };
 
@@ -291,8 +281,9 @@ export default function CourtSlot(props: any) {
                     flexDirection: "row",
                     alignItems: "center",
                     flexWrap: "wrap",
-                    justifyContent: "space-between",
+                    justifyContent: "flex-start",
                     paddingHorizontal: moderateScale(15, 0.3),
+                    columnGap: moderateScale(8, 0.3),
                   }}>
                   {_.map(slots, (item, index) => (
                     <SlotTime
@@ -343,50 +334,61 @@ export default function CourtSlot(props: any) {
           <ScrollView
             style={{ height: "100%", paddingHorizontal: 15 }}
             contentContainerStyle={{ paddingTop: 20, paddingBottom: 50 }}>
-            <RadioButton.Group
-              onValueChange={newValue => setCourtId(toString(newValue))}
-              value={courtId}>
-              {_.map(availableCourts, (item, index) => {
-                return (
-                  <TouchableOpacity
-                    key={index}
-                    activeOpacity={0.9}
-                    onPress={() => {
-                      setCourtId(toString(item?.courtID));
-                    }}
-                    // disabled={!item?.courtID}
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      padding: 10,
-                      backgroundColor: theme.modalBackgroundColor,
-                      marginBottom: 10,
-                      borderRadius: 10,
-                      ...theme.light_shadow,
-                    }}>
-                    <RadioButton.Android
-                      // disabled={!item?.available}
-                      value={toString(item.courtID)}
-                      color={theme.secondary}
-                    />
-                    <View key={index} style={{}}>
-                      <AppText
-                        // color={item?.available ? theme.textColor : theme.gray}
-                        fontStyle="500.bold">
-                        {item?.courtName}
-                      </AppText>
-                      <VerticalSpacing />
-                      <AppText
-                        size={16}
-                        fontStyle="500.semibold"
-                        color={theme.primary}>
-                        AED {item?.["creditTypes.rate"]}
-                      </AppText>
-                    </View>
-                  </TouchableOpacity>
-                );
-              })}
-            </RadioButton.Group>
+            {availableCourts && availableCourts.length > 0 ? (
+              <RadioButton.Group
+                onValueChange={newValue => setCourtId(toString(newValue))}
+                value={courtId}>
+                {_.map(availableCourts, (item, index) => {
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      activeOpacity={0.9}
+                      onPress={() => {
+                        setCourtId(toString(item?.courtID));
+                      }}
+                      // disabled={!item?.courtID}
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        padding: 10,
+                        backgroundColor: theme.modalBackgroundColor,
+                        marginBottom: 10,
+                        borderRadius: 10,
+                        ...theme.light_shadow,
+                      }}>
+                      <RadioButton.Android
+                        // disabled={!item?.available}
+                        value={toString(item.courtID)}
+                        color={theme.secondary}
+                      />
+                      <View key={index} style={{}}>
+                        <AppText
+                          // color={item?.available ? theme.textColor : theme.gray}
+                          fontStyle="500.bold">
+                          {item?.courtName}
+                        </AppText>
+                        {isVerified ? null : (
+                          <AppText
+                            style={{ marginTop: 10 }}
+                            size={16}
+                            fontStyle="500.semibold"
+                            color={theme.primary}>
+                            AED {item?.["creditTypes.rate"]}
+                          </AppText>
+                        )}
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
+              </RadioButton.Group>
+            ) : (
+              <AppText
+                style={{ textAlign: "center", marginTop: 15 }}
+                fontStyle="600.semibold"
+                size={18}>
+                {I18n.t("error_messages.no_available_court")}
+              </AppText>
+            )}
           </ScrollView>
           {!!courtId && (
             <Animatable.View

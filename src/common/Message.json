@@ -26,7 +26,8 @@
       "address_req": "Address is Required",
       "address_valid": "Enter a valid Address",
       "address_len": "Must be at least 8 characters",
-      "required": "This field is required"
+      "required": "This field is required",
+      "no_available_court": "No Courts are Available!"
     },
     "toast": {
       "otp": "OTP sent Successfull!",
@@ -70,7 +71,8 @@
         "camera": "Camera",
         "gallery": "Gallery",
         "Add_Family": "Add a Family Member",
-        "Add_Member": "Add Member"
+        "Add_Member": "Add Member",
+        "book_now": "Book Now"
       },
       "common": {
         "rupee": "₹",
@@ -84,15 +86,19 @@
       "good_morning": "Good Morning!",
       "header": {
         "Profile": "Profile",
-        "point_status": {
-          "zero": "Pickup point",
-          "one": "Drop point",
-          "other": "Hold point"
-        },
         "for_who": "Who's the Booking For?",
-        "Add_Family_Member": "Add a Family Member"
+        "Add_Family_Member": "Add a Family Member",
+        "Booking_For": "Who's the Booking For?"
       },
       "Myself": "Myself",
+      "Verified": "Verified",
+      "verified_member": "Congratulations! You're Verified Member",
+      "total": "Total",
+      "To_Pay": "To Pay",
+      "Membership_Benefits": "Membership Benefits",
+      "Membership_Plan": "Membership Plan",
+      "club_membership": "Club members play for free. Verify your membership to access this perk.",
+      "book_on_behalf": "Book on Behalf of a Family Member",
       "tab": {
         "home": "Home",
         "court": "Court",

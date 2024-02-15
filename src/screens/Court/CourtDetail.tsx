@@ -1,5 +1,12 @@
-import React, { useRef } from "react";
-import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+  Dimensions,
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 import AppContainer from "@components/Container/AppContainer";
 import { useAppSelector } from "@redux/store";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
@@ -10,24 +17,51 @@ import Swiper from "react-native-swiper";
 import images from "@src/common/AllImages";
 import svgs from "@src/common/AllSvgs";
 import FastImage from "react-native-fast-image";
-import _ from "lodash";
+import _, { toString } from "lodash";
 import AppText from "@src/components/Text/AppText";
 import AppButton from "@src/components/Button/AppButton";
 import * as Animatable from "react-native-animatable";
 import I18n from "i18n-js";
 import MapView, { Marker } from "react-native-maps";
+import RBSheet from "react-native-raw-bottom-sheet";
+import { RadioButton } from "react-native-paper";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Feather from "react-native-vector-icons/Feather";
 
 const isIOS = Platform.OS === "ios";
+const windowHeight = Dimensions.get("window").height;
 
 function CourtDetail(props: any) {
   const { data } = props.route.params;
   const { theme } = useAppSelector(state => state.theme);
+  const { user, family, approvedMembership } = useAppSelector(
+    state => state.user,
+  );
   const navigation = useAppNavigation();
   const _map = useRef(null);
+  const refRBSheet = useRef<RBSheet>(null);
+  const [familyID, setFamilyID] = useState<string | null>(null);
+
+  const isVerified =
+    approvedMembership && approvedMembership?.length > 0
+      ? approvedMembership.some(mem => mem.locationID === data.locationID)
+      : false;
 
   const onPressNext = (data: any) => {
-    navigation.navigate("CourtSlot", { data: data });
+    navigation.navigate("CourtSlot", {
+      data: data,
+      familyID: familyID,
+      isVerified: isVerified,
+    });
   };
+
+  function onPressAddFamily() {
+    refRBSheet.current?.close();
+    navigation.navigate("AddFamily", { data: null });
+  }
+
+  // console.log(JSON.stringify(isVerified, null, 2));
 
   return (
     <AppContainer
@@ -103,9 +137,27 @@ function CourtDetail(props: any) {
             {data?.locationName}
           </AppText>
           <VerticalSpacing />
-          <AppText fontStyle="600.semibold" size={16} color={theme.primary}>
-            AED {data?.minRate} - AED {data?.maxRate}
-          </AppText>
+          {isVerified ? (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginTop: 5,
+              }}>
+              <MaterialIcons
+                name="verified"
+                size={20}
+                color={theme.secondary}
+              />
+              <AppText style={{ marginLeft: 5 }} fontStyle="600.bold">
+                {I18n.t("screen_messages.Verified")}
+              </AppText>
+            </View>
+          ) : (
+            <AppText fontStyle="600.semibold" size={16} color={theme.primary}>
+              AED {data?.minRate} - AED {data?.maxRate}
+            </AppText>
+          )}
           <VerticalSpacing />
           <View style={{}}>
             <View
@@ -169,6 +221,208 @@ function CourtDetail(props: any) {
           </View>
           <VerticalSpacing size={15} />
         </View>
+        <RBSheet
+          ref={refRBSheet}
+          closeOnDragDown={true}
+          closeOnPressMask={true}
+          height={moderateScale(windowHeight - 200, 0.3)}
+          customStyles={{
+            container: {
+              backgroundColor: theme.appBackgroundColor,
+              borderTopLeftRadius: moderateScale(15, 0.3),
+              borderTopRightRadius: moderateScale(15, 0.3),
+            },
+            draggableIcon: {
+              width: moderateScale(110, 0.3),
+              marginTop: moderateScale(15, 0.3),
+            },
+          }}
+          animationType="fade"
+          closeOnPressBack={true}
+          keyboardAvoidingViewEnabled={true}
+          dragFromTopOnly={true}>
+          <View style={{ flex: 1, marginTop: 10 }}>
+            <AppText
+              style={{ paddingHorizontal: 15 }}
+              fontStyle="600.semibold"
+              size={18}>
+              {I18n.t("screen_messages.header.Booking_For")}
+            </AppText>
+            <VerticalSpacing />
+            <ScrollView
+              style={{ height: "100%", paddingHorizontal: 15 }}
+              contentContainerStyle={{ paddingTop: 20, paddingBottom: 50 }}>
+              <TouchableOpacity
+                // key={index}
+                activeOpacity={0.9}
+                onPress={() => setFamilyID(null)}
+                // disabled={!item?.courtID}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  padding: 10,
+                  paddingVertical: 15,
+                  backgroundColor: theme.modalBackgroundColor,
+                  marginBottom: 10,
+                  borderRadius: 10,
+                  ...theme.light_shadow,
+                }}>
+                <RadioButton.Android
+                  onPress={() => setFamilyID(null)}
+                  value={""}
+                  status={!!familyID ? "unchecked" : "checked"}
+                  color={theme.secondary}
+                />
+                {user?.imagePath ? (
+                  <FastImage
+                    style={{
+                      height: 50,
+                      width: 50,
+                      borderRadius: 200,
+                      backgroundColor: theme.light,
+                    }}
+                    source={{
+                      uri: `https://nodejsclusters-160185-0.cloudclusters.net/${user?.imagePath}`,
+                      priority: FastImage.priority.high,
+                    }}
+                    resizeMode={FastImage.resizeMode.cover}
+                    defaultSource={images.user}
+                  />
+                ) : (
+                  <Image
+                    source={images.user}
+                    style={{
+                      height: 50,
+                      width: 50,
+                      borderRadius: 200,
+                      backgroundColor: theme.light,
+                      objectFit: "cover",
+                    }}
+                  />
+                )}
+                <View style={{ marginLeft: 10, width: "100%" }}>
+                  <AppText
+                    style={{ maxWidth: "75%" }}
+                    numberOfLines={1}
+                    size={16}
+                    fontStyle="500.bold">
+                    {user?.stakeholderName}
+                  </AppText>
+                  <VerticalSpacing size={5} />
+                  <AppText fontStyle="400.normal">
+                    {I18n.t("screen_messages.Myself")}
+                  </AppText>
+                </View>
+              </TouchableOpacity>
+              <VerticalSpacing size={20} />
+              <AppText fontStyle="400.normal">
+                {I18n.t("screen_messages.book_on_behalf")}
+              </AppText>
+              <VerticalSpacing size={20} />
+              <RadioButton.Group
+                onValueChange={newValue => setFamilyID(toString(newValue))}
+                value={toString(familyID)}>
+                {_.map(family, (item, index) => {
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      activeOpacity={0.9}
+                      onPress={() => {
+                        setFamilyID(toString(item?.familyMemberID));
+                      }}
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        padding: 10,
+                        paddingVertical: 15,
+                        backgroundColor: theme.modalBackgroundColor,
+                        marginBottom: 10,
+                        borderRadius: 10,
+                        ...theme.light_shadow,
+                      }}>
+                      <RadioButton.Android
+                        // disabled={!item?.available}
+                        value={toString(item.familyMemberID)}
+                        color={theme.secondary}
+                      />
+                      {item?.imagePath ? (
+                        <FastImage
+                          style={{
+                            height: 50,
+                            width: 50,
+                            borderRadius: 200,
+                            backgroundColor: theme.light,
+                          }}
+                          source={{
+                            uri: `https://nodejsclusters-160185-0.cloudclusters.net/${item?.imagePath}`,
+                            priority: FastImage.priority.high,
+                          }}
+                          resizeMode={FastImage.resizeMode.cover}
+                          defaultSource={images.user}
+                        />
+                      ) : (
+                        <Image
+                          source={images.user}
+                          style={{
+                            height: 50,
+                            width: 50,
+                            borderRadius: 200,
+                            backgroundColor: theme.light,
+                            objectFit: "cover",
+                          }}
+                        />
+                      )}
+                      <View
+                        key={index}
+                        style={{ marginLeft: 10, width: "100%" }}>
+                        <AppText
+                          style={{ maxWidth: "75%" }}
+                          numberOfLines={1}
+                          size={16}
+                          fontStyle="500.bold">
+                          {item?.name}
+                        </AppText>
+                        <VerticalSpacing size={5} />
+                        <AppText fontStyle="400.normal">
+                          {item?.relationship}
+                        </AppText>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
+              </RadioButton.Group>
+              <AppButton
+                Title={I18n.t("screen_messages.button.Add_Family")}
+                color={theme.title}
+                // loading={loading}
+                Outlined
+                fontStyle="600.semibold"
+                fontSize={16}
+                height={50}
+                onPress={onPressAddFamily}
+                leftIcon={
+                  <Feather name="plus" size={30} color={theme.iconColor} />
+                }
+              />
+            </ScrollView>
+            <Animatable.View
+              animation="fadeInUp"
+              duration={500}
+              style={{
+                backgroundColor: theme.modalBackgroundColor,
+                padding: moderateScale(20, 0.3),
+              }}>
+              <AppButton
+                Title={I18n.t("screen_messages.button.next")}
+                color={theme.primary}
+                fontStyle="600.normal"
+                fontSize={16}
+                height={50}
+                // onPress={() => onPressNext(data)}
+              />
+            </Animatable.View>
+          </View>
+        </RBSheet>
       </ScrollView>
       <Animatable.View
         animation="fadeInUp"
@@ -183,7 +437,10 @@ function CourtDetail(props: any) {
           fontStyle="600.normal"
           fontSize={16}
           height={50}
-          onPress={() => onPressNext(data)}
+          onPress={() => {
+            // refRBSheet.current?.open();
+            onPressNext(data);
+          }}
         />
       </Animatable.View>
     </AppContainer>

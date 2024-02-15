@@ -75,9 +75,11 @@ const GenderDropDown = (props: DropdownComponentPorps) => {
             error && { borderColor: theme.error },
             isFocus && { borderColor: theme.primary },
           ]}
+          activeColor={theme.modalBackgroundColor}
+          containerStyle={{ backgroundColor: theme.appBackgroundColor }}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
-          itemTextStyle={{ color: theme.black }}
+          itemTextStyle={{ color: theme.title }}
           iconStyle={styles.iconStyle}
           data={data}
           dropdownPosition={dropdownPosition}
@@ -113,7 +115,7 @@ export default memo(GenderDropDown);
 const style = (theme: any) => {
   return StyleSheet.create({
     container: {
-      backgroundColor: theme.modalBackgroundColor,
+      // backgroundColor: theme.error,
       borderRadius: 5,
     },
     dropdown: {
@@ -122,16 +124,20 @@ const style = (theme: any) => {
       borderWidth: 0.5,
       borderRadius: 5,
       paddingHorizontal: 8,
+      color: theme.title,
+      backgroundColor: theme.modalBackgroundColor,
     },
     icon: {
       marginRight: 5,
     },
     placeholderStyle: {
       fontSize: 16,
-      color: "gray",
+      color: theme.title,
     },
     selectedTextStyle: {
       fontSize: 16,
+      fontWeight: "500",
+      color: theme.title,
     },
     iconStyle: {
       width: 20,

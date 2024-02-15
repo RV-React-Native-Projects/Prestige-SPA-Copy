@@ -192,34 +192,34 @@ export default function CoachBooking(props: any) {
         variant: "top-accent",
       });
     } else {
-      createUserCredit();
+      createOneBooking();
     }
   };
 
-  function createUserCredit() {
-    setLoading(true);
-    let params = {
-      data: {
-        creditTypeID: creditTypeID,
-        stakeholderID: user?.stakeholderID,
-        quantity: 1,
-        amountPaid:
-          bookingType === "SINGLE" ? slot?.rate : slot?.multiSessionRate,
-      },
-    };
-    AvailableCreditManager.createCredit(
-      params,
-      res => {
-        console.log("Res===>", JSON.stringify(res, null, 2));
-        // setSlotDuration(res?.data?.data);
-        createOneBooking();
-      },
-      err => {
-        setLoading(false);
-        console.log("Error createCredit===>", err);
-      },
-    );
-  }
+  // function createUserCredit() {
+  //   setLoading(true);
+  //   let params = {
+  //     data: {
+  //       creditTypeID: creditTypeID,
+  //       stakeholderID: user?.stakeholderID,
+  //       quantity: 1,
+  //       amountPaid:
+  //         bookingType === "SINGLE" ? slot?.rate : slot?.multiSessionRate,
+  //     },
+  //   };
+  //   AvailableCreditManager.createCredit(
+  //     params,
+  //     res => {
+  //       console.log("Res===>", JSON.stringify(res, null, 2));
+  //       // setSlotDuration(res?.data?.data);
+  //       createOneBooking();
+  //     },
+  //     err => {
+  //       setLoading(false);
+  //       console.log("Error createCredit===>", err);
+  //     },
+  //   );
+  // }
 
   function createOneBooking() {
     setLoading(true);
