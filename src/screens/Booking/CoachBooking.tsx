@@ -1,17 +1,5 @@
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Platform,
-  Alert,
-  Linking,
-} from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { StyleSheet, View, ScrollView, Platform, Linking } from "react-native";
 import AppContainer from "@components/Container/AppContainer";
 import { useAppSelector } from "@redux/store";
 import BackButtonWithTitle from "@components/Header/BackButtonWithTitle";
@@ -27,9 +15,10 @@ import FastImage from "react-native-fast-image";
 import images from "@common/AllImages";
 import svgs from "@common/AllSvgs";
 import { useAppNavigation } from "@navigation/Navigation";
-import AvailableCreditManager from "@features/AvailableCredit/AvailableCreditManager";
+// import AvailableCreditManager from "@features/AvailableCredit/AvailableCreditManager";
 import { useStripe } from "@stripe/stripe-react-native";
-import _ from "lodash";
+import map from "lodash/map";
+import toNumber from "lodash/toNumber";
 import CoachManager from "@features/Coach/CoachManager";
 import StripeManager from "@features/Stripe/StripeManager";
 import SlotCard from "@cards/Slots/SlotCard";
@@ -58,6 +47,7 @@ export default function CoachBooking(props: any) {
     court = null,
     selectedSlot = null,
     selectedTerm = null,
+    familyID = null,
   } = props.route.params || {};
 
   const { initPaymentSheet, presentPaymentSheet, handleURLCallback } =
@@ -254,7 +244,7 @@ export default function CoachBooking(props: any) {
         startTime: startDate,
         endTime: endDate,
         isPaymentDone: true,
-        // familyMemberID: familyID,
+        familyMemberID: toNumber(familyID),
         customerID: user?.stakeholderID,
         amount: bookingType === "SINGLE" ? slot?.rate : slot?.multiSessionRate,
         creditTypeID: creditTypeID,
@@ -469,7 +459,7 @@ export default function CoachBooking(props: any) {
             <VerticalSpacing />
             <View>
               {dateRange &&
-                _.map(dateRange, (date, index) => (
+                map(dateRange, (date, index) => (
                   <SlotCard date={date} key={index} index={index + 1} />
                 ))}
             </View>

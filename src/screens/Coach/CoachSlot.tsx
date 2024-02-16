@@ -92,6 +92,7 @@ export default function CoachSlot(props: any) {
     creditTypeID = null,
     coachID = null,
     slot = null,
+    familyID = null,
   } = props.route.params;
 
   const [pickedDate, setPickedDate] = useState<Date | null>(null);
@@ -214,6 +215,7 @@ export default function CoachSlot(props: any) {
       court: court,
       selectedSlot: selectedSlot,
       selectedTerm: selectedTerm,
+      familyID: familyID,
     });
   };
 

@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
+  Dimensions,
   FlatList,
+  Image,
   Platform,
   ScrollView,
   StyleSheet,
@@ -23,11 +25,19 @@ import images from "@common/AllImages";
 import svgs from "@common/AllSvgs";
 import AppText from "@components/Text/AppText";
 import RBSheet from "react-native-raw-bottom-sheet";
-import _, { toNumber, toString } from "lodash";
-import SlotsDuration from "@src/cards/Slots/SlotsDuration";
-import { loadSlots } from "@src/redux/reducers/AppDataSlice";
+import filter from "lodash/filter";
+import map from "lodash/map";
+import toString from "lodash/toString";
+import toNumber from "lodash/toNumber";
+import SlotsDuration from "@cards/Slots/SlotsDuration";
+import { loadSlots } from "@reducers/AppDataSlice";
+import Feather from "react-native-vector-icons/Feather";
+import Utils from "@common/Utils";
+import Modal from "react-native-modal";
 
 const isIOS = Platform.OS === "ios";
+const windowHeight = Dimensions.get("window").height;
+const windowWidth = Dimensions.get("window").width;
 
 interface Slot {
   slotID: number;
@@ -105,6 +115,7 @@ function CoachDetail(props: any) {
   const { data } = props?.route?.params;
   const { theme } = useAppSelector(state => state.theme);
   const { slots } = useAppSelector(state => state.appData);
+  const { user, family } = useAppSelector(state => state.user);
   const storeDispatch = useAppDispatch();
   const [bookingType, setBookingType] = useState<"SINGLE" | "MULTI" | string>(
     "SINGLE",
@@ -112,13 +123,18 @@ function CoachDetail(props: any) {
   const [slotId, setSlotId] = useState<number>(0);
   const [creditTypeID, setCreditTypeID] = useState<number | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<CreditType | null>(null);
+  const [familyID, setFamilyID] = useState<string | null>(null);
+  const [showPicker, setshowPicker] = useState<boolean>(false);
+
+  const toggleModal = () => {
+    setshowPicker(!showPicker);
+  };
 
   //  ===== API Data ====
-  // const [slots, setSlots] = useState<Slot[] | null>(null);
 
   const FilterSesstionTypes = useMemo(
     () =>
-      _.filter(
+      filter(
         data?.rateList,
         item =>
           item?.slot?.slotID === slotId &&
@@ -148,8 +164,14 @@ function CoachDetail(props: any) {
       creditTypeID: creditTypeID,
       coachID: data?.stakeholderID,
       slot: selectedSlot,
+      familyID: familyID,
     });
   };
+
+  function onPressAddFamily() {
+    toggleModal();
+    navigation.navigate("AddFamily", { data: null });
+  }
 
   return (
     <AppContainer hideStatusbar={false} scrollable={false} fullHeight={false}>
@@ -177,7 +199,7 @@ function CoachDetail(props: any) {
                   data?.coachCategoryID === 1
                     ? theme.primary
                     : theme.tertiaryText,
-                width: 80,
+                width: 70,
                 height: 25,
                 alignItems: "center",
                 justifyContent: "center",
@@ -185,10 +207,10 @@ function CoachDetail(props: any) {
                 marginVertical: 10,
               }}>
               <AppText
-                style={{}}
-                fontStyle="600.bold"
-                size={14}
-                color={theme.modalBackgroundColor}
+                style={{ textTransform: "capitalize" }}
+                fontStyle="500.medium"
+                size={12}
+                color={theme.white}
                 numberOfLines={2}>
                 {data?.coachCategory?.coachCategory}
               </AppText>
@@ -244,6 +266,255 @@ function CoachDetail(props: any) {
           />
         </View>
       </ScrollView>
+      <Modal
+        isVisible={showPicker}
+        animationIn={"slideInUp"}
+        animationOut={"slideOutDown"}
+        animationInTiming={500}
+        animationOutTiming={200}
+        avoidKeyboard={true}
+        deviceHeight={moderateScale(windowHeight, 0.3)}
+        deviceWidth={moderateScale(windowWidth, 0.3)}
+        onBackdropPress={toggleModal}
+        onBackButtonPress={toggleModal}
+        swipeDirection={["down"]}
+        onSwipeComplete={toggleModal}
+        hideModalContentWhileAnimating
+        propagateSwipe
+        useNativeDriverForBackdrop>
+        <View
+          style={[
+            {
+              backgroundColor: theme.modalBackgroundColor,
+              height: moderateScale(windowHeight / 1.3, 0.3),
+              width: windowWidth,
+              minHeight: moderateScale(windowHeight / 1.3, 0.3),
+              alignSelf: "center",
+              alignContent: "center",
+              borderTopRightRadius: moderateScale(15, 0.3),
+              borderTopLeftRadius: moderateScale(15, 0.3),
+            },
+            true
+              ? {
+                  alignSelf: "center",
+                  position: "absolute",
+                  bottom: moderateScale(-25, 0.3),
+                }
+              : null,
+          ]}>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={toggleModal}
+            style={{
+              position: "absolute",
+              top: moderateScale(-25, 0.3),
+              alignSelf: "center",
+              backgroundColor: theme.modalBackgroundColor,
+              borderRadius: moderateScale(100, 0.3),
+              height: moderateScale(50, 0.3),
+              width: moderateScale(50, 0.3),
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 10,
+            }}>
+            <svgs.Clear height={40} width={40} color1={theme.error} />
+          </TouchableOpacity>
+          <VerticalSpacing size={30} />
+          <AppText
+            style={{ paddingHorizontal: moderateScale(15, 0.3) }}
+            fontStyle="600.semibold"
+            size={18}>
+            {I18n.t("screen_messages.header.Booking_For")}
+          </AppText>
+          <VerticalSpacing />
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{
+              height: "100%",
+              paddingHorizontal: moderateScale(15, 0.3),
+            }}
+            contentContainerStyle={{
+              paddingTop: moderateScale(20, 0.3),
+              paddingBottom: moderateScale(50, 0.3),
+            }}>
+            <TouchableOpacity
+              // key={index}
+              activeOpacity={0.9}
+              onPress={() => setFamilyID(null)}
+              // disabled={!item?.courtID}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                padding: moderateScale(10, 0.3),
+                paddingVertical: moderateScale(15, 0.3),
+                backgroundColor: theme.modalBackgroundColor,
+                marginBottom: moderateScale(10, 0.3),
+                borderRadius: moderateScale(10, 0.3),
+                ...theme.light_shadow,
+              }}>
+              <RadioButton.Android
+                onPress={() => setFamilyID(null)}
+                value={""}
+                status={!!familyID ? "unchecked" : "checked"}
+                color={theme.secondary}
+              />
+              {user?.imagePath ? (
+                <FastImage
+                  style={{
+                    height: moderateScale(50, 0.3),
+                    width: moderateScale(50, 0.3),
+                    borderRadius: moderateScale(200, 0.3),
+                    backgroundColor: theme.light,
+                  }}
+                  source={{
+                    uri: `https://nodejsclusters-160185-0.cloudclusters.net/${user?.imagePath}`,
+                    priority: FastImage.priority.high,
+                  }}
+                  resizeMode={FastImage.resizeMode.cover}
+                  defaultSource={images.user}
+                />
+              ) : (
+                <Image
+                  source={images.user}
+                  style={{
+                    height: moderateScale(50, 0.3),
+                    width: moderateScale(50, 0.3),
+                    borderRadius: moderateScale(200, 0.3),
+                    backgroundColor: theme.light,
+                    objectFit: "cover",
+                  }}
+                />
+              )}
+              <View style={{ marginLeft: 10, width: "100%" }}>
+                <AppText
+                  style={{ maxWidth: "75%" }}
+                  numberOfLines={1}
+                  size={16}
+                  fontStyle="500.bold">
+                  {user?.stakeholderName}
+                </AppText>
+                <VerticalSpacing size={5} />
+                <AppText fontStyle="400.normal">
+                  {I18n.t("screen_messages.Myself")}
+                </AppText>
+              </View>
+            </TouchableOpacity>
+            <VerticalSpacing size={20} />
+            <AppText fontStyle="400.normal">
+              {I18n.t("screen_messages.book_on_behalf")}
+            </AppText>
+            <VerticalSpacing size={20} />
+            <RadioButton.Group
+              onValueChange={newValue => setFamilyID(toString(newValue))}
+              value={toString(familyID)}>
+              {map(family, (item, index) => {
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    activeOpacity={0.9}
+                    onPress={() => {
+                      setFamilyID(toString(item?.familyMemberID));
+                    }}
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      padding: moderateScale(10, 0.3),
+                      paddingVertical: moderateScale(15, 0.3),
+                      backgroundColor: theme.modalBackgroundColor,
+                      marginBottom: moderateScale(10, 0.3),
+                      borderRadius: moderateScale(10, 0.3),
+                      ...theme.light_shadow,
+                    }}>
+                    <RadioButton.Android
+                      // disabled={!item?.available}
+                      value={toString(item.familyMemberID)}
+                      color={theme.secondary}
+                    />
+                    {item?.imagePath ? (
+                      <FastImage
+                        style={{
+                          height: moderateScale(50, 0.3),
+                          width: moderateScale(50, 0.3),
+                          borderRadius: moderateScale(200, 0.3),
+                          backgroundColor: theme.light,
+                        }}
+                        source={{
+                          uri: `https://nodejsclusters-160185-0.cloudclusters.net/${item?.imagePath}`,
+                          priority: FastImage.priority.high,
+                        }}
+                        resizeMode={FastImage.resizeMode.cover}
+                        defaultSource={images.user}
+                      />
+                    ) : (
+                      <Image
+                        source={images.user}
+                        style={{
+                          height: moderateScale(50, 0.3),
+                          width: moderateScale(50, 0.3),
+                          borderRadius: moderateScale(200, 0.3),
+                          backgroundColor: theme.light,
+                          objectFit: "cover",
+                        }}
+                      />
+                    )}
+                    <View
+                      key={index}
+                      style={{
+                        marginLeft: moderateScale(10, 0.3),
+                        width: "100%",
+                      }}>
+                      <AppText
+                        style={{ maxWidth: "75%" }}
+                        numberOfLines={1}
+                        size={16}
+                        fontStyle="500.bold">
+                        {item?.name}
+                      </AppText>
+                      <VerticalSpacing size={5} />
+                      <AppText fontStyle="400.normal">
+                        {item?.relationship}
+                      </AppText>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </RadioButton.Group>
+            <AppButton
+              Title={I18n.t("screen_messages.button.Add_Family")}
+              color={theme.title}
+              // loading={loading}
+              Outlined
+              fontStyle="600.semibold"
+              fontSize={16}
+              height={50}
+              onPress={onPressAddFamily}
+              leftIcon={
+                <Feather name="plus" size={30} color={theme.iconColor} />
+              }
+            />
+          </ScrollView>
+          <Animatable.View
+            animation="fadeInUp"
+            duration={500}
+            style={{
+              backgroundColor: theme.modalBackgroundColor,
+              padding: moderateScale(20, 0.3),
+              ...theme.dark_shadow,
+            }}>
+            <AppButton
+              Title={I18n.t("screen_messages.button.next")}
+              color={theme.primary}
+              fontStyle="600.normal"
+              fontSize={16}
+              height={50}
+              onPress={() => {
+                toggleModal();
+                Utils.wait(300).then(() => refBookingType.current?.open());
+              }}
+            />
+          </Animatable.View>
+        </View>
+      </Modal>
       <RBSheet
         ref={refBookingType}
         closeOnDragDown={true}
@@ -278,7 +549,7 @@ function CoachDetail(props: any) {
               <RadioButton.Group
                 onValueChange={newValue => setBookingType(newValue)}
                 value={bookingType}>
-                {_.map(BookingTypeData, (item, index) => {
+                {map(BookingTypeData, (item, index) => {
                   return (
                     <TouchableOpacity
                       key={index}
@@ -405,7 +676,7 @@ function CoachDetail(props: any) {
                     setCreditTypeID(toNumber(newValue))
                   }
                   value={toString(creditTypeID)}>
-                  {_.map(FilterSesstionTypes, (item, index) => {
+                  {map(FilterSesstionTypes, (item, index) => {
                     return (
                       <TouchableOpacity
                         key={index}
@@ -488,7 +759,9 @@ function CoachDetail(props: any) {
           fontStyle="600.normal"
           fontSize={16}
           height={50}
-          onPress={() => refBookingType.current?.open()}
+          // onPress={() => refBookingType.current?.open()}
+          // onPress={() => refRBSheet.current?.open()}
+          onPress={() => toggleModal()}
         />
       </Animatable.View>
     </AppContainer>

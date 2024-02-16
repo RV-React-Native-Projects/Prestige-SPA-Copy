@@ -1,12 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Platform,
-  Alert,
-  Linking,
-} from "react-native";
+import { StyleSheet, View, ScrollView, Platform, Linking } from "react-native";
 import AppContainer from "@src/components/Container/AppContainer";
 import { useAppSelector } from "@src/redux/store";
 import BackButtonWithTitle from "@src/components/Header/BackButtonWithTitle";
@@ -22,12 +15,13 @@ import FastImage from "react-native-fast-image";
 import images from "@src/common/AllImages";
 import svgs from "@src/common/AllSvgs";
 import { useAppNavigation } from "@navigation/Navigation";
-import AvailableCreditManager from "@features/AvailableCredit/AvailableCreditManager";
+// import AvailableCreditManager from "@features/AvailableCredit/AvailableCreditManager";
 import CourtManager from "@features/Court/CourtManager";
 import { useStripe } from "@stripe/stripe-react-native";
 import StripeManager from "@features/Stripe/StripeManager";
 import useAppToast from "@components/Alert/AppToast";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import toNumber from "lodash/toNumber";
 
 const isIOS = Platform.OS === "ios";
 
@@ -186,7 +180,7 @@ export default function CourtBooking(props: any) {
         startTime: startDate,
         endTime: endDate,
         isPaymentDone: true,
-        familyMemberID: familyID,
+        familyMemberID: toNumber(familyID),
         customerID: user?.stakeholderID,
         amount: selectedCourt?.["creditTypes.rate"],
         email: user?.email,

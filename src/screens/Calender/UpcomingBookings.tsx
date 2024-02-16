@@ -31,7 +31,7 @@ export default function UpcomingBookings(props: any) {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: theme.appBackgroundColor }}>
       {upComingBookings && upComingBookings?.length > 0 ? (
         <FlatList
           ref={scrollUpBookings}
