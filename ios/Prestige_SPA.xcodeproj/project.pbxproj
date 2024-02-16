@@ -577,6 +577,7 @@
 				DEVELOPMENT_TEAM = 5B4NRB892G;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Prestige_SPA/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Premier Sport Reserve";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -605,6 +606,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5B4NRB892G;
 				INFOPLIST_FILE = Prestige_SPA/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Premier Sport Reserve";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

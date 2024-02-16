@@ -3,22 +3,12 @@ import SplashScreen from "react-native-splash-screen";
 import MyStack, { useAppNavigation } from "@navigation/Navigation";
 import { useAppDispatch, useAppSelector } from "@redux/store";
 import AuthManager from "@features/Auth/AuthManager";
-import { useEncryptedStorage } from "@hooks/useEncryptedStorage";
-import {
-  setAuthToken,
-  setLoadingUser,
-  setRefreshToken,
-  setUser,
-} from "@reducers/UserSlice";
-import Utils from "@common/Utils";
+import { setLoadingUser, setUser } from "@reducers/UserSlice";
 
 function Loading() {
   const navigation = useAppNavigation();
-  const { user, userToken, loadingUser, userEmail } = useAppSelector(
-    state => state.user,
-  );
+  const { loadingUser, userEmail } = useAppSelector(state => state.user);
   const storeDispatch = useAppDispatch();
-  const { setStorage } = useEncryptedStorage();
 
   // @RV take a Look at these Logics after the Splash Scrren in Place
   useEffect(() => {
@@ -36,8 +26,8 @@ function Loading() {
           storeDispatch(setLoadingUser(false));
         },
       );
-    } else if (!loadingUser) SplashScreen.hide();
-  }, [userEmail]);
+    } else if (!loadingUser && !userEmail) SplashScreen.hide();
+  }, [userEmail, !loadingUser]);
 
   return (
     <Suspense fallback="">

@@ -116,6 +116,7 @@ interface playerCategoryDate {
 }
 interface userSliceProperties {
   loadingUser: boolean;
+  refreshingUser: boolean;
   user: UserProps | null;
   authHeader: Record<string, string> | null;
   isUserLoggedIn: boolean;
@@ -136,6 +137,7 @@ interface userSliceProperties {
 
 const initialState: userSliceProperties = {
   loadingUser: true,
+  refreshingUser: false,
   user: null,
   authHeader: null,
   isUserLoggedIn: false,
@@ -229,7 +231,7 @@ const userSlice = createSlice({
             }
           : null;
         state.userEmail = action?.payload?.email;
-        // state.loadingUser = state?.user ? false : true;
+        state.loadingUser = false;
       })
       .addCase(removeUserData.pending, state => {
         state.loadingUser = true;
@@ -268,7 +270,7 @@ const userSlice = createSlice({
         state.loadingPlayerCategory = false;
       })
       .addCase(refreshUser.pending, state => {
-        state.loadingUser = true;
+        state.refreshingUser = true;
       })
       .addCase(refreshUser.fulfilled, (state, action) => {
         // state.playerCategory = action.payload;
@@ -279,7 +281,7 @@ const userSlice = createSlice({
           statusDescription: "Approved",
         });
         state.approvedMembership = approved?.length > 0 ? approved : null;
-        state.loadingUser = false;
+        state.refreshingUser = false;
       });
   },
 });

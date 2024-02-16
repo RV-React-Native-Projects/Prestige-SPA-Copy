@@ -16,6 +16,7 @@ class MainActivity : ReactActivity() {
   override fun getMainComponentName(): String = "Prestige_SPA"
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    SplashScreen.show(this)
     super.onCreate(null)
   }
 

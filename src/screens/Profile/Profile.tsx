@@ -60,7 +60,9 @@ const ProfileButton = (props: ProfileButtonProps) => {
 
 export default function ProfileScreen() {
   const { theme } = useAppSelector(state => state.theme);
-  const { user, loadingUser, userEmail } = useAppSelector(state => state.user);
+  const { user, refreshingUser, userEmail } = useAppSelector(
+    state => state.user,
+  );
   const storeDispatch = useAppDispatch();
   const navigation = useAppNavigation();
 
@@ -93,7 +95,7 @@ export default function ProfileScreen() {
           <RefreshControl
             colors={[theme.secondary]}
             tintColor={theme.title}
-            refreshing={loadingUser}
+            refreshing={refreshingUser}
             onRefresh={onRefresh}
           />
         }
