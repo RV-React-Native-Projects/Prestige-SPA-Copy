@@ -1,5 +1,11 @@
-import React, { memo, useEffect, useState } from "react";
-import { FlatList, Image, ScrollView, StyleSheet, View } from "react-native";
+import React, { memo, useCallback, useEffect, useState } from "react";
+import {
+  FlatList,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 import AppText from "@components/Text/AppText";
 import AppButton from "@components/Button/AppButton";
 import { useAppDispatch, useAppSelector } from "@redux/store";
@@ -14,15 +20,16 @@ import HomeHeader from "@src/screen-components/Home/HomeHeader";
 import HeaderWithTitleandSeeAll from "@src/screen-components/Header/HeaderWithTitleandSeeAll";
 import CourtCard from "@cards/Home/CourtCard";
 import CoachCard from "@cards/Home/CoachCard";
-import {
-  loadAllCoach,
-  loadAllLocations,
-} from "@src/redux/reducers/AppDataSlice";
+import { loadAllCoach, loadAllLocations } from "@reducers/AppDataSlice";
+import { refreshUser, setLocation } from "@reducers/UserSlice";
 import HomeDateSK from "@src/assets/skelton/HomeDateSK";
 import _ from "lodash";
+import Permissions from "@src/helpers/Permissions";
+import Geolocation from "react-native-geolocation-service";
+import Utils from "@common/Utils";
 
 function Home() {
-  const { userToken, user, userEmail, approvedMembership } = useAppSelector(
+  const { user, userEmail, approvedMembership, location } = useAppSelector(
     state => state.user,
   );
   const { coachs, locations, loadingCoachs, loadingLocations } = useAppSelector(
@@ -30,12 +37,41 @@ function Home() {
   );
   const { theme } = useAppSelector(state => state.theme);
   const storeDispatch = useAppDispatch();
-
-  // const [searchQuery, setSearchQuery] = useState("");
   const navigation = useAppNavigation();
   const appToast = useAppToast();
 
-  // console.log(JSON.stringify(user, null, 2));
+  // console.log("At Home==>", JSON.stringify(locations, null, 2));
+
+  async function getUserCurrentLocation() {
+    const permission = await Permissions.getLocationPermissions();
+    console.log("permission===>", permission);
+    if (permission) {
+      Geolocation.getCurrentPosition(
+        position => {
+          const { latitude, longitude } = position.coords;
+          console.log("getCurrentPosition==>", position);
+          storeDispatch(setLocation({ latitude, longitude }));
+          setLocation({ latitude, longitude });
+        },
+        error => {
+          console.log("Error getting location===>", error);
+        },
+        {
+          enableHighAccuracy: true,
+          distanceFilter: 10,
+          accuracy: { android: "high", ios: "nearestTenMeters" },
+          forceRequestLocation: true,
+          showLocationDialog: true,
+          timeout: 10000,
+          maximumAge: 1000,
+        },
+      );
+    }
+  }
+
+  useEffect(() => {
+    getUserCurrentLocation();
+  }, [user]);
 
   useEffect(() => {
     if (!locations) storeDispatch(loadAllLocations());
@@ -64,12 +100,27 @@ function Home() {
     navigation.navigate("CoachDetail", { data });
   };
 
+  const onRefresh = useCallback(() => {
+    getUserCurrentLocation();
+    if (userEmail) storeDispatch(refreshUser(userEmail));
+    storeDispatch(loadAllLocations());
+    storeDispatch(loadAllCoach());
+  }, [coachs, locations]);
+
   return (
     <AppContainer
       hideStatusbar={false}
       scrollable={false}
       backgroundColor={theme.appBackgroundColor}>
       <ScrollView
+        refreshControl={
+          <RefreshControl
+            colors={[theme.secondary]}
+            tintColor={theme.title}
+            refreshing={loadingCoachs}
+            onRefresh={onRefresh}
+          />
+        }
         contentContainerStyle={{ paddingBottom: moderateScale(100, 0.3) }}
         showsVerticalScrollIndicator={false}>
         <HomeHeader />
@@ -147,24 +198,35 @@ function Home() {
                 showsHorizontalScrollIndicator={false}
                 horizontal
                 data={locations}
-                renderItem={({ item, index }) => (
-                  <CourtCard
-                    key={index}
-                    imagePath={item.courts[0]?.imagePath}
-                    locationName={item?.locationName}
-                    locationAddress={item?.locationAddress}
-                    minRate={item?.minRate}
-                    maxRate={item?.maxRate}
-                    onPressCard={() => onPressCourtCard(item)}
-                    isVerified={
-                      approvedMembership && approvedMembership?.length > 0
-                        ? approvedMembership.some(
-                            mem => mem.locationID === item?.locationID,
-                          )
-                        : false
-                    }
-                  />
-                )}
+                renderItem={({ item, index }) => {
+                  return (
+                    <CourtCard
+                      key={index}
+                      imagePath={item.courts[0]?.imagePath}
+                      locationName={item?.locationName}
+                      locationAddress={item?.locationAddress}
+                      minRate={item?.minRate}
+                      maxRate={item?.maxRate}
+                      onPressCard={() => onPressCourtCard(item)}
+                      isVerified={
+                        approvedMembership && approvedMembership?.length > 0
+                          ? approvedMembership.some(
+                              mem => mem.locationID === item?.locationID,
+                            )
+                          : false
+                      }
+                      distance={
+                        location &&
+                        Utils.getUserDistance(
+                          location?.latitude,
+                          location?.longitude,
+                          item?.lat,
+                          item?.long,
+                        )
+                      }
+                    />
+                  );
+                }}
               />
             </View>
           )

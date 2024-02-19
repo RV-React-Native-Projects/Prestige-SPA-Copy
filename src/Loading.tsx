@@ -10,7 +10,6 @@ function Loading() {
   const { loadingUser, userEmail } = useAppSelector(state => state.user);
   const storeDispatch = useAppDispatch();
 
-  // @RV take a Look at these Logics after the Splash Scrren in Place
   useEffect(() => {
     if (userEmail) {
       AuthManager.getUserData(

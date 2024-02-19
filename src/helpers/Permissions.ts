@@ -31,7 +31,7 @@ interface PermissionsInterFace {
   checkPermission: (per: string) => void;
   getCameraPermissions: () => Promise<boolean>;
   getLocationPermissions: () => Promise<boolean>;
-  askUserToOnLocation: () => Promise<boolean>;
+  askUserToOnLocation: () => void;
   requestMediaLibraryPermission: () => Promise<boolean>;
   requestReadMediaImagesPermission: () => Promise<boolean>;
   requestPhotoLibraryPermission: () => Promise<boolean>;
@@ -94,6 +94,7 @@ const Permissions = (): PermissionsInterFace => {
       await checkPermission(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
       const granted = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
       const permission = granted === RESULTS.GRANTED;
+      if (permission) await askUserToOnLocation();
       return permission;
     }
   };
@@ -105,15 +106,16 @@ const Permissions = (): PermissionsInterFace => {
         // fastInterval: 5000,
       })
         .then(data => {
-          console.log("RNAndroidLocationEnabler==>", data);
+          console.log("LocationEnabler==>", data);
           return data;
         })
         .catch(err => {
-          console.log("RNAndroidLocationEnabler==>", err);
+          console.log("LocationEnabler==>", err);
           return err;
         });
     const granted = isAllowed === "already-enabled";
-    return granted;
+    console.log("granted==>", granted);
+    // return granted;
   }
 
   async function requestMediaLibraryPermission() {

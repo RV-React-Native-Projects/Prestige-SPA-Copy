@@ -108,6 +108,10 @@ export const refreshUser = createAsyncThunk(
   },
 );
 
+interface locInterface {
+  latitude: number;
+  longitude: number;
+}
 interface playerCategoryDate {
   playerCategoryID: 1;
   createdAt: string;
@@ -133,6 +137,7 @@ interface userSliceProperties {
   loadingPlayerCategory: boolean;
   playerCategory: playerCategoryDate[] | null;
   approvedMembership: Membership[] | null;
+  location: locInterface | null;
 }
 
 const initialState: userSliceProperties = {
@@ -154,6 +159,11 @@ const initialState: userSliceProperties = {
   loadingPlayerCategory: false,
   playerCategory: null,
   approvedMembership: null,
+  location: null,
+  // location: {
+  //   latitude: null,
+  //   longitude: null,
+  // },
 };
 
 const userSlice = createSlice({
@@ -181,6 +191,9 @@ const userSlice = createSlice({
     },
     setUserToken: (state, action) => {
       state.userToken = action.payload;
+    },
+    setLocation: (state, action) => {
+      state.location = action.payload;
     },
     setAuthToken: (state, action) => {
       state.authToken = action.payload;
@@ -295,5 +308,6 @@ export const {
   setLoadingUser,
   appLogout,
   resetUser,
+  setLocation,
 } = userSlice.actions;
 export default userSlice.reducer;

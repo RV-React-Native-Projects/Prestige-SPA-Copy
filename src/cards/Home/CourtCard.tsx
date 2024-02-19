@@ -17,7 +17,7 @@ interface CourtCardProps {
   locationAddress: string;
   minRate: number;
   maxRate: number;
-  distance?: number;
+  distance?: number | null;
   isVerified?: boolean;
 }
 
@@ -33,6 +33,7 @@ const CourtCard = (props: CourtCardProps) => {
     isVerified = false,
   } = props;
   const { theme } = useAppSelector(state => state.theme);
+
   return (
     <View
       style={{
@@ -69,7 +70,9 @@ const CourtCard = (props: CourtCardProps) => {
         <View style={{ flexDirection: "row", height: moderateScale(20, 0.3) }}>
           <svgs.LocationV2 color1={theme.secondary} height={20} />
           <AppText fontStyle="400.normal" numberOfLines={1} color={theme.gray}>
-            {I18n.t("screen_messages.distance", { distance: distance })}
+            {I18n.t("screen_messages.distance", {
+              distance: distance?.toLocaleString(),
+            })}
           </AppText>
         </View>
         <AppText

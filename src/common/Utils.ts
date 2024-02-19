@@ -2,7 +2,7 @@ import { Platform } from "react-native";
 import ErrorConstants from "./ErrorConstant";
 import _ from "lodash";
 import CryptoJS from "react-native-crypto-js";
-// import * as geolib from "geolib";
+import getDistance from "geolib/es/getDistance";
 
 const Utils = function (ErrorConstants: any) {
   /**
@@ -309,6 +309,19 @@ const Utils = function (ErrorConstants: any) {
     return decryptedData;
   }
 
+  function getUserDistance(
+    fromLat: number,
+    fromLon: number,
+    toLat: number,
+    toLon: number,
+  ): number {
+    var dis = getDistance(
+      { latitude: fromLat, longitude: fromLon },
+      { latitude: toLat, longitude: toLon },
+    );
+    return Math.ceil(dis / 1000);
+  }
+
   return {
     ErrorObject: ErrorObject,
     updateErrorObject: updateErrorObject,
@@ -343,6 +356,7 @@ const Utils = function (ErrorConstants: any) {
     docType,
     wait,
     decryptToken,
+    getUserDistance,
   };
 };
 

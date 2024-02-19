@@ -29,6 +29,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Feather from "react-native-vector-icons/Feather";
 import Modal from "react-native-modal";
+import Utils from "@common/Utils";
 
 const isIOS = Platform.OS === "ios";
 const windowHeight = Dimensions.get("window").height;
@@ -37,7 +38,7 @@ const windowWidth = Dimensions.get("window").width;
 function CourtDetail(props: any) {
   const { data } = props.route.params;
   const { theme } = useAppSelector(state => state.theme);
-  const { user, family, approvedMembership } = useAppSelector(
+  const { user, family, approvedMembership, location } = useAppSelector(
     state => state.user,
   );
   const navigation = useAppNavigation();
@@ -188,7 +189,16 @@ function CourtDetail(props: any) {
                 numberOfLines={2}
                 color={theme.gray}
                 fontStyle="500.semibold">
-                {I18n.t("screen_messages.distance", { distance: 5.4 })}
+                {I18n.t("screen_messages.distance", {
+                  distance:
+                    location &&
+                    Utils.getUserDistance(
+                      location?.latitude,
+                      location?.longitude,
+                      data?.lat,
+                      data?.long,
+                    ).toLocaleString(),
+                })}
               </AppText>
             </View>
             <AppText
@@ -270,23 +280,24 @@ function CourtDetail(props: any) {
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={toggleModal}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             style={{
+              zIndex: 10,
               position: "absolute",
               top: moderateScale(-25, 0.3),
               alignSelf: "center",
-              backgroundColor: theme.modalBackgroundColor,
+              backgroundColor: theme.white,
               borderRadius: moderateScale(100, 0.3),
               height: moderateScale(50, 0.3),
               width: moderateScale(50, 0.3),
               alignItems: "center",
               justifyContent: "center",
-              zIndex: 10,
             }}>
             <svgs.Clear height={40} width={40} color1={theme.error} />
           </TouchableOpacity>
           <VerticalSpacing size={30} />
           <AppText
-            style={{ paddingHorizontal: moderateScale(15, 0.3) }}
+            style={{ paddingHorizontal: moderateScale(15, 0.3), zIndex: 1 }}
             fontStyle="600.semibold"
             size={18}>
             {I18n.t("screen_messages.header.Booking_For")}
