@@ -161,6 +161,7 @@
       },
       "Forgot_Password": "Forgot Password?",
       "have_account": "Don’t have an account ?",
+      "year_of_exp": "%{year} Years of Experience",
       "register": {
         "as": "Register As",
         "Customer": "Customer",

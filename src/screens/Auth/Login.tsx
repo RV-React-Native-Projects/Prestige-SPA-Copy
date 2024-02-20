@@ -82,9 +82,9 @@ const Login = () => {
         console.log("Login Res===>", JSON.stringify(res.data.data, null, 2));
         setLoading(false);
         setStorage("SPA_User_Token", res.data.data.token);
-        setStorage("SPA_Email", res.data.data.stakeHolders?.email);
+        setStorage("SPA_Email", res.data.data.stakeholder?.email);
         storeDispatch(setUserToken(res.data.data.token));
-        storeDispatch(setUser(res.data.data.stakeHolders));
+        storeDispatch(setUser(res.data.data.stakeholder));
         appToast.showNormalToast({ title: "Login Successfully!" });
         // navigation.reset({ index: 0, routes: [{ name: "Tab" }] });
       },
@@ -127,10 +127,7 @@ const Login = () => {
             paddingTop: moderateScale(100, 0.3),
             paddingBottom: moderateScale(50, 0.3),
           }}>
-          <Image
-            source={images.Logo}
-            style={{ height: 100, objectFit: "cover" }}
-          />
+          <svgs.MainLogo height={220} width={220} color1={theme.iconColor} />
         </Animatable.View>
         <Formik
           validationSchema={loginSchema}

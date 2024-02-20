@@ -1,0 +1,28 @@
+diff --git a/node_modules/react-native-svg/src/index.d.ts b/node_modules/react-native-svg/src/index.d.ts
+index e11bd33..9aa7c39 100644
+--- a/node_modules/react-native-svg/src/index.d.ts
++++ b/node_modules/react-native-svg/src/index.d.ts
+@@ -112,6 +112,7 @@ export interface FillProps {
+ export interface ClipProps {
+   clipRule?: FillRule;
+   clipPath?: string;
++  children?: React.ReactNode;
+ }
+ 
+ export interface VectorEffectProps {
+@@ -241,6 +242,7 @@ export type Circle = React.ComponentClass<CircleProps>;
+ 
+ export interface ClipPathProps {
+   id?: string;
++  children?: React.ReactNode;
+ }
+ export const ClipPath: React.ComponentClass<ClipPathProps>;
+ export type ClipPath = React.ComponentClass<ClipPathProps>;
+@@ -310,6 +312,7 @@ export interface LinearGradientProps {
+   gradientUnits?: Units;
+   gradientTransform?: ColumnMajorTransformMatrix | string;
+   id?: string;
++  children?: React.ReactNode;
+ }
+ export const LinearGradient: React.ComponentClass<LinearGradientProps>;
+ export type LinearGradient = React.ComponentClass<LinearGradientProps>;

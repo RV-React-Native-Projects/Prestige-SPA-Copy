@@ -1,5 +1,5 @@
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector } from "@src/redux/store";
 import svgs from "@common/AllSvgs";
 import AppText from "@components/Text/AppText";
@@ -8,11 +8,29 @@ import images from "@src/common/AllImages";
 import FastImage from "react-native-fast-image";
 import { moderateScale } from "react-native-size-matters";
 import { useAppNavigation } from "@src/navigation/Navigation";
+import Geocoder from "react-native-geocoding";
 
 export default function HomeHeader() {
   const { theme } = useAppSelector(state => state.theme);
-  const { user } = useAppSelector(state => state.user);
+  const { user, location } = useAppSelector(state => state.user);
   const navigation = useAppNavigation();
+  const [currAddr, setCurrAddr] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (location) {
+      Geocoder.init("AIzaSyB8lC76Arjr09WP2d4h01xJ8-plROGm4vk", {
+        language: "en",
+      });
+      Geocoder.from(location.latitude, location.longitude)
+        .then(res => {
+          // console.log("Address=====>", JSON.stringify(res, null, 2));
+          setCurrAddr(res.results[0].formatted_address);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }, [location]);
 
   const gotoProfile = () => {
     navigation.navigate("Profile");
@@ -35,8 +53,11 @@ export default function HomeHeader() {
             alignItems: "center",
           }}>
           <svgs.LocationV2 color1={theme.secondary} height={20} />
-          <AppText fontStyle="600.bold" size={14} style={{ marginRight: 10 }}>
-            Home
+          <AppText
+            fontStyle="600.bold"
+            size={14}
+            style={{ marginHorizontal: 5 }}>
+            Current
           </AppText>
           <svgs.Down height={15} width={15} />
         </View>
@@ -49,7 +70,8 @@ export default function HomeHeader() {
             width: "90%",
           }}
           numberOfLines={1}>
-          Your Currnet Address
+          {currAddr}
+          {/* Your Current Address */}
         </AppText>
       </TouchableOpacity>
       <View

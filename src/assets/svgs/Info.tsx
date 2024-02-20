@@ -1,6 +1,7 @@
 import * as React from "react";
 import { SVGProps } from "@common/CommonTypes";
 import Svg, { G, Path, Defs, ClipPath } from "react-native-svg";
+import { moderateScale } from "react-native-size-matters";
 
 function SvgComponent(props: SVGProps) {
   const {
@@ -14,17 +15,17 @@ function SvgComponent(props: SVGProps) {
 
   return (
     <Svg
-      width={width}
-      height={height}
+      width={moderateScale(width, 0.3)}
+      height={moderateScale(height, 0.3)}
       viewBox="0 0 24 24"
-      fill="none"
+      fill={fill}
       xmlns="http://www.w3.org/2000/svg"
       {...props}>
       <G clipPath="url(#clip0_4584_10917)">
         <Path
           d="M12 22a9.97 9.97 0 007.071-2.929A9.97 9.97 0 0022 12a9.969 9.969 0 00-2.929-7.071A9.969 9.969 0 0012 2a9.969 9.969 0 00-7.071 2.929A9.969 9.969 0 002 12a9.969 9.969 0 002.929 7.071A9.969 9.969 0 0012 22z"
           stroke={color1}
-          strokeWidth={1.5}
+          strokeWidth={moderateScale(strokeWidth, 0.3)}
           strokeLinejoin="round"
         />
         <Path
@@ -36,7 +37,7 @@ function SvgComponent(props: SVGProps) {
         <Path
           d="M12.25 17v-7h-1M10.5 17H14"
           stroke={color1}
-          strokeWidth={strokeWidth}
+          strokeWidth={moderateScale(strokeWidth, 0.3)}
           strokeLinecap="round"
           strokeLinejoin="round"
         />

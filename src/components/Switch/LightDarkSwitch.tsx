@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@redux/store";
 const LightDarkSwitch = (props: any) => {
   const storeDispatch = useAppDispatch();
   const { theme, isDarkMode } = useAppSelector(state => state.theme);
-  const { sunColor = theme.white, moonColor = theme.modalBackgroundColor } =
+  const { sunColor = theme.tertiaryText, moonColor = theme.iconColor } =
     props || {};
 
   const handlePress = () => {
@@ -20,7 +20,7 @@ const LightDarkSwitch = (props: any) => {
         {isDarkMode ? (
           <svgs.Sun color1={sunColor} />
         ) : (
-          <svgs.Moon stroke={moonColor} />
+          <svgs.Moon color1={moonColor} />
         )}
       </TouchableOpacity>
     </View>

@@ -1,5 +1,6 @@
 import { SVGProps } from "@common/CommonTypes";
 import * as React from "react";
+import { moderateScale } from "react-native-size-matters";
 import Svg, { Path } from "react-native-svg";
 
 function SvgComponent(props: SVGProps) {
@@ -8,8 +9,8 @@ function SvgComponent(props: SVGProps) {
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={moderateScale(width, 0.3)}
+      height={moderateScale(height, 0.3)}
       viewBox="0 0 10 5"
       fill={fill}
       {...props}>

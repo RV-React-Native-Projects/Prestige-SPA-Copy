@@ -40,11 +40,9 @@ function Home() {
   const navigation = useAppNavigation();
   const appToast = useAppToast();
 
-  // console.log("At Home==>", JSON.stringify(locations, null, 2));
-
   async function getUserCurrentLocation() {
     const permission = await Permissions.getLocationPermissions();
-    console.log("permission===>", permission);
+
     if (permission) {
       Geolocation.getCurrentPosition(
         position => {
@@ -256,6 +254,7 @@ function Home() {
                     stakeholderName={item?.stakeholder?.stakeholderName}
                     about={item?.about}
                     onPressCard={() => onPressCouchCard(item)}
+                    experience={item?.experienceYears}
                   />
                 )}
               />

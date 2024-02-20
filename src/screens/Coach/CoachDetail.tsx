@@ -143,7 +143,7 @@ function CoachDetail(props: any) {
     [slotId],
   );
 
-  // console.log(JSON.stringify(data, null, 2));
+  console.log(JSON.stringify(data, null, 2));
 
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
@@ -262,7 +262,9 @@ function CoachDetail(props: any) {
           <BioCard
             icon={<svgs.Coach width={25} height={25} />}
             title="Experience"
-            description={`4 Years of Experience`}
+            description={I18n.t("screen_messages.year_of_exp", {
+              year: data?.experienceYears,
+            })}
           />
         </View>
       </ScrollView>

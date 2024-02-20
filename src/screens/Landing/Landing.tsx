@@ -33,15 +33,12 @@ function Landing() {
         resizeMode="cover">
         <LinearGradient
           style={{ height: "100%", width: "100%", flex: 1 }}
-          colors={["#FFFFFF00", "#FFFFFF00"]}>
+          colors={["#ECFDF350", "#ECFDF300"]}>
           <Animatable.View
             animation="fadeInUp"
             duration={1500}
             style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <Image
-              source={images.Logo}
-              style={{ height: 100, objectFit: "cover" }}
-            />
+            <svgs.MainLogo />
           </Animatable.View>
           <Animatable.View
             animation="fadeInDown"

@@ -1,6 +1,7 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
 import { SVGProps } from "@common/CommonTypes";
+import { moderateScale } from "react-native-size-matters";
 
 function SvgComponent(props: SVGProps) {
   const {
@@ -13,8 +14,8 @@ function SvgComponent(props: SVGProps) {
 
   return (
     <Svg
-      width={width}
-      height={height}
+      width={moderateScale(width, 0.3)}
+      height={moderateScale(height, 0.3)}
       viewBox="0 0 20 18"
       fill={fill}
       xmlns="http://www.w3.org/2000/svg"
@@ -22,7 +23,7 @@ function SvgComponent(props: SVGProps) {
       <Path
         d="M5.7 1A4.95 4.95 0 00.75 5.95c0 4.95 5.85 9.45 9 10.497 3.15-1.047 9-5.547 9-10.497a4.95 4.95 0 00-9-2.847A4.944 4.944 0 005.7 1z"
         stroke={color1}
-        strokeWidth={strokeWidth}
+        strokeWidth={moderateScale(strokeWidth, 0.3)}
         strokeLinecap="round"
         strokeLinejoin="round"
       />

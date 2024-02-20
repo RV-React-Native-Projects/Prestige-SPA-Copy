@@ -7,17 +7,20 @@ import AppText from "@components/Text/AppText";
 import svgs from "@common/AllSvgs";
 import FastImage from "react-native-fast-image";
 import images from "@common/AllImages";
+import I18n from "i18n-js";
 
 interface CoachCardProps {
   imagePath: string;
   tire: string;
   stakeholderName: string;
-  about: string;
+  about?: string;
   onPressCard?: () => void;
+  experience?: string;
 }
 
 export default function CoachCard(props: CoachCardProps) {
-  const { imagePath, tire, stakeholderName, about, onPressCard } = props;
+  const { imagePath, tire, stakeholderName, about, onPressCard, experience } =
+    props;
   const { theme } = useAppSelector(state => state.theme);
   return (
     <View
@@ -88,7 +91,10 @@ export default function CoachCard(props: CoachCardProps) {
               paddingHorizontal: moderateScale(15, 0.3),
               height: moderateScale(35, 0.3),
             }}>
-            {about}
+            {experience &&
+              I18n.t("screen_messages.year_of_exp", {
+                year: experience,
+              })}
           </AppText>
         </View>
       </TouchableOpacity>
