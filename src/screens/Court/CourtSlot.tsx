@@ -116,6 +116,7 @@ export default function CourtSlot(props: any) {
           bookingDate: moment(pickedDate).format("YYYY-MM-DD"),
           slotID: slotId,
           customerID: user?.stakeholderID,
+          familyMemberID: familyID,
         },
       };
       CourtManager.generateBookingSlots(

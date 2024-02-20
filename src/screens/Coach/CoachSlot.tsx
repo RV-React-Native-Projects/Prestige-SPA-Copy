@@ -162,8 +162,6 @@ export default function CoachSlot(props: any) {
 
   useEffect(() => {
     const controller = new AbortController();
-    console.log("=====", bookingType === "MULTI" && foundTerm);
-    console.log("=====", bookingType);
     if (
       (bookingType === "SINGLE" || (bookingType === "MULTI" && foundTerm)) &&
       slotId &&
@@ -176,6 +174,7 @@ export default function CoachSlot(props: any) {
           bookingDate: moment(pickedDate).format("YYYY-MM-DD"),
           slotID: slotId,
           customerID: user?.stakeholderID,
+          familyMemberID: familyID,
         },
       };
       CoachManager.generateBookingSlots(
