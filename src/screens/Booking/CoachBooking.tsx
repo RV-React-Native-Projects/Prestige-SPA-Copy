@@ -62,6 +62,8 @@ export default function CoachBooking(props: any) {
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
 
+  // console.log("AT CoachBooking===>", JSON.stringify(slot, null, 2));
+
   const handleDeepLink = useCallback(
     async (url: string | null) => {
       if (url) {
@@ -136,7 +138,7 @@ export default function CoachBooking(props: any) {
       StripeManager.generatePaymentSheet(
         { data: { amount: amount } },
         async res => {
-          console.log("Res===>", JSON.stringify(res, null, 2));
+          // console.log("Res===>", JSON.stringify(res, null, 2));
           const { error } = await initPaymentSheet({
             merchantDisplayName: "prestige_spa",
             customerId: res?.data?.customer,
@@ -258,7 +260,7 @@ export default function CoachBooking(props: any) {
       params,
       res => {
         setLoading(false);
-        console.log("Res===>", JSON.stringify(res, null, 2));
+        // console.log("Res===>", JSON.stringify(res, null, 2));
         navigation?.navigate("CoachBookingComplete", {
           bookingId: res?.data?.data?.bookingNumber,
           bookingType: bookingType,
@@ -418,7 +420,7 @@ export default function CoachBooking(props: any) {
                 }}
                 resizeMode={FastImage.resizeMode.cover}
               />
-              <View style={{ padding: moderateScale(10, 0.3) }}>
+              <View style={{ paddingHorizontal: moderateScale(10, 0.3) }}>
                 <AppText
                   fontStyle="700.bold"
                   numberOfLines={2}
@@ -442,7 +444,7 @@ export default function CoachBooking(props: any) {
                     height={20}
                     width={20}
                   />
-                  <AppText numberOfLines={1}>
+                  <AppText numberOfLines={2} style={{ maxWidth: "50%" }}>
                     {court?.location?.locationAddress}
                   </AppText>
                 </View>

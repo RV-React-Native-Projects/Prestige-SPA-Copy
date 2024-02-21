@@ -44,64 +44,12 @@ const Memberships = lazy(() => import("@screens/Membership/Memberships"));
 const EditMemberShip = lazy(() => import("@screens/Membership/EditMemberShip"));
 const Family = lazy(() => import("@src/screens/Family/Family"));
 const AddFamily = lazy(() => import("@src/screens/Family/AddFamily"));
-// const Details = lazy(() => import("@screens/Details/Details"));
+const BookingDetails = lazy(() => import("@screens/Details/BookingDetails"));
 
 export const useAppNavigation: () => NavigationProp<ParamListBase> =
   useNavigation;
 
 const Stack = isIOS ? createStackNavigator() : createNativeStackNavigator();
-
-// export function HomeStake() {
-//   return (
-//     <Stack.Navigator
-//       initialRouteName="Home"
-//       screenOptions={{ headerShown: false }}>
-//       <Stack.Screen name="Home" component={Home} />
-//     </Stack.Navigator>
-//   );
-// }
-
-// export function CourtStake() {
-//   return (
-//     <Stack.Navigator
-//       initialRouteName="Court"
-//       screenOptions={{ headerShown: false, presentation: "modal" }}>
-//       <Stack.Screen name="Court" component={Court} />
-//       <Stack.Screen name="CourtDetail" component={CourtDetail} />
-//     </Stack.Navigator>
-//   );
-// }
-
-// export function CoachStake() {
-//   return (
-//     <Stack.Navigator
-//       initialRouteName="Coach"
-//       screenOptions={{ headerShown: false, presentation: "modal" }}>
-//       <Stack.Screen name="Coach" component={Coach} />
-//       <Stack.Screen name="CoachDetail" component={CoachDetail} />
-//     </Stack.Navigator>
-//   );
-// }
-
-// export function GroupStake() {
-//   return (
-//     <Stack.Navigator
-//       initialRouteName="Group"
-//       screenOptions={{ headerShown: false }}>
-//       <Stack.Screen name="Group" component={Group} />
-//     </Stack.Navigator>
-//   );
-// }
-
-// export function CalenderStake() {
-//   return (
-//     <Stack.Navigator
-//       initialRouteName="Calender"
-//       screenOptions={{ headerShown: false }}>
-//       <Stack.Screen name="Calender" component={Calender} />
-//     </Stack.Navigator>
-//   );
-// }
 
 function MyStack() {
   return (
@@ -146,6 +94,7 @@ function MyStack() {
       <Stack.Screen name="EditMemberShip" component={EditMemberShip} />
       <Stack.Screen name="Family" component={Family} />
       <Stack.Screen name="AddFamily" component={AddFamily} />
+      <Stack.Screen name="BookingDetails" component={BookingDetails} />
     </Stack.Navigator>
   );
 }

@@ -91,30 +91,29 @@ const Permissions = (): PermissionsInterFace => {
       const permission = granted === RESULTS.GRANTED;
       return permission;
     } else {
-      await checkPermission(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-      const granted = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+      await checkPermission(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
+      const granted = await request(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
       const permission = granted === RESULTS.GRANTED;
-      if (permission) await askUserToOnLocation();
+      // if (permission) await askUserToOnLocation();
       return permission;
     }
   };
 
   async function askUserToOnLocation() {
-    const isAllowed =
-      await RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
-        interval: 10000,
-        // fastInterval: 5000,
+    return await RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
+      interval: 10000,
+      // fastInterval: 5000,
+    })
+      .then(data => {
+        console.log("LocationEnabler==>", data);
+        return data;
       })
-        .then(data => {
-          console.log("LocationEnabler==>", data);
-          return data;
-        })
-        .catch(err => {
-          console.log("LocationEnabler==>", err);
-          return err;
-        });
-    const granted = isAllowed === "already-enabled";
-    console.log("granted==>", granted);
+      .catch(err => {
+        console.log("LocationEnabler==>", err);
+        return err;
+      });
+    // const granted = isAllowed === "already-enabled";
+    // console.log("granted==>", granted);
     // return granted;
   }
 

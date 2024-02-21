@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@redux/store";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { loadBooking } from "@reducers/AppDataSlice";
 import { useFocusEffect } from "@react-navigation/native";
+import I18n from "i18n-js";
 
 const UpcomingBookings = lazy(
   () => import("@screens/Calender/UpcomingBookings"),
@@ -47,14 +48,14 @@ function CalenderScreen() {
         }}>
         <TopTab.Screen
           options={{
-            title: "Upcoming",
+            title: I18n.t("screen_messages.button.Upcoming"),
           }}
           name="UpcomingBookings"
           component={UpcomingBookings}
         />
         <TopTab.Screen
           options={{
-            title: "Completed",
+            title: I18n.t("screen_messages.button.Completed"),
           }}
           name="CompletedBookings"
           component={CompletedBookings}

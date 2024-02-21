@@ -7,6 +7,7 @@ import { VerticalSpacing } from "@src/components/Spacing/Spacing";
 import FastImage from "react-native-fast-image";
 import images from "@src/common/AllImages";
 import svgs from "@src/common/AllSvgs";
+import I18n from "i18n-js";
 
 interface BookingCardProps {
   onPress?: () => void;
@@ -39,8 +40,6 @@ function BookingCard(props: BookingCardProps) {
 
   const { theme } = useAppSelector(state => state.theme);
 
-  console.log(JSON.stringify(coach, null, 2));
-
   return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -60,7 +59,7 @@ function BookingCard(props: BookingCardProps) {
         }}>
         <View>
           <AppText style={{ paddingBottom: 5 }} size={12}>
-            Date
+            {I18n.t("screen_messages.date")}
           </AppText>
           <AppText fontStyle="500.medium" size={12}>
             {moment(startTime).utc(false).format("DD MMM, ddd")} -{" "}
@@ -69,7 +68,7 @@ function BookingCard(props: BookingCardProps) {
         </View>
         <View>
           <AppText style={{ paddingBottom: 5, textAlign: "right" }} size={12}>
-            Time
+            {I18n.t("screen_messages.time")}
           </AppText>
           <AppText fontStyle="500.medium" size={12}>
             {moment(startTime).utc(false).format("hh:mm A")} -{" "}
@@ -117,7 +116,7 @@ function BookingCard(props: BookingCardProps) {
               <svgs.LocationV2 color1={theme.secondary} />
               <AppText
                 style={{ maxWidth: "58%" }}
-                fontStyle="400.bold"
+                fontStyle="400.normal"
                 numberOfLines={2}>
                 {location?.locationAddress}
               </AppText>
@@ -149,7 +148,7 @@ function BookingCard(props: BookingCardProps) {
               <svgs.LocationV2 color1={theme.secondary} />
               <AppText
                 style={{ maxWidth: "53%" }}
-                fontStyle="400.bold"
+                fontStyle="400.normal"
                 numberOfLines={2}>
                 {location?.locationAddress}
               </AppText>
@@ -166,7 +165,7 @@ function BookingCard(props: BookingCardProps) {
         }}>
         <View>
           <AppText style={{ paddingBottom: 5 }} size={12}>
-            Booking ID
+            {I18n.t("screen_messages.booking_ID")}
           </AppText>
           <AppText selectable fontStyle="500.medium" size={12}>
             # {bookingNumber}

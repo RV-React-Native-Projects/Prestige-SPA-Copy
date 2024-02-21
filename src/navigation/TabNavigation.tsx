@@ -70,7 +70,7 @@ export default function TabNavigation() {
               color1={color}
               height={35}
               width={35}
-              strokeWidth={focused ? 2 : 1.5}
+              // strokeWidth={focused ? 2 : 1.5}
             />
           ),
         }}
@@ -92,7 +92,7 @@ export default function TabNavigation() {
               color1={color}
               height={35}
               width={35}
-              strokeWidth={focused ? 2 : 1.5}
+              // strokeWidth={focused ? 2 : 1.5}
             />
           ),
         }}
@@ -114,7 +114,7 @@ export default function TabNavigation() {
               color1={color}
               height={40}
               width={40}
-              strokeWidth={focused ? 2 : 1.5}
+              // strokeWidth={focused ? 2 : 1.5}
             />
           ),
         }}
@@ -136,7 +136,7 @@ export default function TabNavigation() {
               color1={color}
               height={35}
               width={35}
-              strokeWidth={focused ? 2 : 1.5}
+              // strokeWidth={focused ? 2 : 1.5}
             />
           ),
         }}
@@ -158,7 +158,7 @@ export default function TabNavigation() {
               color1={color}
               height={20}
               width={20}
-              strokeWidth={focused ? 2 : 1.5}
+              // strokeWidth={focused ? 2 : 1.5}
             />
           ),
         }}

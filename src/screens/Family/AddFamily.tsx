@@ -113,7 +113,7 @@ export default function AddNewFamily(props: any) {
     formData.append("playerCategoryID", toNumber(value.plrCategory));
     formData.append("relationship", value.relation);
 
-    console.log(JSON.stringify(formData, null, 2));
+    // console.log(JSON.stringify(formData, null, 2));
 
     let params = {
       data: formData,
@@ -126,7 +126,7 @@ export default function AddNewFamily(props: any) {
     FamilyManager.createFamily(
       params,
       res => {
-        console.log("Res===>", JSON.stringify(res, null, 2));
+        // console.log("Res===>", JSON.stringify(res, null, 2));
         setLoading(false);
         if (user?.stakeholderID)
           storeDispatch(getAllFamily(user?.stakeholderID));

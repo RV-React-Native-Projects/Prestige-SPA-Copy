@@ -171,8 +171,6 @@ export default function CourtBooking(props: any) {
       second: 0,
     });
 
-    console.log(startDate, endDate);
-
     let params = {
       data: {
         courtID: courtId,
@@ -194,7 +192,6 @@ export default function CourtBooking(props: any) {
       params,
       res => {
         setLoading(false);
-        console.log("Res===>", JSON.stringify(res, null, 2));
         navigation?.navigate("CourtBookingComplete", {
           data: data,
           date: pickedDate,

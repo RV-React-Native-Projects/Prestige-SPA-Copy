@@ -13,12 +13,15 @@ import svgs from "@common/AllSvgs";
 import AppText from "@components/Text/AppText";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
+import { useAppNavigation } from "@src/navigation/Navigation";
+import I18n from "i18n-js";
 
 const windowHeight = Dimensions.get("window").height;
 
 export default function CompletedBookings(props: any) {
   const { user } = useAppSelector(state => state.user);
   const { theme } = useAppSelector(state => state.theme);
+  const navigation = useAppNavigation();
   const storeDispatch = useAppDispatch();
   const { completedBookings, loadingBookings } = useAppSelector(
     state => state.appData,
@@ -29,6 +32,10 @@ export default function CompletedBookings(props: any) {
   const onRefresh = useCallback(() => {
     if (user?.stakeholderID) storeDispatch(loadBooking(user?.stakeholderID));
   }, []);
+
+  const gotoBookingDetails = (data: any) => {
+    navigation.navigate("BookingDetails", { data });
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.appBackgroundColor }}>
@@ -53,6 +60,7 @@ export default function CompletedBookings(props: any) {
           data={completedBookings}
           renderItem={({ item, index }) => (
             <BookingCard
+              onPress={() => gotoBookingDetails(item)}
               key={index}
               startTime={item?.startTime}
               endTime={item?.endTime}
@@ -77,10 +85,10 @@ export default function CompletedBookings(props: any) {
             />
             <VerticalSpacing />
             <AppText fontStyle="500.bold" size={16}>
-              Booking History
+              {I18n.t("screen_messages.booking_history")}
             </AppText>
             <VerticalSpacing />
-            <AppText>Track your ongoing and completed bookings here</AppText>
+            <AppText>{I18n.t("screen_messages.track_booking")}</AppText>
           </View>
         )
       )}

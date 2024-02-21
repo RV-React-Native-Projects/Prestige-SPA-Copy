@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
 import {
   FlatList,
+  Platform,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -27,6 +28,12 @@ import _ from "lodash";
 import Permissions from "@src/helpers/Permissions";
 import Geolocation from "react-native-geolocation-service";
 import Utils from "@common/Utils";
+import {
+  isLocationEnabled,
+  promptForEnableLocationIfNeeded,
+} from "react-native-android-location-enabler";
+
+const isIOS = Platform.OS === "ios";
 
 function Home() {
   const { user, userEmail, approvedMembership, location } = useAppSelector(
@@ -42,8 +49,12 @@ function Home() {
 
   async function getUserCurrentLocation() {
     const permission = await Permissions.getLocationPermissions();
-
+    console.log("Is Out??", permission);
+    const isEnabled = await isLocationEnabled();
+    if (permission && !isIOS && !isEnabled)
+      await promptForEnableLocationIfNeeded();
     if (permission) {
+      console.log("Is GOing Here ??", permission, isEnabled);
       Geolocation.getCurrentPosition(
         position => {
           const { latitude, longitude } = position.coords;
@@ -68,8 +79,8 @@ function Home() {
   }
 
   useEffect(() => {
-    getUserCurrentLocation();
-  }, [user]);
+    if (userEmail) getUserCurrentLocation();
+  }, [userEmail]);
 
   useEffect(() => {
     if (!locations) storeDispatch(loadAllLocations());
@@ -100,8 +111,8 @@ function Home() {
 
   const onRefresh = useCallback(() => {
     getUserCurrentLocation();
-    if (userEmail) storeDispatch(refreshUser(userEmail));
-    storeDispatch(loadAllLocations());
+    // if (userEmail) storeDispatch(refreshUser(userEmail));
+    // storeDispatch(loadAllLocations());
     storeDispatch(loadAllCoach());
   }, [coachs, locations]);
 

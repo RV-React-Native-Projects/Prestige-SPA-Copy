@@ -38,7 +38,7 @@ function CountryNamePicker(props: CountryCodePickerProps) {
   const findCountryCode = () => {
     DeviceCountry.getCountryCode()
       .then(async result => {
-        console.log("getCountryName==>", result);
+        // console.log("getCountryName==>", result);
         setSelected(result?.code?.toUpperCase());
       })
       .catch(e => {

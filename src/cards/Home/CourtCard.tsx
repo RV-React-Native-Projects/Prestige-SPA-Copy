@@ -67,14 +67,20 @@ const CourtCard = (props: CourtCardProps) => {
           numberOfLines={2}>
           {locationName}
         </AppText>
-        <View style={{ flexDirection: "row", height: moderateScale(20, 0.3) }}>
-          <svgs.LocationV2 color1={theme.secondary} height={20} />
-          <AppText fontStyle="400.normal" numberOfLines={1} color={theme.gray}>
-            {I18n.t("screen_messages.distance", {
-              distance: distance?.toLocaleString(),
-            })}
-          </AppText>
-        </View>
+        {distance && (
+          <View
+            style={{ flexDirection: "row", height: moderateScale(20, 0.3) }}>
+            <svgs.LocationV2 color1={theme.secondary} height={20} />
+            <AppText
+              fontStyle="400.normal"
+              numberOfLines={1}
+              color={theme.gray}>
+              {I18n.t("screen_messages.distance", {
+                distance: distance?.toLocaleString(),
+              })}
+            </AppText>
+          </View>
+        )}
         <AppText
           style={{ height: moderateScale(40, 0.3), marginTop: 5 }}
           fontStyle="400.normal"

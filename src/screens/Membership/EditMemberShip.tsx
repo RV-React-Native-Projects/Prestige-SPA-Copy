@@ -94,16 +94,11 @@ export default function EditMemberShip(props: any) {
       },
     };
 
-    console.log(JSON.stringify(formData, null, 2));
-
     setLoading(true);
     MemberShipManager.createMemberShip(
       parsms,
       res => {
-        console.log(
-          "MemberShipManager.createMemberShip",
-          JSON.stringify(res, null, 2),
-        );
+        // console.log("createMemberShip", JSON.stringify(res, null, 2));
         if (user) storeDispatch(getAllMembership(user?.stakeholderID));
         setLoading(false);
       },
