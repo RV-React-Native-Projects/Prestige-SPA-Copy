@@ -17,18 +17,19 @@ import images from "@common/AllImages";
 import svgs from "@common/AllSvgs";
 import AppText from "@components/Text/AppText";
 import { loadAllCoach } from "@reducers/AppDataSlice";
+import I18n from "i18n-js";
 
 const CoachCard = (props: any) => {
   const { theme } = useAppSelector(state => state.theme);
-  const { data, onPress } = props;
+  const { data, onPress, experience } = props;
 
   return (
     <Card
       style={{
         padding: moderateScale(10, 0.3),
         width: "100%",
-        marginRight: 15,
-        borderRadius: 10,
+        marginRight: moderateScale(15, 0.3),
+        borderRadius: moderateScale(10, 0.3),
         position: "relative",
         backgroundColor: theme.modalBackgroundColor,
       }}>
@@ -37,7 +38,11 @@ const CoachCard = (props: any) => {
         onPress={onPress}
         style={{ flexDirection: "row" }}>
         <FastImage
-          style={{ height: 100, width: 100, borderRadius: 200 }}
+          style={{
+            height: moderateScale(100, 0.3),
+            width: moderateScale(100, 0.3),
+            borderRadius: moderateScale(200, 0.3),
+          }}
           source={{
             uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.stakeholder?.imagePath}`,
             priority: FastImage.priority.high,
@@ -45,21 +50,22 @@ const CoachCard = (props: any) => {
           resizeMode={FastImage.resizeMode.cover}
           defaultSource={images.user}
         />
-        <View style={{ marginLeft: 10 }}>
+        <View style={{ marginLeft: moderateScale(10, 0.3) }}>
           <View
             style={{
               backgroundColor:
                 data?.coachCategoryID === 1
                   ? theme.primary
                   : theme.tertiaryText,
-              width: 80,
-              height: 25,
+              width: moderateScale(70, 0.3),
+              height: moderateScale(25, 0.3),
               alignItems: "center",
               justifyContent: "center",
-              borderRadius: 100,
-              marginVertical: 10,
+              borderRadius: moderateScale(100, 0.3),
+              marginBottom: moderateScale(10, 0.3),
             }}>
             <AppText
+              style={{ textTransform: "capitalize" }}
               fontStyle="600.bold"
               color={theme.modalBackgroundColor}
               numberOfLines={2}>
@@ -77,7 +83,10 @@ const CoachCard = (props: any) => {
               numberOfLines={2}
               color={theme.paragraph}
               style={{ paddingHorizontal: 5 }}>
-              Experienc of 4 Years
+              {experience &&
+                I18n.t("screen_messages.year_of_exp", {
+                  year: experience,
+                })}
             </AppText>
           </View>
         </View>
@@ -119,14 +128,19 @@ function CoachScreen() {
         }
         data={coachs}
         renderItem={({ item, index }) => (
-          <CoachCard key={index} data={item} onPress={() => gotoCoach(item)} />
+          <CoachCard
+            key={index}
+            data={item}
+            onPress={() => gotoCoach(item)}
+            experience={item?.experienceYears}
+          />
         )}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          paddingBottom: 100,
-          paddingTop: 15,
-          rowGap: 10,
-          paddingHorizontal: 15,
+          paddingBottom: moderateScale(100, 0.3),
+          paddingTop: moderateScale(15, 0.3),
+          rowGap: moderateScale(10, 0.3),
+          paddingHorizontal: moderateScale(15, 0.3),
         }}
       />
     </AppContainer>

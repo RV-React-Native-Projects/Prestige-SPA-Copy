@@ -16,18 +16,22 @@ import FastImage from "react-native-fast-image";
 import images from "@common/AllImages";
 import svgs from "@common/AllSvgs";
 import { loadAllLocations } from "@reducers/AppDataSlice";
+import I18n from "i18n-js";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Utils from "@src/common/Utils";
 
 const CourtCard = (props: any) => {
   const { theme } = useAppSelector(state => state.theme);
-  const { data, onPress } = props;
+
+  const { data, onPress, isVerified = false, distance } = props;
 
   return (
     <Card
       style={{
         padding: moderateScale(10, 0.3),
         width: "100%",
-        marginRight: 15,
-        borderRadius: 10,
+        marginRight: moderateScale(15, 0.3),
+        borderRadius: moderateScale(10, 0.3),
         position: "relative",
         backgroundColor: theme.modalBackgroundColor,
       }}>
@@ -36,7 +40,11 @@ const CourtCard = (props: any) => {
         onPress={onPress}
         style={{ flexDirection: "row", width: "100%", overflow: "hidden" }}>
         <FastImage
-          style={{ height: 120, width: 130, borderRadius: 5 }}
+          style={{
+            height: moderateScale(120, 0.3),
+            width: moderateScale(130, 0.3),
+            borderRadius: moderateScale(5, 0.3),
+          }}
           source={{
             uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data.courts[0]?.imagePath}`,
             priority: FastImage.priority.high,
@@ -44,9 +52,9 @@ const CourtCard = (props: any) => {
           resizeMode={FastImage.resizeMode.cover}
           defaultSource={images.Placeholder}
         />
-        <View style={{ marginLeft: 10, width: "100%" }}>
+        <View style={{ marginLeft: moderateScale(10, 0.3), width: "100%" }}>
           <AppText
-            style={{ height: 50, maxWidth: "64%" }}
+            style={{ height: moderateScale(50, 0.3), maxWidth: "64%" }}
             fontStyle="600.bold"
             size={16}
             numberOfLines={2}>
@@ -55,22 +63,48 @@ const CourtCard = (props: any) => {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <svgs.LocationV2 color1={theme.secondary} height={20} />
             <AppText fontStyle="400.bold" color={theme.paragraph}>
-              5.4 KM
+              {I18n.t("screen_messages.distance", {
+                distance: distance?.toLocaleString(),
+              })}
             </AppText>
           </View>
           <AppText
-            style={{ height: 25, marginTop: 5, maxWidth: "65%" }}
+            style={{
+              height: moderateScale(25, 0.3),
+              marginTop: moderateScale(5, 0.3),
+              maxWidth: "65%",
+            }}
             fontStyle="400.bold"
             numberOfLines={1}
             color={theme.paragraph}>
             {data?.locationAddress}
           </AppText>
-          <AppText
-            fontStyle="700.semibold"
-            numberOfLines={1}
-            color={theme.primary}>
-            AED {data?.minRate} - AED {data?.maxRate}
-          </AppText>
+          {isVerified ? (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}>
+              <MaterialIcons
+                name="verified"
+                size={20}
+                color={theme.secondary}
+              />
+              <AppText
+                style={{ marginLeft: moderateScale(5, 0.3) }}
+                fontStyle="600.bold">
+                {I18n.t("screen_messages.Verified")}
+              </AppText>
+            </View>
+          ) : (
+            <AppText
+              fontStyle="700.semibold"
+              numberOfLines={1}
+              color={theme.primary}>
+              {I18n.t("screen_messages.price", { price: data?.minRate })} -{" "}
+              {I18n.t("screen_messages.price", { price: data?.maxRate })}
+            </AppText>
+          )}
         </View>
       </TouchableOpacity>
     </Card>
@@ -79,6 +113,7 @@ const CourtCard = (props: any) => {
 
 function CourtScreen() {
   const { theme } = useAppSelector(state => state.theme);
+  const { approvedMembership, location } = useAppSelector(state => state.user);
   const { locations, loadingLocations } = useAppSelector(
     state => state.appData,
   );
@@ -111,14 +146,34 @@ function CourtScreen() {
         }
         data={locations}
         renderItem={({ item, index }) => (
-          <CourtCard key={index} data={item} onPress={() => gotoCourt(item)} />
+          <CourtCard
+            key={index}
+            data={item}
+            onPress={() => gotoCourt(item)}
+            distance={
+              location &&
+              Utils.getUserDistance(
+                location?.latitude,
+                location?.longitude,
+                item?.lat,
+                item?.long,
+              )
+            }
+            isVerified={
+              approvedMembership && approvedMembership?.length > 0
+                ? approvedMembership.some(
+                    mem => mem.locationID === item?.locationID,
+                  )
+                : false
+            }
+          />
         )}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          paddingBottom: 100,
-          paddingTop: 15,
-          rowGap: 10,
-          paddingHorizontal: 15,
+          paddingBottom: moderateScale(100, 0.3),
+          paddingTop: moderateScale(15, 0.3),
+          rowGap: moderateScale(10, 0.3),
+          paddingHorizontal: moderateScale(15, 0.3),
         }}
       />
     </AppContainer>
