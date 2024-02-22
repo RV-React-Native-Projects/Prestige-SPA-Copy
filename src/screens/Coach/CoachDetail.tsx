@@ -492,7 +492,9 @@ function CoachDetail(props: any) {
                         {item?.name}
                       </AppText>
                       <VerticalSpacing size={5} />
-                      <AppText fontStyle="400.normal">
+                      <AppText
+                        style={{ textTransform: "capitalize" }}
+                        fontStyle="400.normal">
                         {item?.relationship}
                       </AppText>
                     </View>

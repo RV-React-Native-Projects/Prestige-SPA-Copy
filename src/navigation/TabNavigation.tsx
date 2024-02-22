@@ -16,7 +16,7 @@ const Home = lazy(() => import("@screens/Home/Home"));
 const Court = lazy(() => import("@screens/Court/Court"));
 const Coach = lazy(() => import("@screens/Coach/Coach"));
 const Group = lazy(() => import("@screens/Group/Group"));
-const Calender = lazy(() => import("@screens/Calender/Calender"));
+const Booking = lazy(() => import("@src/screens/Booking/Booking"));
 
 export default function TabNavigation() {
   const { theme } = useAppSelector(state => state.theme);
@@ -142,8 +142,8 @@ export default function TabNavigation() {
         }}
       /> */}
       <Tab.Screen
-        name="CalenderTab"
-        component={Calender}
+        name="BookingTab"
+        component={Booking}
         options={{
           tabBarLabel: ({ color, focused }) => (
             <AppText

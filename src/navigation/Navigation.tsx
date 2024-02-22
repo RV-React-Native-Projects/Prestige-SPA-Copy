@@ -26,25 +26,27 @@ const Home = lazy(() => import("@screens/Home/Home"));
 const Court = lazy(() => import("@screens/Court/Court"));
 const CourtDetail = lazy(() => import("@screens/Court/CourtDetail"));
 const CourtSlot = lazy(() => import("@screens/Court/CourtSlot"));
-const CourtBooking = lazy(() => import("@screens/Booking/CourtBooking"));
+const CourtBooking = lazy(() => import("@src/screens/Court/CourtBooking"));
 const CourtBookingComplete = lazy(
-  () => import("@screens/BookingComplete/CourtBookingComplete"),
-);
-const CoachBookingComplete = lazy(
-  () => import("@screens/BookingComplete/CoachBookingComplete"),
+  () => import("@src/screens/Court/CourtBookingComplete"),
 );
 const Coach = lazy(() => import("@screens/Coach/Coach"));
 const CoachDetail = lazy(() => import("@screens/Coach/CoachDetail"));
-const CoachBooking = lazy(() => import("@screens/Booking/CoachBooking"));
+const CoachBooking = lazy(() => import("@src/screens/Coach/CoachBooking"));
 const CoachSlot = lazy(() => import("@screens/Coach/CoachSlot"));
+const CoachBookingComplete = lazy(
+  () => import("@src/screens/Coach/CoachBookingComplete"),
+);
 const Group = lazy(() => import("@screens/Group/Group"));
-const Calender = lazy(() => import("@screens/Calender/Calender"));
+const Booking = lazy(() => import("@src/screens/Booking/Booking"));
 const Profile = lazy(() => import("@screens/Profile/Profile"));
 const Memberships = lazy(() => import("@screens/Membership/Memberships"));
 const EditMemberShip = lazy(() => import("@screens/Membership/EditMemberShip"));
 const Family = lazy(() => import("@src/screens/Family/Family"));
 const AddFamily = lazy(() => import("@src/screens/Family/AddFamily"));
-const BookingDetails = lazy(() => import("@screens/Details/BookingDetails"));
+const BookingDetails = lazy(
+  () => import("@src/screens/Booking/BookingDetails"),
+);
 
 export const useAppNavigation: () => NavigationProp<ParamListBase> =
   useNavigation;
@@ -88,7 +90,7 @@ function MyStack() {
         options={{ gestureEnabled: false }}
       />
       <Stack.Screen name="Group" component={Group} />
-      <Stack.Screen name="Calender" component={Calender} />
+      <Stack.Screen name="Booking" component={Booking} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Memberships" component={Memberships} />
       <Stack.Screen name="EditMemberShip" component={EditMemberShip} />
