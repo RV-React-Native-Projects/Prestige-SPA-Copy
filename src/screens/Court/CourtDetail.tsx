@@ -30,6 +30,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Feather from "react-native-vector-icons/Feather";
 import Modal from "react-native-modal";
 import Utils from "@common/Utils";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const isIOS = Platform.OS === "ios";
 const windowHeight = Dimensions.get("window").height;
@@ -163,12 +164,21 @@ function CourtDetail(props: any) {
                 borderRadius: moderateScale(10, 0.3),
                 ...theme.light_shadow,
               }}>
-              <RadioButton.Android
-                onPress={() => setFamilyID(null)}
-                value={""}
-                status={!!familyID ? "unchecked" : "checked"}
-                color={theme.secondary}
-              />
+              <View style={{ marginRight: moderateScale(5, 0.3) }}>
+                {!familyID ? (
+                  <Ionicons
+                    name="radio-button-on"
+                    color={theme.secondary}
+                    size={25}
+                  />
+                ) : (
+                  <Ionicons
+                    name="radio-button-off"
+                    color={theme.gray}
+                    size={25}
+                  />
+                )}
+              </View>
               {user?.imagePath ? (
                 <FastImage
                   style={{
@@ -236,11 +246,21 @@ function CourtDetail(props: any) {
                       borderRadius: moderateScale(10, 0.3),
                       ...theme.light_shadow,
                     }}>
-                    <RadioButton.Android
-                      // disabled={!item?.available}
-                      value={toString(item.familyMemberID)}
-                      color={theme.secondary}
-                    />
+                    <View style={{ marginRight: moderateScale(5, 0.3) }}>
+                      {toString(item.familyMemberID) === familyID ? (
+                        <Ionicons
+                          name="radio-button-on"
+                          color={theme.secondary}
+                          size={25}
+                        />
+                      ) : (
+                        <Ionicons
+                          name="radio-button-off"
+                          color={theme.gray}
+                          size={25}
+                        />
+                      )}
+                    </View>
                     {item?.imagePath ? (
                       <FastImage
                         style={{

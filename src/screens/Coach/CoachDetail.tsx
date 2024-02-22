@@ -35,6 +35,7 @@ import Feather from "react-native-vector-icons/Feather";
 import Utils from "@common/Utils";
 import Modal from "react-native-modal";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const isIOS = Platform.OS === "ios";
 const windowHeight = Dimensions.get("window").height;
@@ -353,12 +354,21 @@ function CoachDetail(props: any) {
                 borderRadius: moderateScale(10, 0.3),
                 ...theme.light_shadow,
               }}>
-              <RadioButton.Android
-                onPress={() => setFamilyID(null)}
-                value={""}
-                status={!!familyID ? "unchecked" : "checked"}
-                color={theme.secondary}
-              />
+              <View style={{ marginRight: moderateScale(5, 0.3) }}>
+                {!familyID ? (
+                  <Ionicons
+                    name="radio-button-on"
+                    color={theme.secondary}
+                    size={25}
+                  />
+                ) : (
+                  <Ionicons
+                    name="radio-button-off"
+                    color={theme.gray}
+                    size={25}
+                  />
+                )}
+              </View>
               {user?.imagePath ? (
                 <FastImage
                   style={{
@@ -426,11 +436,21 @@ function CoachDetail(props: any) {
                       borderRadius: moderateScale(10, 0.3),
                       ...theme.light_shadow,
                     }}>
-                    <RadioButton.Android
-                      // disabled={!item?.available}
-                      value={toString(item.familyMemberID)}
-                      color={theme.secondary}
-                    />
+                    <View style={{ marginRight: moderateScale(5, 0.3) }}>
+                      {toString(item.familyMemberID) === familyID ? (
+                        <Ionicons
+                          name="radio-button-on"
+                          color={theme.secondary}
+                          size={25}
+                        />
+                      ) : (
+                        <Ionicons
+                          name="radio-button-off"
+                          color={theme.gray}
+                          size={25}
+                        />
+                      )}
+                    </View>
                     {item?.imagePath ? (
                       <FastImage
                         style={{
@@ -602,7 +622,6 @@ function CoachDetail(props: any) {
                 })}
               </RadioButton.Group>
             </ScrollView>
-
             <Animatable.View
               animation="fadeInUp"
               duration={500}
@@ -638,10 +657,6 @@ function CoachDetail(props: any) {
               },
               wrapper: { backgroundColor: "#FFFFFF00" },
             }}
-            // onClose={() => {
-            //   refBookingType.current?.close();
-            //   refSeesionType.current?.close();
-            // }}
             animationType="fade"
             closeOnPressBack={true}
             keyboardAvoidingViewEnabled={true}
@@ -711,21 +726,21 @@ function CoachDetail(props: any) {
                           borderRadius: 10,
                           ...theme.light_shadow,
                         }}>
-                        <BouncyCheckbox
-                          size={25}
-                          fillColor={theme.secondary}
-                          unfillColor={theme.modalBackgroundColor}
-                          textStyle={{
-                            textDecorationLine: "none",
-                          }}
-                          innerIconStyle={{ borderWidth: 2 }}
-                          isChecked={item?.creditTypeID === creditTypeID}
-                          disableBuiltInState
-                          onPress={() => {
-                            setCreditTypeID(item?.creditTypeID);
-                            setSelectedSlot(item);
-                          }}
-                        />
+                        <View style={{ marginRight: moderateScale(5, 0.3) }}>
+                          {item?.creditTypeID === creditTypeID ? (
+                            <Ionicons
+                              name="radio-button-on"
+                              color={theme.secondary}
+                              size={25}
+                            />
+                          ) : (
+                            <Ionicons
+                              name="radio-button-off"
+                              color={theme.gray}
+                              size={25}
+                            />
+                          )}
+                        </View>
                         <View>
                           <AppText
                             // color={item?.available ? theme.textColor : theme.gray}

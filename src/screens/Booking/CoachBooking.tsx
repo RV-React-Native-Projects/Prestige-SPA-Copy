@@ -436,7 +436,8 @@ export default function CoachBooking(props: any) {
             </View>
           </View>
         </View>
-        {credit > 0 ? (
+        {(credit > 0 && !dateRange) ||
+        (dateRange && credit >= dateRange?.length) ? (
           <View
             style={{
               marginHorizontal: 15,

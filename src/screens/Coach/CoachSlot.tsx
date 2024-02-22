@@ -29,6 +29,7 @@ import CoachManager from "@src/services/features/Coach/CoachManager";
 import SlotTime from "@src/cards/Slots/SlotTime";
 import { loadTerms } from "@src/redux/reducers/AppDataSlice";
 import RectangleSK from "@src/assets/skelton/RectangleSK";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const isIOS = Platform.OS === "ios";
 
@@ -533,16 +534,32 @@ export default function CoachSlot(props: any) {
                     style={{
                       flexDirection: "row",
                       alignItems: "center",
-                      padding: 10,
+                      padding: moderateScale(10, 0.3),
                       backgroundColor: theme.modalBackgroundColor,
-                      marginBottom: 10,
-                      borderRadius: 10,
+                      marginBottom: moderateScale(10, 0.3),
+                      borderRadius: moderateScale(10, 0.3),
                       ...theme.light_shadow,
+                      paddingVertical: moderateScale(15, 0.3),
                     }}>
-                    <RadioButton.Android
-                      value={toString(item.courtID)}
-                      color={theme.secondary}
-                    />
+                    <View style={{ marginRight: moderateScale(5, 0.3) }}>
+                      {item.courtID === courtId ? (
+                        <Animatable.View useNativeDriver animation="bounceIn">
+                          <Ionicons
+                            name="radio-button-on"
+                            color={theme.secondary}
+                            size={25}
+                          />
+                        </Animatable.View>
+                      ) : (
+                        <Animatable.View useNativeDriver animation="fadeIn">
+                          <Ionicons
+                            name="radio-button-off"
+                            color={theme.gray}
+                            size={25}
+                          />
+                        </Animatable.View>
+                      )}
+                    </View>
                     <View key={index} style={{}}>
                       <AppText size={16} fontStyle="500.bold">
                         {item?.courtName}

@@ -32,7 +32,7 @@ import SlotsDuration from "@cards/Slots/SlotsDuration";
 import { loadSlots } from "@redux/reducers/AppDataSlice";
 import RectangleSK from "@assets/skelton/RectangleSK";
 import SlotTime from "@cards/Slots/SlotTime";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const isIOS = Platform.OS === "ios";
 
@@ -367,11 +367,21 @@ export default function CourtSlot(props: any) {
                         borderRadius: 10,
                         ...theme.light_shadow,
                       }}>
-                      <RadioButton.Android
-                        // disabled={!item?.available}
-                        value={toString(item.courtID)}
-                        color={theme.secondary}
-                      />
+                      <View style={{ marginRight: moderateScale(5, 0.3) }}>
+                        {toString(item.courtID) === courtId ? (
+                          <Ionicons
+                            name="radio-button-on"
+                            color={theme.secondary}
+                            size={25}
+                          />
+                        ) : (
+                          <Ionicons
+                            name="radio-button-off"
+                            color={theme.gray}
+                            size={25}
+                          />
+                        )}
+                      </View>
                       <View key={index} style={{}}>
                         <AppText
                           // color={item?.available ? theme.textColor : theme.gray}

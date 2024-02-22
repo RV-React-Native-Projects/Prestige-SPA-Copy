@@ -223,7 +223,7 @@ export default function CoachBookingComplete(props: any) {
                     alignItems: "center",
                     justifyContent: "center",
                     borderRadius: 20,
-                    marginVertical: 10,
+                    marginBottom: 10,
                   }}>
                   <AppText
                     style={{}}
@@ -263,11 +263,7 @@ export default function CoachBookingComplete(props: any) {
                 }}
                 resizeMode={FastImage.resizeMode.cover}
               />
-              <View
-                style={{
-                  paddingHorizontal: moderateScale(10, 0.3),
-                  padding: moderateScale(5, 0.3),
-                }}>
+              <View style={{ paddingHorizontal: moderateScale(10, 0.3) }}>
                 <AppText
                   fontStyle="700.bold"
                   numberOfLines={1}
@@ -292,7 +288,7 @@ export default function CoachBookingComplete(props: any) {
                     height={20}
                     width={20}
                   />
-                  <AppText numberOfLines={1}>
+                  <AppText style={{ maxWidth: "55%" }} numberOfLines={2}>
                     {court?.location?.locationAddress}
                   </AppText>
                 </View>
@@ -347,6 +343,7 @@ export default function CoachBookingComplete(props: any) {
         style={{
           backgroundColor: theme.modalBackgroundColor,
           padding: moderateScale(20, 0.3),
+          ...theme.dark_shadow,
         }}>
         <AppButton
           Title={I18n.t("screen_messages.button.done")}
