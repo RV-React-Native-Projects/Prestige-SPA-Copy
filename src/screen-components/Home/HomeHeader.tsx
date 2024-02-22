@@ -59,7 +59,7 @@ export default function HomeHeader() {
             style={{ marginHorizontal: 5 }}>
             Current
           </AppText>
-          <svgs.Down height={15} width={15} />
+          {/* <svgs.Down height={15} width={15} color1={theme.iconColor} /> */}
         </View>
         <AppText
           fontStyle="400.normal"

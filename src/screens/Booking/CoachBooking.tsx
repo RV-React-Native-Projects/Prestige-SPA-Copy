@@ -23,6 +23,7 @@ import CoachManager from "@features/Coach/CoachManager";
 import StripeManager from "@features/Stripe/StripeManager";
 import SlotCard from "@cards/Slots/SlotCard";
 import useAppToast from "@components/Alert/AppToast";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 interface DateRangeProps {
   startDate: string | moment.Moment | Date;
@@ -48,6 +49,7 @@ export default function CoachBooking(props: any) {
     selectedSlot = null,
     selectedTerm = null,
     familyID = null,
+    credit = null,
   } = props.route.params || {};
 
   const { initPaymentSheet, presentPaymentSheet, handleURLCallback } =
@@ -58,11 +60,12 @@ export default function CoachBooking(props: any) {
   const appToast = useAppToast();
   const [loading, setLoading] = useState<boolean>(false);
   const [dateRange, setdateRange] = useState<DateRangeProps[] | null>(null);
+  const [useCredit, setUseCredit] = useState<boolean>(false);
 
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
 
-  // console.log("AT CoachBooking===>", JSON.stringify(slot, null, 2));
+  // console.log("AT CoachBooking===>", JSON.stringify(credit, null, 2));
 
   const handleDeepLink = useCallback(
     async (url: string | null) => {
@@ -134,6 +137,7 @@ export default function CoachBooking(props: any) {
       bookingType === "MULTI"
         ? dateRange && slot?.multiSessionRate * dateRange?.length
         : slot?.rate;
+
     if (amount) {
       StripeManager.generatePaymentSheet(
         { data: { amount: amount } },
@@ -188,31 +192,6 @@ export default function CoachBooking(props: any) {
     }
   };
 
-  // function createUserCredit() {
-  //   setLoading(true);
-  //   let params = {
-  //     data: {
-  //       creditTypeID: creditTypeID,
-  //       stakeholderID: user?.stakeholderID,
-  //       quantity: 1,
-  //       amountPaid:
-  //         bookingType === "SINGLE" ? slot?.rate : slot?.multiSessionRate,
-  //     },
-  //   };
-  //   AvailableCreditManager.createCredit(
-  //     params,
-  //     res => {
-  //       console.log("Res===>", JSON.stringify(res, null, 2));
-  //       // setSlotDuration(res?.data?.data);
-  //       createOneBooking();
-  //     },
-  //     err => {
-  //       setLoading(false);
-  //       console.log("Error createCredit===>", err);
-  //     },
-  //   );
-  // }
-
   function createOneBooking() {
     setLoading(true);
     const parsedDate = moment(pickedDate).utc(false);
@@ -246,14 +225,19 @@ export default function CoachBooking(props: any) {
         startTime: startDate,
         endTime: endDate,
         isPaymentDone: true,
-        familyMemberID: toNumber(familyID),
+        familyMemberID: familyID,
         customerID: user?.stakeholderID,
-        amount: bookingType === "SINGLE" ? slot?.rate : slot?.multiSessionRate,
+        amount: useCredit
+          ? 0
+          : bookingType === "SINGLE"
+            ? slot?.rate
+            : slot?.multiSessionRate,
         creditTypeID: creditTypeID,
         email: user?.email,
         coachSessionTermID:
           bookingType === "MULTI" ? selectedTerm?.CoachSessionTermID : null,
         termName: bookingType === "MULTI" ? selectedTerm?.termName : null,
+        useAvailableCredits: useCredit,
       },
     };
     CoachManager.CoachBookingCreateOne(
@@ -452,6 +436,38 @@ export default function CoachBooking(props: any) {
             </View>
           </View>
         </View>
+        {credit > 0 ? (
+          <View
+            style={{
+              marginHorizontal: 15,
+              padding: 15,
+              borderRadius: 10,
+              backgroundColor: theme.modalBackgroundColor,
+            }}>
+            <AppText fontStyle="500.bold" size={16} color={theme.primary}>
+              {I18n.t("screen_messages.apply_credits_payment")} ( {credit} )
+            </AppText>
+            <VerticalSpacing />
+            <BouncyCheckbox
+              size={25}
+              fillColor={theme.primary}
+              unfillColor={theme.modalBackgroundColor}
+              textStyle={{
+                textDecorationLine: "none",
+              }}
+              textComponent={
+                <AppText
+                  style={{ paddingLeft: 10, maxWidth: "95%" }}
+                  fontStyle="400.normal"
+                  color={useCredit ? theme.title : theme.gray}>
+                  {I18n.t("screen_messages.use_available_credits")}
+                </AppText>
+              }
+              innerIconStyle={{ borderWidth: 2 }}
+              onPress={(isChecked: boolean) => setUseCredit(isChecked)}
+            />
+          </View>
+        ) : null}
         <VerticalSpacing />
         {bookingType === "MULTI" && (
           <View style={{ paddingHorizontal: 15 }}>
@@ -492,8 +508,12 @@ export default function CoachBooking(props: any) {
                 Per Session Amount
               </AppText>
               <AppText fontStyle="400.normal" color={theme.gray}>
-                AED{" "}
-                {bookingType === "SINGLE" ? slot?.rate : slot?.multiSessionRate}
+                {I18n.t("screen_messages.price", {
+                  price:
+                    bookingType === "SINGLE"
+                      ? slot?.rate
+                      : slot?.multiSessionRate,
+                })}
               </AppText>
             </View>
             {bookingType === "MULTI" && (
@@ -520,12 +540,17 @@ export default function CoachBooking(props: any) {
                 justifyContent: "space-between",
                 marginTop: 10,
               }}>
-              <AppText fontStyle="500.semibold">Total</AppText>
+              <AppText fontStyle="500.semibold">
+                {I18n.t("screen_messages.To_Pay")}
+              </AppText>
               <AppText fontStyle="600.semibold">
-                AED{" "}
-                {bookingType === "SINGLE"
-                  ? slot?.rate
-                  : dateRange && slot?.multiSessionRate * dateRange?.length}
+                {I18n.t("screen_messages.price", {
+                  price: useCredit
+                    ? 0
+                    : bookingType === "SINGLE"
+                      ? slot?.rate
+                      : dateRange && slot?.multiSessionRate * dateRange?.length,
+                })}
               </AppText>
             </View>
           </View>
@@ -541,12 +566,16 @@ export default function CoachBooking(props: any) {
         }}>
         <AppButton
           loading={loading}
-          Title={I18n.t("screen_messages.button.Proceed_to_Payment")}
+          Title={
+            useCredit
+              ? I18n.t("screen_messages.button.book_now")
+              : I18n.t("screen_messages.button.Proceed_to_Payment")
+          }
           color={theme.primary}
           fontStyle="600.normal"
           fontSize={16}
           height={50}
-          onPress={() => openPaymentSheet()}
+          onPress={() => (useCredit ? createOneBooking() : openPaymentSheet())}
         />
       </Animatable.View>
     </AppContainer>

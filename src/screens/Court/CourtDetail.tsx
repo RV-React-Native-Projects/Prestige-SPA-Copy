@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   View,
+  TouchableOpacity,
 } from "react-native";
 import AppContainer from "@components/Container/AppContainer";
 import { useAppSelector } from "@redux/store";
@@ -25,7 +26,6 @@ import I18n from "i18n-js";
 import MapView, { Marker } from "react-native-maps";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { RadioButton } from "react-native-paper";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Feather from "react-native-vector-icons/Feather";
 import Modal from "react-native-modal";
@@ -72,7 +72,7 @@ function CourtDetail(props: any) {
     navigation.navigate("AddFamily", { data: null });
   }
 
-  // console.log(JSON.stringify(isVerified, null, 2));
+  // console.log(JSON.stringify(data, null, 2));
 
   return (
     <AppContainer
@@ -81,176 +81,6 @@ function CourtDetail(props: any) {
       backgroundColor={theme.appBackgroundColor}
       fullHeight={false}>
       <BackButton />
-      <ScrollView
-        style={{
-          flex: 1,
-          minHeight: isIOS ? "100%" : "auto",
-        }}
-        contentContainerStyle={{ paddingBottom: moderateScale(100, 0.3) }}>
-        <View style={{ height: moderateScale(300, 0.3) }}>
-          <Swiper
-            style={styles.wrapper}
-            height={moderateScale(300, 0.3)}
-            dot={
-              <View
-                style={{
-                  backgroundColor: theme.gray,
-                  width: moderateScale(5, 0.3),
-                  height: moderateScale(5, 0.3),
-                  borderRadius: moderateScale(4, 0.3),
-                  marginLeft: moderateScale(3, 0.3),
-                  marginRight: moderateScale(3, 0.3),
-                  marginTop: moderateScale(3, 0.3),
-                  marginBottom: moderateScale(3, 0.3),
-                }}
-              />
-            }
-            activeDot={
-              <View
-                style={{
-                  backgroundColor: theme.secondary,
-                  width: moderateScale(8, 0.3),
-                  height: moderateScale(8, 0.3),
-                  borderRadius: moderateScale(4, 0.3),
-                  marginLeft: moderateScale(3, 0.3),
-                  marginRight: moderateScale(3, 0.3),
-                  marginTop: moderateScale(3, 0.3),
-                  marginBottom: moderateScale(3, 0.3),
-                }}
-              />
-            }
-            paginationStyle={{
-              bottom: moderateScale(-23, 0.3),
-              left: null,
-              right: moderateScale(10, 0.3),
-            }}
-            loop>
-            {_.map(data?.courts, (court, index) => (
-              <FastImage
-                key={index}
-                style={[
-                  styles.slide,
-                  { height: moderateScale(300, 0.3), width: "auto" },
-                ]}
-                defaultSource={images.Placeholder}
-                source={{
-                  uri: `https://nodejsclusters-160185-0.cloudclusters.net/${court?.imagePath}`,
-                  priority: FastImage.priority.high,
-                }}
-                resizeMode={FastImage.resizeMode.cover}
-              />
-            ))}
-          </Swiper>
-        </View>
-        <VerticalSpacing size={20} />
-        <View style={{ paddingHorizontal: moderateScale(15, 0.3) }}>
-          <AppText fontStyle="700.bold" size={20}>
-            {data?.locationName}
-          </AppText>
-          <VerticalSpacing />
-          {isVerified ? (
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: moderateScale(5, 0.3),
-              }}>
-              <MaterialIcons
-                name="verified"
-                size={20}
-                color={theme.secondary}
-              />
-              <AppText
-                style={{ marginLeft: moderateScale(5, 0.3) }}
-                fontStyle="600.bold">
-                {I18n.t("screen_messages.Verified")}
-              </AppText>
-            </View>
-          ) : (
-            <AppText fontStyle="600.semibold" size={16} color={theme.primary}>
-              {I18n.t("screen_messages.price", { price: data?.minRate })} -{" "}
-              {I18n.t("screen_messages.price", { price: data?.maxRate })}
-            </AppText>
-          )}
-          <VerticalSpacing />
-          <View style={{}}>
-            <View
-              style={{
-                flexDirection: "row",
-                height: moderateScale(20, 0.3),
-                marginLeft: moderateScale(-8, 0.3),
-              }}>
-              <svgs.LocationV2
-                color1={theme.secondary}
-                height={20}
-                width={30}
-              />
-              <AppText
-                numberOfLines={2}
-                color={theme.gray}
-                fontStyle="500.semibold">
-                {I18n.t("screen_messages.distance", {
-                  distance:
-                    location &&
-                    Utils.getUserDistance(
-                      location?.latitude,
-                      location?.longitude,
-                      data?.lat,
-                      data?.long,
-                    ).toLocaleString(),
-                })}
-              </AppText>
-            </View>
-            <AppText
-              style={{
-                height: moderateScale(40, 0.3),
-                marginTop: moderateScale(5, 0.3),
-                marginLeft: moderateScale(25, 0.3),
-                maxWidth: "90%",
-              }}
-              numberOfLines={2}
-              fontStyle="500.semibold"
-              color={theme.gray}>
-              {data?.locationAddress}
-            </AppText>
-          </View>
-          <AppText fontStyle="600.semibold" size={16}>
-            {I18n.t("screen_messages.Directions")}
-          </AppText>
-          <VerticalSpacing size={15} />
-          <View style={{ height: moderateScale(300, 0.3) }}>
-            <MapView
-              ref={_map}
-              mapType="standard"
-              style={[
-                styles.map,
-                {
-                  height: 300,
-                  borderRadius: moderateScale(10, 0.3),
-                },
-              ]}
-              scrollEnabled={false}
-              zoomEnabled={false}
-              minZoomLevel={15}
-              region={{
-                latitude: data?.lat,
-                longitude: data?.long,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.04,
-              }}>
-              <Marker
-                draggable={false}
-                coordinate={{
-                  latitude: data?.lat,
-                  longitude: data?.long,
-                }}>
-                <svgs.MapCustomIcon width={60} height={60} />
-              </Marker>
-            </MapView>
-          </View>
-          <VerticalSpacing size={15} />
-        </View>
-      </ScrollView>
       <Modal
         isVisible={showPicker}
         animationIn={"slideInUp"}
@@ -261,7 +91,12 @@ function CourtDetail(props: any) {
         deviceHeight={moderateScale(windowHeight, 0.3)}
         deviceWidth={moderateScale(windowWidth, 0.3)}
         onBackdropPress={toggleModal}
-        onBackButtonPress={toggleModal}>
+        onBackButtonPress={toggleModal}
+        swipeDirection={["down"]}
+        onSwipeComplete={toggleModal}
+        hideModalContentWhileAnimating
+        propagateSwipe
+        useNativeDriverForBackdrop>
         <View
           style={[
             {
@@ -307,9 +142,9 @@ function CourtDetail(props: any) {
             showsVerticalScrollIndicator={false}
             style={{
               height: "100%",
-              paddingHorizontal: moderateScale(15, 0.3),
             }}
             contentContainerStyle={{
+              paddingHorizontal: moderateScale(15, 0.3),
               paddingTop: moderateScale(20, 0.3),
               paddingBottom: moderateScale(50, 0.3),
             }}>
@@ -491,6 +326,177 @@ function CourtDetail(props: any) {
           </Animatable.View>
         </View>
       </Modal>
+      <ScrollView
+        style={{
+          flex: 1,
+          minHeight: isIOS ? "100%" : "auto",
+        }}
+        contentContainerStyle={{ paddingBottom: moderateScale(100, 0.3) }}>
+        <View style={{ height: moderateScale(300, 0.3) }}>
+          <Swiper
+            style={styles.wrapper}
+            height={moderateScale(300, 0.3)}
+            dot={
+              <View
+                style={{
+                  backgroundColor: theme.gray,
+                  width: moderateScale(5, 0.3),
+                  height: moderateScale(5, 0.3),
+                  borderRadius: moderateScale(4, 0.3),
+                  marginLeft: moderateScale(3, 0.3),
+                  marginRight: moderateScale(3, 0.3),
+                  marginTop: moderateScale(3, 0.3),
+                  marginBottom: moderateScale(3, 0.3),
+                }}
+              />
+            }
+            activeDot={
+              <View
+                style={{
+                  backgroundColor: theme.secondary,
+                  width: moderateScale(8, 0.3),
+                  height: moderateScale(8, 0.3),
+                  borderRadius: moderateScale(4, 0.3),
+                  marginLeft: moderateScale(3, 0.3),
+                  marginRight: moderateScale(3, 0.3),
+                  marginTop: moderateScale(3, 0.3),
+                  marginBottom: moderateScale(3, 0.3),
+                }}
+              />
+            }
+            paginationStyle={{
+              bottom: moderateScale(-23, 0.3),
+              left: null,
+              right: moderateScale(10, 0.3),
+            }}
+            loop>
+            {_.map(data?.courts, (court, index) => (
+              <FastImage
+                key={index}
+                style={[
+                  styles.slide,
+                  { height: moderateScale(300, 0.3), width: "auto" },
+                ]}
+                defaultSource={images.Placeholder}
+                source={{
+                  uri: `https://nodejsclusters-160185-0.cloudclusters.net/${court?.imagePath}`,
+                  priority: FastImage.priority.high,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+              />
+            ))}
+          </Swiper>
+        </View>
+        <VerticalSpacing size={20} />
+        <View style={{ paddingHorizontal: moderateScale(15, 0.3) }}>
+          <AppText fontStyle="700.bold" size={20}>
+            {data?.locationName}
+          </AppText>
+          <VerticalSpacing />
+          {isVerified ? (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginTop: moderateScale(5, 0.3),
+              }}>
+              <MaterialIcons
+                name="verified"
+                size={20}
+                color={theme.secondary}
+              />
+              <AppText
+                style={{ marginLeft: moderateScale(5, 0.3) }}
+                fontStyle="600.bold">
+                {I18n.t("screen_messages.Verified")}
+              </AppText>
+            </View>
+          ) : (
+            <AppText fontStyle="600.semibold" size={16} color={theme.primary}>
+              {I18n.t("screen_messages.price", { price: data?.minRate })} -{" "}
+              {I18n.t("screen_messages.price", { price: data?.maxRate })}
+            </AppText>
+          )}
+          <VerticalSpacing />
+          <View style={{}}>
+            <View
+              style={{
+                flexDirection: "row",
+                height: moderateScale(20, 0.3),
+                marginLeft: moderateScale(-8, 0.3),
+              }}>
+              <svgs.LocationV2
+                color1={theme.secondary}
+                height={20}
+                width={30}
+              />
+              <AppText
+                numberOfLines={2}
+                color={theme.gray}
+                fontStyle="500.semibold">
+                {I18n.t("screen_messages.distance", {
+                  distance:
+                    location &&
+                    Utils.getUserDistance(
+                      location?.latitude,
+                      location?.longitude,
+                      data?.lat,
+                      data?.long,
+                    ).toLocaleString(),
+                })}
+              </AppText>
+            </View>
+            <AppText
+              style={{
+                height: moderateScale(40, 0.3),
+                marginTop: moderateScale(5, 0.3),
+                marginLeft: moderateScale(25, 0.3),
+                maxWidth: "90%",
+              }}
+              numberOfLines={2}
+              fontStyle="500.semibold"
+              color={theme.gray}>
+              {data?.locationAddress}
+            </AppText>
+          </View>
+          <AppText fontStyle="600.semibold" size={16}>
+            {I18n.t("screen_messages.Directions")}
+          </AppText>
+          <VerticalSpacing size={15} />
+          <View style={{ height: moderateScale(300, 0.3) }}>
+            <MapView
+              ref={_map}
+              mapType="standard"
+              style={[
+                styles.map,
+                {
+                  height: 300,
+                  borderRadius: moderateScale(10, 0.3),
+                },
+              ]}
+              scrollEnabled={false}
+              zoomEnabled={false}
+              minZoomLevel={15}
+              region={{
+                latitude: data?.lat,
+                longitude: data?.long,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.04,
+              }}>
+              <Marker
+                draggable={false}
+                coordinate={{
+                  latitude: data?.lat,
+                  longitude: data?.long,
+                }}>
+                <svgs.MapCustomIcon width={60} height={60} />
+              </Marker>
+            </MapView>
+          </View>
+          <VerticalSpacing size={15} />
+        </View>
+      </ScrollView>
+
       <Animatable.View
         animation="fadeInUp"
         duration={1000}

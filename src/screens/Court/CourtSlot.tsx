@@ -25,13 +25,13 @@ import svgs from "@common/AllSvgs";
 import SlotCalender from "@src/screen-components/Court/SlotCalender";
 import _, { toNumber, toString } from "lodash";
 import RBSheet from "react-native-raw-bottom-sheet";
-import { useAppNavigation } from "@src/navigation/Navigation";
-import CourtManager from "@src/services/features/Court/CourtManager";
+import { useAppNavigation } from "@navigation/Navigation";
+import CourtManager from "@features/Court/CourtManager";
 import moment from "moment";
-import SlotsDuration from "@src/cards/Slots/SlotsDuration";
-import { loadSlots } from "@src/redux/reducers/AppDataSlice";
-import RectangleSK from "@src/assets/skelton/RectangleSK";
-import SlotTime from "@src/cards/Slots/SlotTime";
+import SlotsDuration from "@cards/Slots/SlotsDuration";
+import { loadSlots } from "@redux/reducers/AppDataSlice";
+import RectangleSK from "@assets/skelton/RectangleSK";
+import SlotTime from "@cards/Slots/SlotTime";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const isIOS = Platform.OS === "ios";
@@ -122,6 +122,7 @@ export default function CourtSlot(props: any) {
       CourtManager.generateBookingSlots(
         parsms,
         res => {
+          console.log("generateBookingSlots===>", JSON.stringify(res, null, 2));
           setSlots(res?.data?.data);
           setLoadingSlot(false);
         },

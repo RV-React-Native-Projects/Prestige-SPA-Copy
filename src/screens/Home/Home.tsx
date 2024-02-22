@@ -50,11 +50,14 @@ function Home() {
   async function getUserCurrentLocation() {
     const permission = await Permissions.getLocationPermissions();
     console.log("Is Out??", permission);
-    const isEnabled = await isLocationEnabled();
-    if (permission && !isIOS && !isEnabled)
-      await promptForEnableLocationIfNeeded();
+    if (permission && !isIOS) {
+      const isEnabled = await isLocationEnabled();
+      if (!isEnabled) {
+        await promptForEnableLocationIfNeeded();
+      }
+    }
     if (permission) {
-      console.log("Is GOing Here ??", permission, isEnabled);
+      console.log("Is GOing Here ??", permission);
       Geolocation.getCurrentPosition(
         position => {
           const { latitude, longitude } = position.coords;
@@ -66,7 +69,7 @@ function Home() {
           console.log("Error getting location===>", error);
         },
         {
-          enableHighAccuracy: true,
+          enableHighAccuracy: false,
           distanceFilter: 10,
           accuracy: { android: "high", ios: "nearestTenMeters" },
           forceRequestLocation: true,
@@ -79,6 +82,9 @@ function Home() {
   }
 
   useEffect(() => {
+    if (!userEmail) {
+      navigation.reset({ index: 0, routes: [{ name: "Landing" }] });
+    }
     if (userEmail) getUserCurrentLocation();
   }, [userEmail]);
 
@@ -86,12 +92,6 @@ function Home() {
     if (!locations) storeDispatch(loadAllLocations());
     if (!coachs) storeDispatch(loadAllCoach());
   }, [locations, coachs]);
-
-  useEffect(() => {
-    if (!userEmail) {
-      navigation.reset({ index: 0, routes: [{ name: "Landing" }] });
-    }
-  }, [userEmail]);
 
   const gotoCourt = () => {
     navigation.navigate("CourtTab");
@@ -111,8 +111,8 @@ function Home() {
 
   const onRefresh = useCallback(() => {
     getUserCurrentLocation();
-    // if (userEmail) storeDispatch(refreshUser(userEmail));
-    // storeDispatch(loadAllLocations());
+    if (userEmail) storeDispatch(refreshUser(userEmail));
+    storeDispatch(loadAllLocations());
     storeDispatch(loadAllCoach());
   }, [coachs, locations]);
 

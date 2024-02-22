@@ -29,6 +29,7 @@
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+    <uses-feature android:name="android.hardware.location.gps" />
     <uses-feature android:name="android.hardware.telephony" android:required="false" />
     <!-- Xiaomi and similar devices overlay configs -->
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />

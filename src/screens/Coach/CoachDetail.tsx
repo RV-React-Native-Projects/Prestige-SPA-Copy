@@ -34,6 +34,7 @@ import { loadSlots } from "@reducers/AppDataSlice";
 import Feather from "react-native-vector-icons/Feather";
 import Utils from "@common/Utils";
 import Modal from "react-native-modal";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 const isIOS = Platform.OS === "ios";
 const windowHeight = Dimensions.get("window").height;
@@ -141,7 +142,7 @@ function CoachDetail(props: any) {
     [slotId],
   );
 
-  // console.log(JSON.stringify(data, null, 2));
+  // console.log("At CoachDetail===>",JSON.stringify(FilterSesstionTypes, null, 2));
 
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
@@ -331,9 +332,9 @@ function CoachDetail(props: any) {
             showsVerticalScrollIndicator={false}
             style={{
               height: "100%",
-              paddingHorizontal: moderateScale(15, 0.3),
             }}
             contentContainerStyle={{
+              paddingHorizontal: moderateScale(15, 0.3),
               paddingTop: moderateScale(20, 0.3),
               paddingBottom: moderateScale(50, 0.3),
             }}>
@@ -544,8 +545,12 @@ function CoachDetail(props: any) {
               Booking type
             </AppText>
             <ScrollView
-              style={{ height: "100%", paddingHorizontal: 15 }}
-              contentContainerStyle={{ paddingTop: 20, paddingBottom: 50 }}>
+              style={{ height: "100%" }}
+              contentContainerStyle={{
+                paddingTop: 20,
+                paddingBottom: 50,
+                paddingHorizontal: 15,
+              }}>
               <RadioButton.Group
                 onValueChange={newValue => setBookingType(newValue)}
                 value={bookingType}>
@@ -564,9 +569,17 @@ function CoachDetail(props: any) {
                         borderRadius: 10,
                         ...theme.light_shadow,
                       }}>
-                      <RadioButton.Android
-                        value={item?.mode}
-                        color={theme.secondary}
+                      <BouncyCheckbox
+                        size={25}
+                        fillColor={theme.secondary}
+                        unfillColor={theme.modalBackgroundColor}
+                        textStyle={{
+                          textDecorationLine: "none",
+                        }}
+                        innerIconStyle={{ borderWidth: 2 }}
+                        isChecked={item?.mode === bookingType}
+                        disableBuiltInState
+                        onPress={() => setBookingType(item?.mode)}
                       />
                       <View>
                         <AppText
@@ -669,8 +682,12 @@ function CoachDetail(props: any) {
                 />
               </View>
               <ScrollView
-                style={{ height: "100%", paddingHorizontal: 15 }}
-                contentContainerStyle={{ paddingTop: 20, paddingBottom: 50 }}>
+                style={{ height: "100%" }}
+                contentContainerStyle={{
+                  paddingTop: 20,
+                  paddingBottom: 50,
+                  paddingHorizontal: 15,
+                }}>
                 <RadioButton.Group
                   onValueChange={newValue =>
                     setCreditTypeID(toNumber(newValue))
@@ -694,9 +711,20 @@ function CoachDetail(props: any) {
                           borderRadius: 10,
                           ...theme.light_shadow,
                         }}>
-                        <RadioButton.Android
-                          value={toString(item?.creditTypeID)}
-                          color={theme.secondary}
+                        <BouncyCheckbox
+                          size={25}
+                          fillColor={theme.secondary}
+                          unfillColor={theme.modalBackgroundColor}
+                          textStyle={{
+                            textDecorationLine: "none",
+                          }}
+                          innerIconStyle={{ borderWidth: 2 }}
+                          isChecked={item?.creditTypeID === creditTypeID}
+                          disableBuiltInState
+                          onPress={() => {
+                            setCreditTypeID(item?.creditTypeID);
+                            setSelectedSlot(item);
+                          }}
                         />
                         <View>
                           <AppText

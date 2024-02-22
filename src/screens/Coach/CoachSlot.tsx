@@ -62,6 +62,7 @@ interface TimeSlot {
   startTime: string;
   endTime: string;
   isAvailable: boolean;
+  availableCredits: number;
   availableCourts: Court[];
 }
 
@@ -113,7 +114,9 @@ export default function CoachSlot(props: any) {
 
   //  ===== API Responses Data=====
   const [slots, setSlots] = useState<TimeSlot[] | null>(null);
+  const [credit, setCredit] = useState<number>(0);
 
+  // console.log("At CoachSlot===>", JSON.stringify(credit, null, 2));
   const insets = useSafeAreaInsets();
   const navigation = useAppNavigation();
   const refRBSheet = useRef<RBSheet>(null);
@@ -175,6 +178,8 @@ export default function CoachSlot(props: any) {
           slotID: slotId,
           customerID: user?.stakeholderID,
           familyMemberID: familyID,
+          coachCategoryID: data?.coachCategoryID,
+          coachSessionTypeID: slot?.coachSessionTypeID,
         },
       };
       CoachManager.generateBookingSlots(
@@ -215,6 +220,7 @@ export default function CoachSlot(props: any) {
       selectedSlot: selectedSlot,
       selectedTerm: selectedTerm,
       familyID: familyID,
+      credit: credit,
     });
   };
 
@@ -449,7 +455,8 @@ export default function CoachSlot(props: any) {
                     flexDirection: "row",
                     alignItems: "center",
                     flexWrap: "wrap",
-                    justifyContent: "space-between",
+                    columnGap: moderateScale(8, 0.3),
+                    // justifyContent: "space-between",
                     paddingHorizontal: moderateScale(15, 0.3),
                   }}>
                   {_.map(slots, (item, index) => (
@@ -460,6 +467,7 @@ export default function CoachSlot(props: any) {
                       isAvailable={item?.isAvailable}
                       onPress={() => {
                         setStartTime(item?.startTime);
+                        setCredit(item?.availableCredits);
                         setAvailableCourts(item?.availableCourts);
                         setelectedSlot({
                           endTime: item?.endTime,

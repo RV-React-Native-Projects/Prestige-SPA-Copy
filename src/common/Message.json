@@ -199,7 +199,9 @@
       "date": "Date",
       "time": "Time",
       "slot_duration": "Slot Duration",
-      "slot_mins": "%{min} Mins"
+      "slot_mins": "%{min} Mins",
+      "apply_credits_payment": "Apply Credits to Payment",
+      "use_available_credits": "Use your available credits to pay for this transaction."
     }
   },
   "en-UK": {
