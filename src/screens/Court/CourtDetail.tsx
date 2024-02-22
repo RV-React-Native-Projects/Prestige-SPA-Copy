@@ -39,6 +39,7 @@ const windowWidth = Dimensions.get("window").width;
 function CourtDetail(props: any) {
   const { data } = props.route.params;
   const { theme } = useAppSelector(state => state.theme);
+  const { isFamilyMemberBooking } = useAppSelector(state => state.appData);
   const { user, family, approvedMembership, location } = useAppSelector(
     state => state.user,
   );
@@ -59,7 +60,6 @@ function CourtDetail(props: any) {
 
   const onPressNext = (data: any) => {
     // refRBSheet.current?.close();
-    toggleModal();
     navigation.navigate("CourtSlot", {
       data: data,
       familyID: familyID,
@@ -532,7 +532,9 @@ function CourtDetail(props: any) {
           fontStyle="600.normal"
           fontSize={16}
           height={50}
-          onPress={() => toggleModal()}
+          onPress={() =>
+            isFamilyMemberBooking ? toggleModal() : onPressNext(data)
+          }
         />
       </Animatable.View>
     </AppContainer>

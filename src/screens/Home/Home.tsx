@@ -21,7 +21,11 @@ import HomeHeader from "@src/screen-components/Home/HomeHeader";
 import HeaderWithTitleandSeeAll from "@src/screen-components/Header/HeaderWithTitleandSeeAll";
 import CourtCard from "@cards/Home/CourtCard";
 import CoachCard from "@cards/Home/CoachCard";
-import { loadAllCoach, loadAllLocations } from "@reducers/AppDataSlice";
+import {
+  getAppConfig,
+  loadAllCoach,
+  loadAllLocations,
+} from "@reducers/AppDataSlice";
 import { refreshUser, setLocation } from "@reducers/UserSlice";
 import HomeDateSK from "@src/assets/skelton/HomeDateSK";
 import _ from "lodash";
@@ -39,13 +43,14 @@ function Home() {
   const { user, userEmail, approvedMembership, location } = useAppSelector(
     state => state.user,
   );
-  const { coachs, locations, loadingCoachs, loadingLocations } = useAppSelector(
-    state => state.appData,
-  );
+  const { coachs, locations, loadingCoachs, loadingLocations, isCourtBooking } =
+    useAppSelector(state => state.appData);
   const { theme } = useAppSelector(state => state.theme);
   const storeDispatch = useAppDispatch();
   const navigation = useAppNavigation();
   const appToast = useAppToast();
+
+  // console.log("At Home==>", JSON.stringify(appConfig, null, 2));
 
   async function getUserCurrentLocation() {
     const permission = await Permissions.getLocationPermissions();
@@ -111,6 +116,7 @@ function Home() {
 
   const onRefresh = useCallback(() => {
     getUserCurrentLocation();
+    storeDispatch(getAppConfig());
     if (userEmail) storeDispatch(refreshUser(userEmail));
     storeDispatch(loadAllLocations());
     storeDispatch(loadAllCoach());
@@ -152,27 +158,29 @@ function Home() {
             justifyContent: "space-between",
             paddingHorizontal: moderateScale(15, 0.3),
           }}>
-          <AppButton
-            Title="Book a Court"
-            width="48%"
-            height={60}
-            fontSize={14}
-            onPress={gotoCourt}
-            color={theme.modalBackgroundColor}
-            textColor={theme.paragraph}
-            borderRadius={10}
-            leftIcon={
-              <svgs.Court
-                color1={theme.primary}
-                strokeWidth={2}
-                width={40}
-                height={40}
-              />
-            }
-          />
+          {isCourtBooking && (
+            <AppButton
+              Title="Book a Court"
+              width="48%"
+              height={60}
+              fontSize={14}
+              onPress={gotoCourt}
+              color={theme.modalBackgroundColor}
+              textColor={theme.paragraph}
+              borderRadius={10}
+              leftIcon={
+                <svgs.Court
+                  color1={theme.primary}
+                  strokeWidth={2}
+                  width={40}
+                  height={40}
+                />
+              }
+            />
+          )}
           <AppButton
             Title="Book a Coach"
-            width="48%"
+            width={isCourtBooking ? "48%" : "100%"}
             height={60}
             fontSize={14}
             onPress={gotoCoach}
@@ -190,9 +198,10 @@ function Home() {
           />
         </View>
         <VerticalSpacing size={5} />
-        {loadingLocations ? (
+        {isCourtBooking && loadingLocations ? (
           <HomeDateSK />
         ) : (
+          isCourtBooking &&
           locations && (
             <View>
               <HeaderWithTitleandSeeAll

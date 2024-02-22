@@ -73,19 +73,6 @@ interface CreditType {
   coachSessionType: CoachSessionType;
 }
 
-const BookingTypeData = [
-  {
-    mode: "SINGLE",
-    title: "Single Session Booking",
-    desc: "Book a one-time coaching session for immediate assistance.",
-  },
-  {
-    mode: "MULTI",
-    title: "Multi Session Booking",
-    desc: "Secure multiple coaching sessions scheduled weekly at a regular interval.",
-  },
-];
-
 const BioCard = (props: any) => {
   const { theme } = useAppSelector(state => state.theme);
   const { icon, title, description } = props;
@@ -116,7 +103,12 @@ const BioCard = (props: any) => {
 function CoachDetail(props: any) {
   const { data } = props?.route?.params;
   const { theme } = useAppSelector(state => state.theme);
-  const { slots } = useAppSelector(state => state.appData);
+  const {
+    slots,
+    isCoachBookingSingle,
+    isCoachBookingMultiple,
+    isFamilyMemberBooking,
+  } = useAppSelector(state => state.appData);
   const { user, family } = useAppSelector(state => state.user);
   const storeDispatch = useAppDispatch();
   const [bookingType, setBookingType] = useState<"SINGLE" | "MULTI" | string>(
@@ -127,6 +119,21 @@ function CoachDetail(props: any) {
   const [selectedSlot, setSelectedSlot] = useState<CreditType | null>(null);
   const [familyID, setFamilyID] = useState<string | null>(null);
   const [showPicker, setshowPicker] = useState<boolean>(false);
+
+  const BookingTypeData = [];
+  if (isCoachBookingSingle)
+    BookingTypeData.push({
+      mode: "SINGLE",
+      title: "Single Session Booking",
+      desc: "Book a one-time coaching session for immediate assistance.",
+    });
+
+  if (isCoachBookingMultiple)
+    BookingTypeData.push({
+      mode: "MULTI",
+      title: "Multi Session Booking",
+      desc: "Secure multiple coaching sessions scheduled weekly at a regular interval.",
+    });
 
   const toggleModal = () => {
     setshowPicker(!showPicker);
@@ -602,23 +609,22 @@ function CoachDetail(props: any) {
                         isChecked={item?.mode === bookingType}
                         disableBuiltInState
                         onPress={() => setBookingType(item?.mode)}
+                        textComponent={
+                          <View style={{ marginLeft: moderateScale(10, 0.3) }}>
+                            <AppText fontStyle="500.semibold" size={16}>
+                              {item?.title}
+                            </AppText>
+                            <VerticalSpacing />
+                            <AppText
+                              size={12}
+                              fontStyle="400.semibold"
+                              color={theme.unselected}
+                              style={{ maxWidth: "75%" }}>
+                              {item?.desc}
+                            </AppText>
+                          </View>
+                        }
                       />
-                      <View>
-                        <AppText
-                          // color={item?.available ? theme.textColor : theme.gray}
-                          fontStyle="500.semibold"
-                          size={16}>
-                          {item?.title}
-                        </AppText>
-                        <VerticalSpacing />
-                        <AppText
-                          size={12}
-                          fontStyle="400.semibold"
-                          color={theme.unselected}
-                          style={{ maxWidth: "75%" }}>
-                          {item?.desc}
-                        </AppText>
-                      </View>
                     </TouchableOpacity>
                   );
                 })}
@@ -806,7 +812,11 @@ function CoachDetail(props: any) {
           height={50}
           // onPress={() => refBookingType.current?.open()}
           // onPress={() => refRBSheet.current?.open()}
-          onPress={() => toggleModal()}
+          onPress={() =>
+            isFamilyMemberBooking
+              ? toggleModal()
+              : refBookingType.current?.open()
+          }
         />
       </Animatable.View>
     </AppContainer>

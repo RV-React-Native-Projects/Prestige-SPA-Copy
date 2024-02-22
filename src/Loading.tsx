@@ -4,6 +4,7 @@ import MyStack, { useAppNavigation } from "@navigation/Navigation";
 import { useAppDispatch, useAppSelector } from "@redux/store";
 import AuthManager from "@features/Auth/AuthManager";
 import { setLoadingUser, setUser } from "@reducers/UserSlice";
+import { getAppConfig } from "@reducers/AppDataSlice";
 
 function Loading() {
   const navigation = useAppNavigation();
@@ -18,6 +19,7 @@ function Loading() {
           storeDispatch(setUser(res?.data?.data));
           navigation.reset({ index: 0, routes: [{ name: "Tab" }] });
           storeDispatch(setLoadingUser(false));
+          storeDispatch(getAppConfig());
           SplashScreen.hide();
         },
         err => {

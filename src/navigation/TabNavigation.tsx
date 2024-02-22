@@ -20,6 +20,7 @@ const Booking = lazy(() => import("@src/screens/Booking/Booking"));
 
 export default function TabNavigation() {
   const { theme } = useAppSelector(state => state.theme);
+  const { isCourtBooking } = useAppSelector(state => state.appData);
 
   return (
     <Tab.Navigator
@@ -75,28 +76,30 @@ export default function TabNavigation() {
           ),
         }}
       />
-      <Tab.Screen
-        name="CourtTab"
-        component={Court}
-        options={{
-          tabBarLabel: ({ color, focused }) => (
-            <AppText
-              fontStyle={focused ? "500.medium" : "400.normal"}
-              color={color}
-              size={focused ? 13 : 12}>
-              {I18n.t("screen_messages.tab.court")}
-            </AppText>
-          ),
-          tabBarIcon: ({ focused, color, size }) => (
-            <svgs.Court
-              color1={color}
-              height={35}
-              width={35}
-              // strokeWidth={focused ? 2 : 1.5}
-            />
-          ),
-        }}
-      />
+      {isCourtBooking && (
+        <Tab.Screen
+          name="CourtTab"
+          component={Court}
+          options={{
+            tabBarLabel: ({ color, focused }) => (
+              <AppText
+                fontStyle={focused ? "500.medium" : "400.normal"}
+                color={color}
+                size={focused ? 13 : 12}>
+                {I18n.t("screen_messages.tab.court")}
+              </AppText>
+            ),
+            tabBarIcon: ({ focused, color, size }) => (
+              <svgs.Court
+                color1={color}
+                height={35}
+                width={35}
+                // strokeWidth={focused ? 2 : 1.5}
+              />
+            ),
+          }}
+        />
+      )}
       <Tab.Screen
         name="CoachTab"
         component={Coach}

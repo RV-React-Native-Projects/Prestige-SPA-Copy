@@ -54,7 +54,7 @@ const CourtCard = (props: any) => {
         />
         <View style={{ marginLeft: moderateScale(10, 0.3), width: "100%" }}>
           <AppText
-            style={{ height: moderateScale(50, 0.3), maxWidth: "64%" }}
+            style={{ height: moderateScale(50, 0.3), maxWidth: "63%" }}
             fontStyle="600.bold"
             size={16}
             numberOfLines={2}>
@@ -72,7 +72,7 @@ const CourtCard = (props: any) => {
             style={{
               height: moderateScale(25, 0.3),
               marginTop: moderateScale(5, 0.3),
-              maxWidth: "65%",
+              maxWidth: "62%",
             }}
             fontStyle="400.bold"
             numberOfLines={1}

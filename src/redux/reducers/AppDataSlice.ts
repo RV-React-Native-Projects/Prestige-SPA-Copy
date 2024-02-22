@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { BookingTypes } from "@src/Types/BookingTypes";
+import AppConfigManager from "@src/services/features/AppConfig/AppConfigManager";
 import CoachManager from "@src/services/features/Coach/CoachManager";
 import CourtManager from "@src/services/features/Court/CourtManager";
 import TermManager from "@src/services/features/Term/TermManager";
@@ -99,11 +100,40 @@ export const loadAllCoach = createAsyncThunk(
   },
 );
 
+export const getAppConfig = createAsyncThunk(
+  "appdata/getAppConfig",
+  async () => {
+    const response = await new Promise((resolve, reject) => {
+      AppConfigManager.getAppConfig(
+        {},
+        async res => {
+          const data = await res?.data?.data;
+          resolve(data);
+        },
+        async err => {
+          console.log(err);
+          reject(err);
+        },
+      );
+    });
+    return response as AppConfigItem[];
+  },
+);
+
 interface Slot {
   slotID: number;
   createdAt: string;
   updatedAt: string;
   slotMinutes: number;
+}
+interface AppConfigItem {
+  configID: number;
+  createdAt: string;
+  updatedAt: string;
+  configKey: string;
+  configValue: string;
+  configValueType: string;
+  isActive: boolean;
 }
 interface CoachSessionTerm {
   CoachSessionTermID: number;
@@ -129,6 +159,15 @@ interface appDataSliceProps {
   bookings: BookingTypes[] | null;
   upComingBookings: BookingTypes[] | null;
   completedBookings: BookingTypes[] | null;
+  loadingAppConfigs: boolean;
+  appConfig: AppConfigItem[] | null;
+  isCourtBooking: boolean;
+  isCoachBookingSingle: boolean;
+  isCoachBookingMultiple: boolean;
+  isStartTime: string | null;
+  isEndTime: string | null;
+  isMembership: boolean;
+  isFamilyMemberBooking: boolean;
 }
 
 const initialState: appDataSliceProps = {
@@ -144,6 +183,15 @@ const initialState: appDataSliceProps = {
   bookings: null,
   upComingBookings: null,
   completedBookings: null,
+  loadingAppConfigs: false,
+  appConfig: null,
+  isCourtBooking: true,
+  isCoachBookingSingle: true,
+  isCoachBookingMultiple: true,
+  isStartTime: null,
+  isEndTime: null,
+  isMembership: true,
+  isFamilyMemberBooking: true,
 };
 
 const appDataSlice = createSlice({
@@ -174,6 +222,9 @@ const appDataSlice = createSlice({
     },
     setLoadingBookings: (state, action) => {
       state.loadingBookings = action.payload;
+    },
+    setAppConfig: (state, action) => {
+      state.appConfig = action.payload;
     },
     setBookings: (state, action) => {
       const today = moment().startOf("day");
@@ -227,6 +278,28 @@ const appDataSlice = createSlice({
         state.loadingCoachs = false;
         state.coachs = action.payload;
       })
+      .addCase(getAppConfig.pending, state => {
+        state.loadingAppConfigs = true;
+      })
+      .addCase(getAppConfig.fulfilled, (state, action) => {
+        state.appConfig = action.payload;
+        action.payload.forEach(item => {
+          if (item.configKey === "courtBooking")
+            state.isCourtBooking = item.configValue === "true";
+          if (item.configKey === "coachBookingSingle")
+            state.isCoachBookingSingle = item.configValue === "true";
+          if (item.configKey === "coachBookingMultiple")
+            state.isCoachBookingMultiple = item.configValue === "true";
+          if (item.configKey === "startTime")
+            state.isStartTime = item.configValue;
+          if (item.configKey === "endTime") state.isEndTime = item.configValue;
+          if (item.configKey === "membership")
+            state.isMembership = item.configValue === "true";
+          if (item.configKey === "familyMemberBooking")
+            state.isFamilyMemberBooking = item.configValue === "true";
+        });
+        state.loadingAppConfigs = false;
+      })
       .addCase(loadBooking.pending, state => {
         state.loadingBookings = true;
       })
@@ -265,5 +338,6 @@ export const {
   setCoachs,
   setLoadingBookings,
   setBookings,
+  setAppConfig,
 } = appDataSlice.actions;
 export default appDataSlice.reducer;
