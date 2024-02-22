@@ -52,7 +52,7 @@ export default function CoachCard(props: CoachCardProps) {
           style={{
             backgroundColor:
               tire === "TIER 1" ? theme.primary : theme.tertiaryText,
-            width: moderateScale(70, 0.3),
+            width: moderateScale(65, 0.3),
             height: moderateScale(25, 0.3),
             alignItems: "center",
             justifyContent: "center",
@@ -80,16 +80,18 @@ export default function CoachCard(props: CoachCardProps) {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginTop: moderateScale(5, 0.3),
+            width: "100%",
           }}>
           <svgs.CoachV2 color1={theme.secondary} height={20} />
           <AppText
             fontStyle="400.normal"
             numberOfLines={2}
-            color={theme.gray}
+            color={theme.paragraph}
             style={{
-              paddingHorizontal: moderateScale(15, 0.3),
+              paddingHorizontal: moderateScale(8, 0.3),
               height: moderateScale(35, 0.3),
+              verticalAlign: "middle",
+              maxWidth: "90%",
             }}>
             {experience &&
               I18n.t("screen_messages.year_of_exp", {

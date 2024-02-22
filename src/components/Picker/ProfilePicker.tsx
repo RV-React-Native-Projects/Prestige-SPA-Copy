@@ -218,7 +218,7 @@ const ProfilePicker: React.FC<Props> = props => {
             <View style={{ paddingHorizontal: moderateScale(20, 0.3) }}>
               <View style={{ alignItems: "center" }}>
                 <AppText
-                  fontStyle="500.normal"
+                  fontStyle="500.bold"
                   size={18}
                   style={{ paddingVertical: moderateScale(15, 0.3) }}>
                   {I18n.t("screen_messages.upload")}
@@ -240,14 +240,19 @@ const ProfilePicker: React.FC<Props> = props => {
                       height: moderateScale(100, 0.3),
                       width: moderateScale(100, 0.3),
                       borderRadius: moderateScale(100, 0.3),
-                      backgroundColor: theme.light,
+                      backgroundColor: theme.modalBackgroundColor,
                       alignItems: "center",
                       justifyContent: "center",
                       marginBottom: moderateScale(10, 0.3),
+                      ...theme.light_shadow,
                     }}>
-                    <AntDesign name="camera" size={50} />
+                    <AntDesign
+                      name="camera"
+                      size={50}
+                      color={theme.iconColor}
+                    />
                   </View>
-                  <AppText fontStyle="500.normal" size={16}>
+                  <AppText fontStyle="500.medium" size={16}>
                     {I18n.t("screen_messages.button.camera")}
                   </AppText>
                 </TouchableOpacity>
@@ -260,14 +265,19 @@ const ProfilePicker: React.FC<Props> = props => {
                       height: moderateScale(100, 0.3),
                       width: moderateScale(100, 0.3),
                       borderRadius: moderateScale(100, 0.3),
-                      backgroundColor: theme.light,
+                      backgroundColor: theme.modalBackgroundColor,
                       alignItems: "center",
                       justifyContent: "center",
                       marginBottom: moderateScale(10, 0.3),
+                      ...theme.light_shadow,
                     }}>
-                    <FontAwesome name="photo" size={50} />
+                    <FontAwesome
+                      name="photo"
+                      size={50}
+                      color={theme.iconColor}
+                    />
                   </View>
-                  <AppText fontStyle="500.normal" size={16}>
+                  <AppText fontStyle="500.medium" size={16}>
                     {I18n.t("screen_messages.button.gallery")}
                   </AppText>
                 </TouchableOpacity>

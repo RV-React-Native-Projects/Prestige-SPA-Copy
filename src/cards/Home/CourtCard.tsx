@@ -61,7 +61,7 @@ const CourtCard = (props: CourtCardProps) => {
         />
         <VerticalSpacing />
         <AppText
-          style={{ height: moderateScale(45, 0.3) }}
+          style={{ height: moderateScale(42, 0.3) }}
           fontStyle="600.bold"
           size={16}
           numberOfLines={2}>
@@ -69,12 +69,16 @@ const CourtCard = (props: CourtCardProps) => {
         </AppText>
         {distance && (
           <View
-            style={{ flexDirection: "row", height: moderateScale(20, 0.3) }}>
-            <svgs.LocationV2 color1={theme.secondary} height={20} />
+            style={{
+              flexDirection: "row",
+              height: moderateScale(20, 0.3),
+              alignItems: "center",
+            }}>
+            <svgs.LocationV2 color1={theme.secondary} height={20} width={20} />
             <AppText
               fontStyle="400.normal"
               numberOfLines={1}
-              color={theme.gray}>
+              color={theme.paragraph}>
               {I18n.t("screen_messages.distance", {
                 distance: distance?.toLocaleString(),
               })}
@@ -85,7 +89,7 @@ const CourtCard = (props: CourtCardProps) => {
           style={{ height: moderateScale(40, 0.3), marginTop: 5 }}
           fontStyle="400.normal"
           numberOfLines={2}
-          color={theme.gray}>
+          color={theme.paragraph}>
           {locationAddress}
         </AppText>
         {isVerified ? (
@@ -93,7 +97,6 @@ const CourtCard = (props: CourtCardProps) => {
             style={{
               flexDirection: "row",
               alignItems: "center",
-              marginTop: 5,
             }}>
             <MaterialIcons name="verified" size={20} color={theme.secondary} />
             <AppText
@@ -104,7 +107,6 @@ const CourtCard = (props: CourtCardProps) => {
           </View>
         ) : (
           <AppText
-            style={{ marginTop: moderateScale(5, 0.3) }}
             fontStyle="600.semibold"
             numberOfLines={2}
             color={theme.primary}>

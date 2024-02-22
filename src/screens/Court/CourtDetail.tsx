@@ -118,7 +118,7 @@ function CourtDetail(props: any) {
               position: "absolute",
               top: moderateScale(-25, 0.3),
               alignSelf: "center",
-              backgroundColor: theme.white,
+              backgroundColor: theme.modalBackgroundColor,
               borderRadius: moderateScale(100, 0.3),
               height: moderateScale(50, 0.3),
               width: moderateScale(50, 0.3),
@@ -154,7 +154,6 @@ function CourtDetail(props: any) {
                 flexDirection: "row",
                 alignItems: "center",
                 padding: moderateScale(10, 0.3),
-                paddingVertical: moderateScale(15, 0.3),
                 backgroundColor: theme.modalBackgroundColor,
                 marginBottom: moderateScale(10, 0.3),
                 borderRadius: moderateScale(10, 0.3),
@@ -236,7 +235,6 @@ function CourtDetail(props: any) {
                       flexDirection: "row",
                       alignItems: "center",
                       padding: moderateScale(10, 0.3),
-                      paddingVertical: moderateScale(15, 0.3),
                       backgroundColor: theme.modalBackgroundColor,
                       marginBottom: moderateScale(10, 0.3),
                       borderRadius: moderateScale(10, 0.3),
@@ -308,6 +306,7 @@ function CourtDetail(props: any) {
                 );
               })}
             </RadioButton.Group>
+            <VerticalSpacing />
             <AppButton
               Title={I18n.t("screen_messages.button.Add_Family")}
               color={theme.title}
@@ -440,17 +439,18 @@ function CourtDetail(props: any) {
             <View
               style={{
                 flexDirection: "row",
+                alignItems: "center",
                 height: moderateScale(20, 0.3),
-                marginLeft: moderateScale(-8, 0.3),
               }}>
               <svgs.LocationV2
                 color1={theme.secondary}
                 height={20}
-                width={30}
+                width={20}
               />
               <AppText
-                numberOfLines={2}
-                color={theme.gray}
+                style={{ marginLeft: moderateScale(3, 0.3) }}
+                numberOfLines={1}
+                color={theme.paragraph}
                 fontStyle="500.semibold">
                 {I18n.t("screen_messages.distance", {
                   distance:
@@ -468,7 +468,7 @@ function CourtDetail(props: any) {
               style={{
                 height: moderateScale(40, 0.3),
                 marginTop: moderateScale(5, 0.3),
-                marginLeft: moderateScale(25, 0.3),
+                marginLeft: moderateScale(22, 0.3),
                 maxWidth: "90%",
               }}
               numberOfLines={2}
@@ -484,7 +484,7 @@ function CourtDetail(props: any) {
           <View style={{ height: moderateScale(300, 0.3) }}>
             <MapView
               ref={_map}
-              mapType="standard"
+              mapType="terrain"
               style={[
                 styles.map,
                 {
@@ -521,6 +521,7 @@ function CourtDetail(props: any) {
         style={{
           backgroundColor: theme.modalBackgroundColor,
           padding: moderateScale(20, 0.3),
+          ...theme.dark_shadow,
         }}>
         <AppButton
           Title={I18n.t("screen_messages.button.next")}
