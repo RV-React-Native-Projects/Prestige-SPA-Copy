@@ -24,7 +24,6 @@ import AppButton from "@src/components/Button/AppButton";
 import * as Animatable from "react-native-animatable";
 import I18n from "i18n-js";
 import MapView, { Marker } from "react-native-maps";
-import RBSheet from "react-native-raw-bottom-sheet";
 import { RadioButton } from "react-native-paper";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Feather from "react-native-vector-icons/Feather";
@@ -45,7 +44,6 @@ function CourtDetail(props: any) {
   );
   const navigation = useAppNavigation();
   const _map = useRef(null);
-  const refRBSheet = useRef<RBSheet>(null);
   const [familyID, setFamilyID] = useState<string | null>(null);
   const [showPicker, setshowPicker] = useState<boolean>(false);
 
@@ -59,7 +57,6 @@ function CourtDetail(props: any) {
       : false;
 
   const onPressNext = (data: any) => {
-    // refRBSheet.current?.close();
     navigation.navigate("CourtSlot", {
       data: data,
       familyID: familyID,
@@ -68,7 +65,6 @@ function CourtDetail(props: any) {
   };
 
   function onPressAddFamily() {
-    // refRBSheet.current?.close();
     toggleModal();
     navigation.navigate("AddFamily", { data: null });
   }
