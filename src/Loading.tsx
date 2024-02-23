@@ -8,27 +8,29 @@ import { getAppConfig } from "@reducers/AppDataSlice";
 
 function Loading() {
   const navigation = useAppNavigation();
-  const { loadingUser, userEmail } = useAppSelector(state => state.user);
+  const { loadingUser, userEmail, authHeader } = useAppSelector(
+    state => state.user,
+  );
   const storeDispatch = useAppDispatch();
 
   useEffect(() => {
-    if (userEmail) {
+    if (authHeader && userEmail) {
       AuthManager.getUserData(
-        { email: userEmail },
+        { email: userEmail, headers: authHeader },
         res => {
           storeDispatch(setUser(res?.data?.data));
-          navigation.reset({ index: 0, routes: [{ name: "Tab" }] });
-          storeDispatch(setLoadingUser(false));
           storeDispatch(getAppConfig());
+          navigation.reset({ index: 0, routes: [{ name: "Tab" }] });
           SplashScreen.hide();
+          storeDispatch(setLoadingUser(false));
         },
         err => {
           console.log(err);
           storeDispatch(setLoadingUser(false));
         },
       );
-    } else if (!loadingUser && !userEmail) SplashScreen.hide();
-  }, [userEmail, !loadingUser]);
+    } else if (!loadingUser && !userEmail && !authHeader) SplashScreen.hide();
+  }, [authHeader, userEmail, !loadingUser]);
 
   return (
     <Suspense fallback="">

@@ -55,9 +55,8 @@ const RelationData: DataTypes[] = [
 export default function AddNewFamily(props: any) {
   const { data = null } = props?.route?.params;
   const { theme } = useAppSelector(state => state.theme);
-  const { user, loadingPlayerCategory, playerCategory } = useAppSelector(
-    state => state.user,
-  );
+  const { user, loadingPlayerCategory, playerCategory, authHeader } =
+    useAppSelector(state => state.user);
   const storeDispatch = useAppDispatch();
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
@@ -118,6 +117,7 @@ export default function AddNewFamily(props: any) {
     let params = {
       data: formData,
       headers: {
+        ...authHeader,
         Accept: "application/json, text/plain, /",
         "Content-Type": "multipart/form-data",
       },

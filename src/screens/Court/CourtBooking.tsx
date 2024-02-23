@@ -42,7 +42,7 @@ export default function CourtBooking(props: any) {
     useStripe();
 
   const { theme } = useAppSelector(state => state.theme);
-  const { user } = useAppSelector(state => state.user);
+  const { user, authHeader } = useAppSelector(state => state.user);
   const [loading, setLoading] = useState<boolean>(false);
   const [useCredit, setUseCredit] = useState<boolean>(false);
   const appToast = useAppToast();
@@ -82,7 +82,10 @@ export default function CourtBooking(props: any) {
 
   const initializePaymentSheet = async () => {
     StripeManager.generatePaymentSheet(
-      { data: { amount: selectedCourt?.["creditTypes.rate"] } },
+      {
+        data: { amount: selectedCourt?.["creditTypes.rate"] },
+        headers: authHeader,
+      },
       async res => {
         // console.log("Res===>", JSON.stringify(res, null, 2));
         const { error } = await initPaymentSheet({
@@ -165,6 +168,7 @@ export default function CourtBooking(props: any) {
         isMember: isVerified,
         useAvailableCredits: useCredit,
       },
+      headers: authHeader,
     };
     CourtManager.createOneBooking(
       params,

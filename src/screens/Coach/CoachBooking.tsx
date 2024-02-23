@@ -56,7 +56,7 @@ export default function CoachBooking(props: any) {
     useStripe();
 
   const { theme, isDarkMode } = useAppSelector(state => state.theme);
-  const { user } = useAppSelector(state => state.user);
+  const { user, authHeader } = useAppSelector(state => state.user);
   const appToast = useAppToast();
   const [loading, setLoading] = useState<boolean>(false);
   const [dateRange, setdateRange] = useState<DateRangeProps[] | null>(null);
@@ -140,7 +140,7 @@ export default function CoachBooking(props: any) {
 
     if (amount) {
       StripeManager.generatePaymentSheet(
-        { data: { amount: amount } },
+        { data: { amount: amount }, headers: authHeader },
         async res => {
           // console.log("Res===>", JSON.stringify(res, null, 2));
           const { error } = await initPaymentSheet({
@@ -215,6 +215,7 @@ export default function CoachBooking(props: any) {
     });
 
     let params = {
+      headers: authHeader,
       data: {
         coachID: coachID,
         coachName: data?.stakeholder?.stakeholderName,

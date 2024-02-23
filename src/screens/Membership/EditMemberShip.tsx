@@ -39,7 +39,7 @@ export default function EditMemberShip(props: any) {
   const currentDate = new Date();
   const { data } = props.route.params;
   const { theme } = useAppSelector(state => state.theme);
-  const { user } = useAppSelector(state => state.user);
+  const { user, authHeader } = useAppSelector(state => state.user);
   const storeDispatch = useAppDispatch();
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
@@ -89,6 +89,7 @@ export default function EditMemberShip(props: any) {
     let parsms = {
       data: formData,
       headers: {
+        ...authHeader,
         Accept: "application/json, text/plain, /",
         "Content-Type": "multipart/form-data",
       },

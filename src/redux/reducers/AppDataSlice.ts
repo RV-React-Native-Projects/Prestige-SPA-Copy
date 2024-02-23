@@ -5,47 +5,57 @@ import CoachManager from "@src/services/features/Coach/CoachManager";
 import CourtManager from "@src/services/features/Court/CourtManager";
 import TermManager from "@src/services/features/Term/TermManager";
 import moment from "moment";
+import { RootState } from "../store";
 
-export const loadSlots = createAsyncThunk("appdata/loadSlots", async () => {
-  const response = await new Promise((resolve, reject) => {
-    CourtManager.getSlots(
-      {},
-      async res => {
-        const data = await res?.data?.data;
-        resolve(data);
-      },
-      async err => {
-        console.log(err);
-        reject(err);
-      },
-    );
-  });
-  return response as Slot[];
-});
+export const loadSlots = createAsyncThunk(
+  "appdata/loadSlots",
+  async (_, { getState }) => {
+    const userState = (getState() as RootState).user;
+    const response = await new Promise((resolve, reject) => {
+      CourtManager.getSlots(
+        { headers: userState.authHeader },
+        async res => {
+          const data = await res?.data?.data;
+          resolve(data);
+        },
+        async err => {
+          console.log(err);
+          reject(err);
+        },
+      );
+    });
+    return response as Slot[];
+  },
+);
 
-export const loadTerms = createAsyncThunk("appdata/loadTerms", async () => {
-  const response = await new Promise((resolve, reject) => {
-    TermManager.getAllTerms(
-      {},
-      async res => {
-        const data = await res?.data?.data;
-        resolve(data);
-      },
-      async err => {
-        console.log(err);
-        reject(err);
-      },
-    );
-  });
-  return response as CoachSessionTerm[];
-});
+export const loadTerms = createAsyncThunk(
+  "appdata/loadTerms",
+  async (_, { getState }) => {
+    const userState = (getState() as RootState).user;
+    const response = await new Promise((resolve, reject) => {
+      TermManager.getAllTerms(
+        { headers: userState.authHeader },
+        async res => {
+          const data = await res?.data?.data;
+          resolve(data);
+        },
+        async err => {
+          console.log(err);
+          reject(err);
+        },
+      );
+    });
+    return response as CoachSessionTerm[];
+  },
+);
 
 export const loadBooking = createAsyncThunk(
   "appdata/loadBooking",
-  async (userId: number) => {
+  async (userId: number, { getState }) => {
+    const userState = (getState() as RootState).user;
     const response = await new Promise((resolve, reject) => {
       CoachManager.getAllBookingForCustomer(
-        { id: userId },
+        { id: userId, headers: userState.authHeader },
         async res => {
           const data = await res?.data?.data;
           resolve(data);
@@ -62,10 +72,11 @@ export const loadBooking = createAsyncThunk(
 
 export const loadAllLocations = createAsyncThunk(
   "appdata/loadAllLocations",
-  async () => {
+  async (_, { getState }) => {
+    const userState = (getState() as RootState).user;
     const response = await new Promise((resolve, reject) => {
       CourtManager.getAllCourts(
-        {},
+        { headers: userState.authHeader },
         async res => {
           const data = await res?.data?.data;
           resolve(data);
@@ -82,10 +93,11 @@ export const loadAllLocations = createAsyncThunk(
 
 export const loadAllCoach = createAsyncThunk(
   "appdata/loadAllCoach",
-  async () => {
+  async (_, { getState }) => {
+    const userState = (getState() as RootState).user;
     const response = await new Promise((resolve, reject) => {
       CoachManager.getAllCoach(
-        {},
+        { headers: userState.authHeader },
         async res => {
           const data = await res?.data?.data;
           resolve(data);
@@ -102,10 +114,11 @@ export const loadAllCoach = createAsyncThunk(
 
 export const getAppConfig = createAsyncThunk(
   "appdata/getAppConfig",
-  async () => {
+  async (_, { getState }) => {
+    const userState = (getState() as RootState).user;
     const response = await new Promise((resolve, reject) => {
       AppConfigManager.getAppConfig(
-        {},
+        { headers: userState.authHeader },
         async res => {
           const data = await res?.data?.data;
           resolve(data);

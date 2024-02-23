@@ -84,7 +84,7 @@ interface CoachSessionTerm {
 
 export default function CoachSlot(props: any) {
   const { theme, isDarkMode } = useAppSelector(state => state.theme);
-  const { user } = useAppSelector(state => state.user);
+  const { user, authHeader } = useAppSelector(state => state.user);
   const { terms } = useAppSelector(state => state.appData);
   const storeDispatch = useAppDispatch();
   const {
@@ -182,6 +182,7 @@ export default function CoachSlot(props: any) {
           coachCategoryID: data?.coachCategoryID,
           coachSessionTypeID: slot?.coachSessionTypeID,
         },
+        headers: authHeader,
       };
       CoachManager.generateBookingSlots(
         parsms,

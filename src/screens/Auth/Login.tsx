@@ -1,5 +1,5 @@
 import React, { memo, useReducer } from "react";
-import { Image, Keyboard, StyleSheet, View, ScrollView } from "react-native";
+import { Keyboard, StyleSheet, View, ScrollView } from "react-native";
 import I18n from "i18n-js";
 import AppContainer from "@components/Container/AppContainer";
 import svgs from "@common/AllSvgs";
@@ -14,12 +14,10 @@ import { moderateScale } from "react-native-size-matters";
 import * as Animatable from "react-native-animatable";
 import AuthManager from "@services/features/Auth/AuthManager";
 import { useEncryptedStorage } from "@hooks/useEncryptedStorage";
-import { setUser, setUserToken } from "@reducers/UserSlice";
-import Utils from "@common/Utils";
+import { setAuthToken, setUserEmail, setUserToken } from "@reducers/UserSlice";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import useAppToast from "@components/Alert/AppToast";
-import images from "@common/AllImages";
 
 function reducer(state: any, { payload, type }: any) {
   switch (type) {
@@ -79,14 +77,13 @@ const Login = () => {
     AuthManager.userLogin(
       params,
       res => {
-        console.log("Login Res===>", JSON.stringify(res.data.data, null, 2));
-        setLoading(false);
-        setStorage("SPA_User_Token", res.data.data.token);
+        // console.log("Login Res===>", JSON.stringify(res.data.data, null, 2));
+        storeDispatch(setAuthToken(res.data.data.jwt));
+        storeDispatch(setUserEmail(res.data.data.stakeholder?.email));
+        setStorage("SPA_Auth_Token", res.data.data.jwt);
         setStorage("SPA_Email", res.data.data.stakeholder?.email);
-        storeDispatch(setUserToken(res.data.data.token));
-        storeDispatch(setUser(res.data.data.stakeholder));
         appToast.showNormalToast({ title: "Login Successfully!" });
-        // navigation.reset({ index: 0, routes: [{ name: "Tab" }] });
+        setLoading(false);
       },
       err => {
         console.log("Error ", err);

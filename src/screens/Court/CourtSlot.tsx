@@ -77,7 +77,7 @@ interface TimeSlot {
 
 export default function CourtSlot(props: any) {
   const { theme, isDarkMode } = useAppSelector(state => state.theme);
-  const { user } = useAppSelector(state => state.user);
+  const { user, authHeader } = useAppSelector(state => state.user);
   const { slots: slotDuration } = useAppSelector(state => state.appData);
   const { data, familyID = null, isVerified = false } = props.route.params;
   const [pickedDate, setPickedDate] = useState<Date | null>(null);
@@ -122,6 +122,7 @@ export default function CourtSlot(props: any) {
           customerID: user?.stakeholderID,
           familyMemberID: familyID,
         },
+        headers: authHeader,
       };
       CourtManager.generateBookingSlots(
         parsms,

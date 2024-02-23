@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect } from "react";
 import {
   FlatList,
   Platform,
@@ -7,14 +7,14 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import AppText from "@components/Text/AppText";
+// import AppText from "@components/Text/AppText";
 import AppButton from "@components/Button/AppButton";
 import { useAppDispatch, useAppSelector } from "@redux/store";
 import { useAppNavigation } from "@navigation/Navigation";
 import AppContainer from "@components/Container/AppContainer";
 import useAppToast from "@components/Alert/AppToast";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
-import { Searchbar } from "react-native-paper";
+// import { Searchbar } from "react-native-paper";
 import { moderateScale } from "react-native-size-matters";
 import svgs from "@common/AllSvgs";
 import HomeHeader from "@src/screen-components/Home/HomeHeader";
@@ -40,7 +40,7 @@ import {
 const isIOS = Platform.OS === "ios";
 
 function Home() {
-  const { user, userEmail, approvedMembership, location } = useAppSelector(
+  const { userEmail, approvedMembership, location } = useAppSelector(
     state => state.user,
   );
   const { coachs, locations, loadingCoachs, loadingLocations, isCourtBooking } =
@@ -117,7 +117,7 @@ function Home() {
   const onRefresh = useCallback(() => {
     getUserCurrentLocation();
     storeDispatch(getAppConfig());
-    if (userEmail) storeDispatch(refreshUser(userEmail));
+    storeDispatch(refreshUser());
     storeDispatch(loadAllLocations());
     storeDispatch(loadAllCoach());
   }, [coachs, locations]);

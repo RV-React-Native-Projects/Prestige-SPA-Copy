@@ -5,15 +5,16 @@ import MemberShipManager from "@features/MemberShip/MemberShipManager";
 import FamilyManager from "@features/Family/FamilyManager";
 import _ from "lodash";
 import AuthManager from "@features/Auth/AuthManager";
+import { RootState } from "../store";
 
 export const loadUserData = createAsyncThunk("user/loaduser", async () => {
   const { getStorage } = useEncryptedStorage();
 
-  var userToken = (await getStorage("SPA_User_Token")) ?? null;
+  // var userToken = (await getStorage("SPA_User_Token")) ?? null;
   var authToken = (await getStorage("SPA_Auth_Token")) ?? null;
   var refreshToken = (await getStorage("SPA_Refresh_Token")) ?? null;
   var email = (await getStorage("SPA_Email")) ?? null;
-  return { userToken, authToken, refreshToken, email };
+  return { authToken, refreshToken, email };
 });
 
 export const removeUserData = createAsyncThunk(
@@ -30,10 +31,11 @@ export const removeUserData = createAsyncThunk(
 
 export const getAllMembership = createAsyncThunk(
   "appdata/getAllMembership",
-  async (userId: number) => {
+  async (userId: number, { getState }) => {
+    const userState = (getState() as RootState).user;
     const response = await new Promise((resolve, reject) => {
       MemberShipManager.findAllForCustomer(
-        { id: userId },
+        { id: userId, headers: userState.authHeader },
         async res => {
           const data = await res?.data?.data;
           resolve(data);
@@ -50,10 +52,11 @@ export const getAllMembership = createAsyncThunk(
 
 export const getAllFamily = createAsyncThunk(
   "appdata/getAllFamily",
-  async (userId: number) => {
+  async (userId: number, { getState }) => {
+    const userState = (getState() as RootState).user;
     const response = await new Promise((resolve, reject) => {
       FamilyManager.findAllFamily(
-        { id: userId },
+        { id: userId, headers: userState.authHeader },
         async res => {
           const data = await res?.data?.data;
           resolve(data);
@@ -70,9 +73,11 @@ export const getAllFamily = createAsyncThunk(
 
 export const getAllPlayerCategory = createAsyncThunk(
   "appdata/getAllPlayerCategory",
-  async () => {
+  async (_, { getState }) => {
+    const userState = (getState() as RootState).user;
     const response = await new Promise((resolve, reject) => {
       FamilyManager.findAllPlayerCategory(
+        // { headers: userState.authHeader },
         {},
         async res => {
           const data = await res?.data?.data;
@@ -90,10 +95,11 @@ export const getAllPlayerCategory = createAsyncThunk(
 
 export const refreshUser = createAsyncThunk(
   "appdata/refreshUser",
-  async (email: string) => {
+  async (_, { getState }) => {
+    const userState = (getState() as RootState).user;
     const response = await new Promise((resolve, reject) => {
       AuthManager.getUserData(
-        { email: email },
+        { email: userState.userEmail, headers: userState.authHeader },
         async res => {
           const data = await res?.data?.data;
           resolve(data);
@@ -200,7 +206,7 @@ const userSlice = createSlice({
       state.authHeader = {
         // "x-client-id": JSON.parse(action.payload.userToken),
         Authorization: `Bearer ${action.payload}`,
-        "ngrok-skip-browser-warning": "true",
+        // "ngrok-skip-browser-warning": "true",
       };
     },
     setRefreshToken: (state, action) => {
@@ -226,9 +232,9 @@ const userSlice = createSlice({
       })
       .addCase(loadUserData.fulfilled, (state, action) => {
         console.log("loadUserInfo Action====>", action.payload);
-        state.userToken = !!action?.payload?.userToken
-          ? action?.payload?.userToken
-          : null;
+        // state.userToken = !!action?.payload?.userToken
+        //   ? action?.payload?.userToken
+        //   : null;
         // state.user = !!action?.payload?.user ? action?.payload?.user : null;
         state.authToken = !!action.payload.authToken
           ? action.payload.authToken
@@ -240,7 +246,7 @@ const userSlice = createSlice({
           ? {
               // "x-client-id": JSON.parse(action.payload.userToken),
               Authorization: `Bearer ${action.payload.authToken}`,
-              "ngrok-skip-browser-warning": "true",
+              // "ngrok-skip-browser-warning": "true",
             }
           : null;
         state.userEmail = action?.payload?.email;

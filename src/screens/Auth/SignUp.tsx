@@ -29,6 +29,7 @@ import GenderDropDown from "@src/components/dropdown/GenderDropDown";
 import DatePickerInput from "@src/components/Picker/DatePickerInput";
 import {
   getAllPlayerCategory,
+  setAuthToken,
   setUserEmail,
 } from "@src/redux/reducers/UserSlice";
 import _, { toLower, toString } from "lodash";
@@ -165,9 +166,11 @@ const SignUp = () => {
     AuthManager.signUpUser(
       params,
       res => {
-        console.log("signUp Res===>", res);
-        setStorage("SPA_Email", res.data?.data?.email);
-        storeDispatch(setUserEmail(res.data?.data?.email));
+        console.log("signUp Res===>", JSON.stringify(res, null, 2));
+        storeDispatch(setAuthToken(res.data.data.jwt));
+        storeDispatch(setUserEmail(res.data?.data?.stakeholder?.email));
+        setStorage("SPA_Email", res.data?.data?.stakeholder?.email);
+        setStorage("SPA_Auth_Token", res.data.data.jwt);
         appToast.showNormalToast({ title: "SignUp Successfully!" });
         setLoading(false);
       },

@@ -108,7 +108,9 @@ const FamilyCard = (props: FamilyCardProps) => {
 
 export default function FamilyMembers() {
   const { theme } = useAppSelector(state => state.theme);
-  const { user, loadingFamily, family } = useAppSelector(state => state.user);
+  const { user, loadingFamily, family, authHeader } = useAppSelector(
+    state => state.user,
+  );
   const storeDispatch = useAppDispatch();
   const navigation = useAppNavigation();
   const insets = useSafeAreaInsets();
@@ -131,7 +133,7 @@ export default function FamilyMembers() {
   function deleteMember() {
     setLoadingDelete(true);
     FamilyManager.deleteFamily(
-      { id: deleteId },
+      { id: deleteId, headers: authHeader },
       res => {
         // console.log("Res===>", JSON.stringify(res, null, 2));
         if (user?.stakeholderID)
