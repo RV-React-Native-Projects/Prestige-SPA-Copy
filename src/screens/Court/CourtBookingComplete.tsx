@@ -22,6 +22,7 @@ import images from "@src/common/AllImages";
 import svgs from "@src/common/AllSvgs";
 import moment from "moment";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
+import LottieView from "lottie-react-native";
 
 const isIOS = Platform.OS === "ios";
 const windowHeight = Dimensions.get("window").height;
@@ -84,8 +85,14 @@ export default function CourtBookingComplete(props: any) {
           }}>
           <VerticalSpacing size={20} />
           <View style={{ alignItems: "center" }}>
-            <svgs.Success />
-            <VerticalSpacing />
+            <LottieView
+              key={"CompleteLottie"}
+              source={require("@assets/lottieFiles/CompleteLottie.json")}
+              style={{ height: moderateScale(200, 0.3), width: "100%" }}
+              autoPlay
+              speed={0.8}
+              loop
+            />
             <AppText fontStyle="500.semibold" size={16}>
               {I18n.t("screen_messages.common.thank_you")}
             </AppText>
@@ -226,7 +233,10 @@ export default function CourtBookingComplete(props: any) {
           </View>
         </View>
       </ScrollView>
-      <FloatingBottomButton onPress={onPressDone} />
+      <FloatingBottomButton
+        title={I18n.t("screen_messages.button.done")}
+        onPress={onPressDone}
+      />
     </AppContainer>
   );
 }

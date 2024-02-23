@@ -15,6 +15,7 @@ import { VerticalSpacing } from "@components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
 import { useAppNavigation } from "@src/navigation/Navigation";
 import I18n from "i18n-js";
+import LottieView from "lottie-react-native";
 
 const windowHeight = Dimensions.get("window").height;
 
@@ -75,22 +76,28 @@ export default function CompletedBookings(props: any) {
             />
           )}
         />
+      ) : loadingBookings ? (
+        <LottieView
+          key={"SearchingLottie2"}
+          source={require("@assets/lottieFiles/SearchingLottie.json")}
+          style={{ height: windowHeight - 200, width: "100%" }}
+          autoPlay
+          loop
+        />
       ) : (
-        !loadingBookings && (
-          <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <svgs.NoBooking
-              height={moderateScale(windowHeight / 2.5, 0.3)}
-              width="80%"
-            />
-            <VerticalSpacing />
-            <AppText fontStyle="500.bold" size={16}>
-              {I18n.t("screen_messages.booking_history")}
-            </AppText>
-            <VerticalSpacing />
-            <AppText>{I18n.t("screen_messages.track_booking")}</AppText>
-          </View>
-        )
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+          <svgs.NoBooking
+            height={moderateScale(windowHeight / 2.5, 0.3)}
+            width="80%"
+          />
+          <VerticalSpacing />
+          <AppText fontStyle="500.bold" size={16}>
+            {I18n.t("screen_messages.booking_history")}
+          </AppText>
+          <VerticalSpacing />
+          <AppText>{I18n.t("screen_messages.track_booking")}</AppText>
+        </View>
       )}
     </View>
   );
