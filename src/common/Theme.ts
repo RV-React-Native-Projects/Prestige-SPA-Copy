@@ -270,7 +270,7 @@ const Colors = {
 const darkColors = {
   // Text Color
   title: "#E9ECEF",
-  paragraph: "#E9ECEF",
+  paragraph: "#A7A8AE",
   textColor: "#E9ECEF",
   secondaryTitle: "#E9ECEF",
   secondaryText: "#E9ECEF",

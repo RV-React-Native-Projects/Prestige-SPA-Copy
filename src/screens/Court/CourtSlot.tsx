@@ -1,4 +1,5 @@
 import {
+  Dimensions,
   FlatList,
   Platform,
   ScrollView,
@@ -33,8 +34,11 @@ import { loadSlots } from "@redux/reducers/AppDataSlice";
 import RectangleSK from "@assets/skelton/RectangleSK";
 import SlotTime from "@cards/Slots/SlotTime";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
+import { HStack, VStack } from "native-base";
 
 const isIOS = Platform.OS === "ios";
+const windowWidth = Dimensions.get("window").width;
 
 interface SlotInteface {
   slotID: number;
@@ -122,7 +126,7 @@ export default function CourtSlot(props: any) {
       CourtManager.generateBookingSlots(
         parsms,
         res => {
-          console.log("generateBookingSlots===>", JSON.stringify(res, null, 2));
+          // console.log("generateBookingSlots===>", JSON.stringify(res, null, 2));
           setSlots(res?.data?.data);
           setLoadingSlot(false);
         },
@@ -142,11 +146,11 @@ export default function CourtSlot(props: any) {
     setSlots(null);
   }, [pickedDate]);
 
-  const onPressNext = (data: any) => {
+  const onPressNext = () => {
     refRBSheet?.current?.open();
   };
 
-  const afterSelectCourt = (data: any) => {
+  const afterSelectCourt = () => {
     refRBSheet?.current?.close();
     navigation.navigate("CourtBooking", {
       data,
@@ -171,10 +175,7 @@ export default function CourtSlot(props: any) {
         title={I18n.t("screen_messages.header.Choose_Slot")}
       />
       <ScrollView
-        style={{
-          minHeight: isIOS ? "100%" : "auto",
-        }}
-        contentContainerStyle={{ paddingBottom: 100 }}>
+        contentContainerStyle={{ paddingBottom: moderateScale(100, 0.3) }}>
         <Card
           style={{
             backgroundColor: theme.modalBackgroundColor,
@@ -200,7 +201,7 @@ export default function CourtSlot(props: any) {
               }}
               resizeMode={FastImage.resizeMode.cover}
             />
-            <View style={{ padding: moderateScale(10, 0.3) }}>
+            <View style={{ paddingHorizontal: moderateScale(10, 0.3) }}>
               <AppText
                 numberOfLines={2}
                 fontStyle="700.bold"
@@ -211,8 +212,9 @@ export default function CourtSlot(props: any) {
               <View
                 style={{
                   flexDirection: "row",
+                  alignItems: "center",
                 }}>
-                <svgs.LocationV2 color1={theme.secondary} height={20} />
+                <svgs.LocationV2 color1={theme.secondary} />
                 <AppText numberOfLines={2} style={{ maxWidth: "50%" }}>
                   {data?.locationAddress}
                 </AppText>
@@ -227,7 +229,7 @@ export default function CourtSlot(props: any) {
           {/*  ============== Select Duration ====== */}
           {slotDuration && (
             <>
-              <VerticalSpacing size={20} />
+              <VerticalSpacing />
               <AppText
                 fontStyle="600.semibold"
                 size={16}
@@ -241,7 +243,7 @@ export default function CourtSlot(props: any) {
                   showsHorizontalScrollIndicator={false}
                   style={{ alignSelf: "center", width: "100%" }}
                   contentContainerStyle={{
-                    gap: moderateScale(10, 0.3),
+                    columnGap: moderateScale(10, 0.3),
                     paddingHorizontal: moderateScale(15, 0.3),
                   }}
                   data={slotDuration}
@@ -279,11 +281,11 @@ export default function CourtSlot(props: any) {
           ) : (
             slots && (
               <>
-                <VerticalSpacing size={20} />
+                <VerticalSpacing />
                 <AppText
                   fontStyle="600.semibold"
                   size={16}
-                  style={{ paddingHorizontal: 15 }}>
+                  style={{ paddingHorizontal: moderateScale(15, 0.3) }}>
                   {I18n.t("screen_messages.Select_Slot")}
                 </AppText>
                 <VerticalSpacing />
@@ -294,7 +296,8 @@ export default function CourtSlot(props: any) {
                     flexWrap: "wrap",
                     justifyContent: "flex-start",
                     paddingHorizontal: moderateScale(15, 0.3),
-                    columnGap: moderateScale(8, 0.3),
+                    alignContent: "center",
+                    columnGap: moderateScale(windowWidth / 35, 0.3),
                   }}>
                   {_.map(slots, (item, index) => (
                     <SlotTime
@@ -319,7 +322,7 @@ export default function CourtSlot(props: any) {
         ref={refRBSheet}
         closeOnDragDown={true}
         closeOnPressMask={true}
-        height={moderateScale(500, 0.3)}
+        height={moderateScale(550, 0.3)}
         customStyles={{
           container: {
             backgroundColor: theme.appBackgroundColor,
@@ -337,14 +340,18 @@ export default function CourtSlot(props: any) {
         dragFromTopOnly={true}>
         <View style={{ flex: 1 }}>
           <AppText
-            style={{ paddingHorizontal: 15 }}
+            style={{ paddingHorizontal: moderateScale(15, 0.3) }}
             fontStyle="600.semibold"
             size={18}>
             {I18n.t("screen_messages.Select_Court")}
           </AppText>
           <ScrollView
-            style={{ height: "100%", paddingHorizontal: 15 }}
-            contentContainerStyle={{ paddingTop: 20, paddingBottom: 50 }}>
+            style={{ height: "100%" }}
+            contentContainerStyle={{
+              paddingHorizontal: moderateScale(15, 0.3),
+              paddingTop: moderateScale(20, 0.3),
+              paddingBottom: moderateScale(50, 0.3),
+            }}>
             {availableCourts && availableCourts.length > 0 ? (
               <RadioButton.Group
                 onValueChange={newValue => setCourtId(toString(newValue))}
@@ -354,17 +361,15 @@ export default function CourtSlot(props: any) {
                     <TouchableOpacity
                       key={index}
                       activeOpacity={0.9}
-                      onPress={() => {
-                        setCourtId(toString(item?.courtID));
-                      }}
-                      // disabled={!item?.courtID}
+                      onPress={() => setCourtId(toString(item?.courtID))}
                       style={{
                         flexDirection: "row",
                         alignItems: "center",
-                        padding: 10,
+                        padding: moderateScale(10, 0.3),
+                        paddingVertical: moderateScale(15, 0.3),
                         backgroundColor: theme.modalBackgroundColor,
-                        marginBottom: 10,
-                        borderRadius: 10,
+                        marginBottom: moderateScale(10, 0.3),
+                        borderRadius: moderateScale(10, 0.3),
                         ...theme.light_shadow,
                       }}>
                       <View style={{ marginRight: moderateScale(5, 0.3) }}>
@@ -390,7 +395,7 @@ export default function CourtSlot(props: any) {
                         </AppText>
                         {isVerified ? null : (
                           <AppText
-                            style={{ marginTop: 10 }}
+                            style={{ marginTop: moderateScale(10, 0.3) }}
                             size={16}
                             fontStyle="500.semibold"
                             color={theme.primary}>
@@ -406,7 +411,10 @@ export default function CourtSlot(props: any) {
               </RadioButton.Group>
             ) : (
               <AppText
-                style={{ textAlign: "center", marginTop: 15 }}
+                style={{
+                  textAlign: "center",
+                  marginTop: moderateScale(15, 0.3),
+                }}
                 fontStyle="600.semibold"
                 size={18}>
                 {I18n.t("error_messages.no_available_court")}
@@ -414,46 +422,31 @@ export default function CourtSlot(props: any) {
             )}
           </ScrollView>
           {!!courtId && (
-            <Animatable.View
-              animation="fadeInUp"
-              duration={500}
-              style={{
-                backgroundColor: theme.modalBackgroundColor,
-                padding: moderateScale(20, 0.3),
-              }}>
-              <AppButton
-                Title={I18n.t("screen_messages.button.next")}
-                color={theme.primary}
-                fontStyle="600.normal"
-                fontSize={16}
-                height={50}
-                onPress={() => afterSelectCourt(data)}
-              />
-            </Animatable.View>
+            <FloatingBottomButton duration={500} onPress={afterSelectCourt} />
           )}
         </View>
       </RBSheet>
       {pickedDate && slotId && startTime && (
-        <Animatable.View
-          animation="fadeInUp"
-          duration={500}
-          style={{
-            backgroundColor: theme.modalBackgroundColor,
-            padding: moderateScale(20, 0.3),
-            bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
-          }}>
-          <AppButton
-            Title={I18n.t("screen_messages.button.next")}
-            color={theme.primary}
-            fontStyle="600.normal"
-            fontSize={16}
-            height={50}
-            onPress={() => onPressNext(data)}
-          />
-        </Animatable.View>
+        <FloatingBottomButton duration={500} onPress={onPressNext} />
       )}
     </AppContainer>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between", // Aligns items from the start of the container
+    paddingHorizontal: 10,
+
+    marginTop: 20,
+  },
+  column: {
+    width: 100, // Adjust the width as per your requirement
+    height: 100, // Set the height as per your requirement
+    backgroundColor: "lightblue", // Just for visualization
+    marginBottom: 10, // Spacing between rows
+    marginHorizontal: "auto",
+  },
+});

@@ -57,7 +57,7 @@ export default function CoachCard(props: CoachCardProps) {
             alignItems: "center",
             justifyContent: "center",
             borderRadius: moderateScale(100, 0.3),
-            marginVertical: moderateScale(10, 0.3),
+            marginBottom: moderateScale(5, 0.3),
           }}>
           <AppText
             style={{ textTransform: "capitalize" }}
@@ -72,7 +72,7 @@ export default function CoachCard(props: CoachCardProps) {
             flexDirection: "row",
             height: moderateScale(20, 0.3),
           }}>
-          <AppText fontStyle="600.bold" size={16} numberOfLines={1}>
+          <AppText fontStyle="600.bold" numberOfLines={1}>
             {stakeholderName}
           </AppText>
         </View>

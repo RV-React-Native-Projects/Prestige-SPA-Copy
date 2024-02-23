@@ -61,9 +61,8 @@ const CourtCard = (props: CourtCardProps) => {
         />
         <VerticalSpacing />
         <AppText
-          style={{ height: moderateScale(42, 0.3) }}
+          style={{ height: moderateScale(40, 0.3) }}
           fontStyle="600.bold"
-          size={16}
           numberOfLines={2}>
           {locationName}
         </AppText>

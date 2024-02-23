@@ -3,7 +3,6 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   View,
   BackHandler,
 } from "react-native";
@@ -22,6 +21,7 @@ import FastImage from "react-native-fast-image";
 import images from "@src/common/AllImages";
 import svgs from "@src/common/AllSvgs";
 import moment from "moment";
+import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 
 const isIOS = Platform.OS === "ios";
 const windowHeight = Dimensions.get("window").height;
@@ -61,39 +61,37 @@ export default function CourtBookingComplete(props: any) {
       backgroundColor={theme.appBackgroundColor}
       fullHeight={false}>
       <ScrollView
-        style={{
-          flex: 1,
-          minHeight: isIOS ? "100%" : "auto",
-          paddingHorizontal: 15,
-        }}
-        contentContainerStyle={{ paddingBottom: 100 }}>
+        contentContainerStyle={{
+          paddingBottom: moderateScale(100, 0.3),
+          paddingHorizontal: moderateScale(15, 0.3),
+        }}>
         <VerticalSpacing size={30} />
         <View style={{ alignItems: "center" }}>
           <AppText fontStyle="600.semibold" size={20}>
-            Booking Details
+            {I18n.t("screen_messages.header.Booking_Details")}
           </AppText>
         </View>
         <VerticalSpacing size={20} />
         <View
           style={{
-            padding: 15,
+            padding: moderateScale(15, 0.3),
             backgroundColor: theme.modalBackgroundColor,
-            borderTopRightRadius: 10,
-            borderTopLeftRadius: 10,
+            borderTopRightRadius: moderateScale(10, 0.3),
+            borderTopLeftRadius: moderateScale(10, 0.3),
+            borderBottomWidth: 0.3,
+            borderBottomColor: theme.paragraph,
             ...theme.light_shadow,
-            borderBottomWidth: 1,
-            borderBottomColor: theme.gray,
           }}>
           <VerticalSpacing size={20} />
           <View style={{ alignItems: "center" }}>
             <svgs.Success />
             <VerticalSpacing />
             <AppText fontStyle="500.semibold" size={16}>
-              Thank you!
+              {I18n.t("screen_messages.common.thank_you")}
             </AppText>
             <VerticalSpacing />
             <AppText fontStyle="400.normal">
-              Your booking was successful
+              {I18n.t("screen_messages.booking_success")}
             </AppText>
           </View>
           <View>
@@ -104,7 +102,9 @@ export default function CourtBookingComplete(props: any) {
                 alignItems: "center",
                 justifyContent: "space-between",
               }}>
-              <AppText fontStyle="400.normal">Booking ID</AppText>
+              <AppText fontStyle="400.normal">
+                {I18n.t("screen_messages.booking_ID")}
+              </AppText>
               <AppText fontStyle="500.normal"># {bookingId}</AppText>
             </View>
             {/* ======= seession Id is Not required for Now ======= */}
@@ -125,7 +125,9 @@ export default function CourtBookingComplete(props: any) {
                 alignItems: "center",
                 justifyContent: "space-between",
               }}>
-              <AppText fontStyle="400.normal">Date</AppText>
+              <AppText fontStyle="400.normal">
+                {I18n.t("screen_messages.date")}
+              </AppText>
               <AppText fontStyle="500.normal">
                 {moment(date).format("DD MMM YY")}
               </AppText>
@@ -137,7 +139,9 @@ export default function CourtBookingComplete(props: any) {
                 alignItems: "center",
                 justifyContent: "space-between",
               }}>
-              <AppText fontStyle="400.normal">Time</AppText>
+              <AppText fontStyle="400.normal">
+                {I18n.t("screen_messages.time")}
+              </AppText>
               <AppText fontStyle="500.normal">
                 {startTime} - {endTime}
               </AppText>
@@ -149,31 +153,35 @@ export default function CourtBookingComplete(props: any) {
                 alignItems: "center",
                 justifyContent: "space-between",
               }}>
-              <AppText fontStyle="400.normal">Slot</AppText>
-              <AppText fontStyle="500.normal">{slot} Mins</AppText>
+              <AppText fontStyle="400.normal">
+                {I18n.t("screen_messages.slot")}
+              </AppText>
+              <AppText fontStyle="500.normal">
+                {I18n.t("screen_messages.slot_mins", { min: slot })}
+              </AppText>
             </View>
           </View>
         </View>
         <View
           style={{
-            padding: 15,
+            padding: moderateScale(15, 0.3),
             backgroundColor: theme.modalBackgroundColor,
+            borderBottomWidth: 0.3,
+            borderBottomColor: theme.paragraph,
             ...theme.light_shadow,
-            borderBottomWidth: 1,
-            borderBottomColor: theme.gray,
           }}>
           <AppText fontStyle="600.semibold" size={16}>
-            Booking Summary
+            {I18n.t("screen_messages.Booking_Summary")}
           </AppText>
           <VerticalSpacing />
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: "row" }}>
             <FastImage
               style={[
                 {
                   height: moderateScale(80, 0.3),
-                  width: 110,
-                  borderRadius: 5,
-                  marginRight: 10,
+                  width: moderateScale(100, 0.3),
+                  borderRadius: moderateScale(5, 0.3),
+                  marginRight: moderateScale(10, 0.3),
                 },
               ]}
               defaultSource={images.Placeholder}
@@ -183,21 +191,21 @@ export default function CourtBookingComplete(props: any) {
               }}
               resizeMode={FastImage.resizeMode.cover}
             />
-            <AppText fontStyle="600.medium" size={16}>
+            <AppText fontStyle="500.medium" size={16}>
               {data?.locationName}
             </AppText>
           </View>
         </View>
         <View
           style={{
-            padding: 15,
+            padding: moderateScale(15, 0.3),
             backgroundColor: theme.modalBackgroundColor,
             ...theme.light_shadow,
-            borderBottomLeftRadius: 10,
-            borderBottomRightRadius: 10,
+            borderBottomLeftRadius: moderateScale(10, 0.3),
+            borderBottomRightRadius: moderateScale(10, 0.3),
           }}>
           <AppText fontStyle="600.semibold" size={16}>
-            Payment Summary
+            {I18n.t("screen_messages.Payment_Summary")}
           </AppText>
           <VerticalSpacing />
           <View
@@ -205,29 +213,20 @@ export default function CourtBookingComplete(props: any) {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-              marginBottom: 10,
+              marginBottom: moderateScale(10, 0.3),
             }}>
-            <AppText fontStyle="500.semibold">Total</AppText>
-            <AppText fontStyle="600.semibold">AED {amountPaid}</AppText>
+            <AppText fontStyle="500.semibold">
+              {I18n.t("screen_messages.total")}
+            </AppText>
+            <AppText fontStyle="600.semibold">
+              {I18n.t("screen_messages.price", {
+                price: amountPaid,
+              })}
+            </AppText>
           </View>
         </View>
       </ScrollView>
-      <Animatable.View
-        animation="fadeInUp"
-        duration={1000}
-        style={{
-          backgroundColor: theme.modalBackgroundColor,
-          padding: moderateScale(20, 0.3),
-        }}>
-        <AppButton
-          Title={I18n.t("screen_messages.button.done")}
-          color={theme.primary}
-          fontStyle="600.normal"
-          fontSize={16}
-          height={50}
-          onPress={() => onPressDone()}
-        />
-      </Animatable.View>
+      <FloatingBottomButton onPress={onPressDone} />
     </AppContainer>
   );
 }

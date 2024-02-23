@@ -511,11 +511,8 @@ export default function CoachSlot(props: any) {
             Select Court
           </AppText>
           <ScrollView
-            style={{
-              height: "100%",
-              paddingHorizontal: moderateScale(15, 0.3),
-            }}
             contentContainerStyle={{
+              paddingHorizontal: moderateScale(15, 0.3),
               paddingTop: moderateScale(20, 0.3),
               paddingBottom: moderateScale(50, 0.3),
             }}>
@@ -561,7 +558,7 @@ export default function CoachSlot(props: any) {
                       )}
                     </View>
                     <View key={index} style={{}}>
-                      <AppText size={16} fontStyle="500.bold">
+                      <AppText size={16} fontStyle="500.medium">
                         {item?.courtName}
                       </AppText>
                       {/* <VerticalSpacing />

@@ -24,6 +24,8 @@ export default function SlotTime(props: SlotTime) {
         borderRadius: moderateScale(10, 0.3),
         marginBottom: moderateScale(10, 0.3),
         ...theme.light_shadow,
+        marginHorizontal: "auto",
+        maxWidth: moderateScale(85, 0.3),
       }}
       onPress={onPress}
       disabled={!isAvailable}>

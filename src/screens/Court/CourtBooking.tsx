@@ -22,6 +22,7 @@ import StripeManager from "@features/Stripe/StripeManager";
 import useAppToast from "@components/Alert/AppToast";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 
 const isIOS = Platform.OS === "ios";
 
@@ -176,8 +177,8 @@ export default function CourtBooking(props: any) {
           endTime: endTime,
           bookingId: res?.data?.data?.bookingNumber,
           slot: endDate.diff(startDate, "minutes"),
-          amountPaid: isVerified ? 0 : selectedCourt?.["creditTypes.rate"],
-          useCredit: useCredit,
+          amountPaid:
+            isVerified || useCredit ? 0 : selectedCourt?.["creditTypes.rate"],
         });
       },
       err => {
@@ -195,19 +196,15 @@ export default function CourtBooking(props: any) {
       fullHeight={false}>
       <BackButtonWithTitle title="Booking Confirmation" />
       <ScrollView
-        style={{
-          flex: 1,
-          minHeight: isIOS ? "100%" : "auto",
-        }}
-        contentContainerStyle={{ paddingBottom: 100 }}>
-        <VerticalSpacing size={20} />
+        contentContainerStyle={{ paddingBottom: moderateScale(100, 0.3) }}>
+        <VerticalSpacing size={15} />
         <View
           style={{
             backgroundColor: theme.modalBackgroundColor,
-            padding: 10,
-            paddingHorizontal: 15,
-            marginHorizontal: 15,
-            borderRadius: 10,
+            padding: moderateScale(10, 0.3),
+            paddingHorizontal: moderateScale(15, 0.3),
+            marginHorizontal: moderateScale(15, 0.3),
+            borderRadius: moderateScale(10, 0.3),
             ...theme.light_shadow,
           }}>
           <View
@@ -220,7 +217,7 @@ export default function CourtBooking(props: any) {
               <AppText
                 fontStyle="400.normal"
                 color={theme.gray}
-                style={{ marginBottom: 10 }}>
+                style={{ marginBottom: moderateScale(10, 0.3) }}>
                 Date
               </AppText>
               <AppText fontStyle="600.semibold">
@@ -272,22 +269,25 @@ export default function CourtBooking(props: any) {
             <View style={{ paddingHorizontal: moderateScale(10, 0.3) }}>
               <AppText fontStyle="700.bold">{data?.locationName}</AppText>
               <VerticalSpacing />
-              <View
-                style={{
-                  flexDirection: "row",
-                }}>
-                <svgs.LocationV2 color1={theme.secondary} height={20} />
-                <AppText style={{ maxWidth: "50%" }} numberOfLines={2}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <svgs.LocationV2 color1={theme.secondary} />
+                <AppText
+                  fontStyle="400.normal"
+                  style={{ maxWidth: "50%" }}
+                  numberOfLines={2}>
                   {data?.locationAddress}
                 </AppText>
               </View>
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: 10,
+                  marginTop: moderateScale(5, 0.3),
+                  alignItems: "center",
                 }}>
                 <svgs.Court color1={theme.secondary} height={20} width={20} />
-                <AppText>{selectedCourt?.courtName}</AppText>
+                <AppText fontStyle="400.normal">
+                  {selectedCourt?.courtName}
+                </AppText>
               </View>
             </View>
           </View>
@@ -297,16 +297,16 @@ export default function CourtBooking(props: any) {
         {isVerified ? (
           <View
             style={{
-              marginHorizontal: 15,
-              padding: 15,
-              borderRadius: 10,
+              marginHorizontal: moderateScale(15, 0.3),
+              padding: moderateScale(15, 0.3),
+              borderRadius: moderateScale(10, 0.3),
               backgroundColor: theme.modalBackgroundColor,
             }}>
-            <AppText fontStyle="500.bold" size={18} color={theme.info}>
+            <AppText fontStyle="500.bold" size={18} color={theme.secondary}>
               {I18n.t("screen_messages.Membership_Benefits")}
             </AppText>
             <VerticalSpacing />
-            <AppText fontStyle="400.normal" color={theme.gray}>
+            <AppText fontStyle="400.normal" color={theme.paragraph}>
               {I18n.t("screen_messages.club_membership")}
             </AppText>
             <VerticalSpacing />
@@ -321,7 +321,9 @@ export default function CourtBooking(props: any) {
                 size={30}
                 color={theme.secondary}
               />
-              <AppText style={{ marginLeft: 5 }} fontStyle="600.bold">
+              <AppText
+                style={{ marginLeft: moderateScale(5, 0.3) }}
+                fontStyle="600.bold">
                 {I18n.t("screen_messages.verified_member")}
               </AppText>
             </View>
@@ -331,9 +333,9 @@ export default function CourtBooking(props: any) {
         selectedCourt?.["creditTypes.availableCredits.quantity"] > 0 ? (
           <View
             style={{
-              marginHorizontal: 15,
-              padding: 15,
-              borderRadius: 10,
+              marginHorizontal: moderateScale(15, 0.3),
+              padding: moderateScale(15, 0.3),
+              borderRadius: moderateScale(10, 0.3),
               backgroundColor: theme.modalBackgroundColor,
             }}>
             <AppText fontStyle="500.bold" size={16} color={theme.primary}>
@@ -362,17 +364,17 @@ export default function CourtBooking(props: any) {
           </View>
         ) : null}
         <VerticalSpacing />
-        <View style={{ paddingHorizontal: 15 }}>
+        <View style={{ paddingHorizontal: moderateScale(15, 0.3) }}>
           <AppText fontStyle="500.normal" size={16}>
             Bill Details
           </AppText>
           <VerticalSpacing size={20} />
           <View
             style={{
-              padding: 15,
-              paddingVertical: 20,
+              padding: moderateScale(15, 0.3),
+              paddingVertical: moderateScale(20, 0.3),
               backgroundColor: theme.modalBackgroundColor,
-              borderRadius: 10,
+              borderRadius: moderateScale(15, 0.3),
               ...theme.light_shadow,
             }}>
             <View
@@ -397,7 +399,7 @@ export default function CourtBooking(props: any) {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
-                marginTop: 10,
+                marginTop: moderateScale(10, 0.3),
               }}>
               <AppText fontStyle="500.semibold">
                 {I18n.t("screen_messages.To_Pay")}
@@ -414,30 +416,12 @@ export default function CourtBooking(props: any) {
           </View>
         </View>
       </ScrollView>
-      <Animatable.View
-        animation="fadeInUp"
-        duration={1000}
-        style={{
-          backgroundColor: theme.modalBackgroundColor,
-          padding: moderateScale(20, 0.3),
-          bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
-        }}>
-        <AppButton
-          loading={loading}
-          Title={
-            isVerified || useCredit
-              ? I18n.t("screen_messages.button.book_now")
-              : I18n.t("screen_messages.button.Proceed_to_Payment")
-          }
-          color={theme.primary}
-          fontStyle="600.normal"
-          fontSize={16}
-          height={50}
-          onPress={() =>
-            isVerified || useCredit ? createOneBooking() : openPaymentSheet()
-          }
-        />
-      </Animatable.View>
+      <FloatingBottomButton
+        loading={loading}
+        onPress={() =>
+          isVerified || useCredit ? createOneBooking() : openPaymentSheet()
+        }
+      />
     </AppContainer>
   );
 }

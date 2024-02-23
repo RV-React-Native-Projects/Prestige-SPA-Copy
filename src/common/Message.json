@@ -107,10 +107,11 @@
       "total": "Total",
       "To_Pay": "To Pay",
       "Payment_Summary": "Payment Summary",
+      "Booking_Summary": "Booking Summary",
       "Payment_Detail": "Payment Details",
       "Membership_Benefits": "Membership Benefits",
       "Membership_Plan": "Membership Plan",
-      "club_membership": "Club members play for free. Verify your membership to access this perk.",
+      "club_membership": "Club members play for free.",
       "book_on_behalf": "Book on Behalf of a Family Member",
       "tab": {
         "home": "Home",
@@ -198,10 +199,12 @@
       "booking_appear": "Once you make a booking, it will appear here.",
       "date": "Date",
       "time": "Time",
+      "slot": "Slot",
       "slot_duration": "Slot Duration",
       "slot_mins": "%{min} Mins",
       "apply_credits_payment": "Apply Credits to Payment",
-      "use_available_credits": "Use your available credits to pay for this transaction."
+      "use_available_credits": "Use your available credits to pay for this transaction.",
+      "booking_success": "Your booking was successful"
     }
   },
   "en-UK": {

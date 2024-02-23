@@ -8,6 +8,7 @@ import FastImage from "react-native-fast-image";
 import images from "@src/common/AllImages";
 import svgs from "@src/common/AllSvgs";
 import I18n from "i18n-js";
+import { moderateScale } from "react-native-size-matters";
 
 interface BookingCardProps {
   onPress?: () => void;
@@ -92,26 +93,29 @@ function BookingCard(props: BookingCardProps) {
             <View
               style={{
                 backgroundColor:
-                  coachSessionTypeID === 1 ? theme.primary : theme.tertiaryText,
-                width: 70,
-                height: 25,
+                  tier === "TIER 1" ? theme.primary : theme.tertiaryText,
+                width: moderateScale(60, 0.3),
+                height: moderateScale(25, 0.3),
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: 100,
-                marginVertical: 5,
+                borderRadius: moderateScale(100, 0.3),
+                marginBottom: moderateScale(5, 0.3),
               }}>
-              <AppText fontStyle="400.medium" size={12} color={theme.white}>
+              <AppText
+                style={{ textTransform: "capitalize" }}
+                fontStyle="500.bold"
+                size={12}
+                color={theme.white}>
                 {tier}
               </AppText>
             </View>
             <AppText
               style={{ maxWidth: "60%" }}
-              fontStyle="500.bold"
-              size={16}
+              fontStyle="500.normal"
               numberOfLines={1}>
               {coach?.stakeholderName}
             </AppText>
-            <VerticalSpacing />
+            <VerticalSpacing size={5} />
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <svgs.LocationV2 color1={theme.secondary} />
               <AppText
@@ -135,15 +139,14 @@ function BookingCard(props: BookingCardProps) {
             resizeMode={FastImage.resizeMode.cover}
             defaultSource={images.Placeholder}
           />
-          <View style={{ margin: 10 }}>
+          <View style={{ marginHorizontal: 10 }}>
             <AppText
               style={{ maxWidth: "60%" }}
-              fontStyle="500.bold"
-              size={16}
+              fontStyle="500.normal"
               numberOfLines={2}>
               {court?.courtName}
             </AppText>
-            <VerticalSpacing />
+            <VerticalSpacing size={8} />
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <svgs.LocationV2 color1={theme.secondary} />
               <AppText
