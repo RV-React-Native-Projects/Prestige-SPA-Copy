@@ -1,5 +1,4 @@
 import {
-  Platform,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -30,8 +29,9 @@ import { loadTerms } from "@src/redux/reducers/AppDataSlice";
 import RectangleSK from "@src/assets/skelton/RectangleSK";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
+import DeviceInfo from "react-native-device-info";
 
-const isIOS = Platform.OS === "ios";
+const isTab = DeviceInfo.isTablet();
 const windowWidth = Dimensions.get("window").width;
 
 interface Location {
@@ -320,7 +320,6 @@ export default function CoachSlot(props: any) {
             }}
             minimumDate={moment(minDate).toDate()}
             maximumDate={moment(maxDate).toDate()}
-            // bookingType="MULTI"
           />
         ) : (
           <SlotCalender
@@ -453,7 +452,10 @@ export default function CoachSlot(props: any) {
                     paddingHorizontal: moderateScale(15, 0.3),
                     justifyContent: "flex-start",
                     alignContent: "center",
-                    columnGap: moderateScale(windowWidth / 35, 0.3),
+                    // columnGap: moderateScale(
+                    //   isTab ? windowWidth / 50 : windowWidth / 35,
+                    //   0.3,
+                    // ),
                   }}>
                   {_.map(slots, (item, index) => (
                     <SlotTime

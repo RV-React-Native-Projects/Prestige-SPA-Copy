@@ -19,6 +19,7 @@ import Permissions from "@helpers/Permissions";
 import { moderateScale } from "react-native-size-matters";
 import FastImage from "react-native-fast-image";
 import images from "@src/common/AllImages";
+import DeviceInfo from "react-native-device-info";
 
 const windowHeight = Dimensions.get("screen").height;
 const windowWidth = Dimensions.get("screen").width;
@@ -39,6 +40,7 @@ interface Props {
 }
 
 const isIOS = Platform.OS === "ios";
+const isTab = DeviceInfo.isTablet();
 
 const ProfilePicker: React.FC<Props> = props => {
   const { theme } = useAppSelector(state => state.theme);
@@ -191,7 +193,7 @@ const ProfilePicker: React.FC<Props> = props => {
           style={[
             {
               backgroundColor: backgroundColor,
-              height: modalHeight,
+              height: "auto",
               width: modalWidth,
               minHeight: modalHeight,
               alignSelf: "center",
@@ -203,7 +205,7 @@ const ProfilePicker: React.FC<Props> = props => {
               ? {
                   alignSelf: "center",
                   position: "absolute",
-                  bottom: moderateScale(-25, 0.3),
+                  bottom: moderateScale(isTab ? -50 : -25, 0.3),
                 }
               : null,
           ]}>
@@ -284,6 +286,7 @@ const ProfilePicker: React.FC<Props> = props => {
               </View>
             </View>
           )}
+          <VerticalSpacing size={isTab ? 40 : 20} />
         </View>
       </Modal>
     </>

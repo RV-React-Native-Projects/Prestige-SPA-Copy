@@ -8,6 +8,7 @@ import I18n from "i18n-js";
 import moment from "moment";
 import svgs from "@common/AllSvgs";
 import { FormikErrors } from "formik";
+import { moderateScale } from "react-native-size-matters";
 
 interface DatePickerProps {
   label?: string;
@@ -65,7 +66,7 @@ const DatePickerInput = (props: DatePickerProps) => {
         style={{
           borderWidth: 1,
           borderColor: error ? theme.error : theme.gray,
-          height: 50,
+          height: moderateScale(50, 0.3),
           width: "100%",
           backgroundColor: theme.modalBackgroundColor,
           borderRadius: 5,

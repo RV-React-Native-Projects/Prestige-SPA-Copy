@@ -22,9 +22,11 @@ import DocumentPicker, {
   DocumentPickerResponse,
   types,
 } from "react-native-document-picker";
+import DeviceInfo from "react-native-device-info";
 
 const windowHeight = Dimensions.get("screen").height;
 const windowWidth = Dimensions.get("screen").width;
+const isTab = DeviceInfo.isTablet();
 
 interface Props {
   visible: boolean;
@@ -218,7 +220,11 @@ const DocPicker: React.FC<Props> = props => {
               borderTopLeftRadius: 20,
             },
             toBottom
-              ? { alignSelf: "center", position: "absolute", bottom: -25 }
+              ? {
+                  alignSelf: "center",
+                  position: "absolute",
+                  bottom: moderateScale(isTab ? -50 : -25, 0.3),
+                }
               : null,
           ]}>
           {showHeader ? (
@@ -288,6 +294,7 @@ const DocPicker: React.FC<Props> = props => {
               </View>
             </View>
           )}
+          <VerticalSpacing size={isTab ? 40 : 20} />
         </View>
       </Modal>
     </>

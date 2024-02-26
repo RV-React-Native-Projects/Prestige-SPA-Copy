@@ -1,8 +1,15 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React from "react";
 import { useAppSelector } from "@src/redux/store";
 import { moderateScale } from "react-native-size-matters";
 import AppText from "@src/components/Text/AppText";
+import DeviceInfo from "react-native-device-info";
 
 interface SlotTime {
   onPress: () => void;
@@ -10,6 +17,10 @@ interface SlotTime {
   time: string;
   isAvailable: boolean;
 }
+
+const isIOS = Platform.OS === "ios";
+const isTab = DeviceInfo.isTablet();
+const windowWidth = Dimensions.get("window").width;
 
 export default function SlotTime(props: SlotTime) {
   const { onPress, value, time, isAvailable } = props;
@@ -21,34 +32,27 @@ export default function SlotTime(props: SlotTime) {
       style={{
         backgroundColor:
           value === time ? theme.primary : theme.modalBackgroundColor,
-        borderRadius: moderateScale(10, 0.3),
+        borderRadius: moderateScale(5, 0.3),
         marginBottom: moderateScale(10, 0.3),
         ...theme.light_shadow,
         marginHorizontal: "auto",
-        maxWidth: moderateScale(85, 0.3),
+        marginRight: moderateScale(10, 0.3),
+        padding: moderateScale(10, 0.3),
+        paddingHorizontal: moderateScale(8, 0.3),
+        flexDirection: "column",
+        alignItems: "center",
       }}
       onPress={onPress}
       disabled={!isAvailable}>
-      <View
-        style={{
-          flexDirection: "column",
-          alignItems: "center",
-          padding: moderateScale(10, 0.3),
-        }}>
-        <AppText
-          color={
-            !isAvailable
-              ? theme.gray
-              : value === time
-                ? theme.white
-                : theme.title
-          }
-          style={{ textTransform: "uppercase" }}
-          fontStyle="500.medium"
-          size={14}>
-          {time}
-        </AppText>
-      </View>
+      <AppText
+        color={
+          !isAvailable ? theme.gray : value === time ? theme.white : theme.title
+        }
+        style={{ textTransform: "uppercase" }}
+        fontStyle="500.medium"
+        size={14}>
+        {time}
+      </AppText>
     </TouchableOpacity>
   );
 }

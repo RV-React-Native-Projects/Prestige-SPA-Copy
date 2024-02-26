@@ -38,12 +38,12 @@ const DateCard = memo((props: any) => {
     <TouchableOpacity
       activeOpacity={0.8}
       style={{
-        width: 65,
+        width: moderateScale(65, 0.3),
         backgroundColor:
           value === item?.date ? theme.primary : theme.modalBackgroundColor,
-        borderRadius: 10,
+        borderRadius: moderateScale(5, 0.3),
         ...theme.light_shadow,
-        marginBottom: 10,
+        marginBottom: moderateScale(10, 0.3),
       }}
       onPress={onPress}>
       <View
@@ -51,7 +51,7 @@ const DateCard = memo((props: any) => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: 10,
+          padding: moderateScale(10, 0.3),
         }}>
         <AppText
           size={12}

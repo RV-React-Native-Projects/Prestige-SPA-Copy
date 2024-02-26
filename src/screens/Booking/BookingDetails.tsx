@@ -1,45 +1,31 @@
 import React, { memo } from "react";
 import {
   Dimensions,
-  FlatList,
-  Image,
   Linking,
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import AppContainer from "@components/Container/AppContainer";
 import { useAppDispatch, useAppSelector } from "@redux/store";
-import { RadioButton } from "react-native-paper";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
 import { useAppNavigation } from "@navigation/Navigation";
-import * as Animatable from "react-native-animatable";
 import BackButtonWithTitle from "@components/Header/BackButtonWithTitle";
-import AppButton from "@components/Button/AppButton";
 import I18n from "i18n-js";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import FastImage from "react-native-fast-image";
 import images from "@common/AllImages";
-import svgs from "@common/AllSvgs";
 import AppText from "@components/Text/AppText";
-import RBSheet from "react-native-raw-bottom-sheet";
-import filter from "lodash/filter";
-import map from "lodash/map";
-import toString from "lodash/toString";
-import toNumber from "lodash/toNumber";
-import SlotsDuration from "@cards/Slots/SlotsDuration";
-import { loadSlots } from "@reducers/AppDataSlice";
-import Feather from "react-native-vector-icons/Feather";
 import Utils from "@common/Utils";
 import moment from "moment";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import DeviceInfo from "react-native-device-info";
+import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 
 const isIOS = Platform.OS === "ios";
-const windowHeight = Dimensions.get("window").height;
-const windowWidth = Dimensions.get("window").width;
+const isTab = DeviceInfo.isTablet();
 
 function BookingDetails(props: any) {
   const { data } = props?.route?.params;
@@ -182,7 +168,11 @@ function BookingDetails(props: any) {
                 </AppText>
                 <VerticalSpacing size={5} />
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <svgs.LocationV2 color1={theme.secondary} />
+                  <MaterialIcons
+                    name="location-pin"
+                    size={Math.ceil(moderateScale(20, 0.3))}
+                    color={theme.secondary}
+                  />
                   <AppText
                     style={{ maxWidth: "58%" }}
                     fontStyle="400.normal"
@@ -214,7 +204,11 @@ function BookingDetails(props: any) {
                 </AppText>
                 <VerticalSpacing />
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <svgs.LocationV2 color1={theme.secondary} />
+                  <MaterialIcons
+                    name="location-pin"
+                    size={Math.ceil(moderateScale(20, 0.3))}
+                    color={theme.secondary}
+                  />
                   <AppText
                     style={{ maxWidth: "53%" }}
                     fontStyle="400.bold"
@@ -291,24 +285,11 @@ function BookingDetails(props: any) {
         </View>
         <VerticalSpacing size={40} />
       </ScrollView>
-      <Animatable.View
-        animation="fadeInUp"
+      <FloatingBottomButton
         duration={500}
-        style={{
-          backgroundColor: theme.modalBackgroundColor,
-          padding: moderateScale(20, 0.3),
-          bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
-          ...theme.dark_shadow,
-        }}>
-        <AppButton
-          Title="View Directions"
-          color={theme.primary}
-          fontStyle="600.normal"
-          fontSize={16}
-          height={50}
-          onPress={openMap}
-        />
-      </Animatable.View>
+        title={I18n.t("screen_messages.button.View_Directions")}
+        onPress={openMap}
+      />
     </AppContainer>
   );
 }

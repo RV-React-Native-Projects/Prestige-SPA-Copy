@@ -36,6 +36,7 @@ import _, { toLower, toString } from "lodash";
 import moment from "moment";
 import Utils from "@src/common/Utils";
 import ProfilePicker from "@src/components/Picker/ProfilePicker";
+import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 
 const isIOS = Platform.OS === "ios";
 
@@ -478,26 +479,13 @@ const SignUp = () => {
                 />
               </View> */}
             </ScrollView>
-            <Animatable.View
-              animation="fadeInUp"
-              duration={1000}
-              style={{
-                backgroundColor: theme.modalBackgroundColor,
-                padding: moderateScale(20, 0.3),
-              }}>
-              <AppButton
-                loading={loading}
-                Title={I18n.t("screen_messages.button.Create_Account")}
-                color={theme.primary}
-                fontStyle="600.normal"
-                fontSize={16}
-                height={50}
-                onPress={() => {
-                  onSubmit();
-                  handleSubmit();
-                }}
-              />
-            </Animatable.View>
+            <FloatingBottomButton
+              title={I18n.t("screen_messages.button.Create_Account")}
+              onPress={() => {
+                onSubmit();
+                handleSubmit();
+              }}
+            />
           </>
         )}
       </Formik>

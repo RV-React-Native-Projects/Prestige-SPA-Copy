@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
-  Dimensions,
   FlatList,
   Platform,
   ScrollView,
@@ -34,8 +33,6 @@ import FamilyModal from "@src/screen-components/Modal/FamilyModal";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 
 const isIOS = Platform.OS === "ios";
-const windowHeight = Dimensions.get("window").height;
-const windowWidth = Dimensions.get("window").width;
 
 interface Slot {
   slotID: number;
@@ -258,7 +255,13 @@ function CoachDetail(props: any) {
             description={data?.stakeholder?.gender}
           />
           <BioCard
-            icon={<svgs.LocationV2 color1={theme.paragraph} color3="none" />}
+            icon={
+              <Ionicons
+                name="location-outline"
+                size={Math.ceil(moderateScale(20, 0.3))}
+                color={theme.iconColor}
+              />
+            }
             title={I18n.t("screen_messages.input_lable.From")}
             description={data?.stakeholder?.address}
           />

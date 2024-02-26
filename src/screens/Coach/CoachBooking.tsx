@@ -20,6 +20,10 @@ import SlotCard from "@cards/Slots/SlotCard";
 import useAppToast from "@components/Alert/AppToast";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import DeviceInfo from "react-native-device-info";
+
+const isTab = DeviceInfo.isTablet();
 
 interface DateRangeProps {
   startDate: string | moment.Moment | Date;
@@ -400,7 +404,11 @@ export default function CoachBooking(props: any) {
                 }}
                 resizeMode={FastImage.resizeMode.cover}
               />
-              <View style={{ paddingHorizontal: moderateScale(10, 0.3) }}>
+              <View
+                style={{
+                  paddingHorizontal: moderateScale(10, 0.3),
+                  width: "100%",
+                }}>
                 <AppText
                   fontStyle="700.bold"
                   numberOfLines={2}
@@ -418,13 +426,17 @@ export default function CoachBooking(props: any) {
                   </AppText>
                 </View>
                 <VerticalSpacing />
-                <View style={{ flexDirection: "row" }}>
-                  <svgs.LocationV2
-                    color1={theme.secondary}
-                    height={20}
-                    width={20}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginLeft: moderateScale(-3, 0.3),
+                  }}>
+                  <MaterialIcons
+                    name="location-pin"
+                    size={Math.ceil(moderateScale(20, 0.3))}
+                    color={theme.secondary}
                   />
-                  <AppText numberOfLines={2} style={{ maxWidth: "50%" }}>
+                  <AppText numberOfLines={2} style={{ maxWidth: "65%" }}>
                     {court?.location?.locationAddress}
                   </AppText>
                 </View>

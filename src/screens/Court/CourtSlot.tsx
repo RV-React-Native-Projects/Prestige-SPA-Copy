@@ -35,9 +35,11 @@ import RectangleSK from "@assets/skelton/RectangleSK";
 import SlotTime from "@cards/Slots/SlotTime";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
-import { HStack, VStack } from "native-base";
+import DeviceInfo from "react-native-device-info";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const isIOS = Platform.OS === "ios";
+const isTab = DeviceInfo.isTablet();
 const windowWidth = Dimensions.get("window").width;
 
 interface SlotInteface {
@@ -215,7 +217,11 @@ export default function CourtSlot(props: any) {
                   flexDirection: "row",
                   alignItems: "center",
                 }}>
-                <svgs.LocationV2 color1={theme.secondary} />
+                <MaterialIcons
+                  name="location-pin"
+                  size={Math.ceil(moderateScale(20, 0.3))}
+                  color={theme.secondary}
+                />
                 <AppText numberOfLines={2} style={{ maxWidth: "50%" }}>
                   {data?.locationAddress}
                 </AppText>
@@ -298,7 +304,10 @@ export default function CourtSlot(props: any) {
                     justifyContent: "flex-start",
                     paddingHorizontal: moderateScale(15, 0.3),
                     alignContent: "center",
-                    columnGap: moderateScale(windowWidth / 35, 0.3),
+                    // columnGap: moderateScale(
+                    //   isTab ? windowWidth / 50 : windowWidth / 35,
+                    //   0.3,
+                    // ),
                   }}>
                   {_.map(slots, (item, index) => (
                     <SlotTime

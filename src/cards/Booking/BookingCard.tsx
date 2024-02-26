@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { memo } from "react";
 import { useAppSelector } from "@src/redux/store";
 import AppText from "@src/components/Text/AppText";
@@ -9,7 +9,10 @@ import images from "@src/common/AllImages";
 import svgs from "@src/common/AllSvgs";
 import I18n from "i18n-js";
 import { moderateScale } from "react-native-size-matters";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import DeviceInfo from "react-native-device-info";
 
+const isTab = DeviceInfo.isTablet();
 interface BookingCardProps {
   onPress?: () => void;
   startTime?: string;
@@ -117,7 +120,11 @@ function BookingCard(props: BookingCardProps) {
             </AppText>
             <VerticalSpacing size={5} />
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <svgs.LocationV2 color1={theme.secondary} />
+              <MaterialIcons
+                name="location-pin"
+                size={Math.ceil(moderateScale(20, 0.3))}
+                color={theme.secondary}
+              />
               <AppText
                 style={{ maxWidth: "58%" }}
                 fontStyle="400.normal"
@@ -148,7 +155,11 @@ function BookingCard(props: BookingCardProps) {
             </AppText>
             <VerticalSpacing size={8} />
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <svgs.LocationV2 color1={theme.secondary} />
+              <MaterialIcons
+                name="location-pin"
+                size={Math.ceil(moderateScale(20, 0.3))}
+                color={theme.secondary}
+              />
               <AppText
                 style={{ maxWidth: "53%" }}
                 fontStyle="400.normal"

@@ -103,7 +103,9 @@ function AppContainer(props: AppContainerTypes) {
             hidden={false}
             translucent={true}
           />
-          <View style={{ flex: 1, ...style }}>{children}</View>
+          <View style={{ flex: 1, ...style, backgroundColor: backgroundColor }}>
+            {children}
+          </View>
         </>
       ) : (
         <SafeAreaView

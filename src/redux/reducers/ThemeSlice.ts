@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { lightTheme, darkTheme } from "@common/Theme";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEncryptedStorage } from "@src/hooks/useEncryptedStorage";
 
 export const loadUserTheme = createAsyncThunk("user/theme", async () => {

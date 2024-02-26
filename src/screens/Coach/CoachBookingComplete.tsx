@@ -1,10 +1,4 @@
-import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-  BackHandler,
-} from "react-native";
+import { ScrollView, StyleSheet, View, BackHandler } from "react-native";
 import React, { useEffect } from "react";
 import { useAppSelector } from "@src/redux/store";
 import { useAppNavigation } from "@src/navigation/Navigation";
@@ -21,8 +15,7 @@ import SlotCard from "@src/cards/Slots/SlotCard";
 import _ from "lodash";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 import LottieView from "lottie-react-native";
-
-const isIOS = Platform.OS === "ios";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export default function CoachBookingComplete(props: any) {
   const {
@@ -285,11 +278,15 @@ export default function CoachBookingComplete(props: any) {
                   </AppText>
                 </View>
                 <VerticalSpacing size={5} />
-                <View style={{ flexDirection: "row" }}>
-                  <svgs.LocationV2
-                    color1={theme.secondary}
-                    height={20}
-                    width={20}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginLeft: moderateScale(-3, 0.3),
+                  }}>
+                  <MaterialIcons
+                    name="location-pin"
+                    size={Math.ceil(moderateScale(20, 0.3))}
+                    color={theme.secondary}
                   />
                   <AppText style={{ maxWidth: "55%" }} numberOfLines={2}>
                     {court?.location?.locationAddress}

@@ -89,7 +89,6 @@ export default function CoachCard(props: CoachCardProps) {
             color={theme.paragraph}
             style={{
               paddingHorizontal: moderateScale(8, 0.3),
-              height: moderateScale(35, 0.3),
               verticalAlign: "middle",
               maxWidth: "90%",
             }}>

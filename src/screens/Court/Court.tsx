@@ -18,6 +18,9 @@ import { loadAllLocations } from "@reducers/AppDataSlice";
 import I18n from "i18n-js";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Utils from "@common/Utils";
+import DeviceInfo from "react-native-device-info";
+
+const isTab = DeviceInfo.isTablet();
 
 interface CourtCardProps {
   onPress: () => void;
@@ -87,7 +90,11 @@ const CourtCard = (props: CourtCardProps) => {
           </AppText>
           <View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <svgs.LocationV2 color1={theme.secondary} height={20} />
+              <MaterialIcons
+                name="location-pin"
+                size={Math.ceil(moderateScale(20, 0.3))}
+                color={theme.secondary}
+              />
               <AppText fontStyle="400.bold" color={theme.paragraph}>
                 {I18n.t("screen_messages.distance", {
                   distance: distance?.toLocaleString(),
@@ -113,7 +120,7 @@ const CourtCard = (props: CourtCardProps) => {
               }}>
               <MaterialIcons
                 name="verified"
-                size={20}
+                size={Math.ceil(moderateScale(20, 0.3))}
                 color={theme.secondary}
               />
               <AppText

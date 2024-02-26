@@ -1,7 +1,7 @@
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useAppSelector } from "@src/redux/store";
-import svgs from "@common/AllSvgs";
+// import svgs from "@common/AllSvgs";
 import AppText from "@components/Text/AppText";
 import I18n from "i18n-js";
 import images from "@src/common/AllImages";
@@ -9,6 +9,10 @@ import FastImage from "react-native-fast-image";
 import { moderateScale } from "react-native-size-matters";
 import { useAppNavigation } from "@src/navigation/Navigation";
 import Geocoder from "react-native-geocoding";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import DeviceInfo from "react-native-device-info";
+
+const isTab = DeviceInfo.isTablet();
 
 export default function HomeHeader() {
   const { theme } = useAppSelector(state => state.theme);
@@ -52,7 +56,11 @@ export default function HomeHeader() {
             flexDirection: "row",
             alignItems: "center",
           }}>
-          <svgs.LocationV2 color1={theme.secondary} height={20} />
+          <MaterialIcons
+            name="location-pin"
+            size={Math.ceil(moderateScale(20, 0.3))}
+            color={theme.secondary}
+          />
           <AppText
             fontStyle="600.bold"
             size={14}

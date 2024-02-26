@@ -27,6 +27,7 @@ import images from "@src/common/AllImages";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FamilyManager from "@src/services/features/Family/FamilyManager";
 import RBSheet from "react-native-raw-bottom-sheet";
+import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 
 const isIOS = Platform.OS === "ios";
 
@@ -234,27 +235,13 @@ export default function FamilyMembers() {
           </View>
         </>
       </RBSheet>
-      <Animatable.View
-        animation="fadeInUp"
-        duration={1000}
-        style={{
-          backgroundColor: theme.modalBackgroundColor,
-          padding: moderateScale(20, 0.3),
-          bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
-          ...theme.mid_shadow,
-        }}>
-        <AppButton
-          Title={I18n.t("screen_messages.button.Add_Family")}
-          color={theme.title}
-          // loading={loading}
-          Outlined
-          fontStyle="600.semibold"
-          fontSize={16}
-          height={50}
-          onPress={onPressAddFamily}
-          leftIcon={<Feather name="plus" size={30} color={theme.iconColor} />}
-        />
-      </Animatable.View>
+      <FloatingBottomButton
+        title={I18n.t("screen_messages.button.Add_Family")}
+        Outlined
+        color={theme.title}
+        leftIcon={<Feather name="plus" size={30} color={theme.iconColor} />}
+        onPress={onPressAddFamily}
+      />
     </AppContainer>
   );
 }

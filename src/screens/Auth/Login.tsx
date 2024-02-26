@@ -47,7 +47,7 @@ const Login = () => {
   const { setStorage } = useEncryptedStorage();
 
   const formInitialvalue = {
-    email: "fatima.waseem@dxfuturetech.com",
+    email: "fatima.waseem@gmail.com",
     password: "12345",
   };
 
@@ -124,7 +124,7 @@ const Login = () => {
             paddingTop: moderateScale(100, 0.3),
             paddingBottom: moderateScale(50, 0.3),
           }}>
-          <svgs.MainLogo height={220} width={220} color1={theme.iconColor} />
+          <svgs.MainLogo height={250} width={250} color1={theme.iconColor} />
         </Animatable.View>
         <Formik
           validationSchema={loginSchema}

@@ -23,8 +23,10 @@ import useAppToast from "@components/Alert/AppToast";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
+import DeviceInfo from "react-native-device-info";
 
 const isIOS = Platform.OS === "ios";
+const isTab = DeviceInfo.isTablet();
 
 export default function CourtBooking(props: any) {
   const {
@@ -259,7 +261,7 @@ export default function CourtBooking(props: any) {
               style={[
                 {
                   height: moderateScale(100, 0.3),
-                  width: 110,
+                  width: moderateScale(110, 0.3),
                   borderRadius: 5,
                 },
               ]}
@@ -274,7 +276,11 @@ export default function CourtBooking(props: any) {
               <AppText fontStyle="700.bold">{data?.locationName}</AppText>
               <VerticalSpacing />
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <svgs.LocationV2 color1={theme.secondary} />
+                <MaterialIcons
+                  name="location-pin"
+                  size={Math.ceil(moderateScale(20, 0.3))}
+                  color={theme.secondary}
+                />
                 <AppText
                   fontStyle="400.normal"
                   style={{ maxWidth: "50%" }}
@@ -288,7 +294,11 @@ export default function CourtBooking(props: any) {
                   marginTop: moderateScale(5, 0.3),
                   alignItems: "center",
                 }}>
-                <svgs.Court color1={theme.secondary} height={20} width={20} />
+                <svgs.Court
+                  color1={theme.secondary}
+                  height={moderateScale(20, 0.3)}
+                  width={moderateScale(20, 0.3)}
+                />
                 <AppText fontStyle="400.normal">
                   {selectedCourt?.courtName}
                 </AppText>
@@ -322,7 +332,7 @@ export default function CourtBooking(props: any) {
               }}>
               <MaterialIcons
                 name="verified"
-                size={30}
+                size={Math.ceil(moderateScale(20, 0.3))}
                 color={theme.secondary}
               />
               <AppText

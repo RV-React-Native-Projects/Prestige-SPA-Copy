@@ -116,32 +116,32 @@ const style = (theme: any) => {
   return StyleSheet.create({
     container: {
       // backgroundColor: theme.error,
-      borderRadius: 5,
+      borderRadius: moderateScale(5, 0.3),
     },
     dropdown: {
-      height: 50,
+      height: moderateScale(50, 0.3),
       borderColor: theme.gray,
       borderWidth: 0.5,
-      borderRadius: 5,
-      paddingHorizontal: 8,
+      borderRadius: moderateScale(5, 0.3),
+      paddingHorizontal: moderateScale(8, 0.3),
       color: theme.title,
       backgroundColor: theme.modalBackgroundColor,
     },
     icon: {
-      marginRight: 5,
+      marginRight: moderateScale(5, 0.3),
     },
     placeholderStyle: {
-      fontSize: 16,
+      fontSize: moderateScale(16, 0.3),
       color: theme.title,
     },
     selectedTextStyle: {
-      fontSize: 16,
+      fontSize: moderateScale(16, 0.3),
       fontWeight: "500",
       color: theme.title,
     },
     iconStyle: {
-      width: 20,
-      height: 20,
+      width: moderateScale(20, 0.3),
+      height: moderateScale(20, 0.3),
     },
   });
 };

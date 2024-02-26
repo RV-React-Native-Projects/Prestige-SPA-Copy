@@ -4,7 +4,6 @@ import { useAppSelector } from "@src/redux/store";
 import { moderateScale } from "react-native-size-matters";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import AppText from "@components/Text/AppText";
-import svgs from "@common/AllSvgs";
 import FastImage from "react-native-fast-image";
 import images from "@common/AllImages";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -73,7 +72,11 @@ const CourtCard = (props: CourtCardProps) => {
               height: moderateScale(20, 0.3),
               alignItems: "center",
             }}>
-            <svgs.LocationV2 color1={theme.secondary} height={20} width={20} />
+            <MaterialIcons
+              name="location-pin"
+              size={Math.ceil(moderateScale(20, 0.3))}
+              color={theme.secondary}
+            />
             <AppText
               fontStyle="400.normal"
               numberOfLines={1}
@@ -97,7 +100,11 @@ const CourtCard = (props: CourtCardProps) => {
               flexDirection: "row",
               alignItems: "center",
             }}>
-            <MaterialIcons name="verified" size={20} color={theme.secondary} />
+            <MaterialIcons
+              name="verified"
+              size={Math.ceil(moderateScale(20, 0.3))}
+              color={theme.secondary}
+            />
             <AppText
               style={{ marginLeft: moderateScale(5, 0.3) }}
               fontStyle="600.bold">

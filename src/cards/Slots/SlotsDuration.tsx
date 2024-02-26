@@ -2,6 +2,7 @@ import React from "react";
 import AppText from "@src/components/Text/AppText";
 import { useAppSelector } from "@src/redux/store";
 import { TouchableOpacity, View } from "react-native";
+import { moderateScale } from "react-native-size-matters";
 
 interface DurationCardProps {
   item: any;
@@ -16,12 +17,12 @@ const SlotsDuration = (props: DurationCardProps) => {
     <TouchableOpacity
       activeOpacity={0.8}
       style={{
-        minWidth: 65,
+        minWidth: moderateScale(65, 0.3),
         backgroundColor:
           value === item?.slotID ? theme.primary : theme.modalBackgroundColor,
-        borderRadius: 10,
+        borderRadius: moderateScale(5, 0.3),
         ...theme.light_shadow,
-        marginBottom: 10,
+        marginBottom: moderateScale(10, 0.3),
       }}
       onPress={onPress}>
       <View
@@ -29,7 +30,7 @@ const SlotsDuration = (props: DurationCardProps) => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: 10,
+          padding: moderateScale(10, 0.3),
         }}>
         <AppText
           color={value === item?.slotID ? theme.white : theme.title}

@@ -71,7 +71,7 @@ function MonthYearPicker(props: MonthYearPickerProps) {
           borderWidth: 1,
           borderColor: theme.gray,
           backgroundColor: theme.modalBackgroundColor,
-          minHeight: 30,
+          minHeight: moderateScale(30, 0.3),
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",

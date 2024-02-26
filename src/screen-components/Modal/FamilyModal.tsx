@@ -25,6 +25,7 @@ import AppButton from "@src/components/Button/AppButton";
 import FloatingBottomButton from "../Floating/FloatingBottomButton";
 import { useAppNavigation } from "@navigation/Navigation";
 import * as Animatable from "react-native-animatable";
+import DeviceInfo from "react-native-device-info";
 
 interface FamilyMemberProps {
   show: boolean;
@@ -34,6 +35,7 @@ interface FamilyMemberProps {
 
 const isIOS = Platform.OS === "ios";
 const windowHeight = Dimensions.get("window").height;
+const isTab = DeviceInfo.isTablet();
 const windowWidth = Dimensions.get("window").width;
 
 function FamilyModal(props: FamilyMemberProps) {
@@ -70,15 +72,22 @@ function FamilyModal(props: FamilyMemberProps) {
         style={[
           {
             backgroundColor: theme.modalBackgroundColor,
-            height: moderateScale(windowHeight / 1.3, 0.3),
+            height: moderateScale(
+              isTab ? windowHeight / 2 : windowHeight / 1.3,
+              0.3,
+            ),
             width: windowWidth,
-            minHeight: moderateScale(windowHeight / 1.3, 0.3),
+            minHeight: moderateScale(
+              isTab ? windowHeight / 2 : windowHeight / 1.3,
+              0.3,
+            ),
             alignSelf: "center",
             alignContent: "center",
             borderTopRightRadius: moderateScale(15, 0.3),
             borderTopLeftRadius: moderateScale(15, 0.3),
             position: "absolute",
-            bottom: moderateScale(-25, 0.3),
+            bottom: moderateScale(isTab ? -50 : -25, 0.3),
+            // bottom: 0,
           },
         ]}>
         <TouchableOpacity

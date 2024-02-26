@@ -81,7 +81,7 @@ export default function ProfileScreen() {
   };
 
   const onRefresh = useCallback(() => {
-    if (userEmail) storeDispatch(refreshUser(userEmail));
+    storeDispatch(refreshUser());
   }, [userEmail]);
 
   return (

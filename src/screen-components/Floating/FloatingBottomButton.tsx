@@ -19,6 +19,7 @@ interface FloatingBottomButtonProps {
   duration?: number;
   Outlined?: boolean;
   loading?: boolean;
+  leftIcon?: React.ReactNode;
 }
 
 function FloatingBottomButton(props: FloatingBottomButtonProps) {
@@ -37,6 +38,7 @@ function FloatingBottomButton(props: FloatingBottomButtonProps) {
     duration = 1000,
     Outlined = false,
     loading = false,
+    leftIcon = null,
   } = props;
 
   return (
@@ -62,6 +64,7 @@ function FloatingBottomButton(props: FloatingBottomButtonProps) {
         fontSize={fontSize}
         height={height}
         onPress={onPress}
+        leftIcon={leftIcon}
       />
     </Animatable.View>
   );

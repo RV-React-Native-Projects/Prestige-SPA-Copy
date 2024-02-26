@@ -27,6 +27,7 @@ import { getAllMembership } from "@reducers/UserSlice";
 import { stringify } from "qs";
 import Utils from "@src/common/Utils";
 import moment from "moment";
+import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 
 const contractDate = [
   { code: "Tenancy", title: "Tenancy Contract" },
@@ -231,24 +232,10 @@ export default function EditMemberShip(props: any) {
           getImages={val => setImages(val)}
         />
       </ScrollView>
-      <Animatable.View
-        animation="fadeInUp"
-        duration={1000}
-        style={{
-          backgroundColor: theme.modalBackgroundColor,
-          padding: moderateScale(20, 0.3),
-          bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
-        }}>
-        <AppButton
-          Title={I18n.t("screen_messages.button.done")}
-          color={theme.primary}
-          loading={loading}
-          fontStyle="600.normal"
-          fontSize={16}
-          height={50}
-          onPress={onPressDone}
-        />
-      </Animatable.View>
+      <FloatingBottomButton
+        title={I18n.t("screen_messages.button.done")}
+        onPress={onPressDone}
+      />
     </AppContainer>
   );
 }

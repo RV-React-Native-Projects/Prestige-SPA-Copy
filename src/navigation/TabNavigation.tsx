@@ -7,8 +7,10 @@ import svgs from "@common/AllSvgs";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { moderateScale } from "react-native-size-matters";
 import { useAppSelector } from "@src/redux/store";
+import DeviceInfo from "react-native-device-info";
 
 const isIOS = Platform.OS == "ios";
+const isTab = DeviceInfo.isTablet();
 
 const Tab = createBottomTabNavigator();
 
@@ -29,6 +31,7 @@ export default function TabNavigation() {
         orientation: "portrait",
         headerShown: false,
         tabBarActiveTintColor: theme.primary,
+        tabBarLabelPosition: "below-icon",
         tabBarStyle: (route => {
           const routeName = getFocusedRouteNameFromRoute(route) ?? "";
           if (
@@ -69,8 +72,8 @@ export default function TabNavigation() {
           tabBarIcon: ({ focused, color, size }) => (
             <svgs.Home
               color1={color}
-              height={35}
-              width={35}
+              height={moderateScale(35, 0.3)}
+              width={moderateScale(35, 0.3)}
               // strokeWidth={focused ? 2 : 1.5}
             />
           ),
@@ -92,8 +95,8 @@ export default function TabNavigation() {
             tabBarIcon: ({ focused, color, size }) => (
               <svgs.Court
                 color1={color}
-                height={35}
-                width={35}
+                height={moderateScale(35, 0.3)}
+                width={moderateScale(35, 0.3)}
                 // strokeWidth={focused ? 2 : 1.5}
               />
             ),
@@ -115,8 +118,8 @@ export default function TabNavigation() {
           tabBarIcon: ({ focused, color, size }) => (
             <svgs.Coach
               color1={color}
-              height={40}
-              width={40}
+              height={moderateScale(40, 0.3)}
+              width={moderateScale(40, 0.3)}
               // strokeWidth={focused ? 2 : 1.5}
             />
           ),
@@ -159,8 +162,8 @@ export default function TabNavigation() {
           tabBarIcon: ({ focused, color, size }) => (
             <svgs.Booking
               color1={color}
-              height={20}
-              width={20}
+              height={moderateScale(20, 0.3)}
+              width={moderateScale(20, 0.3)}
               // strokeWidth={focused ? 2 : 1.5}
             />
           ),

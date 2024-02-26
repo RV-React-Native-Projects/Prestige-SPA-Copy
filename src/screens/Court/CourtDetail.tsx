@@ -139,7 +139,7 @@ function CourtDetail(props: any) {
               }}>
               <MaterialIcons
                 name="verified"
-                size={20}
+                size={Math.ceil(moderateScale(20, 0.3))}
                 color={theme.secondary}
               />
               <AppText
@@ -158,11 +158,12 @@ function CourtDetail(props: any) {
           <VerticalSpacing size={5} />
           <View style={{}}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <svgs.LocationV2
-                color1={theme.secondary}
-                height={20}
-                width={20}
+              <MaterialIcons
+                name="location-pin"
+                size={Math.ceil(moderateScale(20, 0.3))}
+                color={theme.secondary}
               />
+
               <AppText
                 style={{ marginLeft: moderateScale(3, 0.3) }}
                 numberOfLines={1}

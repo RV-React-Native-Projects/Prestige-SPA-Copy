@@ -25,6 +25,7 @@ import ProfilePicker from "@src/components/Picker/ProfilePicker";
 import moment from "moment";
 import FamilyManager from "@src/services/features/Family/FamilyManager";
 import Utils from "@src/common/Utils";
+import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 
 const isIOS = Platform.OS === "ios";
 
@@ -236,29 +237,15 @@ export default function AddNewFamily(props: any) {
               </View>
               <VerticalSpacing size={40} />
             </ScrollView>
-            <Animatable.View
-              animation="fadeInUp"
-              duration={1000}
-              style={{
-                backgroundColor: theme.modalBackgroundColor,
-                padding: moderateScale(20, 0.3),
-                bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
-              }}>
-              <AppButton
-                loading={loading}
-                Title={I18n.t("screen_messages.button.Add_Member")}
-                color={theme.primary}
-                fontStyle="600.normal"
-                fontSize={16}
-                height={50}
-                onPress={() => {
-                  Keyboard.dismiss();
-                  handleSubmit();
-                  // setErrorDOB(false);
-                  // if (!DOB) setErrorDOB(true);
-                }}
-              />
-            </Animatable.View>
+            <FloatingBottomButton
+              title={I18n.t("screen_messages.button.Add_Member")}
+              onPress={() => {
+                Keyboard.dismiss();
+                handleSubmit();
+                // setErrorDOB(false);
+                // if (!DOB) setErrorDOB(true);
+              }}
+            />
           </>
         )}
       </Formik>
