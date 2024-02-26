@@ -1,5 +1,4 @@
 import {
-  Dimensions,
   Platform,
   ScrollView,
   StyleSheet,
@@ -9,13 +8,10 @@ import {
 import React, { useEffect } from "react";
 import { useAppSelector } from "@src/redux/store";
 import { useAppNavigation } from "@src/navigation/Navigation";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AppContainer from "@src/components/Container/AppContainer";
 import { VerticalSpacing } from "@src/components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
-import AppButton from "@src/components/Button/AppButton";
 import I18n from "i18n-js";
-import * as Animatable from "react-native-animatable";
 import AppText from "@src/components/Text/AppText";
 import FastImage from "react-native-fast-image";
 import images from "@src/common/AllImages";
@@ -23,9 +19,10 @@ import svgs from "@src/common/AllSvgs";
 import moment from "moment";
 import SlotCard from "@src/cards/Slots/SlotCard";
 import _ from "lodash";
+import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
+import LottieView from "lottie-react-native";
 
 const isIOS = Platform.OS === "ios";
-const windowHeight = Dimensions.get("window").height;
 
 export default function CoachBookingComplete(props: any) {
   const {
@@ -42,7 +39,6 @@ export default function CoachBookingComplete(props: any) {
 
   const { theme } = useAppSelector(state => state.theme);
   const navigation = useAppNavigation();
-  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -63,39 +59,43 @@ export default function CoachBookingComplete(props: any) {
       backgroundColor={theme.appBackgroundColor}
       fullHeight={false}>
       <ScrollView
-        style={{
-          flex: 1,
-          minHeight: isIOS ? "100%" : "auto",
-          paddingHorizontal: 15,
-        }}
-        contentContainerStyle={{ paddingBottom: 100 }}>
+        contentContainerStyle={{
+          paddingBottom: moderateScale(100, 0.3),
+          paddingHorizontal: moderateScale(15, 0.3),
+        }}>
         <VerticalSpacing size={30} />
         <View style={{ alignItems: "center" }}>
           <AppText fontStyle="600.semibold" size={20}>
-            Booking Details
+            {I18n.t("screen_messages.header.Booking_Details")}
           </AppText>
         </View>
         <VerticalSpacing size={20} />
         <View
           style={{
-            padding: 15,
+            padding: moderateScale(15, 0.3),
             backgroundColor: theme.modalBackgroundColor,
-            borderTopRightRadius: 10,
-            borderTopLeftRadius: 10,
+            borderTopRightRadius: moderateScale(10, 0.3),
+            borderTopLeftRadius: moderateScale(10, 0.3),
             ...theme.light_shadow,
-            borderBottomWidth: 1,
+            borderBottomWidth: moderateScale(1, 0.3),
             borderBottomColor: theme.gray,
           }}>
-          <VerticalSpacing size={20} />
           <View style={{ alignItems: "center" }}>
-            <svgs.Success />
+            <LottieView
+              key={"CompleteLottie"}
+              source={require("@assets/lottieFiles/CompleteLottie.json")}
+              style={{ height: moderateScale(200, 0.3), width: "100%" }}
+              autoPlay
+              speed={0.8}
+              loop
+            />
             <VerticalSpacing />
             <AppText fontStyle="500.semibold" size={16}>
-              Thank you!
+              {I18n.t("screen_messages.common.thank_you")}
             </AppText>
             <VerticalSpacing />
             <AppText fontStyle="400.normal">
-              Your booking was successful
+              {I18n.t("screen_messages.booking_success")}
             </AppText>
           </View>
           <View>
@@ -106,7 +106,9 @@ export default function CoachBookingComplete(props: any) {
                 alignItems: "center",
                 justifyContent: "space-between",
               }}>
-              <AppText fontStyle="400.normal">Booking ID</AppText>
+              <AppText fontStyle="400.normal">
+                {I18n.t("screen_messages.booking_ID")}
+              </AppText>
               <AppText fontStyle="500.normal"># {bookingId}</AppText>
             </View>
             <VerticalSpacing />
@@ -118,7 +120,9 @@ export default function CoachBookingComplete(props: any) {
                     alignItems: "center",
                     justifyContent: "space-between",
                   }}>
-                  <AppText fontStyle="400.normal">Start Date</AppText>
+                  <AppText fontStyle="400.normal">
+                    {I18n.t("screen_messages.Start_Date")}
+                  </AppText>
                   <AppText fontStyle="500.normal">
                     {moment(dateRange[0]?.startDate).format("DD MMM YY")}
                   </AppText>
@@ -130,7 +134,9 @@ export default function CoachBookingComplete(props: any) {
                     alignItems: "center",
                     justifyContent: "space-between",
                   }}>
-                  <AppText fontStyle="400.normal">End Date</AppText>
+                  <AppText fontStyle="400.normal">
+                    {I18n.t("screen_messages.End_Date")}
+                  </AppText>
                   <AppText fontStyle="500.normal">
                     {moment(dateRange[dateRange?.length - 1]?.endDate).format(
                       "DD MMM YY",
@@ -145,7 +151,9 @@ export default function CoachBookingComplete(props: any) {
                   alignItems: "center",
                   justifyContent: "space-between",
                 }}>
-                <AppText fontStyle="400.normal">Date</AppText>
+                <AppText fontStyle="400.normal">
+                  {I18n.t("screen_messages.date")}
+                </AppText>
                 <AppText fontStyle="500.normal">
                   {moment(date).format("DD MMM YY")}
                 </AppText>
@@ -158,7 +166,9 @@ export default function CoachBookingComplete(props: any) {
                 alignItems: "center",
                 justifyContent: "space-between",
               }}>
-              <AppText fontStyle="400.normal">Time</AppText>
+              <AppText fontStyle="400.normal">
+                {I18n.t("screen_messages.time")}
+              </AppText>
               <AppText fontStyle="500.normal">
                 {selectedSlot?.startTime} - {selectedSlot?.endTime}
               </AppText>
@@ -170,9 +180,13 @@ export default function CoachBookingComplete(props: any) {
                 alignItems: "center",
                 justifyContent: "space-between",
               }}>
-              <AppText fontStyle="400.normal">Slot</AppText>
+              <AppText fontStyle="400.normal">
+                {I18n.t("screen_messages.slot")}
+              </AppText>
               <AppText fontStyle="500.normal">
-                {slot?.slot?.slotMinutes} Mins
+                {I18n.t("screen_messages.slot_mins", {
+                  min: slot?.slot?.slotMinutes,
+                })}
               </AppText>
             </View>
           </View>
@@ -180,28 +194,24 @@ export default function CoachBookingComplete(props: any) {
 
         <View
           style={{
-            padding: 15,
+            padding: moderateScale(15, 0.3),
             backgroundColor: theme.modalBackgroundColor,
             ...theme.light_shadow,
-            borderBottomWidth: 1,
+            borderBottomWidth: moderateScale(1, 0.3),
             borderBottomColor: theme.gray,
           }}>
           <AppText fontStyle="600.semibold" size={16}>
-            Booking Summary
+            {I18n.t("screen_messages.Booking_Summary")}
           </AppText>
           <VerticalSpacing />
           <View>
-            <View
-              style={{
-                padding: moderateScale(10, 0.3),
-                flexDirection: "row",
-              }}>
+            <View style={{ flexDirection: "row" }}>
               <FastImage
                 style={[
                   {
                     height: moderateScale(70, 0.3),
                     width: moderateScale(70, 0.3),
-                    borderRadius: 200,
+                    borderRadius: moderateScale(100, 0.3),
                   },
                 ]}
                 defaultSource={images.user}
@@ -211,51 +221,43 @@ export default function CoachBookingComplete(props: any) {
                 }}
                 resizeMode={FastImage.resizeMode.cover}
               />
-              <View style={{ marginLeft: 10 }}>
+              <View style={{ marginLeft: moderateScale(10, 0.3) }}>
                 <View
                   style={{
                     backgroundColor:
-                      data?.coachCategoryID === 1
+                      data?.coachCategory?.coachCategory === "TIER 1"
                         ? theme.primary
                         : theme.tertiaryText,
-                    width: 70,
-                    height: 25,
+                    width: moderateScale(60, 0.3),
+                    height: moderateScale(25, 0.3),
                     alignItems: "center",
                     justifyContent: "center",
-                    borderRadius: 20,
-                    marginBottom: 10,
+                    borderRadius: moderateScale(20, 0.3),
+                    marginBottom: moderateScale(10, 0.3),
                   }}>
                   <AppText
-                    style={{}}
+                    style={{ textTransform: "capitalize" }}
+                    size={12}
                     fontStyle="400.medium"
                     color={theme.modalBackgroundColor}>
                     {data?.coachCategory?.coachCategory}
                   </AppText>
                 </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    height: 20,
-                  }}>
+                <View>
                   <AppText fontStyle="600.bold" size={16} numberOfLines={1}>
                     {data?.stakeholder?.stakeholderName}
                   </AppText>
                 </View>
               </View>
             </View>
-            <View
-              style={{
-                padding: moderateScale(10, 0.3),
-                flexDirection: "row",
-              }}>
+            <VerticalSpacing size={15} />
+            <View style={{ flexDirection: "row" }}>
               <FastImage
-                style={[
-                  {
-                    height: moderateScale(75, 0.3),
-                    width: moderateScale(75, 0.3),
-                    borderRadius: 5,
-                  },
-                ]}
+                style={{
+                  height: moderateScale(75, 0.3),
+                  width: moderateScale(75, 0.3),
+                  borderRadius: moderateScale(5, 0.3),
+                }}
                 defaultSource={images.Placeholder}
                 source={{
                   uri: `https://nodejsclusters-160185-0.cloudclusters.net/${court.imagePath}`,
@@ -276,9 +278,10 @@ export default function CoachBookingComplete(props: any) {
                   <AppText
                     numberOfLines={1}
                     style={{ textTransform: "capitalize", maxWidth: "50%" }}>
-                    {" "}
-                    {slot?.slot?.slotMinutes} mins{" - "}
-                    {slot?.coachSessionType?.sessionType} Session
+                    {I18n.t("screen_messages.time_session", {
+                      time: slot?.slot?.slotMinutes,
+                      session: slot?.coachSessionType?.sessionType,
+                    })}
                   </AppText>
                 </View>
                 <VerticalSpacing size={5} />
@@ -300,7 +303,7 @@ export default function CoachBookingComplete(props: any) {
           <View
             style={{
               backgroundColor: theme.modalBackgroundColor,
-              padding: 10,
+              padding: moderateScale(10, 0.3),
             }}>
             <VerticalSpacing />
             {_.map(dateRange, (date, index) => (
@@ -315,14 +318,14 @@ export default function CoachBookingComplete(props: any) {
         )}
         <View
           style={{
-            padding: 15,
+            padding: moderateScale(15, 0.3),
             backgroundColor: theme.modalBackgroundColor,
             ...theme.light_shadow,
-            borderBottomLeftRadius: 10,
-            borderBottomRightRadius: 10,
+            borderBottomLeftRadius: moderateScale(10, 0.3),
+            borderBottomRightRadius: moderateScale(10, 0.3),
           }}>
           <AppText fontStyle="600.semibold" size={16}>
-            Payment Summary
+            {I18n.t("screen_messages.Payment_Summary")}
           </AppText>
           <VerticalSpacing />
           <View
@@ -330,30 +333,21 @@ export default function CoachBookingComplete(props: any) {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-              marginBottom: 10,
+              marginBottom: moderateScale(10, 0.3),
             }}>
-            <AppText fontStyle="500.semibold">Total</AppText>
-            <AppText fontStyle="600.semibold">AED {amountPaid}</AppText>
+            <AppText fontStyle="500.semibold">
+              {I18n.t("screen_messages.total")}
+            </AppText>
+            <AppText fontStyle="600.semibold">
+              {I18n.t("screen_messages.price", { price: amountPaid })}
+            </AppText>
           </View>
         </View>
       </ScrollView>
-      <Animatable.View
-        animation="fadeInUp"
-        duration={1000}
-        style={{
-          backgroundColor: theme.modalBackgroundColor,
-          padding: moderateScale(20, 0.3),
-          ...theme.dark_shadow,
-        }}>
-        <AppButton
-          Title={I18n.t("screen_messages.button.done")}
-          color={theme.primary}
-          fontStyle="600.normal"
-          fontSize={16}
-          height={50}
-          onPress={() => onPressDone()}
-        />
-      </Animatable.View>
+      <FloatingBottomButton
+        title={I18n.t("screen_messages.button.done")}
+        onPress={onPressDone}
+      />
     </AppContainer>
   );
 }

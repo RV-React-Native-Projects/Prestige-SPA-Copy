@@ -95,8 +95,14 @@
         "Add_Family_Member": "Add a Family Member",
         "Booking_For": "Who's the Booking For?",
         "Choose_Slot": "Choose Slot",
-        "Booking_Details": "Booking Details"
+        "Booking_Details": "Booking Details",
+        "Coach_Details": "Coach Details",
+        "Booking_Confirmation": "Booking Confirmation"
       },
+      "Sessions": "Sessions",
+      "Bill_Details": "Bill Details",
+      "Per_Session_Amount": "Per Session Amount",
+      "Total_Sessions": "Total Sessions",
       "Select_Date": "Select Date",
       "Select_Duration": "Select Duration",
       "Select_Slot": "Select Slot",
@@ -144,6 +150,9 @@
         "Last_Name": "Last Name",
         "Date_of_Birth": "Date of Birth",
         "Gender": "Gender",
+        "From": "From",
+        "Age": "Age",
+        "Experience": "Experience",
         "Email": "Email",
         "Mobile": "Mobile",
         "Re_enter_Password": "Re-enter Password",
@@ -193,6 +202,8 @@
       "confirm_pass_msg": "Please enter and confirm your new password. You will need to login after you reset.",
       "family_msg": "After adding a family member, you can include them when booking a court or coach.",
       "booking_ID": "Booking ID",
+      "Start_Date": "Start Date",
+      "End_Date": "End Date",
       "booking_history": "Booking History",
       "track_booking": "Track your ongoing and completed bookings here",
       "no_booking": "You haven’t made a booking yet",
@@ -204,7 +215,13 @@
       "slot_mins": "%{min} Mins",
       "apply_credits_payment": "Apply Credits to Payment",
       "use_available_credits": "Use your available credits to pay for this transaction.",
-      "booking_success": "Your booking was successful"
+      "booking_success": "Your booking was successful",
+      "Booking_Type": "Booking Type",
+      "Session_Type": "Session Type",
+      "No_Term_aval": "No Terms Available for ",
+      "select_diff_month": "Please Select A Different Date/Month",
+      "Select_Term": "Select Term",
+      "time_session": " %{time} Mins - %{session} Session"
     }
   },
   "en-UK": {

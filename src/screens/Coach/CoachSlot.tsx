@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import AppContainer from "@components/Container/AppContainer";
@@ -13,10 +14,8 @@ import { moderateScale } from "react-native-size-matters";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import AppText from "@components/Text/AppText";
 import * as Animatable from "react-native-animatable";
-import AppButton from "@components/Button/AppButton";
 import I18n from "i18n-js";
 import BackButtonWithTitle from "@components/Header/BackButtonWithTitle";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { RadioButton } from "react-native-paper";
 import FastImage from "react-native-fast-image";
 import images from "@common/AllImages";
@@ -30,8 +29,10 @@ import SlotTime from "@src/cards/Slots/SlotTime";
 import { loadTerms } from "@src/redux/reducers/AppDataSlice";
 import RectangleSK from "@src/assets/skelton/RectangleSK";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 
 const isIOS = Platform.OS === "ios";
+const windowWidth = Dimensions.get("window").width;
 
 interface Location {
   locationID: number;
@@ -118,7 +119,6 @@ export default function CoachSlot(props: any) {
   const [credit, setCredit] = useState<number>(0);
 
   // console.log("At CoachSlot===>", JSON.stringify(credit, null, 2));
-  const insets = useSafeAreaInsets();
   const navigation = useAppNavigation();
   const refRBSheet = useRef<RBSheet>(null);
 
@@ -232,17 +232,18 @@ export default function CoachSlot(props: any) {
       scrollable={false}
       backgroundColor={theme.appBackgroundColor}
       fullHeight={false}>
-      <BackButtonWithTitle title="Choose Slot" />
+      <BackButtonWithTitle
+        title={I18n.t("screen_messages.header.Choose_Slot")}
+      />
       <ScrollView
-        style={{ minHeight: isIOS ? "100%" : "auto" }}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: moderateScale(100, 0.3) }}
         showsVerticalScrollIndicator={false}>
         <View
           style={{
             backgroundColor: theme.modalBackgroundColor,
             margin: moderateScale(15, 0.3),
+            borderRadius: moderateScale(10, 0.3),
             ...theme.light_shadow,
-            borderRadius: 10,
           }}>
           <View
             style={{
@@ -252,9 +253,9 @@ export default function CoachSlot(props: any) {
             <FastImage
               style={[
                 {
-                  height: moderateScale(100, 0.3),
-                  width: 110,
-                  borderRadius: 200,
+                  height: moderateScale(90, 0.3),
+                  width: moderateScale(90, 0.3),
+                  borderRadius: moderateScale(100, 0.3),
                 },
               ]}
               defaultSource={images.user}
@@ -264,35 +265,31 @@ export default function CoachSlot(props: any) {
               }}
               resizeMode={FastImage.resizeMode.cover}
             />
-            <View style={{ marginLeft: 10 }}>
+            <View style={{ marginLeft: moderateScale(10, 0.3) }}>
               <View
                 style={{
                   backgroundColor:
-                    data?.coachCategoryID === 1
+                    data?.coachCategory?.coachCategory === "TIER 1"
                       ? theme.primary
                       : theme.tertiaryText,
-                  width: 80,
-                  height: 25,
+                  width: moderateScale(65, 0.3),
+                  height: moderateScale(25, 0.3),
                   alignItems: "center",
                   justifyContent: "center",
-                  borderRadius: 100,
-                  marginVertical: 10,
+                  borderRadius: moderateScale(100, 0.3),
+                  marginBottom: moderateScale(10, 0.3),
                 }}>
                 <AppText
-                  style={{}}
-                  fontStyle="600.bold"
-                  size={14}
+                  style={{ textTransform: "capitalize" }}
+                  fontStyle="500.normal"
+                  size={12}
                   color={theme.modalBackgroundColor}
                   numberOfLines={2}>
                   {data?.coachCategory?.coachCategory}
                 </AppText>
               </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  height: 20,
-                }}>
-                <AppText fontStyle="600.bold" size={18} numberOfLines={1}>
+              <View style={{ flexDirection: "row" }}>
+                <AppText fontStyle="600.medium" size={16} numberOfLines={1}>
                   {data?.stakeholder?.stakeholderName}
                 </AppText>
               </View>
@@ -340,12 +337,8 @@ export default function CoachSlot(props: any) {
         {pickedDate && bookingType === "MULTI" && !foundTerm ? (
           <>
             <VerticalSpacing />
-            <AppText
-              // fontStyle="500.semibold"
-              // size={16}
-              // color={theme.error}
-              style={{ textAlign: "center" }}>
-              No Terms Available for{" "}
+            <AppText style={{ textAlign: "center" }}>
+              {I18n.t("screen_messages.select_diff_month")}
               <AppText fontStyle="500.semibold" color={theme.secondary}>
                 {moment(pickedDate).format("DD MMM, YYYY")}
               </AppText>
@@ -356,7 +349,7 @@ export default function CoachSlot(props: any) {
               size={16}
               color={theme.error}
               style={{ textAlign: "center" }}>
-              Please Select A Different Date/Month
+              {I18n.t("screen_messages.select_diff_month")}
             </AppText>
           </>
         ) : (
@@ -364,10 +357,10 @@ export default function CoachSlot(props: any) {
           pickedDate &&
           foundTerm && (
             <>
-              <View style={{ paddingHorizontal: 15 }}>
+              <View style={{ paddingHorizontal: moderateScale(15, 0.3) }}>
                 <VerticalSpacing />
                 <AppText fontStyle="600.semibold" size={16}>
-                  Select Term
+                  {I18n.t("screen_messages.Select_Term")}
                 </AppText>
                 <VerticalSpacing />
               </View>
@@ -399,7 +392,7 @@ export default function CoachSlot(props: any) {
                         marginBottom: moderateScale(10, 0.3),
                         borderRadius: moderateScale(10, 0.3),
                         ...theme.light_shadow,
-                        width: 170,
+                        width: moderateScale(170, 0.3),
                       }}>
                       <View
                         style={{
@@ -433,9 +426,9 @@ export default function CoachSlot(props: any) {
               style={{
                 flexDirection: "row",
                 flexWrap: "wrap",
-                gap: 10,
-                marginHorizontal: 15,
-                marginTop: 50,
+                gap: moderateScale(10, 0.3),
+                marginHorizontal: moderateScale(15, 0.3),
+                marginTop: moderateScale(50, 0.3),
               }}>
               {_.times(16, index => (
                 <RectangleSK key={index} />
@@ -449,7 +442,7 @@ export default function CoachSlot(props: any) {
                   fontStyle="600.semibold"
                   size={16}
                   style={{ paddingHorizontal: moderateScale(15, 0.3) }}>
-                  Select Slot
+                  {I18n.t("screen_messages.Select_Slot")}
                 </AppText>
                 <VerticalSpacing />
                 <View
@@ -457,9 +450,10 @@ export default function CoachSlot(props: any) {
                     flexDirection: "row",
                     alignItems: "center",
                     flexWrap: "wrap",
-                    columnGap: moderateScale(8, 0.3),
-                    // justifyContent: "space-between",
                     paddingHorizontal: moderateScale(15, 0.3),
+                    justifyContent: "flex-start",
+                    alignContent: "center",
+                    columnGap: moderateScale(windowWidth / 35, 0.3),
                   }}>
                   {_.map(slots, (item, index) => (
                     <SlotTime
@@ -509,7 +503,7 @@ export default function CoachSlot(props: any) {
             style={{ paddingHorizontal: moderateScale(15, 0.3) }}
             fontStyle="600.semibold"
             size={18}>
-            Select Court
+            {I18n.t("screen_messages.Select_Court")}
           </AppText>
           <ScrollView
             contentContainerStyle={{
@@ -541,7 +535,10 @@ export default function CoachSlot(props: any) {
                     }}>
                     <View style={{ marginRight: moderateScale(5, 0.3) }}>
                       {item.courtID === courtId ? (
-                        <Animatable.View useNativeDriver animation="bounceIn">
+                        <Animatable.View
+                          useNativeDriver
+                          animation="bounceIn"
+                          duration={500}>
                           <Ionicons
                             name="radio-button-on"
                             color={theme.secondary}
@@ -549,7 +546,10 @@ export default function CoachSlot(props: any) {
                           />
                         </Animatable.View>
                       ) : (
-                        <Animatable.View useNativeDriver animation="fadeIn">
+                        <Animatable.View
+                          useNativeDriver
+                          animation="fadeIn"
+                          duration={500}>
                           <Ionicons
                             name="radio-button-off"
                             color={theme.gray}
@@ -562,10 +562,6 @@ export default function CoachSlot(props: any) {
                       <AppText size={16} fontStyle="500.medium">
                         {item?.courtName}
                       </AppText>
-                      {/* <VerticalSpacing />
-                      <AppText fontStyle="400.semibold" color={theme.paragraph}>
-                        {item?.location?.locationName}
-                      </AppText> */}
                     </View>
                   </TouchableOpacity>
                 );
@@ -573,44 +569,15 @@ export default function CoachSlot(props: any) {
             </RadioButton.Group>
           </ScrollView>
           {!!courtId && (
-            <Animatable.View
-              animation="fadeInUp"
+            <FloatingBottomButton
               duration={500}
-              style={{
-                backgroundColor: theme.modalBackgroundColor,
-                padding: moderateScale(20, 0.3),
-                // bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
-              }}>
-              <AppButton
-                Title={I18n.t("screen_messages.button.next")}
-                color={theme.primary}
-                fontStyle="600.normal"
-                fontSize={16}
-                height={50}
-                onPress={() => goToConfirmCouchBooking()}
-              />
-            </Animatable.View>
+              onPress={() => goToConfirmCouchBooking()}
+            />
           )}
         </View>
       </RBSheet>
       {pickedDate && slotId && startTime && (
-        <Animatable.View
-          animation="fadeInUp"
-          duration={500}
-          style={{
-            backgroundColor: theme.modalBackgroundColor,
-            padding: moderateScale(20, 0.3),
-            bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
-          }}>
-          <AppButton
-            Title={I18n.t("screen_messages.button.next")}
-            color={theme.primary}
-            fontStyle="600.normal"
-            fontSize={16}
-            height={50}
-            onPress={onPressNext}
-          />
-        </Animatable.View>
+        <FloatingBottomButton duration={500} onPress={onPressNext} />
       )}
     </AppContainer>
   );

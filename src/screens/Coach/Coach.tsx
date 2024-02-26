@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import AppContainer from "@components/Container/AppContainer";
 import { useAppDispatch, useAppSelector } from "@redux/store";
-import { Card } from "react-native-paper";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
 import { useAppNavigation } from "@navigation/Navigation";
@@ -19,12 +18,21 @@ import AppText from "@components/Text/AppText";
 import { loadAllCoach } from "@reducers/AppDataSlice";
 import I18n from "i18n-js";
 
-const CoachCard = (props: any) => {
+interface CoachCardProps {
+  onPress: () => void;
+  experience: number;
+  imagePath: string;
+  coachCategory: string;
+  stakeholderName: string;
+}
+
+const CoachCard = (props: CoachCardProps) => {
   const { theme } = useAppSelector(state => state.theme);
-  const { data, onPress, experience } = props;
+  const { onPress, experience, imagePath, coachCategory, stakeholderName } =
+    props;
 
   return (
-    <Card
+    <View
       style={{
         padding: moderateScale(10, 0.3),
         width: "100%",
@@ -32,6 +40,7 @@ const CoachCard = (props: any) => {
         borderRadius: moderateScale(10, 0.3),
         position: "relative",
         backgroundColor: theme.modalBackgroundColor,
+        ...theme.mid_shadow,
       }}>
       <TouchableOpacity
         activeOpacity={0.8}
@@ -44,7 +53,7 @@ const CoachCard = (props: any) => {
             borderRadius: moderateScale(200, 0.3),
           }}
           source={{
-            uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.stakeholder?.imagePath}`,
+            uri: `https://nodejsclusters-160185-0.cloudclusters.net/${imagePath}`,
             priority: FastImage.priority.high,
           }}
           resizeMode={FastImage.resizeMode.cover}
@@ -54,10 +63,8 @@ const CoachCard = (props: any) => {
           <View
             style={{
               backgroundColor:
-                data?.coachCategoryID === 1
-                  ? theme.primary
-                  : theme.tertiaryText,
-              width: moderateScale(70, 0.3),
+                coachCategory === "TIER 1" ? theme.primary : theme.tertiaryText,
+              width: moderateScale(60, 0.3),
               height: moderateScale(25, 0.3),
               alignItems: "center",
               justifyContent: "center",
@@ -66,14 +73,15 @@ const CoachCard = (props: any) => {
             }}>
             <AppText
               style={{ textTransform: "capitalize" }}
-              fontStyle="600.bold"
+              fontStyle="500.normal"
+              size={12}
               color={theme.modalBackgroundColor}
               numberOfLines={2}>
-              {data?.coachCategory?.coachCategory}
+              {coachCategory}
             </AppText>
           </View>
           <AppText fontStyle="600.bold" size={16} numberOfLines={2}>
-            {data?.stakeholder?.stakeholderName}
+            {stakeholderName}
           </AppText>
           <VerticalSpacing />
           <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -91,7 +99,7 @@ const CoachCard = (props: any) => {
           </View>
         </View>
       </TouchableOpacity>
-    </Card>
+    </View>
   );
 };
 
@@ -130,9 +138,11 @@ function CoachScreen() {
         renderItem={({ item, index }) => (
           <CoachCard
             key={index}
-            data={item}
             onPress={() => gotoCoach(item)}
             experience={item?.experienceYears}
+            imagePath={item?.stakeholder?.imagePath}
+            coachCategory={item?.coachCategory?.coachCategory}
+            stakeholderName={item?.stakeholder?.stakeholderName}
           />
         )}
         showsVerticalScrollIndicator={false}

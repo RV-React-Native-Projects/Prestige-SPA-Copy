@@ -23,7 +23,8 @@ import { RadioButton } from "react-native-paper";
 import _, { toString } from "lodash";
 import AppButton from "@src/components/Button/AppButton";
 import FloatingBottomButton from "../Floating/FloatingBottomButton";
-import { useAppNavigation } from "@src/navigation/Navigation";
+import { useAppNavigation } from "@navigation/Navigation";
+import * as Animatable from "react-native-animatable";
 
 interface FamilyMemberProps {
   show: boolean;
@@ -129,17 +130,27 @@ function FamilyModal(props: FamilyMemberProps) {
             }}>
             <View style={{ marginRight: moderateScale(5, 0.3) }}>
               {!familyID ? (
-                <Ionicons
-                  name="radio-button-on"
-                  color={theme.secondary}
-                  size={25}
-                />
+                <Animatable.View
+                  useNativeDriver
+                  animation="bounceIn"
+                  duration={500}>
+                  <Ionicons
+                    name="radio-button-on"
+                    color={theme.secondary}
+                    size={25}
+                  />
+                </Animatable.View>
               ) : (
-                <Ionicons
-                  name="radio-button-off"
-                  color={theme.gray}
-                  size={25}
-                />
+                <Animatable.View
+                  useNativeDriver
+                  animation="fadeIn"
+                  duration={500}>
+                  <Ionicons
+                    name="radio-button-off"
+                    color={theme.gray}
+                    size={25}
+                  />
+                </Animatable.View>
               )}
             </View>
             {user?.imagePath ? (
@@ -210,17 +221,27 @@ function FamilyModal(props: FamilyMemberProps) {
                   }}>
                   <View style={{ marginRight: moderateScale(5, 0.3) }}>
                     {toString(item.familyMemberID) === familyID ? (
-                      <Ionicons
-                        name="radio-button-on"
-                        color={theme.secondary}
-                        size={25}
-                      />
+                      <Animatable.View
+                        useNativeDriver
+                        animation="bounceIn"
+                        duration={500}>
+                        <Ionicons
+                          name="radio-button-on"
+                          color={theme.secondary}
+                          size={25}
+                        />
+                      </Animatable.View>
                     ) : (
-                      <Ionicons
-                        name="radio-button-off"
-                        color={theme.gray}
-                        size={25}
-                      />
+                      <Animatable.View
+                        useNativeDriver
+                        animation="fadeIn"
+                        duration={500}>
+                        <Ionicons
+                          name="radio-button-off"
+                          color={theme.gray}
+                          size={25}
+                        />
+                      </Animatable.View>
                     )}
                   </View>
                   {item?.imagePath ? (

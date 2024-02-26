@@ -3,11 +3,8 @@ import { StyleSheet, View, ScrollView, Platform, Linking } from "react-native";
 import AppContainer from "@components/Container/AppContainer";
 import { useAppSelector } from "@redux/store";
 import BackButtonWithTitle from "@components/Header/BackButtonWithTitle";
-import * as Animatable from "react-native-animatable";
 import { moderateScale } from "react-native-size-matters";
-import AppButton from "@components/Button/AppButton";
 import I18n from "i18n-js";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AppText from "@components/Text/AppText";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import moment from "moment";
@@ -15,15 +12,14 @@ import FastImage from "react-native-fast-image";
 import images from "@common/AllImages";
 import svgs from "@common/AllSvgs";
 import { useAppNavigation } from "@navigation/Navigation";
-// import AvailableCreditManager from "@features/AvailableCredit/AvailableCreditManager";
 import { useStripe } from "@stripe/stripe-react-native";
 import map from "lodash/map";
-import toNumber from "lodash/toNumber";
 import CoachManager from "@features/Coach/CoachManager";
 import StripeManager from "@features/Stripe/StripeManager";
 import SlotCard from "@cards/Slots/SlotCard";
 import useAppToast from "@components/Alert/AppToast";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 
 interface DateRangeProps {
   startDate: string | moment.Moment | Date;
@@ -63,7 +59,6 @@ export default function CoachBooking(props: any) {
   const [useCredit, setUseCredit] = useState<boolean>(false);
 
   const navigation = useAppNavigation();
-  const insets = useSafeAreaInsets();
 
   // console.log("AT CoachBooking===>", JSON.stringify(credit, null, 2));
 
@@ -275,7 +270,9 @@ export default function CoachBooking(props: any) {
       scrollable={false}
       backgroundColor={theme.appBackgroundColor}
       fullHeight={false}>
-      <BackButtonWithTitle title="Booking Confirmation" />
+      <BackButtonWithTitle
+        title={I18n.t("screen_messages.header.Booking_Confirmation")}
+      />
       <ScrollView
         style={{
           flex: 1,
@@ -303,7 +300,7 @@ export default function CoachBooking(props: any) {
                 fontStyle="400.normal"
                 color={theme.gray}
                 style={{ marginBottom: 10 }}>
-                Date
+                {I18n.t("screen_messages.date")}
               </AppText>
               <AppText fontStyle="600.semibold">
                 {moment(pickedDate).format("DD MMM, ddd")}
@@ -314,7 +311,7 @@ export default function CoachBooking(props: any) {
                 fontStyle="400.normal"
                 color={theme.gray}
                 style={{ marginBottom: 10, textAlign: "right" }}>
-                Time
+                {I18n.t("screen_messages.time")}
               </AppText>
               <AppText fontStyle="600.semibold" style={{ textAlign: "right" }}>
                 {selectedSlot?.startTime} - {selectedSlot?.endTime}
@@ -357,28 +354,25 @@ export default function CoachBooking(props: any) {
                 <View
                   style={{
                     backgroundColor:
-                      data?.coachCategoryID === 1
+                      data?.coachCategory?.coachCategory === "TIER 1"
                         ? theme.primary
                         : theme.tertiaryText,
-                    width: 70,
+                    width: 60,
                     height: 25,
                     alignItems: "center",
                     justifyContent: "center",
                     borderRadius: 20,
-                    marginVertical: 10,
+                    marginBottom: 10,
                   }}>
                   <AppText
-                    style={{}}
+                    style={{ textTransform: "capitalize" }}
                     fontStyle="500.medium"
+                    size={12}
                     color={theme.modalBackgroundColor}>
                     {data?.coachCategory?.coachCategory}
                   </AppText>
                 </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    height: 20,
-                  }}>
+                <View>
                   <AppText fontStyle="600.bold" size={16} numberOfLines={1}>
                     {data?.stakeholder?.stakeholderName}
                   </AppText>
@@ -475,7 +469,7 @@ export default function CoachBooking(props: any) {
         {bookingType === "MULTI" && (
           <View style={{ paddingHorizontal: 15 }}>
             <AppText fontStyle="500.bold" size={16}>
-              Sessions
+              {I18n.t("screen_messages.Sessions")}
             </AppText>
             <VerticalSpacing />
             <View>
@@ -489,7 +483,7 @@ export default function CoachBooking(props: any) {
         <VerticalSpacing />
         <View style={{ paddingHorizontal: 15 }}>
           <AppText fontStyle="500.normal" size={16}>
-            Bill Details
+            {I18n.t("screen_messages.Bill_Details")}
           </AppText>
           <VerticalSpacing size={20} />
           <View
@@ -508,7 +502,7 @@ export default function CoachBooking(props: any) {
                 marginBottom: 10,
               }}>
               <AppText fontStyle="400.normal" color={theme.gray}>
-                Per Session Amount
+                {I18n.t("screen_messages.Per_Session_Amount")}
               </AppText>
               <AppText fontStyle="400.normal" color={theme.gray}>
                 {I18n.t("screen_messages.price", {
@@ -528,7 +522,7 @@ export default function CoachBooking(props: any) {
                   marginBottom: 10,
                 }}>
                 <AppText fontStyle="400.normal" color={theme.gray}>
-                  Total Sessions
+                  {I18n.t("screen_messages.Total_Sessions")}
                 </AppText>
                 <AppText fontStyle="400.normal" color={theme.gray}>
                   X {dateRange?.length}
@@ -559,28 +553,17 @@ export default function CoachBooking(props: any) {
           </View>
         </View>
       </ScrollView>
-      <Animatable.View
-        animation="fadeInUp"
-        duration={1000}
-        style={{
-          backgroundColor: theme.modalBackgroundColor,
-          padding: moderateScale(20, 0.3),
-          bottom: isIOS ? moderateScale(insets.top + 6, 0.3) : null,
-        }}>
-        <AppButton
-          loading={loading}
-          Title={
-            useCredit
-              ? I18n.t("screen_messages.button.book_now")
-              : I18n.t("screen_messages.button.Proceed_to_Payment")
-          }
-          color={theme.primary}
-          fontStyle="600.normal"
-          fontSize={16}
-          height={50}
-          onPress={() => (useCredit ? createOneBooking() : openPaymentSheet())}
-        />
-      </Animatable.View>
+      <FloatingBottomButton
+        loading={loading}
+        title={
+          useCredit
+            ? I18n.t("screen_messages.button.book_now")
+            : I18n.t("screen_messages.button.Proceed_to_Payment")
+        }
+        onPress={() => {
+          useCredit ? createOneBooking() : openPaymentSheet();
+        }}
+      />
     </AppContainer>
   );
 }
