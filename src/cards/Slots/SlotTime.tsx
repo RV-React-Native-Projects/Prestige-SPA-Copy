@@ -1,15 +1,8 @@
-import {
-  Dimensions,
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { useAppSelector } from "@src/redux/store";
 import { moderateScale } from "react-native-size-matters";
 import AppText from "@src/components/Text/AppText";
-import DeviceInfo from "react-native-device-info";
 
 interface SlotTime {
   onPress: () => void;
@@ -17,10 +10,6 @@ interface SlotTime {
   time: string;
   isAvailable: boolean;
 }
-
-const isIOS = Platform.OS === "ios";
-const isTab = DeviceInfo.isTablet();
-const windowWidth = Dimensions.get("window").width;
 
 export default function SlotTime(props: SlotTime) {
   const { onPress, value, time, isAvailable } = props;
