@@ -28,10 +28,9 @@ export default function AppText(props: AppTextType) {
   const fontObj = getFontObj();
 
   const {
-    size = 14 || fontObj?.fontSize, // size of the Text
+    size = 14, // size of the Text
     fontWeight = fontObj.fontWeight, // fontWeight of the Text
     color = theme.title, // color for the Text
-    // fontStyle = "normal",
     children, // to have the childrens
     fontFamily = fontObj.fontFamily, // font Family for the Text
     onPress, // function void()
@@ -46,7 +45,6 @@ export default function AppText(props: AppTextType) {
         {
           fontSize: moderateScale(size, 0.3),
           fontWeight: fontWeight,
-          // fontStyle: fontStyle,
           color: color,
           fontFamily: fontFamily,
           includeFontPadding: false,

@@ -63,6 +63,7 @@ export default function ProfileScreen() {
   const { user, refreshingUser, userEmail } = useAppSelector(
     state => state.user,
   );
+  const { isMembership } = useAppSelector(state => state.appData);
   const storeDispatch = useAppDispatch();
   const navigation = useAppNavigation();
 
@@ -158,11 +159,13 @@ export default function ProfileScreen() {
             ...theme.light_shadow,
           }}>
           <View style={{ borderRadius: 10, overflow: "hidden" }}>
-            <ProfileButton
-              title="Memberships"
-              icon={<svgs.MemberShip color1={theme.iconColor} />}
-              onPress={gotoMemberships}
-            />
+            {isMembership && (
+              <ProfileButton
+                title="Memberships"
+                icon={<svgs.MemberShip color1={theme.iconColor} />}
+                onPress={gotoMemberships}
+              />
+            )}
             <ProfileButton
               title="Family Members"
               icon={<svgs.Group width={25} color1={theme.iconColor} />}

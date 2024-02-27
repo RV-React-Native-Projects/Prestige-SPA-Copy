@@ -99,6 +99,8 @@ export default function CourtSlot(props: any) {
   const storeDispatch = useAppDispatch();
   const refRBSheet = useRef<RBSheet>(null);
 
+  // console.log("At CourtSlot ==>", familyID);
+
   useEffect(() => {
     const filterCourt = _.find(
       availableCourts,

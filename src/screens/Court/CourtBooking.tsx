@@ -45,6 +45,7 @@ export default function CourtBooking(props: any) {
 
   const { theme } = useAppSelector(state => state.theme);
   const { user, authHeader } = useAppSelector(state => state.user);
+  const { isUseAvailableCredits } = useAppSelector(state => state.appData);
   const [loading, setLoading] = useState<boolean>(false);
   const [useCredit, setUseCredit] = useState<boolean>(false);
   const appToast = useAppToast();
@@ -119,6 +120,10 @@ export default function CourtBooking(props: any) {
   useEffect(() => {
     initializePaymentSheet();
   }, []);
+
+  console.log("====================================");
+  console.log(selectedCourt);
+  console.log("====================================");
 
   const openPaymentSheet = async () => {
     const { error } = await presentPaymentSheet();
@@ -344,6 +349,7 @@ export default function CourtBooking(props: any) {
           </View>
         ) : null}
         {!isVerified &&
+        isUseAvailableCredits &&
         selectedCourt?.["creditTypes.availableCredits.quantity"] > 0 ? (
           <View
             style={{

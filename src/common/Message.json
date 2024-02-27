@@ -222,7 +222,8 @@
       "No_Term_aval": "No Terms Available for ",
       "select_diff_month": "Please Select A Different Date/Month",
       "Select_Term": "Select Term",
-      "time_session": " %{time} Mins - %{session} Session"
+      "time_session": " %{time} Mins - %{session} Session",
+      "min_max_rate": "AED %{min} - AED %{max}"
     }
   },
   "en-UK": {

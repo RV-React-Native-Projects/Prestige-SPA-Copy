@@ -43,8 +43,14 @@ function Home() {
   const { userEmail, approvedMembership, location } = useAppSelector(
     state => state.user,
   );
-  const { coachs, locations, loadingCoachs, loadingLocations, isCourtBooking } =
-    useAppSelector(state => state.appData);
+  const {
+    coachs,
+    locations,
+    loadingCoachs,
+    loadingLocations,
+    isCourtBooking,
+    isMembership,
+  } = useAppSelector(state => state.appData);
   const { theme } = useAppSelector(state => state.theme);
   const storeDispatch = useAppDispatch();
   const navigation = useAppNavigation();
@@ -227,7 +233,9 @@ function Home() {
                       maxRate={item?.maxRate}
                       onPressCard={() => onPressCourtCard(item)}
                       isVerified={
-                        approvedMembership && approvedMembership?.length > 0
+                        isMembership &&
+                        approvedMembership &&
+                        approvedMembership?.length > 0
                           ? approvedMembership.some(
                               mem => mem.locationID === item?.locationID,
                             )

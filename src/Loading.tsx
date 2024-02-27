@@ -13,7 +13,6 @@ function Loading() {
   );
   const storeDispatch = useAppDispatch();
 
-  console.log("Is Workinbg", userEmail, authHeader);
   useEffect(() => {
     if (authHeader && userEmail) {
       AuthManager.getUserData(

@@ -147,7 +147,7 @@ const CourtCard = (props: CourtCardProps) => {
 function CourtScreen() {
   const { theme } = useAppSelector(state => state.theme);
   const { approvedMembership, location } = useAppSelector(state => state.user);
-  const { locations, loadingLocations } = useAppSelector(
+  const { locations, loadingLocations, isMembership } = useAppSelector(
     state => state.appData,
   );
   const navigation = useAppNavigation();
@@ -192,7 +192,9 @@ function CourtScreen() {
               )
             }
             isVerified={
-              approvedMembership && approvedMembership?.length > 0
+              isMembership &&
+              approvedMembership &&
+              approvedMembership?.length > 0
                 ? approvedMembership.some(
                     mem => mem.locationID === item?.locationID,
                   )

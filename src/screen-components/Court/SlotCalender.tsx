@@ -188,9 +188,11 @@ function SlotCalender(props: SlotCalenderProps) {
             icon={<svgs.Left height={25} width={25} color1={theme.iconColor} />}
             onPressIcon={() => modifyMonthFromDate("subtract")}
           />
-          <View style={{ width: 10 }} />
+          <View style={{ width: moderateScale(10, 0.3) }} />
           <IconButton
-            icon={<svgs.Right color1={theme.iconColor} />}
+            icon={
+              <svgs.Right height={30} width={30} color1={theme.iconColor} />
+            }
             onPressIcon={() => modifyMonthFromDate("add")}
           />
         </View>
@@ -200,7 +202,7 @@ function SlotCalender(props: SlotCalenderProps) {
       <AppText
         fontStyle="600.semibold"
         size={16}
-        style={{ paddingHorizontal: 15 }}>
+        style={{ paddingHorizontal: moderateScale(15, 0.3) }}>
         {I18n.t("screen_messages.Select_Date")}
       </AppText>
       <VerticalSpacing />

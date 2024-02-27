@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   Platform,
@@ -32,20 +32,23 @@ const windowWidth = Dimensions.get("window").width;
 function CourtDetail(props: any) {
   const { data } = props.route.params;
   const { theme } = useAppSelector(state => state.theme);
-  const { isFamilyMemberBooking } = useAppSelector(state => state.appData);
   const { approvedMembership, location } = useAppSelector(state => state.user);
+  const { isFamilyMemberBooking, isMembership } = useAppSelector(
+    state => state.appData,
+  );
   const navigation = useAppNavigation();
   const _map = useRef(null);
 
   const [showPicker, setshowPicker] = useState<boolean>(false);
+  // const [isVerified, setIsVerified] = useState<boolean>(true);
 
   const toggleModal = () => {
     setshowPicker(!showPicker);
   };
 
   const isVerified =
-    approvedMembership && approvedMembership?.length > 0
-      ? approvedMembership.some(mem => mem.locationID === data.locationID)
+    isMembership && approvedMembership && approvedMembership.length > 0
+      ? _.some(approvedMembership, mem => mem.locationID === data.locationID)
       : false;
 
   const onPressNext = (familyID: string | null) => {
@@ -56,7 +59,7 @@ function CourtDetail(props: any) {
     });
   };
 
-  // console.log(JSON.stringify(familyID, null, 2));
+  // console.log(JSON.stringify(data, null, 2));
 
   return (
     <AppContainer
@@ -150,9 +153,11 @@ function CourtDetail(props: any) {
               </AppText>
             </View>
           ) : (
-            <AppText fontStyle="600.semibold" size={16} color={theme.primary}>
-              {I18n.t("screen_messages.price", { price: data?.minRate })} -{" "}
-              {I18n.t("screen_messages.price", { price: data?.maxRate })}
+            <AppText fontStyle="600.normal" color={theme.primary}>
+              {I18n.t("screen_messages.min_max_rate", {
+                min: data?.minRate,
+                max: data?.maxRate,
+              })}
             </AppText>
           )}
           <VerticalSpacing size={5} />
@@ -188,7 +193,7 @@ function CourtDetail(props: any) {
                 maxWidth: "90%",
               }}
               numberOfLines={2}
-              fontStyle="500.normal"
+              fontStyle="400.normal"
               color={theme.paragraph}>
               {data?.locationAddress}
             </AppText>
@@ -233,14 +238,14 @@ function CourtDetail(props: any) {
       </ScrollView>
       <FloatingBottomButton
         onPress={() =>
-          isFamilyMemberBooking ? toggleModal() : onPressNext(data)
+          isFamilyMemberBooking ? toggleModal() : onPressNext(null)
         }
       />
     </AppContainer>
   );
 }
 
-export default CourtDetail;
+export default memo(CourtDetail);
 
 const styles = StyleSheet.create({
   container: {

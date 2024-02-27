@@ -181,6 +181,7 @@ interface appDataSliceProps {
   isEndTime: string | null;
   isMembership: boolean;
   isFamilyMemberBooking: boolean;
+  isUseAvailableCredits: boolean;
 }
 
 const initialState: appDataSliceProps = {
@@ -205,6 +206,7 @@ const initialState: appDataSliceProps = {
   isEndTime: null,
   isMembership: true,
   isFamilyMemberBooking: true,
+  isUseAvailableCredits: true,
 };
 
 const appDataSlice = createSlice({
@@ -310,6 +312,8 @@ const appDataSlice = createSlice({
             state.isMembership = item.configValue === "true";
           if (item.configKey === "familyMemberBooking")
             state.isFamilyMemberBooking = item.configValue === "true";
+          if (item.configKey === "useAvailableCredits")
+            state.isUseAvailableCredits = item.configValue === "true";
         });
         state.loadingAppConfigs = false;
       })
