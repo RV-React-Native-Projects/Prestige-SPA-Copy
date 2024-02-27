@@ -1,39 +1,24 @@
 import React, { memo } from "react";
-import {
-  Dimensions,
-  Linking,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Linking, Platform, ScrollView, StyleSheet, View } from "react-native";
 import AppContainer from "@components/Container/AppContainer";
-import { useAppDispatch, useAppSelector } from "@redux/store";
+import { useAppSelector } from "@redux/store";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
-import { useAppNavigation } from "@navigation/Navigation";
 import BackButtonWithTitle from "@components/Header/BackButtonWithTitle";
 import I18n from "i18n-js";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import FastImage from "react-native-fast-image";
 import images from "@common/AllImages";
 import AppText from "@components/Text/AppText";
 import Utils from "@common/Utils";
 import moment from "moment";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import DeviceInfo from "react-native-device-info";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 
 const isIOS = Platform.OS === "ios";
-const isTab = DeviceInfo.isTablet();
 
 function BookingDetails(props: any) {
   const { data } = props?.route?.params;
   const { theme } = useAppSelector(state => state.theme);
-  const insets = useSafeAreaInsets();
-  const navigation = useAppNavigation();
-  const { user } = useAppSelector(state => state.user);
-  const storeDispatch = useAppDispatch();
 
   // console.log("DEtails: " + JSON.stringify(data, null, 2));
 
@@ -82,7 +67,7 @@ function BookingDetails(props: any) {
           <View
             style={{
               flexDirection: "row",
-              padding: 10,
+              padding: moderateScale(10, 0.3),
               alignItems: "center",
               backgroundColor:
                 data?.bookingStatusType === "CANCELLED"
@@ -90,13 +75,13 @@ function BookingDetails(props: any) {
                   : data?.bookingStatusType === "PENDING"
                     ? theme.ongoingLight
                     : theme.completedLight,
-              borderRadius: 100,
+              borderRadius: moderateScale(100, 0.3),
             }}>
             <View
               style={{
-                width: 7,
-                height: 7,
-                borderRadius: 20,
+                width: moderateScale(7, 0.3),
+                height: moderateScale(7, 0.3),
+                borderRadius: moderateScale(20, 0.3),
                 backgroundColor:
                   data?.bookingStatusType === "CANCELLED"
                     ? theme.cancel
@@ -133,7 +118,11 @@ function BookingDetails(props: any) {
           {data?.bookingType === "COACH" && (
             <View style={{ flexDirection: "row", width: "100%" }}>
               <FastImage
-                style={{ height: 80, width: 80, borderRadius: 200 }}
+                style={{
+                  height: moderateScale(80, 0.3),
+                  width: moderateScale(80, 0.3),
+                  borderRadius: moderateScale(100, 0.3),
+                }}
                 source={{
                   uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.coach?.imagePath}`,
                   priority: FastImage.priority.high,
@@ -141,19 +130,19 @@ function BookingDetails(props: any) {
                 resizeMode={FastImage.resizeMode.cover}
                 defaultSource={images.user}
               />
-              <View style={{ marginLeft: 10 }}>
+              <View style={{ marginLeft: moderateScale(10, 0.3) }}>
                 <View
                   style={{
                     backgroundColor:
                       data?.coachSessionTypeID === 1
                         ? theme.primary
                         : theme.tertiaryText,
-                    width: 70,
-                    height: 25,
+                    width: moderateScale(70, 0.3),
+                    height: moderateScale(25, 0.3),
                     alignItems: "center",
                     justifyContent: "center",
-                    borderRadius: 100,
-                    marginBottom: 5,
+                    borderRadius: moderateScale(100, 0.3),
+                    marginBottom: moderateScale(5, 0.3),
                   }}>
                   <AppText fontStyle="400.medium" size={12} color={theme.white}>
                     {data?.coach?.coachProfile?.coachCategory?.coachCategory}
@@ -174,7 +163,7 @@ function BookingDetails(props: any) {
                     color={theme.secondary}
                   />
                   <AppText
-                    style={{ maxWidth: "58%" }}
+                    style={{ maxWidth: "56%" }}
                     fontStyle="400.normal"
                     numberOfLines={2}>
                     {data?.location?.locationAddress}
@@ -186,7 +175,11 @@ function BookingDetails(props: any) {
           {data?.bookingType === "COURT" && (
             <View style={{ flexDirection: "row", width: "100%" }}>
               <FastImage
-                style={{ height: 100, width: 110, borderRadius: 5 }}
+                style={{
+                  height: moderateScale(100, 0.3),
+                  width: moderateScale(110, 0.3),
+                  borderRadius: moderateScale(5, 0.3),
+                }}
                 source={{
                   uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.court?.imagePath}`,
                   priority: FastImage.priority.high,
@@ -194,7 +187,7 @@ function BookingDetails(props: any) {
                 resizeMode={FastImage.resizeMode.cover}
                 defaultSource={images.Placeholder}
               />
-              <View style={{ margin: 10 }}>
+              <View style={{ margin: moderateScale(10, 0.3) }}>
                 <AppText
                   style={{ maxWidth: "60%" }}
                   fontStyle="500.bold"
@@ -230,7 +223,7 @@ function BookingDetails(props: any) {
             ...theme.light_shadow,
           }}>
           <View>
-            <AppText style={{ paddingBottom: 5 }} size={12}>
+            <AppText style={{ paddingBottom: moderateScale(5, 0.3) }} size={12}>
               {I18n.t("screen_messages.date")}
             </AppText>
             <AppText fontStyle="500.medium" size={12}>
@@ -240,7 +233,7 @@ function BookingDetails(props: any) {
           </View>
 
           <View style={{ paddingVertical: moderateScale(15, 0.3) }}>
-            <AppText style={{ paddingBottom: 5 }} size={12}>
+            <AppText style={{ paddingBottom: moderateScale(5, 0.3) }} size={12}>
               {I18n.t("screen_messages.time")}
             </AppText>
             <AppText fontStyle="500.medium" size={12}>
@@ -249,7 +242,7 @@ function BookingDetails(props: any) {
             </AppText>
           </View>
           <View>
-            <AppText style={{ paddingBottom: 5 }} size={12}>
+            <AppText style={{ paddingBottom: moderateScale(5, 0.3) }} size={12}>
               {I18n.t("screen_messages.slot_duration")}
             </AppText>
             <AppText fontStyle="500.medium" size={12}>
@@ -258,7 +251,10 @@ function BookingDetails(props: any) {
           </View>
         </View>
         <VerticalSpacing />
-        <AppText fontStyle="600.semibold" size={16} style={{ padding: 15 }}>
+        <AppText
+          fontStyle="600.semibold"
+          size={16}
+          style={{ padding: moderateScale(15, 0.3) }}>
           {I18n.t("screen_messages.Payment_Detail")}
         </AppText>
         <View

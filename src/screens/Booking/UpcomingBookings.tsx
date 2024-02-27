@@ -80,7 +80,10 @@ export default function UpcomingBookings(props: any) {
         <LottieView
           key={"SearchingLottie"}
           source={require("@assets/lottieFiles/SearchingLottie.json")}
-          style={{ height: windowHeight - 200, width: "100%" }}
+          style={{
+            height: moderateScale(windowHeight - 200, 0.3),
+            width: "100%",
+          }}
           autoPlay
           loop
         />

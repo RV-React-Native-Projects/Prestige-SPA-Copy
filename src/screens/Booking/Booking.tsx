@@ -6,6 +6,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { loadBooking } from "@reducers/AppDataSlice";
 import { useFocusEffect } from "@react-navigation/native";
 import I18n from "i18n-js";
+import { moderateScale } from "react-native-size-matters";
 
 const UpcomingBookings = lazy(
   () => import("@src/screens/Booking/UpcomingBookings"),
@@ -37,13 +38,13 @@ function CalenderScreen() {
         initialRouteName="UpcomingBookings"
         screenOptions={{
           tabBarLabelStyle: {
-            fontSize: 14,
+            fontSize: moderateScale(14, 0.3),
             fontWeight: "600",
           },
           tabBarIndicatorStyle: {
-            height: 3,
+            height: moderateScale(4, 0.3),
             backgroundColor: theme.secondary,
-            borderRadius: 10,
+            borderRadius: moderateScale(10, 0.3),
           },
         }}>
         <TopTab.Screen

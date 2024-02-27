@@ -2,7 +2,7 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { useAppSelector } from "@src/redux/store";
 import { moderateScale } from "react-native-size-matters";
-import AppText from "@src/components/Text/AppText";
+import AppText from "@components/Text/AppText";
 
 interface SlotTime {
   onPress: () => void;
@@ -13,7 +13,7 @@ interface SlotTime {
 
 export default function SlotTime(props: SlotTime) {
   const { onPress, value, time, isAvailable } = props;
-  const { theme, isDarkMode } = useAppSelector(state => state.theme);
+  const { theme } = useAppSelector(state => state.theme);
 
   return (
     <TouchableOpacity

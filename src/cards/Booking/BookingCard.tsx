@@ -46,13 +46,13 @@ function BookingCard(props: BookingCardProps) {
 
   return (
     <TouchableOpacity
-      activeOpacity={0.8}
+      activeOpacity={0.9}
       onPress={onPress}
       style={{
         width: "100%",
         backgroundColor: theme.modalBackgroundColor,
-        borderRadius: 10,
-        padding: 15,
+        borderRadius: moderateScale(10, 0.3),
+        padding: moderateScale(15, 0.3),
         ...theme.light_shadow,
       }}>
       <View
@@ -62,7 +62,7 @@ function BookingCard(props: BookingCardProps) {
           justifyContent: "space-between",
         }}>
         <View>
-          <AppText style={{ paddingBottom: 5 }} size={12}>
+          <AppText style={{ paddingBottom: moderateScale(5, 0.3) }} size={12}>
             {I18n.t("screen_messages.date")}
           </AppText>
           <AppText fontStyle="500.medium" size={12}>
@@ -71,7 +71,9 @@ function BookingCard(props: BookingCardProps) {
           </AppText>
         </View>
         <View>
-          <AppText style={{ paddingBottom: 5, textAlign: "right" }} size={12}>
+          <AppText
+            style={{ paddingBottom: moderateScale(5, 0.3), textAlign: "right" }}
+            size={12}>
             {I18n.t("screen_messages.time")}
           </AppText>
           <AppText fontStyle="500.medium" size={12}>
@@ -84,7 +86,11 @@ function BookingCard(props: BookingCardProps) {
       {bookingType === "COACH" && (
         <View style={{ flexDirection: "row", width: "100%" }}>
           <FastImage
-            style={{ height: 80, width: 80, borderRadius: 200 }}
+            style={{
+              height: moderateScale(90, 0.3),
+              width: moderateScale(90, 0.3),
+              borderRadius: moderateScale(100, 0.3),
+            }}
             source={{
               uri: `https://nodejsclusters-160185-0.cloudclusters.net/${coach?.imagePath}`,
               priority: FastImage.priority.high,
@@ -92,7 +98,7 @@ function BookingCard(props: BookingCardProps) {
             resizeMode={FastImage.resizeMode.cover}
             defaultSource={images.user}
           />
-          <View style={{ marginLeft: 10 }}>
+          <View style={{ marginLeft: moderateScale(10, 0.3) }}>
             <View
               style={{
                 backgroundColor:
@@ -126,7 +132,7 @@ function BookingCard(props: BookingCardProps) {
                 color={theme.secondary}
               />
               <AppText
-                style={{ maxWidth: "58%" }}
+                style={{ maxWidth: "55%" }}
                 fontStyle="400.normal"
                 numberOfLines={2}>
                 {location?.locationAddress}
@@ -138,7 +144,11 @@ function BookingCard(props: BookingCardProps) {
       {bookingType === "COURT" && (
         <View style={{ flexDirection: "row", width: "100%" }}>
           <FastImage
-            style={{ height: 100, width: 110, borderRadius: 5 }}
+            style={{
+              height: moderateScale(100, 0.3),
+              width: moderateScale(110, 0.3),
+              borderRadius: moderateScale(5, 0.3),
+            }}
             source={{
               uri: `https://nodejsclusters-160185-0.cloudclusters.net/${court?.imagePath}`,
               priority: FastImage.priority.high,
@@ -146,7 +156,7 @@ function BookingCard(props: BookingCardProps) {
             resizeMode={FastImage.resizeMode.cover}
             defaultSource={images.Placeholder}
           />
-          <View style={{ marginHorizontal: 10 }}>
+          <View style={{ marginHorizontal: moderateScale(10, 0.3) }}>
             <AppText
               style={{ maxWidth: "60%" }}
               fontStyle="500.normal"
@@ -178,7 +188,7 @@ function BookingCard(props: BookingCardProps) {
           justifyContent: "space-between",
         }}>
         <View>
-          <AppText style={{ paddingBottom: 5 }} size={12}>
+          <AppText style={{ paddingBottom: moderateScale(5, 0.3) }} size={12}>
             {I18n.t("screen_messages.booking_ID")}
           </AppText>
           <AppText selectable fontStyle="500.medium" size={12}>
@@ -188,7 +198,7 @@ function BookingCard(props: BookingCardProps) {
         <View
           style={{
             flexDirection: "row",
-            padding: 10,
+            padding: moderateScale(10, 0.3),
             alignItems: "center",
             backgroundColor:
               bookingStatusType === "CANCELLED"
@@ -196,20 +206,20 @@ function BookingCard(props: BookingCardProps) {
                 : bookingStatusType === "PENDING"
                   ? theme.ongoingLight
                   : theme.completedLight,
-            borderRadius: 100,
+            borderRadius: moderateScale(100, 0.3),
           }}>
           <View
             style={{
-              width: 7,
-              height: 7,
-              borderRadius: 20,
+              width: moderateScale(7, 0.3),
+              height: moderateScale(7, 0.3),
+              borderRadius: moderateScale(20, 0.3),
               backgroundColor:
                 bookingStatusType === "CANCELLED"
                   ? theme.cancel
                   : bookingStatusType === "PENDING"
                     ? theme.ongoing
                     : theme.completed,
-              marginRight: 5,
+              marginRight: moderateScale(5, 0.3),
             }}
           />
           <AppText

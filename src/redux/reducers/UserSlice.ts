@@ -12,9 +12,9 @@ export const loadUserData = createAsyncThunk("user/loaduser", async () => {
 
   // var userToken = (await getStorage("SPA_User_Token")) ?? null;
   var authToken = (await getStorage("SPA_Auth_Token")) ?? null;
-  var refreshToken = (await getStorage("SPA_Refresh_Token")) ?? null;
+  // var refreshToken = (await getStorage("SPA_Refresh_Token")) ?? null;
   var email = (await getStorage("SPA_Email")) ?? null;
-  return { authToken, refreshToken, email };
+  return { authToken, email };
 });
 
 export const removeUserData = createAsyncThunk(
@@ -24,7 +24,7 @@ export const removeUserData = createAsyncThunk(
 
     await removeStorage("SPA_User_Token");
     await removeStorage("SPA_Auth_Token");
-    await removeStorage("SPA_Refresh_Token");
+    // await removeStorage("SPA_Refresh_Token");
     await removeStorage("SPA_Email");
   },
 );
@@ -239,9 +239,9 @@ const userSlice = createSlice({
         state.authToken = !!action.payload.authToken
           ? action.payload.authToken
           : null;
-        state.refreshToken = !!action.payload.refreshToken
-          ? action.payload.refreshToken
-          : null;
+        // state.refreshToken = !!action.payload.refreshToken
+        //   ? action.payload.refreshToken
+        //   : null;
         state.authHeader = !!action.payload.authToken
           ? {
               // "x-client-id": JSON.parse(action.payload.userToken),
