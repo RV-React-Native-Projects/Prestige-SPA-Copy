@@ -75,7 +75,13 @@
         "book_now": "Book Now",
         "Upcoming": "Upcoming",
         "Completed": "Completed",
-        "View_Directions": "View Directions"
+        "View_Directions": "View Directions",
+        "Memberships": "Memberships",
+        "Family_Members": "Family Members",
+        "Logout": "Logout",
+        "Addresses": "Addresses",
+        "Notifications": "Notifications",
+        "About": "About"
       },
       "common": {
         "rupee": "₹",
@@ -92,6 +98,7 @@
       "good_morning": "Good Morning!",
       "header": {
         "Profile": "Profile",
+        "Edit_Profile": "Edit Profile",
         "for_who": "Who's the Booking For?",
         "Add_Family_Member": "Add a Family Member",
         "Booking_For": "Who's the Booking For?",

@@ -40,6 +40,7 @@ const CoachBookingComplete = lazy(
 const Group = lazy(() => import("@screens/Group/Group"));
 const Booking = lazy(() => import("@src/screens/Booking/Booking"));
 const Profile = lazy(() => import("@screens/Profile/Profile"));
+const EditProfile = lazy(() => import("@screens/Profile/EditProfile"));
 const Memberships = lazy(() => import("@screens/Membership/Memberships"));
 const EditMemberShip = lazy(() => import("@screens/Membership/EditMemberShip"));
 const Family = lazy(() => import("@src/screens/Family/Family"));
@@ -92,6 +93,7 @@ function MyStack() {
       <Stack.Screen name="Group" component={Group} />
       <Stack.Screen name="Booking" component={Booking} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="Memberships" component={Memberships} />
       <Stack.Screen name="EditMemberShip" component={EditMemberShip} />
       <Stack.Screen name="Family" component={Family} />

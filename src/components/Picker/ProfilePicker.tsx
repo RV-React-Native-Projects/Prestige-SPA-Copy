@@ -37,6 +37,7 @@ interface Props {
   getImages?: (images: any) => void;
   allowMultiSelection?: boolean;
   lightShadow?: boolean;
+  imagePath?: string | null;
 }
 
 const isIOS = Platform.OS === "ios";
@@ -58,6 +59,7 @@ const ProfilePicker: React.FC<Props> = props => {
     getImages,
     allowMultiSelection = false,
     lightShadow = false,
+    imagePath = null,
   } = props || {};
 
   const [pickedImage, setPickedImage] = useState<any | null>(null);
@@ -124,7 +126,7 @@ const ProfilePicker: React.FC<Props> = props => {
           width: moderateScale(150, 0.3),
           alignSelf: "center",
         }}>
-        {pickedImage ? (
+        {pickedImage || imagePath ? (
           <FastImage
             style={{
               height: "100%",
@@ -135,7 +137,7 @@ const ProfilePicker: React.FC<Props> = props => {
               borderColor: theme.secondary,
             }}
             source={{
-              uri: pickedImage?.fileCopyUri ?? pickedImage?.path,
+              uri: pickedImage?.fileCopyUri ?? pickedImage?.path ?? imagePath,
               priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover}

@@ -20,6 +20,7 @@ import AppButton from "@components/Button/AppButton";
 import { refreshUser, removeUserData, resetUser } from "@reducers/UserSlice";
 import { resetAppData } from "@reducers/AppDataSlice";
 import { useAppNavigation } from "@navigation/Navigation";
+import I18n from "i18n-js";
 
 interface ProfileButtonProps {
   title: string;
@@ -40,7 +41,7 @@ const ProfileButton = (props: ProfileButtonProps) => {
           alignItems: "center",
           justifyContent: "space-between",
           padding: moderateScale(15, 0.3),
-          backgroundColor: theme.appBackgroundColor,
+          backgroundColor: theme.modalBackgroundColor,
         },
         !hideBorder && {
           borderBottomWidth: moderateScale(0.3, 0.3),
@@ -81,6 +82,10 @@ export default function ProfileScreen() {
     navigation.navigate("Family");
   };
 
+  const gotoEditProfile = () => {
+    navigation.navigate("EditProfile");
+  };
+
   const onRefresh = useCallback(() => {
     storeDispatch(refreshUser());
   }, [userEmail]);
@@ -90,7 +95,10 @@ export default function ProfileScreen() {
       hideStatusbar={false}
       scrollable={false}
       backgroundColor={theme.appBackgroundColor}>
-      <BackButtonWithTitle title="Profile" rightIcon={<LightDarkSwitch />} />
+      <BackButtonWithTitle
+        title={I18n.t("screen_messages.header.Profile")}
+        rightIcon={<LightDarkSwitch />}
+      />
       <ScrollView
         refreshControl={
           <RefreshControl
@@ -106,11 +114,11 @@ export default function ProfileScreen() {
             padding: moderateScale(10, 0.3),
             flexDirection: "row",
             alignItems: "center",
-            backgroundColor: theme.appBackgroundColor,
+            backgroundColor: theme.modalBackgroundColor,
             borderRadius: moderateScale(10, 0.3),
             width: "100%",
             position: "relative",
-            ...theme.mid_shadow,
+            ...theme.light_shadow,
           }}>
           <FastImage
             style={{
@@ -156,14 +164,14 @@ export default function ProfileScreen() {
               fontSize={16}
               Title="Edit"
               LinkButton
-              onPress={() => {}}
+              // onPress={gotoEditProfile}
             />
           </View>
         </View>
         <VerticalSpacing size={20} />
         <View
           style={{
-            backgroundColor: theme.appBackgroundColor,
+            backgroundColor: theme.modalBackgroundColor,
             borderRadius: moderateScale(10, 0.3),
             ...theme.light_shadow,
           }}>
@@ -174,34 +182,34 @@ export default function ProfileScreen() {
             }}>
             {isMembership && (
               <ProfileButton
-                title="Memberships"
+                title={I18n.t("screen_messages.button.Memberships")}
                 icon={<svgs.MemberShip color1={theme.iconColor} />}
                 onPress={gotoMemberships}
               />
             )}
             <ProfileButton
-              title="Family Members"
+              title={I18n.t("screen_messages.button.Family_Members")}
               icon={<svgs.Group width={25} color1={theme.iconColor} />}
               onPress={gotoFamily}
             />
             {/* <ProfileButton
-              title="Addresses"
+              title={I18n.t("screen_messages.button.Addresses")}
               icon={<svgs.Address width={25} color1={theme.iconColor} />}
               onPress={() => {}}
             />
             <ProfileButton
-              title="Notifications"
+              title={I18n.t("screen_messages.button.Notifications")}
               icon={<svgs.Notification width={25} color1={theme.iconColor} />}
               onPress={() => {}}
             />
             <ProfileButton
-              title="About"
+              title={I18n.t("screen_messages.button.About")}
               icon={<svgs.Info width={25} color1={theme.iconColor} />}
               onPress={() => {}}
             /> */}
             <ProfileButton
               hideBorder
-              title="Logout"
+              title={I18n.t("screen_messages.button.Logout")}
               icon={<svgs.Logout color1={theme.iconColor} />}
               onPress={logoutUser}
             />
