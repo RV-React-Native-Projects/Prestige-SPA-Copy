@@ -25,6 +25,7 @@ LogBox.ignoreLogs([
   "Non-serializable",
   "Non-Serializable",
   "Possible unhandled",
+  "Require cycle",
 ]);
 
 store.dispatch(loadUserData());

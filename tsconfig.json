@@ -41,5 +41,12 @@
       "src/*.tsx"
     ]
   },
-  "include": ["src", ".", "declaration.d.ts", "src/*.ts", "src/*.tsx"]
+  "include": [
+    "src",
+    ".",
+    "declaration.d.ts",
+    "src/*.ts",
+    "src/*.tsx",
+    "node_modules/**/*"
+  ]
 }

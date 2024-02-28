@@ -5,6 +5,14 @@ import { useAppDispatch, useAppSelector } from "@redux/store";
 import AuthManager from "@features/Auth/AuthManager";
 import { setLoadingUser, setUser } from "@reducers/UserSlice";
 import { getAppConfig } from "@reducers/AppDataSlice";
+import { Platform } from "react-native";
+import SpInAppUpdates, {
+  NeedsUpdateResponse,
+  IAUUpdateKind,
+  StartUpdateOptions,
+} from "sp-react-native-in-app-updates";
+
+const isIOS = Platform.OS === "ios";
 
 function Loading() {
   const navigation = useAppNavigation();
@@ -12,6 +20,24 @@ function Loading() {
     state => state.user,
   );
   const storeDispatch = useAppDispatch();
+
+  useEffect(() => {
+    async function checkForUpdate() {
+      const inAppUpdates = new SpInAppUpdates(false);
+      inAppUpdates.checkNeedsUpdate().then(result => {
+        if (result.shouldUpdate) {
+          let updateOptions: StartUpdateOptions = {};
+          if (Platform.OS === "android") {
+            updateOptions = {
+              updateType: IAUUpdateKind.IMMEDIATE,
+            };
+          }
+          inAppUpdates.startUpdate(updateOptions); // https://github.com/SudoPlz/sp-react-native-in-app-updates/blob/master/src/types.ts#L78
+        }
+      });
+    }
+    checkForUpdate();
+  }, []);
 
   useEffect(() => {
     if (authHeader && userEmail) {

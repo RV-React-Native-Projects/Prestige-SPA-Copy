@@ -60,7 +60,6 @@ function Home() {
 
   async function getUserCurrentLocation() {
     const permission = await Permissions.getLocationPermissions();
-    console.log("Is Out??", permission);
     if (permission && !isIOS) {
       const isEnabled = await isLocationEnabled();
       if (!isEnabled) {
@@ -68,7 +67,6 @@ function Home() {
       }
     }
     if (permission) {
-      console.log("Is GOing Here ??", permission);
       Geolocation.getCurrentPosition(
         position => {
           const { latitude, longitude } = position.coords;

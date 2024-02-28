@@ -19,7 +19,7 @@ import { VerticalSpacing } from "@components/Spacing/Spacing";
 import AppButton from "@components/Button/AppButton";
 import { refreshUser, removeUserData, resetUser } from "@reducers/UserSlice";
 import { resetAppData } from "@reducers/AppDataSlice";
-import { useAppNavigation } from "@src/navigation/Navigation";
+import { useAppNavigation } from "@navigation/Navigation";
 
 interface ProfileButtonProps {
   title: string;
@@ -39,17 +39,17 @@ const ProfileButton = (props: ProfileButtonProps) => {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: 15,
+          padding: moderateScale(15, 0.3),
           backgroundColor: theme.appBackgroundColor,
         },
         !hideBorder && {
-          borderBottomWidth: 0.3,
+          borderBottomWidth: moderateScale(0.3, 0.3),
           borderBottomColor: theme.gray,
         },
       ]}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={{ marginRight: 10 }}>{icon}</View>
-        <AppText numberOfLines={1} size={16} fontStyle="400.medium">
+        <AppText numberOfLines={1} size={16} fontStyle="400.normal">
           {title}
         </AppText>
       </View>
@@ -100,14 +100,14 @@ export default function ProfileScreen() {
             onRefresh={onRefresh}
           />
         }
-        contentContainerStyle={{ padding: 15 }}>
+        contentContainerStyle={{ padding: moderateScale(15, 0.3) }}>
         <View
           style={{
-            padding: 10,
+            padding: moderateScale(10, 0.3),
             flexDirection: "row",
             alignItems: "center",
             backgroundColor: theme.appBackgroundColor,
-            borderRadius: 10,
+            borderRadius: moderateScale(10, 0.3),
             width: "100%",
             position: "relative",
             ...theme.mid_shadow,
@@ -128,7 +128,11 @@ export default function ProfileScreen() {
             resizeMode={FastImage.resizeMode.cover}
           />
           <View
-            style={{ flexDirection: "column", marginLeft: 10, width: "70%" }}>
+            style={{
+              flexDirection: "column",
+              marginLeft: moderateScale(10, 0.3),
+              width: "70%",
+            }}>
             <AppText numberOfLines={1} fontStyle="600.bold" size={16}>
               {user?.stakeholderName}
             </AppText>
@@ -141,7 +145,12 @@ export default function ProfileScreen() {
               {user?.phoneNumber}
             </AppText>
           </View>
-          <View style={{ position: "absolute", right: 15, top: 8 }}>
+          <View
+            style={{
+              position: "absolute",
+              right: moderateScale(15, 0.3),
+              top: moderateScale(8, 0.3),
+            }}>
             <AppButton
               fontStyle="600.medium"
               fontSize={16}
@@ -155,10 +164,14 @@ export default function ProfileScreen() {
         <View
           style={{
             backgroundColor: theme.appBackgroundColor,
-            borderRadius: 10,
+            borderRadius: moderateScale(10, 0.3),
             ...theme.light_shadow,
           }}>
-          <View style={{ borderRadius: 10, overflow: "hidden" }}>
+          <View
+            style={{
+              borderRadius: moderateScale(10, 0.3),
+              overflow: "hidden",
+            }}>
             {isMembership && (
               <ProfileButton
                 title="Memberships"

@@ -31,6 +31,7 @@ module.exports = {
           "@services": "./src/services",
           "@features": "./src/services/features",
           "@global": "./src/services/global",
+          "device-info": "./device-info.js",
         },
       },
     ],
