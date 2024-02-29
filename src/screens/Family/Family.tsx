@@ -3,8 +3,6 @@ import {
   RefreshControl,
   ScrollView,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import React, { useCallback, useRef, useState } from "react";
@@ -14,7 +12,6 @@ import { useAppDispatch, useAppSelector } from "@src/redux/store";
 import { useAppNavigation } from "@src/navigation/Navigation";
 import AppContainer from "@src/components/Container/AppContainer";
 import BackButtonWithTitle from "@src/components/Header/BackButtonWithTitle";
-import * as Animatable from "react-native-animatable";
 import { moderateScale } from "react-native-size-matters";
 import AppButton from "@src/components/Button/AppButton";
 import AppText from "@src/components/Text/AppText";
@@ -24,7 +21,6 @@ import { VerticalSpacing } from "@src/components/Spacing/Spacing";
 import _ from "lodash";
 import FastImage from "react-native-fast-image";
 import images from "@src/common/AllImages";
-import AntDesign from "react-native-vector-icons/AntDesign";
 import FamilyManager from "@src/services/features/Family/FamilyManager";
 import RBSheet from "react-native-raw-bottom-sheet";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
@@ -49,10 +45,10 @@ const FamilyCard = (props: FamilyCardProps) => {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: 10,
+        padding: moderateScale(10, 0.3),
         backgroundColor: theme.modalBackgroundColor,
-        marginBottom: 15,
-        borderRadius: 10,
+        marginBottom: moderateScale(15, 0.3),
+        borderRadius: moderateScale(10, 0.3),
         maxWidth: "100%",
         ...theme.light_shadow,
       }}>
@@ -60,9 +56,9 @@ const FamilyCard = (props: FamilyCardProps) => {
         style={{ flexDirection: "row", alignItems: "center", width: "70%" }}>
         <FastImage
           style={{
-            height: 50,
-            width: 50,
-            borderRadius: 200,
+            height: moderateScale(50, 0.3),
+            width: moderateScale(50, 0.3),
+            borderRadius: moderateScale(200, 0.3),
             backgroundColor: theme.light,
           }}
           source={{
@@ -72,9 +68,9 @@ const FamilyCard = (props: FamilyCardProps) => {
           resizeMode={FastImage.resizeMode.cover}
           defaultSource={images.user}
         />
-        <View style={{ marginLeft: 10 }}>
+        <View style={{ marginLeft: moderateScale(10, 0.3) }}>
           <AppText
-            style={{ marginBottom: 5 }}
+            style={{ marginBottom: moderateScale(5, 0.3) }}
             fontStyle="600.bold"
             size={14}
             numberOfLines={1}>
@@ -157,7 +153,7 @@ export default function FamilyMembers() {
       scrollable={false}
       backgroundColor={theme.appBackgroundColor}
       fullHeight={false}>
-      <BackButtonWithTitle title="Family" />
+      <BackButtonWithTitle title={I18n.t("screen_messages.header.Family")} />
       <ScrollView
         refreshControl={
           <RefreshControl
@@ -168,7 +164,10 @@ export default function FamilyMembers() {
           />
         }
         style={{ flex: 1, minHeight: isIOS ? "100%" : "auto" }}
-        contentContainerStyle={{ paddingBottom: 100, padding: 15 }}>
+        contentContainerStyle={{
+          paddingBottom: moderateScale(100, 0.3),
+          padding: moderateScale(15, 0.3),
+        }}>
         <AppText size={16} fontStyle="400.normal">
           {I18n.t("screen_messages.family_msg")}
         </AppText>

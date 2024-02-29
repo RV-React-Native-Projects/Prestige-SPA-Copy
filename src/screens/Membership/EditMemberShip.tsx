@@ -72,16 +72,12 @@ export default function EditMemberShip(props: any) {
     );
     formData.append("customerID", user?.stakeholderID);
     formData.append("expiryDate", moment(expiryDate).format("YYYY-MM-DD"));
-    formData.append(
-      "file",
-      images
-        ? {
-            uri: images[0]?.fileCopyUri,
-            name: Utils.getFilename(images[0]?.fileCopyUri),
-            type: images[0].mime,
-          }
-        : null,
-    );
+    if (images)
+      formData.append("file", {
+        uri: images[0]?.fileCopyUri ?? images?.path,
+        name: Utils.getFilename(images[0]?.fileCopyUri ?? images?.path),
+        type: images[0]?.type ?? images?.mime,
+      });
     formData.append(
       "membershipType",
       data?.membership?.membershipType ?? contractType,
@@ -96,6 +92,8 @@ export default function EditMemberShip(props: any) {
       },
     };
 
+    // console.log("formData==>", JSON.stringify(formData, null, 2));
+
     setLoading(true);
     MemberShipManager.createMemberShip(
       parsms,
@@ -103,6 +101,7 @@ export default function EditMemberShip(props: any) {
         // console.log("createMemberShip", JSON.stringify(res, null, 2));
         if (user) storeDispatch(getAllMembership(user?.stakeholderID));
         setLoading(false);
+        goBack();
       },
       err => {
         console.log(err);
@@ -233,6 +232,7 @@ export default function EditMemberShip(props: any) {
         />
       </ScrollView>
       <FloatingBottomButton
+        loading={loading}
         title={I18n.t("screen_messages.button.done")}
         onPress={onPressDone}
       />

@@ -362,7 +362,7 @@ export default function CourtSlot(props: any) {
             contentContainerStyle={{
               paddingHorizontal: moderateScale(15, 0.3),
               paddingTop: moderateScale(20, 0.3),
-              paddingBottom: moderateScale(50, 0.3),
+              paddingBottom: moderateScale(100, 0.3),
             }}>
             {availableCourts && availableCourts.length > 0 ? (
               <RadioButton.Group

@@ -23,6 +23,7 @@ import DocumentPicker, {
   types,
 } from "react-native-document-picker";
 import DeviceInfo from "react-native-device-info";
+import Utils from "@common/Utils";
 
 const windowHeight = Dimensions.get("screen").height;
 const windowWidth = Dimensions.get("screen").width;
@@ -143,6 +144,8 @@ const DocPicker: React.FC<Props> = props => {
     else setImages(null);
   };
 
+  // console.log("IMAGES===>", images);
+
   return (
     <>
       {images && (
@@ -166,7 +169,7 @@ const DocPicker: React.FC<Props> = props => {
             <AppText
               numberOfLines={1}
               style={{ width: "80%", maxWidth: "80%", marginLeft: 10 }}>
-              {images[0]?.name}
+              {images[0]?.name ?? Utils.getFilename(images?.path)}
             </AppText>
             <View
               style={{
@@ -182,7 +185,9 @@ const DocPicker: React.FC<Props> = props => {
               <TouchableOpacity
                 activeOpacity={0.8}
                 style={{ marginRight: 5 }}
-                onPress={() => removeImage(images[0]?.fileCopyUri)}>
+                onPress={() =>
+                  removeImage(images[0]?.fileCopyUri ?? images?.path)
+                }>
                 <AntDesign name="delete" size={20} color={theme.error} />
               </TouchableOpacity>
             </View>
@@ -192,7 +197,7 @@ const DocPicker: React.FC<Props> = props => {
             color={theme.primary}
             style={{ marginVertical: 5 }}
             fontStyle="500.normal">
-            {Math.floor(images[0]?.size / 1000)} KB
+            {Math.floor(images[0]?.size ?? images?.size / 1000)} KB
           </AppText>
         </View>
       )}

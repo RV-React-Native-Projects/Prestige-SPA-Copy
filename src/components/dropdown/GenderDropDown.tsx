@@ -79,7 +79,10 @@ const GenderDropDown = (props: DropdownComponentPorps) => {
           containerStyle={{ backgroundColor: theme.appBackgroundColor }}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
-          itemTextStyle={{ color: theme.title }}
+          itemTextStyle={{
+            color: theme.title,
+            fontSize: moderateScale(14, 0.3),
+          }}
           iconStyle={styles.iconStyle}
           data={data}
           dropdownPosition={dropdownPosition}

@@ -1,7 +1,9 @@
-import React, { memo, useEffect, useRef, useState } from "react";
+import React, { memo, useRef, useState } from "react";
 import {
   Dimensions,
+  Linking,
   Platform,
+  Pressable,
   ScrollView,
   StyleSheet,
   View,
@@ -59,6 +61,14 @@ function CourtDetail(props: any) {
     });
   };
 
+  const openMap = async () => {
+    if (data?.lat && data?.long) {
+      const URL = Utils.getMapLink(data?.lat, data?.long, data?.locationName);
+      const canOpen = await Linking.canOpenURL(URL ?? "");
+      if (URL && canOpen) Linking.openURL(URL);
+    }
+  };
+
   // console.log(JSON.stringify(data, null, 2));
 
   return (
@@ -78,7 +88,7 @@ function CourtDetail(props: any) {
       />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: moderateScale(100, 0.3) }}>
+        contentContainerStyle={{ paddingBottom: moderateScale(150, 0.3) }}>
         <View style={{ height: moderateScale(windowHeight / 3, 0.3) }}>
           <Swiper
             style={styles.wrapper}
@@ -153,7 +163,7 @@ function CourtDetail(props: any) {
               </AppText>
             </View>
           ) : (
-            <AppText fontStyle="600.normal" color={theme.primary}>
+            <AppText fontStyle="600.medium" color={theme.primary}>
               {I18n.t("screen_messages.min_max_rate", {
                 min: data?.minRate,
                 max: data?.maxRate,
@@ -198,19 +208,24 @@ function CourtDetail(props: any) {
               {data?.locationAddress}
             </AppText>
           </View>
-          <VerticalSpacing />
+          <VerticalSpacing size={20} />
           <AppText fontStyle="600.semibold" size={16}>
             {I18n.t("screen_messages.Directions")}
           </AppText>
           <VerticalSpacing size={15} />
-          <View style={{ height: moderateScale(300, 0.3) }}>
+          <Pressable
+            onPress={openMap}
+            style={{
+              height: moderateScale(windowHeight / 4, 0.3),
+              borderRadius: moderateScale(10, 0.3),
+            }}>
             <MapView
               ref={_map}
               mapType="terrain"
               style={[
                 styles.map,
                 {
-                  height: 300,
+                  height: Math.ceil(moderateScale(windowHeight / 4, 0.3)),
                   borderRadius: moderateScale(10, 0.3),
                 },
               ]}
@@ -232,7 +247,7 @@ function CourtDetail(props: any) {
                 <svgs.MapCustomIcon width={60} height={60} />
               </Marker>
             </MapView>
-          </View>
+          </Pressable>
           <VerticalSpacing size={15} />
         </View>
       </ScrollView>

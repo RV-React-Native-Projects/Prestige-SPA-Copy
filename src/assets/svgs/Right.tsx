@@ -9,8 +9,8 @@ function SvgComponent(props: SVGProps) {
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
-      width={moderateScale(width, 0.3)}
       height={moderateScale(height, 0.3)}
+      width={moderateScale(width, 0.3)}
       viewBox="0 0 20 20"
       fill={fill}
       {...props}>

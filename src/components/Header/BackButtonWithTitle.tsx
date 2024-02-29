@@ -57,7 +57,7 @@ export default function BackButtonWithTitle(props: BackButtonWithTitlePorps) {
         <AppText
           style={{ marginLeft: moderateScale(10, 0.3) }}
           fontStyle="600.semibold"
-          size={16}>
+          size={15}>
           {title}
         </AppText>
       </View>

@@ -13,13 +13,13 @@ import React, {
   useRef,
   useState,
 } from "react";
-import MonthYearPicker from "@src/components/Picker/MonthYearPicker";
+import MonthYearPicker from "@components/Picker/MonthYearPicker";
 import IconButton from "@components/Button/IconButton";
 import svgs from "@common/AllSvgs";
 import moment from "moment";
-import { useAppSelector } from "@src/redux/store";
-import AppText from "@src/components/Text/AppText";
-import { VerticalSpacing } from "@src/components/Spacing/Spacing";
+import { useAppSelector } from "@redux/store";
+import AppText from "@components/Text/AppText";
+import { VerticalSpacing } from "@components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
 import I18n from "i18n-js";
 
@@ -65,7 +65,7 @@ const DateCard = memo((props: any) => {
           {item.dateNumber}
         </AppText>
         <AppText
-          fontStyle="500.normal"
+          fontStyle="600.medium"
           color={value === item?.date ? theme.white : theme.title}>
           {item.month}
         </AppText>

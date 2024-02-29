@@ -121,7 +121,7 @@ function FamilyModal(props: FamilyMemberProps) {
           contentContainerStyle={{
             paddingHorizontal: moderateScale(15, 0.3),
             paddingTop: moderateScale(20, 0.3),
-            paddingBottom: moderateScale(50, 0.3),
+            paddingBottom: moderateScale(150, 0.3),
           }}>
           <TouchableOpacity
             // key={index}

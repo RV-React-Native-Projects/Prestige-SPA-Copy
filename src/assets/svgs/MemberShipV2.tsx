@@ -1,7 +1,7 @@
-import { SVGProps } from "@src/common/CommonTypes";
 import * as React from "react";
-import { moderateScale } from "react-native-size-matters";
 import Svg, { G, Path, Defs, ClipPath } from "react-native-svg";
+import { moderateScale } from "react-native-size-matters";
+import { SVGProps } from "@common/CommonTypes";
 
 function SvgComponent(props: SVGProps) {
   const {

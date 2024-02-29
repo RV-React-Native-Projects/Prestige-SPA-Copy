@@ -21,6 +21,9 @@ import { refreshUser, removeUserData, resetUser } from "@reducers/UserSlice";
 import { resetAppData } from "@reducers/AppDataSlice";
 import { useAppNavigation } from "@navigation/Navigation";
 import I18n from "i18n-js";
+import DeviceInfo from "react-native-device-info";
+
+const isTab = DeviceInfo.isTablet();
 
 interface ProfileButtonProps {
   title: string;
@@ -44,7 +47,7 @@ const ProfileButton = (props: ProfileButtonProps) => {
           backgroundColor: theme.modalBackgroundColor,
         },
         !hideBorder && {
-          borderBottomWidth: moderateScale(0.3, 0.3),
+          borderBottomWidth: moderateScale(isTab ? 0.4 : 0.3, 0.3),
           borderBottomColor: theme.gray,
         },
       ]}>
@@ -54,7 +57,11 @@ const ProfileButton = (props: ProfileButtonProps) => {
           {title}
         </AppText>
       </View>
-      <svgs.Right color1={theme.iconColor} />
+      <svgs.Right
+        color1={theme.iconColor}
+        height={isTab ? 35 : 30}
+        width={isTab ? 35 : 30}
+      />
     </TouchableOpacity>
   );
 };

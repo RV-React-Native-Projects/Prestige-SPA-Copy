@@ -320,7 +320,7 @@ function CoachDetail(props: any) {
               style={{ height: "100%" }}
               contentContainerStyle={{
                 paddingTop: moderateScale(20, 0.3),
-                paddingBottom: moderateScale(50, 0.3),
+                paddingBottom: moderateScale(100, 0.3),
                 paddingHorizontal: moderateScale(15, 0.3),
               }}>
               <RadioButton.Group
@@ -437,7 +437,7 @@ function CoachDetail(props: any) {
                 style={{ height: "100%" }}
                 contentContainerStyle={{
                   paddingTop: moderateScale(20, 0.3),
-                  paddingBottom: moderateScale(50, 0.3),
+                  paddingBottom: moderateScale(100, 0.3),
                   paddingHorizontal: moderateScale(15, 0.3),
                 }}>
                 <RadioButton.Group

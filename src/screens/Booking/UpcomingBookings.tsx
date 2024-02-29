@@ -81,7 +81,7 @@ export default function UpcomingBookings(props: any) {
           key={"SearchingLottie"}
           source={require("@assets/lottieFiles/SearchingLottie.json")}
           style={{
-            height: moderateScale(windowHeight - 200, 0.3),
+            height: moderateScale(windowHeight / 2, 0.3),
             width: "100%",
           }}
           autoPlay
