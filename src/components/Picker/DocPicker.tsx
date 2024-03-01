@@ -151,11 +151,11 @@ const DocPicker: React.FC<Props> = props => {
       {images && (
         <View
           style={{
-            marginHorizontal: 15,
-            padding: 15,
-            paddingVertical: 20,
+            marginHorizontal: moderateScale(15, 0.3),
+            padding: moderateScale(15, 0.3),
+            paddingVertical: moderateScale(20, 0.3),
             backgroundColor: theme.appBackgroundColor,
-            borderRadius: 10,
+            borderRadius: moderateScale(10, 0.3),
             borderWidth: 0.4,
             borderColor: theme.gray,
           }}>
@@ -168,7 +168,11 @@ const DocPicker: React.FC<Props> = props => {
             <svgs.Document />
             <AppText
               numberOfLines={1}
-              style={{ width: "80%", maxWidth: "80%", marginLeft: 10 }}>
+              style={{
+                width: "80%",
+                maxWidth: "80%",
+                marginLeft: moderateScale(10, 0.3),
+              }}>
               {images[0]?.name ?? Utils.getFilename(images?.path)}
             </AppText>
             <View
@@ -184,7 +188,7 @@ const DocPicker: React.FC<Props> = props => {
                 </TouchableOpacity> */}
               <TouchableOpacity
                 activeOpacity={0.8}
-                style={{ marginRight: 5 }}
+                style={{ marginRight: moderateScale(5, 0.3) }}
                 onPress={() =>
                   removeImage(images[0]?.fileCopyUri ?? images?.path)
                 }>
@@ -221,8 +225,8 @@ const DocPicker: React.FC<Props> = props => {
               minHeight: modalHeight,
               alignSelf: "center",
               alignContent: "center",
-              borderTopRightRadius: 20,
-              borderTopLeftRadius: 20,
+              borderTopRightRadius: moderateScale(20, 0.3),
+              borderTopLeftRadius: moderateScale(20, 0.3),
             },
             toBottom
               ? {
@@ -240,12 +244,12 @@ const DocPicker: React.FC<Props> = props => {
             </View>
           ) : null}
           {content ?? (
-            <View style={{ paddingHorizontal: 20 }}>
+            <View style={{ paddingHorizontal: moderateScale(20, 0.3) }}>
               <View style={{ alignItems: "center" }}>
                 <AppText
                   fontStyle="500.normal"
                   size={18}
-                  style={{ paddingVertical: 15 }}>
+                  style={{ paddingVertical: moderateScale(15, 0.3) }}>
                   {I18n.t("screen_messages.upload")}
                 </AppText>
               </View>
@@ -262,15 +266,20 @@ const DocPicker: React.FC<Props> = props => {
                   onPress={openCamera}>
                   <View
                     style={{
-                      height: 100,
-                      width: 100,
-                      borderRadius: 100,
-                      backgroundColor: theme.light,
+                      height: moderateScale(100, 0.3),
+                      width: moderateScale(100, 0.3),
+                      borderRadius: moderateScale(100, 0.3),
+                      backgroundColor: theme.modalBackgroundColor,
                       alignItems: "center",
                       justifyContent: "center",
-                      marginBottom: 10,
+                      marginBottom: moderateScale(10, 0.3),
+                      ...theme.light_shadow,
                     }}>
-                    <AntDesign name="camera" size={50} />
+                    <AntDesign
+                      name="camera"
+                      size={50}
+                      color={theme.iconColor}
+                    />
                   </View>
                   <AppText fontStyle="500.normal" size={16}>
                     {I18n.t("screen_messages.button.camera")}
@@ -282,15 +291,20 @@ const DocPicker: React.FC<Props> = props => {
                   onPress={openGallery}>
                   <View
                     style={{
-                      height: 100,
-                      width: 100,
-                      borderRadius: 100,
-                      backgroundColor: theme.light,
+                      height: moderateScale(100, 0.3),
+                      width: moderateScale(100, 0.3),
+                      borderRadius: moderateScale(100, 0.3),
+                      backgroundColor: theme.modalBackgroundColor,
                       alignItems: "center",
                       justifyContent: "center",
-                      marginBottom: 10,
+                      marginBottom: moderateScale(10, 0.3),
+                      ...theme.light_shadow,
                     }}>
-                    <FontAwesome name="photo" size={50} />
+                    <FontAwesome
+                      name="photo"
+                      size={50}
+                      color={theme.iconColor}
+                    />
                   </View>
                   <AppText fontStyle="500.normal" size={16}>
                     {I18n.t("screen_messages.button.gallery")}
@@ -316,18 +330,18 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     shadowOpacity: 0.4,
     elevation: 5,
-    paddingTop: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    paddingTop: moderateScale(20, 0.3),
+    borderTopLeftRadius: moderateScale(20, 0.3),
+    borderTopRightRadius: moderateScale(20, 0.3),
   },
   panelHeader: {
     alignItems: "center",
   },
   panelHandle: {
-    width: 40,
+    width: moderateScale(40, 0.3),
     height: 8,
     borderRadius: 4,
     backgroundColor: "#00000040",
-    marginBottom: 15,
+    marginBottom: moderateScale(15, 0.3),
   },
 });

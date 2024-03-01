@@ -70,7 +70,7 @@ function Home() {
       Geolocation.getCurrentPosition(
         position => {
           const { latitude, longitude } = position.coords;
-          console.log("getCurrentPosition==>", position);
+          // console.log("getCurrentPosition==>", position);
           storeDispatch(setLocation({ latitude, longitude }));
           setLocation({ latitude, longitude });
         },

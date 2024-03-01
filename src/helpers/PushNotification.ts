@@ -35,7 +35,7 @@ export async function getFCMToken() {
 export async function notificationListner() {
   // Assume a message-notification contains a "type" property in the data payload of the screen to open
 
-  messaging().onNotificationOpenedApp((remoteMessage) => {
+  messaging().onNotificationOpenedApp(remoteMessage => {
     console.log(
       "Notification caused app to open from background state:",
       remoteMessage.notification,
@@ -43,13 +43,13 @@ export async function notificationListner() {
     // navigation.navigate(remoteMessage.data.type);
   });
 
-  messaging().onMessage(async (remoteMessage) => {
+  messaging().onMessage(async remoteMessage => {
     console.log("Notification on forGround.....", remoteMessage);
   });
 
   messaging()
     .getInitialNotification()
-    .then((remoteMessage) => {
+    .then(remoteMessage => {
       if (remoteMessage) {
         console.log(
           "Notification caused app to open from quit state:",

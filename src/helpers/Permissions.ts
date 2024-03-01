@@ -91,8 +91,8 @@ const Permissions = (): PermissionsInterFace => {
       const permission = granted === RESULTS.GRANTED;
       return permission;
     } else {
-      await checkPermission(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
-      const granted = await request(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
+      await checkPermission(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+      const granted = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
       const permission = granted === RESULTS.GRANTED;
       // if (permission) await askUserToOnLocation();
       return permission;
@@ -102,19 +102,15 @@ const Permissions = (): PermissionsInterFace => {
   async function askUserToOnLocation() {
     return await RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
       interval: 10000,
-      // fastInterval: 5000,
     })
       .then(data => {
         console.log("LocationEnabler==>", data);
         return data;
       })
       .catch(err => {
-        console.log("LocationEnabler==>", err);
+        console.log("LocationEnabler Error==>", err);
         return err;
       });
-    // const granted = isAllowed === "already-enabled";
-    // console.log("granted==>", granted);
-    // return granted;
   }
 
   async function requestMediaLibraryPermission() {

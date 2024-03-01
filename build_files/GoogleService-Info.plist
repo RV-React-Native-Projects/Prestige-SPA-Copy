@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDIoi-pijQOGepy2oNVIVOoGdyA_BKB5TU</string>
+	<key>BUNDLE_ID</key>
+	<string>com.prestige.ios</string>
+	<key>GCM_SENDER_ID</key>
+	<string>478676215200</string>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:478676215200:ios:50d6d3881e614b3d3a70c5</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>PROJECT_ID</key>
+	<string>prestige-f0a23</string>
+	<key>STORAGE_BUCKET</key>
+	<string>prestige-f0a23.appspot.com</string>
+</dict>
+</plist>

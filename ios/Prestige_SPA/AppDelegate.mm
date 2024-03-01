@@ -3,6 +3,8 @@
 #import <React/RCTBundleURLProvider.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import "RNSplashScreen.h" 
+#import <Firebase.h>
+#import "RNFBMessagingModule.h"
 
 static void ClearKeychainIfNecessary() {
     // Checks wether or not this is the first time the app is run
@@ -37,6 +39,7 @@ static void ClearKeychainIfNecessary() {
   self.initialProps = @{};
   [GMSServices provideAPIKey:@"AIzaSyB8lC76Arjr09WP2d4h01xJ8-plROGm4vk"];
   bool didFinish = [super application:application didFinishLaunchingWithOptions:launchOptions];
+  [FIRApp configure];
   [RNSplashScreen show];
   return didFinish;
 }

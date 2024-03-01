@@ -11,12 +11,16 @@ import SpInAppUpdates, {
   IAUUpdateKind,
   StartUpdateOptions,
 } from "sp-react-native-in-app-updates";
+import {
+  getFcmToken,
+  registerListenerWithFCM,
+} from "./helpers/NotificationHelper";
 
 const isIOS = Platform.OS === "ios";
 
 function Loading() {
   const navigation = useAppNavigation();
-  const { loadingUser, userEmail, authHeader } = useAppSelector(
+  const { loadingUser, userEmail, authHeader, FCMToken } = useAppSelector(
     state => state.user,
   );
   const storeDispatch = useAppDispatch();
@@ -57,6 +61,13 @@ function Loading() {
       );
     } else if (!loadingUser && !userEmail && !authHeader) SplashScreen.hide();
   }, [authHeader, userEmail, !loadingUser]);
+
+  console.log("FCMToken==>", FCMToken);
+
+  useEffect(() => {
+    if (!FCMToken) getFcmToken();
+    if (FCMToken) registerListenerWithFCM();
+  }, [FCMToken]);
 
   return (
     <Suspense fallback="">

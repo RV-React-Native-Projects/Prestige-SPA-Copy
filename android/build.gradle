@@ -14,6 +14,9 @@ buildscript {
         // firebaseMessagingVersion = "21.1.0"
         supportLibVersion = "23.1.1"
         multiDexEnabled = true
+        // firebase: [
+        // bom : "32.7.2"
+        // ],
     }
     repositories {
         google()
@@ -25,6 +28,7 @@ buildscript {
         classpath("com.android.tools.build:gradle:8.1.1")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+        classpath("com.google.gms:google-services:4.4.1")
     }
 }
 

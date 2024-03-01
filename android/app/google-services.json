@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "478676215200",
+    "project_id": "prestige-f0a23",
+    "storage_bucket": "prestige-f0a23.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478676215200:android:3fcac9ecf0c182a53a70c5",
+        "android_client_info": {
+          "package_name": "com.prestige.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEER0uft9Yt-qNbal7pGewLwysJFJizkI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

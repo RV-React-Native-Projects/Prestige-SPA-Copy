@@ -172,30 +172,32 @@ function CourtDetail(props: any) {
           )}
           <VerticalSpacing size={5} />
           <View style={{}}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <MaterialIcons
-                name="location-pin"
-                size={Math.ceil(moderateScale(20, 0.3))}
-                color={theme.secondary}
-              />
+            {location && (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <MaterialIcons
+                  name="location-pin"
+                  size={Math.ceil(moderateScale(20, 0.3))}
+                  color={theme.secondary}
+                />
 
-              <AppText
-                style={{ marginLeft: moderateScale(3, 0.3) }}
-                numberOfLines={1}
-                color={theme.paragraph}
-                fontStyle="500.normal">
-                {I18n.t("screen_messages.distance", {
-                  distance:
-                    location &&
-                    Utils.getUserDistance(
-                      location?.latitude,
-                      location?.longitude,
-                      data?.lat,
-                      data?.long,
-                    ).toLocaleString(),
-                })}
-              </AppText>
-            </View>
+                <AppText
+                  style={{ marginLeft: moderateScale(3, 0.3) }}
+                  numberOfLines={1}
+                  color={theme.paragraph}
+                  fontStyle="500.normal">
+                  {I18n.t("screen_messages.distance", {
+                    distance:
+                      location &&
+                      Utils.getUserDistance(
+                        location?.latitude,
+                        location?.longitude,
+                        data?.lat,
+                        data?.long,
+                      ).toLocaleString(),
+                  })}
+                </AppText>
+              </View>
+            )}
             <AppText
               style={{
                 marginTop: moderateScale(5, 0.3),

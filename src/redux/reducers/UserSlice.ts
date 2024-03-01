@@ -6,6 +6,7 @@ import FamilyManager from "@features/Family/FamilyManager";
 import _ from "lodash";
 import AuthManager from "@features/Auth/AuthManager";
 import { RootState } from "../store";
+import { unRegisterAppWithFCM } from "@src/helpers/NotificationHelper";
 
 export const loadUserData = createAsyncThunk("user/loaduser", async () => {
   const { getStorage } = useEncryptedStorage();
@@ -14,7 +15,8 @@ export const loadUserData = createAsyncThunk("user/loaduser", async () => {
   var authToken = (await getStorage("SPA_Auth_Token")) ?? null;
   // var refreshToken = (await getStorage("SPA_Refresh_Token")) ?? null;
   var email = (await getStorage("SPA_Email")) ?? null;
-  return { authToken, email };
+  var fcmToken = (await getStorage("FCM_TOKEN")) ?? null;
+  return { authToken, email, fcmToken };
 });
 
 export const removeUserData = createAsyncThunk(
@@ -26,6 +28,8 @@ export const removeUserData = createAsyncThunk(
     await removeStorage("SPA_Auth_Token");
     // await removeStorage("SPA_Refresh_Token");
     await removeStorage("SPA_Email");
+    await unRegisterAppWithFCM();
+    await removeStorage("FCM_TOKEN");
   },
 );
 
@@ -144,6 +148,7 @@ interface userSliceProperties {
   playerCategory: playerCategoryDate[] | null;
   approvedMembership: Membership[] | null;
   location: locInterface | null;
+  FCMToken: string | null;
 }
 
 const initialState: userSliceProperties = {
@@ -166,10 +171,7 @@ const initialState: userSliceProperties = {
   playerCategory: null,
   approvedMembership: null,
   location: null,
-  // location: {
-  //   latitude: null,
-  //   longitude: null,
-  // },
+  FCMToken: null,
 };
 
 const userSlice = createSlice({
@@ -212,6 +214,9 @@ const userSlice = createSlice({
     setRefreshToken: (state, action) => {
       state.refreshToken = action.payload;
     },
+    setFCMToken: (state, action) => {
+      state.FCMToken = action.payload;
+    },
     appLogout: state => {
       state.user = null;
       state.authHeader = null;
@@ -250,6 +255,7 @@ const userSlice = createSlice({
             }
           : null;
         state.userEmail = action?.payload?.email;
+        state.FCMToken = action?.payload?.fcmToken;
         state.loadingUser = false;
       })
       .addCase(removeUserData.pending, state => {
@@ -315,5 +321,6 @@ export const {
   appLogout,
   resetUser,
   setLocation,
+  setFCMToken,
 } = userSlice.actions;
 export default userSlice.reducer;
