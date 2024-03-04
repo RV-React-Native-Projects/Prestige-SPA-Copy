@@ -148,7 +148,7 @@ export default function ProfileScreen() {
               marginLeft: moderateScale(10, 0.3),
               width: "70%",
             }}>
-            <AppText numberOfLines={1} fontStyle="600.bold" size={16}>
+            <AppText numberOfLines={1} fontStyle="600.medium" size={16}>
               {user?.stakeholderName}
             </AppText>
             <VerticalSpacing size={5} />
@@ -160,7 +160,7 @@ export default function ProfileScreen() {
               {user?.phoneNumber}
             </AppText>
           </View>
-          <View
+          {/* <View
             style={{
               position: "absolute",
               right: moderateScale(15, 0.3),
@@ -173,7 +173,7 @@ export default function ProfileScreen() {
               LinkButton
               // onPress={gotoEditProfile}
             />
-          </View>
+          </View> */}
         </View>
         <VerticalSpacing size={20} />
         <View

@@ -42,6 +42,9 @@ function CalenderScreen() {
             backgroundColor: theme.secondary,
             borderRadius: moderateScale(10, 0.3),
           },
+          tabBarAndroidRipple: { borderless: false },
+          tabBarPressColor: "transparent",
+          tabBarBounces: true,
         }}>
         <TopTab.Screen
           options={{

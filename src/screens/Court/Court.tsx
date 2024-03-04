@@ -82,8 +82,8 @@ const CourtCard = (props: CourtCardProps) => {
             justifyContent: "space-between",
           }}>
           <AppText
-            style={{ maxWidth: "63%" }}
-            fontStyle="600.bold"
+            style={{ maxWidth: "62%" }}
+            fontStyle="600.medium"
             size={16}
             numberOfLines={1}>
             {locationName}
@@ -95,7 +95,7 @@ const CourtCard = (props: CourtCardProps) => {
                 size={Math.ceil(moderateScale(20, 0.3))}
                 color={theme.secondary}
               />
-              <AppText fontStyle="400.bold" color={theme.paragraph}>
+              <AppText fontStyle="400.medium" color={theme.paragraph}>
                 {I18n.t("screen_messages.distance", {
                   distance: distance?.toLocaleString(),
                 })}
@@ -106,7 +106,7 @@ const CourtCard = (props: CourtCardProps) => {
                 marginTop: moderateScale(5, 0.3),
                 maxWidth: "62%",
               }}
-              fontStyle="400.bold"
+              fontStyle="400.medium"
               numberOfLines={2}
               color={theme.paragraph}>
               {locationAddress}
@@ -125,7 +125,7 @@ const CourtCard = (props: CourtCardProps) => {
               />
               <AppText
                 style={{ marginLeft: moderateScale(5, 0.3) }}
-                fontStyle="600.bold">
+                fontStyle="600.medium">
                 {I18n.t("screen_messages.Verified")}
               </AppText>
             </View>

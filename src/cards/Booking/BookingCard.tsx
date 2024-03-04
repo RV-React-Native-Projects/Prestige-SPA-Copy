@@ -66,8 +66,7 @@ function BookingCard(props: BookingCardProps) {
             {I18n.t("screen_messages.date")}
           </AppText>
           <AppText fontStyle="500.medium" size={12}>
-            {moment(startTime).utc(false).format("DD MMM, ddd")} -{" "}
-            {moment(endTime).utc(false).format("DD MMM, ddd")}
+            {moment(startTime).utc(false).format("DD MMM, ddd")}
           </AppText>
         </View>
         <View>

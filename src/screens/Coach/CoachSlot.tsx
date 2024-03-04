@@ -281,18 +281,16 @@ export default function CoachSlot(props: any) {
                 }}>
                 <AppText
                   style={{ textTransform: "capitalize" }}
-                  fontStyle="500.normal"
+                  fontStyle="500.medium"
                   size={12}
                   color={theme.modalBackgroundColor}
                   numberOfLines={2}>
                   {data?.coachCategory?.coachCategory}
                 </AppText>
               </View>
-              <View style={{ flexDirection: "row" }}>
-                <AppText fontStyle="600.medium" size={16} numberOfLines={1}>
-                  {data?.stakeholder?.stakeholderName}
-                </AppText>
-              </View>
+              <AppText fontStyle="600.medium" size={16} numberOfLines={1}>
+                {data?.stakeholder?.stakeholderName}
+              </AppText>
             </View>
           </View>
         </View>
@@ -452,10 +450,6 @@ export default function CoachSlot(props: any) {
                     paddingHorizontal: moderateScale(15, 0.3),
                     justifyContent: "flex-start",
                     alignContent: "center",
-                    // columnGap: moderateScale(
-                    //   isTab ? windowWidth / 50 : windowWidth / 35,
-                    //   0.3,
-                    // ),
                   }}>
                   {_.map(slots, (item, index) => (
                     <SlotTime
@@ -511,7 +505,7 @@ export default function CoachSlot(props: any) {
             contentContainerStyle={{
               paddingHorizontal: moderateScale(15, 0.3),
               paddingTop: moderateScale(20, 0.3),
-              paddingBottom: moderateScale(50, 0.3),
+              paddingBottom: moderateScale(150, 0.3),
             }}>
             <RadioButton.Group
               onValueChange={newValue => setCourtId(toNumber(newValue))}

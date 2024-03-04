@@ -155,7 +155,7 @@ function BookingDetails(props: any) {
                 </View>
                 <AppText
                   style={{ maxWidth: "60%" }}
-                  fontStyle="500.bold"
+                  fontStyle="500.medium"
                   size={16}
                   numberOfLines={1}>
                   {data?.coach?.stakeholderName}
@@ -196,7 +196,7 @@ function BookingDetails(props: any) {
                 style={{ marginLeft: moderateScale(10, 0.3), width: "100%" }}>
                 <AppText
                   style={{ maxWidth: "60%" }}
-                  fontStyle="500.bold"
+                  fontStyle="500.medium"
                   size={16}
                   numberOfLines={2}>
                   {data?.court?.courtName}
@@ -215,7 +215,7 @@ function BookingDetails(props: any) {
                   />
                   <AppText
                     style={{ maxWidth: "60%" }}
-                    fontStyle="400.bold"
+                    fontStyle="400.normal"
                     numberOfLines={2}>
                     {data?.location?.locationAddress}
                   </AppText>
@@ -237,9 +237,8 @@ function BookingDetails(props: any) {
             <AppText style={{ paddingBottom: moderateScale(5, 0.3) }} size={12}>
               {I18n.t("screen_messages.date")}
             </AppText>
-            <AppText fontStyle="500.medium" size={12}>
-              {moment(data?.startTime).utc(false).format("DD MMM, ddd")} -{" "}
-              {moment(data?.endTime).utc(false).format("DD MMM, ddd")}
+            <AppText fontStyle="500.semibold" size={12}>
+              {moment(data?.startTime).utc(false).format("DD MMM, ddd")}
             </AppText>
           </View>
 
@@ -247,7 +246,7 @@ function BookingDetails(props: any) {
             <AppText style={{ paddingBottom: moderateScale(5, 0.3) }} size={12}>
               {I18n.t("screen_messages.time")}
             </AppText>
-            <AppText fontStyle="500.medium" size={12}>
+            <AppText fontStyle="500.semibold" size={12}>
               {moment(data?.startTime).utc(false).format("hh:mm A")} -{" "}
               {moment(data?.endTime).utc(false).format("hh:mm A")}
             </AppText>
@@ -256,7 +255,7 @@ function BookingDetails(props: any) {
             <AppText style={{ paddingBottom: moderateScale(5, 0.3) }} size={12}>
               {I18n.t("screen_messages.slot_duration")}
             </AppText>
-            <AppText fontStyle="500.medium" size={12}>
+            <AppText fontStyle="500.semibold" size={12}>
               {I18n.t("screen_messages.slot_mins", { min: data?.slotMinutes })}
             </AppText>
           </View>

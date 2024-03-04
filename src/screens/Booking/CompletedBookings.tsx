@@ -55,9 +55,9 @@ export default function CompletedBookings(props: any) {
             paddingTop: moderateScale(15, 0.3),
             paddingBottom: moderateScale(100, 0.3),
             rowGap: moderateScale(10, 0.3),
-            marginHorizontal: moderateScale(15, 0.3),
+            paddingHorizontal: moderateScale(15, 0.3),
           }}
-          showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={true}
           data={completedBookings}
           renderItem={({ item, index }) => (
             <BookingCard

@@ -306,7 +306,7 @@ export default function CoachBooking(props: any) {
                 style={{ marginBottom: 10 }}>
                 {I18n.t("screen_messages.date")}
               </AppText>
-              <AppText fontStyle="600.semibold">
+              <AppText fontStyle="600.medium">
                 {moment(pickedDate).format("DD MMM, ddd")}
               </AppText>
             </View>
@@ -317,7 +317,7 @@ export default function CoachBooking(props: any) {
                 style={{ marginBottom: 10, textAlign: "right" }}>
                 {I18n.t("screen_messages.time")}
               </AppText>
-              <AppText fontStyle="600.semibold" style={{ textAlign: "right" }}>
+              <AppText fontStyle="600.medium" style={{ textAlign: "right" }}>
                 {selectedSlot?.startTime} - {selectedSlot?.endTime}
               </AppText>
             </View>
@@ -340,13 +340,11 @@ export default function CoachBooking(props: any) {
                 borderBottomColor: theme.gray,
               }}>
               <FastImage
-                style={[
-                  {
-                    height: moderateScale(80, 0.3),
-                    width: moderateScale(80, 0.3),
-                    borderRadius: 200,
-                  },
-                ]}
+                style={{
+                  height: moderateScale(80, 0.3),
+                  width: moderateScale(80, 0.3),
+                  borderRadius: 200,
+                }}
                 defaultSource={images.user}
                 source={{
                   uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.stakeholder?.imagePath}`,
@@ -354,19 +352,19 @@ export default function CoachBooking(props: any) {
                 }}
                 resizeMode={FastImage.resizeMode.cover}
               />
-              <View style={{ marginLeft: 10 }}>
+              <View style={{ marginLeft: moderateScale(10, 0.3) }}>
                 <View
                   style={{
                     backgroundColor:
                       data?.coachCategory?.coachCategory === "TIER 1"
                         ? theme.primary
                         : theme.tertiaryText,
-                    width: 60,
-                    height: 25,
+                    width: moderateScale(60, 0.3),
+                    height: moderateScale(25, 0.3),
                     alignItems: "center",
                     justifyContent: "center",
-                    borderRadius: 20,
-                    marginBottom: 10,
+                    borderRadius: moderateScale(20, 0.3),
+                    marginBottom: moderateScale(10, 0.3),
                   }}>
                   <AppText
                     style={{ textTransform: "capitalize" }}
@@ -376,11 +374,9 @@ export default function CoachBooking(props: any) {
                     {data?.coachCategory?.coachCategory}
                   </AppText>
                 </View>
-                <View>
-                  <AppText fontStyle="600.bold" size={16} numberOfLines={1}>
-                    {data?.stakeholder?.stakeholderName}
-                  </AppText>
-                </View>
+                <AppText fontStyle="500.medium" size={16} numberOfLines={1}>
+                  {data?.stakeholder?.stakeholderName}
+                </AppText>
               </View>
             </View>
 
@@ -419,7 +415,7 @@ export default function CoachBooking(props: any) {
                   <svgs.Time height={20} width={18} color1={theme.secondary} />
                   <AppText
                     numberOfLines={1}
-                    style={{ textTransform: "capitalize", maxWidth: "50%" }}>
+                    style={{ textTransform: "capitalize", maxWidth: "70%" }}>
                     {" "}
                     {slot?.slot?.slotMinutes} mins{" - "}
                     {slot?.coachSessionType?.sessionType} Session
@@ -448,12 +444,12 @@ export default function CoachBooking(props: any) {
         (dateRange && credit >= dateRange?.length) ? (
           <View
             style={{
-              marginHorizontal: 15,
-              padding: 15,
-              borderRadius: 10,
+              marginHorizontal: moderateScale(15, 0.3),
+              padding: moderateScale(15, 0.3),
+              borderRadius: moderateScale(10, 0.3),
               backgroundColor: theme.modalBackgroundColor,
             }}>
-            <AppText fontStyle="500.bold" size={16} color={theme.primary}>
+            <AppText fontStyle="500.semibold" size={16} color={theme.primary}>
               {I18n.t("screen_messages.apply_credits_payment")} ( {credit} )
             </AppText>
             <VerticalSpacing />
@@ -461,9 +457,7 @@ export default function CoachBooking(props: any) {
               size={25}
               fillColor={theme.primary}
               unfillColor={theme.modalBackgroundColor}
-              textStyle={{
-                textDecorationLine: "none",
-              }}
+              textStyle={{ textDecorationLine: "none" }}
               textComponent={
                 <AppText
                   style={{ paddingLeft: 10, maxWidth: "95%" }}

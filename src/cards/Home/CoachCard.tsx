@@ -61,7 +61,8 @@ export default function CoachCard(props: CoachCardProps) {
           }}>
           <AppText
             style={{ textTransform: "capitalize" }}
-            fontStyle="500.normal"
+            fontStyle="500.semibold"
+            size={12}
             color={theme.white}
             numberOfLines={2}>
             {tire}
@@ -72,7 +73,7 @@ export default function CoachCard(props: CoachCardProps) {
             flexDirection: "row",
             height: moderateScale(20, 0.3),
           }}>
-          <AppText fontStyle="600.bold" numberOfLines={1}>
+          <AppText fontStyle="600.semibold" numberOfLines={1}>
             {stakeholderName}
           </AppText>
         </View>

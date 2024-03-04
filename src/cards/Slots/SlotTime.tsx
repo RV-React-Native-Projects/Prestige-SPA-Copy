@@ -19,17 +19,18 @@ export default function SlotTime(props: SlotTime) {
     <TouchableOpacity
       activeOpacity={0.8}
       style={{
+        width: moderateScale(80, 0.3),
         backgroundColor:
           value === time ? theme.primary : theme.modalBackgroundColor,
         borderRadius: moderateScale(5, 0.3),
         marginBottom: moderateScale(10, 0.3),
-        ...theme.light_shadow,
         marginHorizontal: "auto",
         marginRight: moderateScale(10, 0.3),
         padding: moderateScale(10, 0.3),
-        paddingHorizontal: moderateScale(8, 0.3),
+        paddingHorizontal: moderateScale(6, 0.3),
         flexDirection: "column",
         alignItems: "center",
+        ...theme.light_shadow,
       }}
       onPress={onPress}
       disabled={!isAvailable}>

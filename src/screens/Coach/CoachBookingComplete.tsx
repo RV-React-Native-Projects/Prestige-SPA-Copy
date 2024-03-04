@@ -237,7 +237,7 @@ export default function CoachBookingComplete(props: any) {
                   </AppText>
                 </View>
                 <View>
-                  <AppText fontStyle="600.bold" size={16} numberOfLines={1}>
+                  <AppText fontStyle="600.medium" size={16} numberOfLines={1}>
                     {data?.stakeholder?.stakeholderName}
                   </AppText>
                 </View>

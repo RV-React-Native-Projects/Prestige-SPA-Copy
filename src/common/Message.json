@@ -146,7 +146,7 @@
         "one": "%{count} Hour",
         "other": "%{count} Hours"
       },
-      "mins": {
+      "min": {
         "zero": "",
         "one": "%{count} Min",
         "other": "%{count} Mins"
@@ -222,6 +222,7 @@
       "slot": "Slot",
       "slot_duration": "Slot Duration",
       "slot_mins": "%{min} Mins",
+      "mins": "Mins",
       "apply_credits_payment": "Apply Credits to Payment",
       "use_available_credits": "Use your available credits to pay for this transaction.",
       "booking_success": "Your booking was successful",

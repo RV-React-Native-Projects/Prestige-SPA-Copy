@@ -73,21 +73,21 @@ const CoachCard = (props: CoachCardProps) => {
             }}>
             <AppText
               style={{ textTransform: "capitalize" }}
-              fontStyle="500.normal"
+              fontStyle="500.medium"
               size={12}
               color={theme.modalBackgroundColor}
               numberOfLines={2}>
               {coachCategory}
             </AppText>
           </View>
-          <AppText fontStyle="600.bold" size={16} numberOfLines={2}>
+          <AppText fontStyle="600.medium" size={16} numberOfLines={2}>
             {stakeholderName}
           </AppText>
           <VerticalSpacing />
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <svgs.CoachV2 color1={theme.secondary} height={20} />
             <AppText
-              fontStyle="400.bold"
+              fontStyle="400.normal"
               numberOfLines={2}
               color={theme.paragraph}
               style={{ paddingHorizontal: 5 }}>

@@ -61,7 +61,7 @@ const CourtCard = (props: CourtCardProps) => {
         <VerticalSpacing />
         <AppText
           style={{ height: moderateScale(40, 0.3) }}
-          fontStyle="600.bold"
+          fontStyle="600.semibold"
           numberOfLines={2}>
           {locationName}
         </AppText>
@@ -107,7 +107,7 @@ const CourtCard = (props: CourtCardProps) => {
             />
             <AppText
               style={{ marginLeft: moderateScale(5, 0.3) }}
-              fontStyle="600.bold">
+              fontStyle="600.semibold">
               {I18n.t("screen_messages.Verified")}
             </AppText>
           </View>

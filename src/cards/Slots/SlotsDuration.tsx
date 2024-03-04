@@ -3,6 +3,7 @@ import AppText from "@src/components/Text/AppText";
 import { useAppSelector } from "@src/redux/store";
 import { TouchableOpacity, View } from "react-native";
 import { moderateScale } from "react-native-size-matters";
+import I18n from "i18n-js";
 
 interface DurationCardProps {
   item: any;
@@ -39,9 +40,9 @@ const SlotsDuration = (props: DurationCardProps) => {
           {item.slotMinutes}
         </AppText>
         <AppText
-          fontStyle="400.bold"
+          fontStyle="400.medium"
           color={value === item?.slotID ? theme.white : theme.title}>
-          Mins
+          {I18n.t("screen_messages.mins")}
         </AppText>
       </View>
     </TouchableOpacity>

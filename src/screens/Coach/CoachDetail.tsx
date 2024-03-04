@@ -167,11 +167,6 @@ function CoachDetail(props: any) {
     });
   };
 
-  function onPressAddFamily() {
-    toggleModal();
-    navigation.navigate("AddFamily", { data: null });
-  }
-
   return (
     <AppContainer hideStatusbar={false} scrollable={false} fullHeight={false}>
       <BackButtonWithTitle
@@ -220,15 +215,9 @@ function CoachDetail(props: any) {
                 {data?.coachCategory?.coachCategory}
               </AppText>
             </View>
-            <View
-              style={{
-                flexDirection: "row",
-                height: moderateScale(20, 0.3),
-              }}>
-              <AppText fontStyle="600.bold" size={18} numberOfLines={1}>
-                {data?.stakeholder?.stakeholderName}
-              </AppText>
-            </View>
+            <AppText fontStyle="600.semibold" size={16} numberOfLines={1}>
+              {data?.stakeholder?.stakeholderName}
+            </AppText>
           </View>
         </View>
         <View style={{ padding: moderateScale(15, 0.3) }}>
@@ -360,7 +349,7 @@ function CoachDetail(props: any) {
                             <VerticalSpacing />
                             <AppText
                               size={12}
-                              fontStyle="400.semibold"
+                              fontStyle="400.medium"
                               color={theme.unselected}
                               style={{ maxWidth: "75%" }}>
                               {item?.desc}
@@ -423,6 +412,7 @@ function CoachDetail(props: any) {
                   data={slots}
                   renderItem={({ item, index }) => (
                     <SlotsDuration
+                      key={index}
                       item={item}
                       value={slotId}
                       onPress={() => {
@@ -480,8 +470,7 @@ function CoachDetail(props: any) {
                         </View>
                         <View>
                           <AppText
-                            // color={item?.available ? theme.textColor : theme.gray}
-                            fontStyle="500.semibold"
+                            fontStyle="500.medium"
                             size={16}
                             style={{ textTransform: "capitalize" }}>
                             {item?.coachSessionType?.sessionType}

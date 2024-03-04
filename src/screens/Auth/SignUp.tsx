@@ -232,12 +232,10 @@ const SignUp = () => {
         }) => (
           <>
             <ScrollView
-              style={{
-                flex: 1,
+              contentContainerStyle={{
+                paddingBottom: moderateScale(150, 0.3),
                 paddingHorizontal: moderateScale(15, 0.3),
-                minHeight: isIOS ? "100%" : "auto",
               }}
-              contentContainerStyle={{ paddingBottom: moderateScale(100, 0.3) }}
               showsVerticalScrollIndicator={false}>
               <VerticalSpacing size={50} />
               <AppText

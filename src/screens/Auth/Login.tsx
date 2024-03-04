@@ -125,7 +125,7 @@ const Login = () => {
             paddingTop: moderateScale(100, 0.3),
             paddingBottom: moderateScale(50, 0.3),
           }}>
-          <svgs.MainLogo height={250} width={250} color1={theme.iconColor} />
+          <svgs.MainLogo height={200} width={200} color1={theme.iconColor} />
         </Animatable.View>
         <Formik
           validationSchema={loginSchema}
