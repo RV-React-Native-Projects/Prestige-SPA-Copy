@@ -62,7 +62,7 @@ export default function HomeHeader() {
             color={theme.secondary}
           />
           <AppText
-            fontStyle="600.bold"
+            fontStyle="600.semibold"
             size={14}
             style={{ marginHorizontal: 5 }}>
             Current

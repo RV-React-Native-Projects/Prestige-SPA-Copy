@@ -32,7 +32,7 @@ function FloatingBottomButton(props: FloatingBottomButtonProps) {
     color = theme.primary,
     backgroundColor = theme.modalBackgroundColor,
     padding = 15,
-    fontStyle = "600.normal",
+    fontStyle = "600.semibold",
     fontSize = 16,
     height = 50,
     duration = 1000,

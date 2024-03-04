@@ -13,16 +13,14 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AppContainer from "@src/components/Container/AppContainer";
 import { VerticalSpacing } from "@src/components/Spacing/Spacing";
 import { moderateScale } from "react-native-size-matters";
-import AppButton from "@src/components/Button/AppButton";
 import I18n from "i18n-js";
-import * as Animatable from "react-native-animatable";
 import AppText from "@src/components/Text/AppText";
 import FastImage from "react-native-fast-image";
 import images from "@src/common/AllImages";
-import svgs from "@src/common/AllSvgs";
 import moment from "moment";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 import LottieView from "lottie-react-native";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const isIOS = Platform.OS === "ios";
 const windowHeight = Dimensions.get("window").height;
@@ -63,7 +61,7 @@ export default function CourtBookingComplete(props: any) {
       fullHeight={false}>
       <ScrollView
         contentContainerStyle={{
-          paddingBottom: moderateScale(100, 0.3),
+          paddingBottom: moderateScale(150, 0.3),
           paddingHorizontal: moderateScale(15, 0.3),
         }}>
         <VerticalSpacing size={30} />
@@ -186,7 +184,7 @@ export default function CourtBookingComplete(props: any) {
               style={[
                 {
                   height: moderateScale(80, 0.3),
-                  width: moderateScale(100, 0.3),
+                  width: moderateScale(110, 0.3),
                   borderRadius: moderateScale(5, 0.3),
                   marginRight: moderateScale(10, 0.3),
                 },
@@ -198,9 +196,30 @@ export default function CourtBookingComplete(props: any) {
               }}
               resizeMode={FastImage.resizeMode.cover}
             />
-            <AppText fontStyle="500.medium" size={16}>
-              {data?.locationName}
-            </AppText>
+            <View style={{ width: "100%" }}>
+              <AppText fontStyle="500.medium" size={14}>
+                {data?.locationName}
+              </AppText>
+              <VerticalSpacing />
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginLeft: moderateScale(-5, 0.3),
+                }}>
+                <MaterialIcons
+                  name="location-pin"
+                  size={Math.ceil(moderateScale(20, 0.3))}
+                  color={theme.secondary}
+                />
+                <AppText
+                  fontStyle="400.normal"
+                  style={{ maxWidth: "60%" }}
+                  numberOfLines={2}>
+                  {data?.locationAddress}
+                </AppText>
+              </View>
+            </View>
           </View>
         </View>
         <View
@@ -222,10 +241,10 @@ export default function CourtBookingComplete(props: any) {
               justifyContent: "space-between",
               marginBottom: moderateScale(10, 0.3),
             }}>
-            <AppText fontStyle="500.semibold">
+            <AppText fontStyle="500.medium">
               {I18n.t("screen_messages.total")}
             </AppText>
-            <AppText fontStyle="600.semibold">
+            <AppText fontStyle="500.medium">
               {I18n.t("screen_messages.price", {
                 price: amountPaid,
               })}

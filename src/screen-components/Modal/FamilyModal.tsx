@@ -111,7 +111,7 @@ function FamilyModal(props: FamilyMemberProps) {
         <VerticalSpacing size={30} />
         <AppText
           style={{ paddingHorizontal: moderateScale(15, 0.3), zIndex: 1 }}
-          fontStyle="600.semibold"
+          fontStyle="500.medium"
           size={18}>
           {I18n.t("screen_messages.header.Booking_For")}
         </AppText>
@@ -194,7 +194,7 @@ function FamilyModal(props: FamilyMemberProps) {
                 style={{ maxWidth: "75%" }}
                 numberOfLines={1}
                 size={16}
-                fontStyle="500.bold">
+                fontStyle="400.semibold">
                 {user?.stakeholderName}
               </AppText>
               <VerticalSpacing size={5} />
@@ -290,7 +290,7 @@ function FamilyModal(props: FamilyMemberProps) {
                       style={{ maxWidth: "75%" }}
                       numberOfLines={1}
                       size={16}
-                      fontStyle="500.bold">
+                      fontStyle="400.semibold">
                       {item?.name}
                     </AppText>
                     <VerticalSpacing size={5} />

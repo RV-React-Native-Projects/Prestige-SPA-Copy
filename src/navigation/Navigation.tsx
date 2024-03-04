@@ -23,23 +23,23 @@ const SignUp = lazy(() => import("@screens/Auth/SignUp"));
 
 // Main Screens
 const TabNavigation = lazy(() => import("@navigation/TabNavigation"));
-const Home = lazy(() => import("@screens/Home/Home"));
-const Court = lazy(() => import("@screens/Court/Court"));
+// const Home = lazy(() => import("@screens/Home/Home"));
+// const Court = lazy(() => import("@screens/Court/Court"));
 const CourtDetail = lazy(() => import("@screens/Court/CourtDetail"));
 const CourtSlot = lazy(() => import("@screens/Court/CourtSlot"));
 const CourtBooking = lazy(() => import("@src/screens/Court/CourtBooking"));
 const CourtBookingComplete = lazy(
   () => import("@src/screens/Court/CourtBookingComplete"),
 );
-const Coach = lazy(() => import("@screens/Coach/Coach"));
+// const Coach = lazy(() => import("@screens/Coach/Coach"));
 const CoachDetail = lazy(() => import("@screens/Coach/CoachDetail"));
 const CoachBooking = lazy(() => import("@src/screens/Coach/CoachBooking"));
 const CoachSlot = lazy(() => import("@screens/Coach/CoachSlot"));
 const CoachBookingComplete = lazy(
   () => import("@src/screens/Coach/CoachBookingComplete"),
 );
-const Group = lazy(() => import("@screens/Group/Group"));
-const Booking = lazy(() => import("@src/screens/Booking/Booking"));
+// const Group = lazy(() => import("@screens/Group/Group"));
+// const Booking = lazy(() => import("@src/screens/Booking/Booking"));
 const Profile = lazy(() => import("@screens/Profile/Profile"));
 const EditProfile = lazy(() => import("@screens/Profile/EditProfile"));
 const Memberships = lazy(() => import("@screens/Membership/Memberships"));
@@ -91,7 +91,7 @@ function AppStack() {
         component={CoachBookingComplete}
         options={{ gestureEnabled: false }}
       />
-      <Stack.Screen name="Group" component={Group} />
+      {/* <Stack.Screen name="Group" component={Group} /> */}
       {/* <Stack.Screen name="Booking" component={Booking} /> */}
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="EditProfile" component={EditProfile} />

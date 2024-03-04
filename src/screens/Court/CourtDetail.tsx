@@ -163,7 +163,7 @@ function CourtDetail(props: any) {
               </AppText>
             </View>
           ) : (
-            <AppText fontStyle="600.medium" color={theme.primary}>
+            <AppText fontStyle="600.semibold" color={theme.primary}>
               {I18n.t("screen_messages.min_max_rate", {
                 min: data?.minRate,
                 max: data?.maxRate,

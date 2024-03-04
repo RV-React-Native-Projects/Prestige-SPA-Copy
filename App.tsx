@@ -8,7 +8,6 @@ import { MessagesContextProvider } from "@contexts/MessageContext";
 import Loading from "@src/Loading";
 import store from "@redux/store";
 import { StripeProvider } from "@stripe/stripe-react-native";
-
 import { enGB, registerTranslation } from "react-native-paper-dates";
 import { loadUserData } from "@reducers/UserSlice";
 import { loadUserTheme } from "@reducers/ThemeSlice";
@@ -35,9 +34,8 @@ const App = () => {
   return (
     <StripeProvider
       publishableKey={publishableKey}
-      urlScheme="spoacd://" // required for 3D Secure and bank redirects
-      // merchantIdentifier="merchant.identifier" // required for Apple Pay
-    >
+      urlScheme="premier://"
+      merchantIdentifier="com.prestige.ios">
       <Provider store={store}>
         <ThemeContextProvider>
           <MessagesContextProvider>

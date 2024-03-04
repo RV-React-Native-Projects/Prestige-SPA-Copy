@@ -229,9 +229,9 @@ export default function CourtBooking(props: any) {
                 fontStyle="400.normal"
                 color={theme.gray}
                 style={{ marginBottom: moderateScale(10, 0.3) }}>
-                Date
+                {I18n.t("screen_messages.date")}
               </AppText>
-              <AppText fontStyle="600.semibold">
+              <AppText fontStyle="500.medium">
                 {moment(pickedDate).format("DD MMM, ddd")}
               </AppText>
             </View>
@@ -240,9 +240,9 @@ export default function CourtBooking(props: any) {
                 fontStyle="400.normal"
                 color={theme.gray}
                 style={{ marginBottom: 10, textAlign: "right" }}>
-                Time
+                {I18n.t("screen_messages.time")}
               </AppText>
-              <AppText fontStyle="600.semibold" style={{ textAlign: "right" }}>
+              <AppText fontStyle="500.medium" style={{ textAlign: "right" }}>
                 {startTime} - {endTime}
               </AppText>
             </View>

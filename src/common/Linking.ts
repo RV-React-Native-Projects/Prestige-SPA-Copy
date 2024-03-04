@@ -4,94 +4,60 @@ const linking = {
   prefixes: [
     `${Config.SCHEME}://app`,
     `${Config.SCHEME}://`,
-    "https://druce.com",
-    "druce://",
+    "https://premier.com",
+    "https://psracd.com",
+    "premier://",
+    "psracd://",
   ],
-  // config: {
-  //   screens: {
-  //     Landing_Page: {
-  //       path: "landing",
-  //     },
-  //     Login_Page: {
-  //       path: "login",
-  //     },
-  //     Otp_Page: {
-  //       path: "otp",
-  //     },
-  //     Tab_Home: {
-  //       initialRouteName: "home",
-  //       screens: {
-  //         Home_Page: {
-  //           path: "home",
-  //         },
-  //         Trip_Details_Page: {
-  //           path: "trip_details/:tripId",
-  //           parse: { tripId: (tripId: string) => `${tripId}` },
-  //         },
-  //         Profile_Page: {
-  //           path: "profile",
-  //         },
-  //         Notification_Page: "notification",
-  //         VehicleDocument_Page: {
-  //           path: "vehicledocument/:vehicleId",
-  //           parse: {
-  //             vehicleId: (vehicleId: string) => `${vehicleId}`,
-  //           },
-  //         },
-  //         CompleteTrip_Page: {
-  //           path: "completetrip/:tripId",
-  //           parse: {
-  //             tripId: (tripId: string) => `${tripId}`,
-  //           },
-  //         },
-  //         TripDocument_Page: {
-  //           path: "tripdocument/:id",
-  //           parse: {
-  //             id: (id: string) => `${id}`,
-  //           },
-  //         },
-  //         PodReceived_Page: {
-  //           path: "podreceived/:id",
-  //           parse: {
-  //             id: (id: string) => `${id}`,
-  //           },
-  //         },
-  //         Settings: "settings",
-  //         TripExpense_Page: {
-  //           path: "tripexpense/:tripId/:tripStatus",
-  //           parse: {
-  //             tripId: (tripId: string) => `${tripId}`,
-  //             tripStatus: (tripStatus: string) => `${tripStatus}`,
-  //           },
-  //         },
-  //         AddEditTripExpense_Page: {
-  //           path: "addedit_tripexpense/:tripId",
-  //           parse: {
-  //             tripId: (tripId: string) => `${tripId}`,
-  //           },
-  //         },
-  //       },
-  //     },
-
-  //     Tab_Attendance: {
-  //       initialRouteName: "attendance",
-  //       screens: {
-  //         Attendance_Page: {
-  //           path: "attendance",
-  //         },
-  //         AttendanceDetails_Page: {
-  //           path: "attendance_details",
-  //         },
-  //         DateFilter_Page: {
-  //           path: "datefilter",
-  //         },
-  //       },
-  //     },
-  //   },
-  // },
-  // async getInitialURL(): Promise<string> {
-  //   return linking.getInitialURL();
-  // },
+  config: {
+    screens: {
+      Landing: {
+        path: "Landing",
+      },
+      Login: {
+        path: "Login",
+      },
+      SignUp: {
+        path: "SignUp",
+      },
+      HomeTab: {
+        path: "HomeTab",
+      },
+      CourtTab: {
+        path: "CourtTab",
+      },
+      CoachTab: {
+        path: "CoachTab",
+      },
+      GroupTab: {
+        path: "GroupTab",
+      },
+      BookingTab: {
+        path: "BookingTab",
+      },
+      Tab: {
+        path: "Tab",
+      },
+      CourtDetail: {
+        path: "CourtDetail/:courtId",
+        parse: { courtId: (courtId: string) => `${courtId}` },
+      },
+      CoachDetail: {
+        path: "CoachDetail/:coachId",
+        parse: { coachId: (coachId: string) => `${coachId}` },
+      },
+      BookingDetails: {
+        path: "BookingDetails/:bookingId",
+        parse: { bookingId: (bookingId: string) => `${bookingId}` },
+      },
+      Profile: {
+        path: "Profile",
+      },
+    },
+  },
+  async getInitialURL(): Promise<string> {
+    return linking.getInitialURL();
+  },
 };
 
 export default linking;

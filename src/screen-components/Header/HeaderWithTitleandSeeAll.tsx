@@ -25,7 +25,7 @@ export default function HeaderWithTitleandSeeAll(
         justifyContent: "space-between",
         padding: moderateScale(15, 0.3),
       }}>
-      <AppText fontStyle="600.semibold" size={18}>
+      <AppText fontStyle="400.semibold" size={18}>
         {title}
       </AppText>
       {onPressLeft && (
@@ -34,6 +34,7 @@ export default function HeaderWithTitleandSeeAll(
           LinkButton
           color={theme.secondary}
           fontSize={14}
+          fontStyle="400.medium"
           onPress={onPressLeft}
         />
       )}

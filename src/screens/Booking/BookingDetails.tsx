@@ -192,7 +192,8 @@ function BookingDetails(props: any) {
                 resizeMode={FastImage.resizeMode.cover}
                 defaultSource={images.Placeholder}
               />
-              <View style={{ margin: moderateScale(10, 0.3) }}>
+              <View
+                style={{ marginLeft: moderateScale(10, 0.3), width: "100%" }}>
                 <AppText
                   style={{ maxWidth: "60%" }}
                   fontStyle="500.bold"
@@ -201,14 +202,19 @@ function BookingDetails(props: any) {
                   {data?.court?.courtName}
                 </AppText>
                 <VerticalSpacing />
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginLeft: moderateScale(-5, 0.3),
+                  }}>
                   <MaterialIcons
                     name="location-pin"
                     size={Math.ceil(moderateScale(20, 0.3))}
                     color={theme.secondary}
                   />
                   <AppText
-                    style={{ maxWidth: "53%" }}
+                    style={{ maxWidth: "60%" }}
                     fontStyle="400.bold"
                     numberOfLines={2}>
                     {data?.location?.locationAddress}
