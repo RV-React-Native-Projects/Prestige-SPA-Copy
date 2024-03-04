@@ -1,5 +1,5 @@
 import { Platform } from "react-native";
-import React, { lazy } from "react";
+import React, { lazy, memo } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import I18n from "i18n-js";
 import AppText from "@src/components/Text/AppText";
@@ -20,7 +20,7 @@ const Coach = lazy(() => import("@screens/Coach/Coach"));
 const Group = lazy(() => import("@screens/Group/Group"));
 const Booking = lazy(() => import("@src/screens/Booking/Booking"));
 
-export default function TabNavigation() {
+function TabNavigation() {
   const { theme } = useAppSelector(state => state.theme);
   const { isCourtBooking } = useAppSelector(state => state.appData);
 
@@ -51,6 +51,9 @@ export default function TabNavigation() {
               paddingBottom: !isIOS
                 ? moderateScale(10, 0.3)
                 : moderateScale(20, 0.3),
+              ...theme.dark_shadow,
+              borderTopLeftRadius: moderateScale(15, 0.3),
+              borderTopRightRadius: moderateScale(15, 0.3),
             };
           }
           return { display: "none" };
@@ -172,3 +175,5 @@ export default function TabNavigation() {
     </Tab.Navigator>
   );
 }
+
+export default memo(TabNavigation);

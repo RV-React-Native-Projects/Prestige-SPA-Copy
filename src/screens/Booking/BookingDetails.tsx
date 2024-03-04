@@ -134,17 +134,22 @@ function BookingDetails(props: any) {
                 <View
                   style={{
                     backgroundColor:
-                      data?.coachSessionTypeID === 1
+                      data?.coach?.coachProfile?.coachCategory
+                        ?.coachCategory === "TIER 1"
                         ? theme.primary
                         : theme.tertiaryText,
-                    width: moderateScale(70, 0.3),
+                    width: moderateScale(60, 0.3),
                     height: moderateScale(25, 0.3),
                     alignItems: "center",
                     justifyContent: "center",
                     borderRadius: moderateScale(100, 0.3),
                     marginBottom: moderateScale(5, 0.3),
                   }}>
-                  <AppText fontStyle="400.medium" size={12} color={theme.white}>
+                  <AppText
+                    style={{ textTransform: "capitalize" }}
+                    fontStyle="400.medium"
+                    size={12}
+                    color={theme.white}>
                     {data?.coach?.coachProfile?.coachCategory?.coachCategory}
                   </AppText>
                 </View>

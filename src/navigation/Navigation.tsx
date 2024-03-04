@@ -9,7 +9,7 @@ import {
 
 const isIOS = Platform.OS === "ios";
 
-import TabNavigation from "@navigation/TabNavigation";
+// import TabNavigation from "@navigation/TabNavigation";
 
 // Auth page
 import LandingPage from "@screens/Landing/Landing";
@@ -22,6 +22,7 @@ const SignUp = lazy(() => import("@screens/Auth/SignUp"));
 // const CreateNewPassword = lazy(() => import("@screens/Auth/CreateNewPassword"));
 
 // Main Screens
+const TabNavigation = lazy(() => import("@navigation/TabNavigation"));
 const Home = lazy(() => import("@screens/Home/Home"));
 const Court = lazy(() => import("@screens/Court/Court"));
 const CourtDetail = lazy(() => import("@screens/Court/CourtDetail"));
@@ -54,7 +55,7 @@ export const useAppNavigation: () => NavigationProp<ParamListBase> =
 
 const Stack = isIOS ? createStackNavigator() : createNativeStackNavigator();
 
-function MyStack() {
+function AppStack() {
   return (
     <Stack.Navigator
       initialRouteName="Landing"
@@ -67,8 +68,8 @@ function MyStack() {
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="CreateNewPassword" component={CreateNewPassword} /> */}
       <Stack.Screen name="Tab" component={TabNavigation} />
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Court" component={Court} />
+      {/* <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Court" component={Court} /> */}
       <Stack.Screen
         // options={{ presentation: "modal" }}
         name="CourtDetail"
@@ -81,7 +82,7 @@ function MyStack() {
         component={CourtBookingComplete}
         options={{ gestureEnabled: false }}
       />
-      <Stack.Screen name="Coach" component={Coach} />
+      {/* <Stack.Screen name="Coach" component={Coach} /> */}
       <Stack.Screen name="CoachDetail" component={CoachDetail} />
       <Stack.Screen name="CoachBooking" component={CoachBooking} />
       <Stack.Screen name="CoachSlot" component={CoachSlot} />
@@ -91,7 +92,7 @@ function MyStack() {
         options={{ gestureEnabled: false }}
       />
       <Stack.Screen name="Group" component={Group} />
-      <Stack.Screen name="Booking" component={Booking} />
+      {/* <Stack.Screen name="Booking" component={Booking} /> */}
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="Memberships" component={Memberships} />
@@ -103,4 +104,4 @@ function MyStack() {
   );
 }
 
-export default MyStack;
+export default AppStack;

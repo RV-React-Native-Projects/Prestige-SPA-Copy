@@ -6,14 +6,14 @@ import FamilyManager from "@features/Family/FamilyManager";
 import _ from "lodash";
 import AuthManager from "@features/Auth/AuthManager";
 import { RootState } from "../store";
-import { unRegisterAppWithFCM } from "@src/helpers/NotificationHelper";
+import NotificationHelper from "@helpers/NotificationHelper";
 
 export const loadUserData = createAsyncThunk("user/loaduser", async () => {
   const { getStorage } = useEncryptedStorage();
 
   // var userToken = (await getStorage("SPA_User_Token")) ?? null;
-  var authToken = (await getStorage("SPA_Auth_Token")) ?? null;
   // var refreshToken = (await getStorage("SPA_Refresh_Token")) ?? null;
+  var authToken = (await getStorage("SPA_Auth_Token")) ?? null;
   var email = (await getStorage("SPA_Email")) ?? null;
   var fcmToken = (await getStorage("FCM_TOKEN")) ?? null;
   return { authToken, email, fcmToken };
@@ -23,10 +23,11 @@ export const removeUserData = createAsyncThunk(
   "user/removeUserData",
   async () => {
     const { removeStorage } = useEncryptedStorage();
+    const { unRegisterAppWithFCM } = NotificationHelper();
 
+    // await removeStorage("SPA_Refresh_Token");
     await removeStorage("SPA_User_Token");
     await removeStorage("SPA_Auth_Token");
-    // await removeStorage("SPA_Refresh_Token");
     await removeStorage("SPA_Email");
     await unRegisterAppWithFCM();
     await removeStorage("FCM_TOKEN");
@@ -180,7 +181,7 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
-      state.userEmail = action.payload.email;
+      // state.userEmail = action.payload.email;
       state.userName = action.payload.Account_name;
       state.userPhone = action.payload.phone;
       state.membership = action?.payload?.memberships;
@@ -215,6 +216,8 @@ const userSlice = createSlice({
       state.refreshToken = action.payload;
     },
     setFCMToken: (state, action) => {
+      console.log("action==>", action);
+
       state.FCMToken = action.payload;
     },
     appLogout: state => {

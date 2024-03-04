@@ -8,12 +8,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import I18n from "i18n-js";
 import { moderateScale } from "react-native-size-matters";
 
-const UpcomingBookings = lazy(
-  () => import("@src/screens/Booking/UpcomingBookings"),
-);
-const CompletedBookings = lazy(
-  () => import("@src/screens/Booking/CompletedBookings"),
-);
+const Upcoming = lazy(() => import("@screens/Booking/UpcomingBookings"));
+const Completed = lazy(() => import("@screens/Booking/CompletedBookings"));
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -52,14 +48,14 @@ function CalenderScreen() {
             title: I18n.t("screen_messages.button.Upcoming"),
           }}
           name="UpcomingBookings"
-          component={UpcomingBookings}
+          component={Upcoming}
         />
         <TopTab.Screen
           options={{
             title: I18n.t("screen_messages.button.Completed"),
           }}
           name="CompletedBookings"
-          component={CompletedBookings}
+          component={Completed}
         />
       </TopTab.Navigator>
     </AppContainer>

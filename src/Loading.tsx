@@ -1,6 +1,6 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import SplashScreen from "react-native-splash-screen";
-import MyStack, { useAppNavigation } from "@navigation/Navigation";
+import AppStack, { useAppNavigation } from "@navigation/Navigation";
 import { useAppDispatch, useAppSelector } from "@redux/store";
 import AuthManager from "@features/Auth/AuthManager";
 import { setLoadingUser, setUser } from "@reducers/UserSlice";
@@ -11,16 +11,15 @@ import SpInAppUpdates, {
   IAUUpdateKind,
   StartUpdateOptions,
 } from "sp-react-native-in-app-updates";
-import {
-  getFcmToken,
-  registerListenerWithFCM,
-} from "./helpers/NotificationHelper";
+import NotificationHelper from "@helpers/NotificationHelper";
+import Utils from "@common/Utils";
 
 const isIOS = Platform.OS === "ios";
 
 function Loading() {
   const navigation = useAppNavigation();
-  const { loadingUser, userEmail, authHeader, FCMToken } = useAppSelector(
+  const notificationHelper = NotificationHelper();
+  const { loadingUser, userEmail, authHeader, user, FCMToken } = useAppSelector(
     state => state.user,
   );
   const storeDispatch = useAppDispatch();
@@ -36,7 +35,8 @@ function Loading() {
               updateType: IAUUpdateKind.IMMEDIATE,
             };
           }
-          inAppUpdates.startUpdate(updateOptions); // https://github.com/SudoPlz/sp-react-native-in-app-updates/blob/master/src/types.ts#L78
+          inAppUpdates.startUpdate(updateOptions);
+          // https://github.com/SudoPlz/sp-react-native-in-app-updates/blob/master/src/types.ts#L78
         }
       });
     }
@@ -44,34 +44,37 @@ function Loading() {
   }, []);
 
   useEffect(() => {
-    if (authHeader && userEmail) {
+    if (userEmail && authHeader && !user) {
       AuthManager.getUserData(
         { email: userEmail, headers: authHeader },
         res => {
+          // console.log("User", JSON.stringify(res?.data?.data, null, 2));
           storeDispatch(setUser(res?.data?.data));
-          storeDispatch(getAppConfig());
           navigation.reset({ index: 0, routes: [{ name: "Tab" }] });
           SplashScreen.hide();
           storeDispatch(setLoadingUser(false));
+          storeDispatch(getAppConfig());
         },
         err => {
           console.log("Error fetching the User", err);
           storeDispatch(setLoadingUser(false));
         },
       );
-    } else if (!loadingUser && !userEmail && !authHeader) SplashScreen.hide();
-  }, [authHeader, userEmail, !loadingUser]);
-
-  console.log("FCMToken==>", FCMToken);
+    } else if (!loadingUser && !authHeader && !userEmail) {
+      Utils.wait(1500).then(() => SplashScreen.hide());
+    }
+  }, [userEmail, authHeader, user, !loadingUser]);
 
   useEffect(() => {
-    if (!FCMToken) getFcmToken();
-    if (FCMToken) registerListenerWithFCM();
-  }, [FCMToken]);
+    if (authHeader) {
+      if (!FCMToken) notificationHelper.getFcmToken();
+      if (FCMToken) notificationHelper.registerListenerWithFCM();
+    }
+  }, [FCMToken, authHeader]);
 
   return (
     <Suspense fallback="">
-      <MyStack />
+      <AppStack />
     </Suspense>
   );
 }

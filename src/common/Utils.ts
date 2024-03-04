@@ -292,7 +292,7 @@ const Utils = function (ErrorConstants: any) {
   }
 
   function wait(timeout: number) {
-    return new Promise(resolve => setTimeout(resolve, timeout));
+    return new Promise((resolve: any) => setTimeout(resolve, timeout));
   }
 
   function decryptToken(token: string) {

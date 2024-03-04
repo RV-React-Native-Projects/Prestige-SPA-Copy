@@ -18,6 +18,7 @@ import { setAuthToken, setUserEmail, setUserToken } from "@reducers/UserSlice";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import useAppToast from "@components/Alert/AppToast";
+import Utils from "@src/common/Utils";
 
 function reducer(state: any, { payload, type }: any) {
   switch (type) {
@@ -76,14 +77,14 @@ const Login = () => {
     };
     AuthManager.userLogin(
       params,
-      res => {
+      async res => {
         // console.log("Login Res===>", JSON.stringify(res.data.data, null, 2));
         storeDispatch(setAuthToken(res.data.data.jwt));
         storeDispatch(setUserEmail(res.data.data.stakeholder?.email));
         setStorage("SPA_Auth_Token", res.data.data.jwt);
         setStorage("SPA_Email", res.data.data.stakeholder?.email);
         appToast.showNormalToast({ title: "Login Successfully!" });
-        setLoading(false);
+        Utils.wait(1500).then(() => setLoading(false));
       },
       err => {
         console.log("Error ", err);

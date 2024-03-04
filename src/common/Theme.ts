@@ -1,8 +1,9 @@
 const Fonts = {
-  Font_Bold: "Roboto-Bold",
-  Font_Regular: "Roboto-Regular",
-  Font_Medium: "Roboto-Medium",
-  Font_Light: "Roboto-Light",
+  Font_Bold: "Inter-Bold",
+  Font_SemiBold: "Inter-SemiBold",
+  Font_Medium: "Inter-Medium",
+  Font_Regular: "Inter-Regular",
+  Font_Light: "Inter-Light",
 };
 
 const buttonVariations = {
@@ -53,7 +54,7 @@ const fontVariations = {
       fontWeight: "100",
     },
     semibold: {
-      fontFamily: Fonts.Font_Medium,
+      fontFamily: Fonts.Font_SemiBold,
       fontWeight: "100",
     },
     bold: {
@@ -75,7 +76,7 @@ const fontVariations = {
       fontWeight: "400",
     },
     semibold: {
-      fontFamily: Fonts.Font_Medium,
+      fontFamily: Fonts.Font_SemiBold,
       fontWeight: "400",
     },
     bold: {
@@ -97,7 +98,7 @@ const fontVariations = {
       fontWeight: "500",
     },
     semibold: {
-      fontFamily: Fonts.Font_Medium,
+      fontFamily: Fonts.Font_SemiBold,
       fontWeight: "500",
     },
     bold: {
@@ -119,7 +120,7 @@ const fontVariations = {
       fontWeight: "600",
     },
     semibold: {
-      fontFamily: Fonts.Font_Medium,
+      fontFamily: Fonts.Font_SemiBold,
       fontWeight: "600",
     },
     bold: {
@@ -141,7 +142,7 @@ const fontVariations = {
       fontWeight: "700",
     },
     semibold: {
-      fontFamily: Fonts.Font_Medium,
+      fontFamily: Fonts.Font_SemiBold,
       fontWeight: "700",
     },
     bold: {
@@ -163,7 +164,7 @@ const fontVariations = {
       fontWeight: "900",
     },
     semibold: {
-      fontFamily: Fonts.Font_Medium,
+      fontFamily: Fonts.Font_SemiBold,
       fontWeight: "900",
     },
     bold: {
