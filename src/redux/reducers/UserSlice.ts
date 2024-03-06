@@ -6,7 +6,6 @@ import FamilyManager from "@features/Family/FamilyManager";
 import _ from "lodash";
 import AuthManager from "@features/Auth/AuthManager";
 import { RootState } from "../store";
-import NotificationHelper from "@helpers/NotificationHelper";
 
 export const loadUserData = createAsyncThunk("user/loaduser", async () => {
   const { getStorage } = useEncryptedStorage();
@@ -23,14 +22,13 @@ export const removeUserData = createAsyncThunk(
   "user/removeUserData",
   async () => {
     const { removeStorage } = useEncryptedStorage();
-    const { unRegisterAppWithFCM } = NotificationHelper();
 
     // await removeStorage("SPA_Refresh_Token");
     await removeStorage("SPA_User_Token");
     await removeStorage("SPA_Auth_Token");
     await removeStorage("SPA_Email");
-    await unRegisterAppWithFCM();
     await removeStorage("FCM_TOKEN");
+    return true;
   },
 );
 
@@ -230,6 +228,7 @@ const userSlice = createSlice({
       state.userToken = null;
       state.authToken = null;
       state.refreshToken = null;
+      state.FCMToken = null;
     },
     resetUser: () => initialState,
   },
@@ -271,6 +270,7 @@ const userSlice = createSlice({
         state.refreshToken = null;
         state.authHeader = null;
         state.loadingUser = false;
+        state.FCMToken = null;
       })
       .addCase(getAllMembership.pending, state => {
         state.loadingMembership = true;

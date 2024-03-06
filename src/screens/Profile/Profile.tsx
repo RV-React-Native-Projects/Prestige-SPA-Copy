@@ -22,6 +22,8 @@ import { resetAppData } from "@reducers/AppDataSlice";
 import { useAppNavigation } from "@navigation/Navigation";
 import I18n from "i18n-js";
 import DeviceInfo from "react-native-device-info";
+import NotificationHelper from "@helpers/NotificationHelper";
+import notifee from "@notifee/react-native";
 
 const isTab = DeviceInfo.isTablet();
 
@@ -73,12 +75,15 @@ export default function ProfileScreen() {
   );
   const { isMembership } = useAppSelector(state => state.appData);
   const storeDispatch = useAppDispatch();
+  const { unRegisterAppWithFCM } = NotificationHelper();
   const navigation = useAppNavigation();
 
   const logoutUser = () => {
     storeDispatch(removeUserData());
     storeDispatch(resetUser());
     storeDispatch(resetAppData());
+    unRegisterAppWithFCM();
+    notifee.cancelAllNotifications();
   };
 
   const gotoMemberships = () => {

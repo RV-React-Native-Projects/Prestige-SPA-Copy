@@ -36,11 +36,10 @@ export default function NotificationHelper(): NotificationHelperFunctions {
   }
 
   async function getFcmToken(): Promise<string | null> {
-    console.log("line 1");
     let token: string = await getStorage("FCM_TOKEN");
     const havePermission = await checkApplicationNotificationPermission();
     console.log("OLD Token", token, havePermission);
-    if (token) storeDispatch(setFCMToken(token));
+    if (!!token) storeDispatch(setFCMToken(token));
     await registerAppWithFCM();
     try {
       if (havePermission) {
@@ -75,15 +74,13 @@ export default function NotificationHelper(): NotificationHelperFunctions {
           console.log("registerDeviceForRemoteMessages error ", error);
         });
     }
+    console.log(
+      "registerAppWithFCM New status===>",
+      messaging().isDeviceRegisteredForRemoteMessages,
+    );
   }
 
   async function unRegisterAppWithFCM(): Promise<void> {
-    const { removeStorage } = useEncryptedStorage();
-    console.log(
-      "unRegisterAppWithFCM status",
-      messaging().isDeviceRegisteredForRemoteMessages,
-    );
-
     if (messaging().isDeviceRegisteredForRemoteMessages) {
       await messaging()
         .unregisterDeviceForRemoteMessages()
@@ -95,7 +92,6 @@ export default function NotificationHelper(): NotificationHelperFunctions {
         });
     }
     await messaging().deleteToken();
-    await removeStorage("FCM_TOKEN");
     console.log(
       "unRegisterAppWithFCM status",
       messaging().isDeviceRegisteredForRemoteMessages,
@@ -126,7 +122,7 @@ export default function NotificationHelper(): NotificationHelperFunctions {
       id: "Prestige",
       name: "Prestige-Common",
       description: "Prestige",
-      badge: false,
+      badge: true,
       lights: false,
       vibration: false,
       importance: AndroidImportance.HIGH,

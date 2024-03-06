@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect } from "react";
 import SplashScreen from "react-native-splash-screen";
 import AppStack, { useAppNavigation } from "@navigation/Navigation";
 import { useAppDispatch, useAppSelector } from "@redux/store";
@@ -30,7 +30,7 @@ function Loading() {
       inAppUpdates.checkNeedsUpdate().then(result => {
         if (result.shouldUpdate) {
           let updateOptions: StartUpdateOptions = {};
-          if (Platform.OS === "android") {
+          if (!isIOS) {
             updateOptions = {
               updateType: IAUUpdateKind.IMMEDIATE,
             };

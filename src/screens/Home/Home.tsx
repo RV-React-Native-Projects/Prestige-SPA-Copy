@@ -36,13 +36,19 @@ import {
   isLocationEnabled,
   promptForEnableLocationIfNeeded,
 } from "react-native-android-location-enabler";
+import FcmTokenManager from "@src/services/features/FCMToken/FcmTokenManager";
 
 const isIOS = Platform.OS === "ios";
 
 function Home() {
-  const { userEmail, approvedMembership, location } = useAppSelector(
-    state => state.user,
-  );
+  const {
+    userEmail,
+    approvedMembership,
+    location,
+    FCMToken,
+    authHeader,
+    user,
+  } = useAppSelector(state => state.user);
   const {
     coachs,
     locations,
@@ -91,6 +97,23 @@ function Home() {
   }
 
   useEffect(() => {
+    if (FCMToken && authHeader) {
+      FcmTokenManager.updateFcmToken(
+        {
+          data: {
+            deviceToken: FCMToken,
+            deviceType: Platform.OS,
+            stakeholderID: user?.stakeholderID,
+          },
+          headers: authHeader,
+        },
+        res => console.log("FCM register===>", res),
+        err => console.log("FCM Error===>", err),
+      );
+    }
+  }, [FCMToken, authHeader]);
+
+  useEffect(() => {
     if (!userEmail) {
       navigation.reset({ index: 0, routes: [{ name: "Landing" }] });
     }
@@ -98,9 +121,11 @@ function Home() {
   }, [userEmail]);
 
   useEffect(() => {
-    if (!locations) storeDispatch(loadAllLocations());
-    if (!coachs) storeDispatch(loadAllCoach());
-  }, [locations, coachs]);
+    if (authHeader) {
+      if (!locations) storeDispatch(loadAllLocations());
+      if (!coachs) storeDispatch(loadAllCoach());
+    }
+  }, [locations, coachs, authHeader]);
 
   const gotoCourt = () => {
     navigation.navigate("CourtTab");
