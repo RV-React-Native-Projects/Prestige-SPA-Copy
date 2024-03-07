@@ -62,7 +62,7 @@ const GenderDropDown = (props: DropdownComponentPorps) => {
       {label ? (
         <AppText
           size={labelSize}
-          fontStyle="600.semibold"
+          fontStyle="500.medium"
           color={error ? theme.warning : theme.subHeader}
           style={{ marginVertical: 5 }}>
           {label} {required && <AppText color={theme.error}> *</AppText>}
@@ -139,7 +139,7 @@ const style = (theme: any) => {
     },
     selectedTextStyle: {
       fontSize: moderateScale(16, 0.3),
-      fontWeight: "500",
+      fontWeight: "400",
       color: theme.title,
     },
     iconStyle: {

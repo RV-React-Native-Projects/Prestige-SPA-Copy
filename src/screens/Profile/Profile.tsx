@@ -24,6 +24,9 @@ import I18n from "i18n-js";
 import DeviceInfo from "react-native-device-info";
 import NotificationHelper from "@helpers/NotificationHelper";
 import notifee from "@notifee/react-native";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 const isTab = DeviceInfo.isTablet();
 
@@ -142,7 +145,7 @@ export default function ProfileScreen() {
             }}
             defaultSource={images.user}
             source={{
-              uri: `https://nodejsclusters-160185-0.cloudclusters.net/${user?.imagePath}`,
+              uri: `${host}/${user?.imagePath}`,
               priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover}

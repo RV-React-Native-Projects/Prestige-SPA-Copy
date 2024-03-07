@@ -24,6 +24,9 @@ import images from "@src/common/AllImages";
 import FamilyManager from "@src/services/features/Family/FamilyManager";
 import RBSheet from "react-native-raw-bottom-sheet";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 const isIOS = Platform.OS === "ios";
 
@@ -62,7 +65,7 @@ const FamilyCard = (props: FamilyCardProps) => {
             backgroundColor: theme.light,
           }}
           source={{
-            uri: `https://nodejsclusters-160185-0.cloudclusters.net/${imagePath}`,
+            uri: `${host}/${imagePath}`,
             priority: FastImage.priority.high,
           }}
           resizeMode={FastImage.resizeMode.cover}

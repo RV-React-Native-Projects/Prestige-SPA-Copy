@@ -37,6 +37,8 @@ import {
   promptForEnableLocationIfNeeded,
 } from "react-native-android-location-enabler";
 import FcmTokenManager from "@src/services/features/FCMToken/FcmTokenManager";
+import DeviceInfo from "react-native-device-info";
+import moment from "moment";
 
 const isIOS = Platform.OS === "ios";
 

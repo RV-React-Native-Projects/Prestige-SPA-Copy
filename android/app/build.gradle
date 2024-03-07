@@ -3,11 +3,19 @@ apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 apply plugin: "com.google.gms.google-services"
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
  */
+
+project.ext.envConfigFiles = [
+    dev: ".env",
+    prod: ".env.prod",
+    test: ".env.test",
+]
+
 react {
     /* Folders */
     //   The root of your project, i.e. where "package.json" lives. Default is '..'
@@ -71,18 +79,31 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'org.webkit:android-jsc:+'
 
+private Integer generateVersionCode() {
+    return rootProject.ext.minSdkVersion * 1 + project.env.get("MAJOR_VERSION").toInteger() * 1 + project.env.get("MINOR_VERSION").toInteger() * 1 + project.env.get("PATCH_VERSION").toInteger()
+}
+
+private String generateVersionName() {
+    String versionName = "${project.env.get("MAJOR_VERSION")}.${project.env.get("PATCH_VERSION")}.${project.env.get("MINOR_VERSION")}"
+    if(project.env.get("PRE_RELEASE") != null && !project.env.get("PRE_RELEASE").isEmpty()) {
+        versionName = versionName + " - " + project.env.get("PRE_RELEASE")
+    }
+    return versionName
+}
+
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.prestige.android"
+    namespace project.env.get("APP_ID")
     defaultConfig {
-        applicationId "com.prestige.android"
+        applicationId project.env.get("APP_ID")
+        resValue "string", "build_config_package", project.env.get("APP_ID")
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "0.1.0"
+        versionCode project.env.get("MINOR_VERSION").toInteger()
+        versionName generateVersionName()
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
@@ -103,11 +124,13 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug', 'release']
         }
         release {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            matchingFallbacks = ['debug', 'release']
         }
     }
 }
@@ -118,6 +141,8 @@ dependencies {
     implementation("com.facebook.react:flipper-integration")
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation project(':react-native-splash-screen')
+    implementation project(':react-native-config')
+    
     implementation 'com.squareup.okhttp3:okhttp:4.2.2'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:support-annotations:28.0.0'
@@ -146,3 +171,4 @@ dependencies {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"

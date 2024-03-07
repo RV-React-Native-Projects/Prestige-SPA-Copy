@@ -26,6 +26,9 @@ import FloatingBottomButton from "../Floating/FloatingBottomButton";
 import { useAppNavigation } from "@navigation/Navigation";
 import * as Animatable from "react-native-animatable";
 import DeviceInfo from "react-native-device-info";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 interface FamilyMemberProps {
   show: boolean;
@@ -171,7 +174,7 @@ function FamilyModal(props: FamilyMemberProps) {
                   backgroundColor: theme.light,
                 }}
                 source={{
-                  uri: `https://nodejsclusters-160185-0.cloudclusters.net/${user?.imagePath}`,
+                  uri: `${host}/${user?.imagePath}`,
                   priority: FastImage.priority.high,
                 }}
                 resizeMode={FastImage.resizeMode.cover}
@@ -262,7 +265,7 @@ function FamilyModal(props: FamilyMemberProps) {
                         backgroundColor: theme.light,
                       }}
                       source={{
-                        uri: `https://nodejsclusters-160185-0.cloudclusters.net/${item?.imagePath}`,
+                        uri: `${host}/${item?.imagePath}`,
                         priority: FastImage.priority.high,
                       }}
                       resizeMode={FastImage.resizeMode.cover}

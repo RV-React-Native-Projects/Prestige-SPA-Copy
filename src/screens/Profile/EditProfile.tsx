@@ -7,14 +7,17 @@ import { moderateScale } from "react-native-size-matters";
 import { VerticalSpacing } from "@components/Spacing/Spacing";
 import { useAppNavigation } from "@navigation/Navigation";
 import I18n from "i18n-js";
-import ProfilePicker from "@src/components/Picker/ProfilePicker";
+import ProfilePicker from "@components/Picker/ProfilePicker";
 import { Formik } from "formik";
-import AppTextInput from "@src/components/TextInput/AppTextInput";
-import GenderDropDown from "@src/components/dropdown/GenderDropDown";
+import AppTextInput from "@components/TextInput/AppTextInput";
+import GenderDropDown from "@components/dropdown/GenderDropDown";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 import * as Yup from "yup";
 import { capitalize, toLower } from "lodash";
-import Utils from "@src/common/Utils";
+import Utils from "@common/Utils";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 type Props = {};
 
@@ -43,7 +46,7 @@ function EditProfile(props: Props) {
   }
 
   const updateUser = (value: any) => {
-    const formData = new FormData();
+    var formData = new FormData();
     formData.append("name", value.name);
     formData.append("phone", value.phone);
     formData.append("email", value.email);
@@ -89,10 +92,7 @@ function EditProfile(props: Props) {
               showsVerticalScrollIndicator={false}>
               <VerticalSpacing size={20} />
               <ProfilePicker
-                imagePath={
-                  user?.imagePath &&
-                  `https://nodejsclusters-160185-0.cloudclusters.net/${user?.imagePath}`
-                }
+                imagePath={user?.imagePath && `${host}/${user?.imagePath}`}
                 getImages={image => setPickedImage(image)}
               />
               <View style={{ paddingHorizontal: moderateScale(15, 0.3) }}>

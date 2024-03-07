@@ -11,6 +11,9 @@ import { useAppNavigation } from "@src/navigation/Navigation";
 import Geocoder from "react-native-geocoding";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import DeviceInfo from "react-native-device-info";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 const isTab = DeviceInfo.isTablet();
 
@@ -108,7 +111,7 @@ export default function HomeHeader() {
             }}
             defaultSource={images.user}
             source={{
-              uri: `https://nodejsclusters-160185-0.cloudclusters.net/${user?.imagePath}`,
+              uri: `${host}/${user?.imagePath}`,
               priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover}

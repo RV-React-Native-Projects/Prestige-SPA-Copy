@@ -26,6 +26,9 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Utils from "@common/Utils";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 import FamilyModal from "@src/screen-components/Modal/FamilyModal";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 const isIOS = Platform.OS === "ios";
 const windowHeight = Dimensions.get("window").height;
@@ -88,17 +91,25 @@ function CourtDetail(props: any) {
       />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: moderateScale(150, 0.3) }}>
-        <View style={{ height: moderateScale(windowHeight / 3, 0.3) }}>
+        contentContainerStyle={{
+          paddingBottom: moderateScale(150, 0.3),
+        }}>
+        <View
+          style={{
+            height: moderateScale(windowHeight / 2.5, 0.3),
+          }}>
           <Swiper
-            style={styles.wrapper}
-            height={moderateScale(windowHeight / 3, 0.3)}
+            style={{
+              height: moderateScale(windowHeight / 2.5, 0.3),
+            }}
+            height={moderateScale(windowHeight / 2.5, 0.3)}
+            containerStyle={styles.wrapper}
             dot={
               <View
                 style={{
                   backgroundColor: theme.gray,
-                  width: moderateScale(5, 0.3),
-                  height: moderateScale(5, 0.3),
+                  width: moderateScale(10, 0.3),
+                  height: moderateScale(2, 0.3),
                   borderRadius: moderateScale(4, 0.3),
                   margin: moderateScale(2, 0.3),
                 }}
@@ -108,19 +119,19 @@ function CourtDetail(props: any) {
               <View
                 style={{
                   backgroundColor: theme.secondary,
-                  width: moderateScale(8, 0.3),
-                  height: moderateScale(8, 0.3),
+                  width: moderateScale(10, 0.3),
+                  height: moderateScale(2, 0.3),
                   borderRadius: moderateScale(4, 0.3),
                   margin: moderateScale(2, 0.3),
                 }}
               />
             }
-            paginationStyle={{
-              bottom: moderateScale(-20, 0.3),
-              left: null,
-              right: moderateScale(10, 0.3),
-            }}
-            loop>
+            // paginationStyle={{
+            //   bottom: moderateScale(-20, 0.3),
+            //   left: null,
+            //   right: moderateScale(10, 0.3),
+            // }}
+            loop={false}>
             {_.map(data?.courts, (court, index) => (
               <FastImage
                 key={index}
@@ -130,7 +141,7 @@ function CourtDetail(props: any) {
                 ]}
                 defaultSource={images.Placeholder}
                 source={{
-                  uri: `https://nodejsclusters-160185-0.cloudclusters.net/${court?.imagePath}`,
+                  uri: `${host}/${court?.imagePath}`,
                   priority: FastImage.priority.high,
                 }}
                 resizeMode={FastImage.resizeMode.cover}
@@ -269,7 +280,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  wrapper: {},
+  wrapper: {
+    borderBottomLeftRadius: moderateScale(15, 0.3),
+    borderBottomRightRadius: moderateScale(15, 0.3),
+    overflow: "hidden",
+  },
 
   slide: {
     flex: 1,

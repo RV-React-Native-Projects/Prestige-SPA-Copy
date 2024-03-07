@@ -22,6 +22,9 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import DeviceInfo from "react-native-device-info";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 const isTab = DeviceInfo.isTablet();
 
@@ -347,7 +350,7 @@ export default function CoachBooking(props: any) {
                 }}
                 defaultSource={images.user}
                 source={{
-                  uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.stakeholder?.imagePath}`,
+                  uri: `${host}/${data?.stakeholder?.imagePath}`,
                   priority: FastImage.priority.high,
                 }}
                 resizeMode={FastImage.resizeMode.cover}
@@ -395,7 +398,7 @@ export default function CoachBooking(props: any) {
                 ]}
                 defaultSource={images.Placeholder}
                 source={{
-                  uri: `https://nodejsclusters-160185-0.cloudclusters.net/${court.imagePath}`,
+                  uri: `${host}/${court.imagePath}`,
                   priority: FastImage.priority.high,
                 }}
                 resizeMode={FastImage.resizeMode.cover}

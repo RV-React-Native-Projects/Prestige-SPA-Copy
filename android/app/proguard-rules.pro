@@ -23,3 +23,8 @@
 }
 -keep class com.google.android.gms.common.** {*;}
 
+-keep class com.prestige.android.BuildConfig { *; }
+-keep class com.prestige.android { *; }
+-keepresources string/build_config_package
+
+

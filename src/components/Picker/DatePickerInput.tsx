@@ -53,7 +53,7 @@ const DatePickerInput = (props: DatePickerProps) => {
       {label ? (
         <AppText
           size={labelSize}
-          fontStyle="600.semibold"
+          fontStyle="500.medium"
           color={error ? theme.error : theme.subHeader}
           style={{ marginVertical: 5 }}>
           {label} {required && <AppText color={theme.error}> *</AppText>}

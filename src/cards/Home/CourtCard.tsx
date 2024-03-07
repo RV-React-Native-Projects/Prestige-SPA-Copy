@@ -8,6 +8,9 @@ import FastImage from "react-native-fast-image";
 import images from "@common/AllImages";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import I18n from "i18n-js";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 interface CourtCardProps {
   onPressCard?: () => void;
@@ -52,7 +55,7 @@ const CourtCard = (props: CourtCardProps) => {
             borderRadius: moderateScale(5, 0.3),
           }}
           source={{
-            uri: `https://nodejsclusters-160185-0.cloudclusters.net/${imagePath}`,
+            uri: `${host}/${imagePath}`,
             priority: FastImage.priority.high,
           }}
           resizeMode={FastImage.resizeMode.cover}

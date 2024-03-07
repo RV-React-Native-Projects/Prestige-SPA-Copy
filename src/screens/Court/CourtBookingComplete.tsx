@@ -21,6 +21,9 @@ import moment from "moment";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 import LottieView from "lottie-react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 const isIOS = Platform.OS === "ios";
 const windowHeight = Dimensions.get("window").height;
@@ -191,7 +194,7 @@ export default function CourtBookingComplete(props: any) {
               ]}
               defaultSource={images.Placeholder}
               source={{
-                uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.courts[0]?.imagePath}`,
+                uri: `${host}/${data?.courts[0]?.imagePath}`,
                 priority: FastImage.priority.high,
               }}
               resizeMode={FastImage.resizeMode.cover}

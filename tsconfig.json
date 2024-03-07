@@ -9,7 +9,7 @@
     "baseUrl": ".",
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "types": ["jest"],
+    "types": ["jest", "node"],
     "paths": {
       "@src/*": ["./src/*"],
       "@assets/*": ["./src/assets/*"],

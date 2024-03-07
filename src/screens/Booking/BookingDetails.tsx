@@ -13,6 +13,9 @@ import Utils from "@common/Utils";
 import moment from "moment";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 const isIOS = Platform.OS === "ios";
 
@@ -124,7 +127,7 @@ function BookingDetails(props: any) {
                   borderRadius: moderateScale(100, 0.3),
                 }}
                 source={{
-                  uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.coach?.imagePath}`,
+                  uri: `${host}/${data?.coach?.imagePath}`,
                   priority: FastImage.priority.high,
                 }}
                 resizeMode={FastImage.resizeMode.cover}
@@ -186,7 +189,7 @@ function BookingDetails(props: any) {
                   borderRadius: moderateScale(5, 0.3),
                 }}
                 source={{
-                  uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.court?.imagePath}`,
+                  uri: `${host}/${data?.court?.imagePath}`,
                   priority: FastImage.priority.high,
                 }}
                 resizeMode={FastImage.resizeMode.cover}

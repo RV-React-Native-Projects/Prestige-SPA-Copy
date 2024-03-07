@@ -24,6 +24,9 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 import DeviceInfo from "react-native-device-info";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 const isIOS = Platform.OS === "ios";
 const isTab = DeviceInfo.isTablet();
@@ -272,7 +275,7 @@ export default function CourtBooking(props: any) {
               ]}
               defaultSource={images.Placeholder}
               source={{
-                uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.courts[0]?.imagePath}`,
+                uri: `${host}/${data?.courts[0]?.imagePath}`,
                 priority: FastImage.priority.high,
               }}
               resizeMode={FastImage.resizeMode.cover}

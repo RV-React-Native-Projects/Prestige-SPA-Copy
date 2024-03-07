@@ -19,6 +19,9 @@ import I18n from "i18n-js";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Utils from "@common/Utils";
 import DeviceInfo from "react-native-device-info";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 const isTab = DeviceInfo.isTablet();
 
@@ -69,7 +72,7 @@ const CourtCard = (props: CourtCardProps) => {
             borderRadius: moderateScale(5, 0.3),
           }}
           source={{
-            uri: `https://nodejsclusters-160185-0.cloudclusters.net/${imagePath}`,
+            uri: `${host}/${imagePath}`,
             priority: FastImage.priority.high,
           }}
           resizeMode={FastImage.resizeMode.cover}

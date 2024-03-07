@@ -16,6 +16,9 @@ import _ from "lodash";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 import LottieView from "lottie-react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 export default function CoachBookingComplete(props: any) {
   const {
@@ -209,7 +212,7 @@ export default function CoachBookingComplete(props: any) {
                 ]}
                 defaultSource={images.user}
                 source={{
-                  uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.stakeholder?.imagePath}`,
+                  uri: `${host}/${data?.stakeholder?.imagePath}`,
                   priority: FastImage.priority.high,
                 }}
                 resizeMode={FastImage.resizeMode.cover}
@@ -253,7 +256,7 @@ export default function CoachBookingComplete(props: any) {
                 }}
                 defaultSource={images.Placeholder}
                 source={{
-                  uri: `https://nodejsclusters-160185-0.cloudclusters.net/${court.imagePath}`,
+                  uri: `${host}/${court.imagePath}`,
                   priority: FastImage.priority.high,
                 }}
                 resizeMode={FastImage.resizeMode.cover}

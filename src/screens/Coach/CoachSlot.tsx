@@ -30,6 +30,9 @@ import RectangleSK from "@src/assets/skelton/RectangleSK";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
 import DeviceInfo from "react-native-device-info";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 const isTab = DeviceInfo.isTablet();
 const windowWidth = Dimensions.get("window").width;
@@ -260,7 +263,7 @@ export default function CoachSlot(props: any) {
               ]}
               defaultSource={images.user}
               source={{
-                uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.stakeholder?.imagePath}`,
+                uri: `${host}/${data?.stakeholder?.imagePath}`,
                 priority: FastImage.priority.high,
               }}
               resizeMode={FastImage.resizeMode.cover}

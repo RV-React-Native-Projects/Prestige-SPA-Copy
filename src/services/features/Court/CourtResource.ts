@@ -1,8 +1,7 @@
 import $http from "@global/http";
 import Config from "react-native-config";
 
-// const host = Config?.HOST_URL;
-const host = "https://nodejsclusters-160185-0.cloudclusters.net";
+const host = Config?.HOST_URL;
 
 interface RequestOptions {
   headers?: Record<string, string>;

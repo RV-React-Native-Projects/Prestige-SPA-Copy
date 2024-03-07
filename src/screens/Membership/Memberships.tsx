@@ -21,6 +21,9 @@ import { Card } from "react-native-paper";
 import { moderateScale } from "react-native-size-matters";
 import { Membership } from "@src/Types/UserTypes";
 import { getAllMembership } from "@reducers/UserSlice";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 interface Court {
   minRate: number;
@@ -92,7 +95,7 @@ const MemberCard = (props: MemberCardProps | any) => {
           borderRadius: moderateScale(5, 0.3),
         }}
         source={{
-          uri: `https://nodejsclusters-160185-0.cloudclusters.net/${imagePath}`,
+          uri: `${host}/${imagePath}`,
           priority: FastImage.priority.high,
         }}
         resizeMode={FastImage.resizeMode.cover}

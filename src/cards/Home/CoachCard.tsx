@@ -8,6 +8,9 @@ import svgs from "@common/AllSvgs";
 import FastImage from "react-native-fast-image";
 import images from "@common/AllImages";
 import I18n from "i18n-js";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 interface CoachCardProps {
   imagePath: string;
@@ -41,7 +44,7 @@ export default function CoachCard(props: CoachCardProps) {
             borderRadius: moderateScale(100, 0.3),
           }}
           source={{
-            uri: `https://nodejsclusters-160185-0.cloudclusters.net/${imagePath}`,
+            uri: `${host}/${imagePath}`,
             priority: FastImage.priority.high,
           }}
           resizeMode={FastImage.resizeMode.cover}

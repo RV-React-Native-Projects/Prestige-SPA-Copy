@@ -31,6 +31,9 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FamilyModal from "@src/screen-components/Modal/FamilyModal";
 import FloatingBottomButton from "@src/screen-components/Floating/FloatingBottomButton";
+import Config from "react-native-config";
+
+const host = Config?.HOST_URL;
 
 const isIOS = Platform.OS === "ios";
 
@@ -186,7 +189,7 @@ function CoachDetail(props: any) {
               borderRadius: moderateScale(100, 0.3),
             }}
             source={{
-              uri: `https://nodejsclusters-160185-0.cloudclusters.net/${data?.stakeholder?.imagePath}`,
+              uri: `${host}/${data?.stakeholder?.imagePath}`,
               priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover}
